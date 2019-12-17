@@ -1,3 +1,11 @@
-unreleased=false
-future-release=0.2.0
-since-tag=0.1.0
+exclude-labels=duplicate,question,invalid,wontfix,documentation,help wanted
+issue-line-labels=ALL
+since-tag=v0.1.0
+future-release=v0.20.0
+release-branch=master
+enhancement-label="Enhancements:"
+enhancement-labels=enhancement
+bugs-label="Bug fixes:"
+bug-labels=bug
+issues-label="Resolved issues:"
+pr-label="Pull requests merged:"
