@@ -39,19 +39,19 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <termios.h>
 #include <unistd.h>
-#include <string.h>
 
 #include <cstdlib>
 
 #include <boost/algorithm/string/join.hpp>
-#include <boost/system/error_code.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 #include <boost/make_shared.hpp>
+#include <boost/system/error_code.hpp>
 #include <boost/version.hpp>
 
 #include <MediaInfo/MediaInfo.h>
@@ -180,7 +180,7 @@ namespace
                              std::string &error_msg)
   {
     bool outcome = true;  // we'll assume everything will be OK, or else,
-                          // early-return in case it is not.
+    // early-return in case it is not.
     char host_name_buf[HOST_NAME_MAX + 1] = "";
     struct ifaddrs *myaddrs = NULL;
     struct ifaddrs *ifa = NULL;
@@ -377,7 +377,7 @@ namespace
       }
     }
   };
-}
+}  // namespace
 
 tiz::playapp::playapp (int argc, char *argv[]) : popts_ (argc, argv)
 {
@@ -407,8 +407,10 @@ void tiz::playapp::check_or_create_config_file ()
     if (!bf::exists (home_conf_file))
     {
       // Canonical locations of tizonia.conf
-      const std::string etc_conf_file ("/etc/tizonia/tizonia.conf"); // OLD location
-      const std::string etc_xdg_conf_file ("/etc/xdg/tizonia/tizonia.conf"); // NEW location
+      const std::string etc_conf_file (
+          "/etc/tizonia/tizonia.conf");  // OLD location
+      const std::string etc_xdg_conf_file (
+          "/etc/xdg/tizonia/tizonia.conf");  // NEW location
 
       // STEP 1: Create $HOME/.config/tizonia, if it doesn't exist
       if (!bf::exists (home_conf_dir))
@@ -416,11 +418,11 @@ void tiz::playapp::check_or_create_config_file ()
         boost::system::error_code ec;
         bf::create_directories (home_conf_dir, ec);
         if (ec.value () != 0)
-          {
-            // Oops... if we can't create the home config dire, then we have no
-            // business to do here. EARLY RETURN!!
-            return;
-          }
+        {
+          // Oops... if we can't create the home config dire, then we have no
+          // business to do here. EARLY RETURN!!
+          return;
+        }
       }
 
       // STEP 2: See if tizonia.conf can be found under the SNAP directory
@@ -447,9 +449,9 @@ void tiz::playapp::check_or_create_config_file ()
           while (pch != NULL && !bf::exists (home_conf_file))
           {
             boost::system::error_code ec;
-            std::string xdg_file(pch);
-            xdg_file.append(etc_xdg_conf_file);
-            printf ("xdg_file : %s\n", xdg_file.c_str());
+            std::string xdg_file (pch);
+            xdg_file.append (etc_xdg_conf_file);
+            printf ("xdg_file : %s\n", xdg_file.c_str ());
             bf::copy_file (xdg_file, home_conf_file, ec);
             if (ec.value () == 0)
             {
@@ -509,9 +511,10 @@ void tiz::playapp::set_option_handlers ()
   // SoundCloud music streaming client program options
   popts_.set_option_handler ("scloud-stream",
                              boost::bind (&tiz::playapp::scloud_stream, this));
-//   // Dirble internet radio directory streaming client program options
-//   popts_.set_option_handler ("dirble-stream",
-//                              boost::bind (&tiz::playapp::dirble_stream, this));
+  //   // Dirble internet radio directory streaming client program options
+  //   popts_.set_option_handler ("dirble-stream",
+  //                              boost::bind (&tiz::playapp::dirble_stream,
+  //                              this));
   // YouTube audio streaming client program options
   popts_.set_option_handler ("youtube-stream",
                              boost::bind (&tiz::playapp::youtube_stream, this));
@@ -530,10 +533,10 @@ void tiz::playapp::set_option_handlers ()
   popts_.set_option_handler (
       "scloud-stream-chromecast",
       boost::bind (&tiz::playapp::scloud_stream_chromecast, this));
-//   // Dirble audio streaming on Chromecast device
-//   popts_.set_option_handler (
-//       "dirble-stream-chromecast",
-//       boost::bind (&tiz::playapp::dirble_stream_chromecast, this));
+  //   // Dirble audio streaming on Chromecast device
+  //   popts_.set_option_handler (
+  //       "dirble-stream-chromecast",
+  //       boost::bind (&tiz::playapp::dirble_stream_chromecast, this));
   // YouTube audio streaming on Chromecast device
   popts_.set_option_handler (
       "youtube-stream-chromecast",
@@ -863,7 +866,7 @@ tiz::playapp::decode_stream ()
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
   const uri_lst_t &uri_list = popts_.uri_list ();
-  const uint32_t unused_buffer_seconds = 0; // this is not used during casting
+  const uint32_t unused_buffer_seconds = 0;  // this is not used during casting
 
   (void)daemonize_if_requested ();
   print_banner ();
@@ -874,8 +877,8 @@ tiz::playapp::decode_stream ()
   assert (playlist);
   playlist->set_loop_playback (true);
 
-  tizgraphconfig_ptr_t config
-    = boost::make_shared< tiz::graph::config > (playlist, unused_buffer_seconds);
+  tizgraphconfig_ptr_t config = boost::make_shared< tiz::graph::config > (
+      playlist, unused_buffer_seconds);
 
   // Instantiate the streaming client manager
   tiz::graphmgr::mgr_ptr_t p_mgr
@@ -909,7 +912,7 @@ tiz::playapp::spotify_stream ()
   std::string proxy_pass = popts_.proxy_password ();
   const bool recover_lost_token = popts_.spotify_recover_lost_token ();
   const bool allow_explicit_tracks = popts_.spotify_allow_explicit_tracks ();
-  uint32_t preferred_bitrate = popts_.spotify_preferred_bitrate ();
+  const uint32_t preferred_bitrate = popts_.spotify_preferred_bitrate ();
   const uri_lst_t &uri_list = popts_.spotify_playlist_container ();
   const OMX_TIZONIA_AUDIO_SPOTIFYPLAYLISTTYPE playlist_type
       = popts_.spotify_playlist_type ();
@@ -934,11 +937,11 @@ tiz::playapp::spotify_stream ()
   assert (playlist);
   playlist->set_loop_playback (true);
 
-  tizgraphconfig_ptr_t config
-      = boost::make_shared< tiz::graph::spotifyconfig > (
-          playlist, user, pass, proxy_server, proxy_user, proxy_pass,
-          playlist_type, owner, recover_lost_token, allow_explicit_tracks,
-          preferred_bitrate);
+  tizgraphconfig_ptr_t config = boost::shared_ptr< tiz::graph::spotifyconfig > (
+      new tiz::graph::spotifyconfig (playlist, user, pass, proxy_server,
+                                     proxy_user, proxy_pass, playlist_type,
+                                     owner, recover_lost_token,
+                                     allow_explicit_tracks, preferred_bitrate));
 
   // Instantiate the streaming client manager
   tiz::graphmgr::mgr_ptr_t p_mgr
@@ -1082,12 +1085,14 @@ tiz::playapp::scloud_stream ()
 //   (void)daemonize_if_requested ();
 
 //   tizplaylist_ptr_t playlist
-//       = boost::make_shared< tiz::playlist > (tiz::playlist (uri_list, shuffle));
+//       = boost::make_shared< tiz::playlist > (tiz::playlist (uri_list,
+//       shuffle));
 
 //   assert (playlist);
 //   playlist->set_loop_playback (true);
 
-//   tizgraphconfig_ptr_t config = boost::make_shared< tiz::graph::dirbleconfig > (
+//   tizgraphconfig_ptr_t config = boost::make_shared< tiz::graph::dirbleconfig
+//   > (
 //       playlist, buffer_seconds, api_key, playlist_type);
 
 //   // Instantiate the streaming client manager
@@ -1203,7 +1208,7 @@ tiz::playapp::http_stream_chromecast ()
   const bool shuffle = popts_.shuffle ();
   const uri_lst_t &uri_list = popts_.uri_list ();
   const std::string cc_name_or_ip (popts_.chromecast_name_or_ip ());
-  const uint32_t unused_buffer_seconds = 0; // this is not used during casting
+  const uint32_t unused_buffer_seconds = 0;  // this is not used during casting
 
   (void)daemonize_if_requested ();
   print_banner ();
@@ -1255,7 +1260,7 @@ tiz::playapp::gmusic_stream_chromecast ()
       = popts_.gmusic_playlist_type ();
   const bool is_unlimited_search = popts_.gmusic_is_unlimited_search ();
   const std::string cc_name_or_ip (popts_.chromecast_name_or_ip ());
-  const uint32_t unused_buffer_seconds = 0; // this is not used during casting
+  const uint32_t unused_buffer_seconds = 0;  // this is not used during casting
 
   print_banner ();
 
@@ -1315,7 +1320,7 @@ tiz::playapp::scloud_stream_chromecast ()
   const OMX_TIZONIA_AUDIO_SOUNDCLOUDPLAYLISTTYPE playlist_type
       = popts_.scloud_playlist_type ();
   const std::string cc_name_or_ip (popts_.chromecast_name_or_ip ());
-  const uint32_t unused_buffer_seconds = 0; // this is not used during casting
+  const uint32_t unused_buffer_seconds = 0;  // this is not used during casting
 
   print_banner ();
 
@@ -1365,7 +1370,8 @@ tiz::playapp::scloud_stream_chromecast ()
 //   const OMX_TIZONIA_AUDIO_DIRBLEPLAYLISTTYPE playlist_type
 //       = popts_.dirble_playlist_type ();
 //   const std::string cc_name_or_ip (popts_.chromecast_name_or_ip ());
-//   const uint32_t unused_buffer_seconds = 0; // this is not used during casting
+//   const uint32_t unused_buffer_seconds = 0; // this is not used during
+//   casting
 
 //   print_banner ();
 
@@ -1373,7 +1379,8 @@ tiz::playapp::scloud_stream_chromecast ()
 //   (void)daemonize_if_requested ();
 
 //   tizplaylist_ptr_t playlist
-//       = boost::make_shared< tiz::playlist > (tiz::playlist (uri_list, shuffle));
+//       = boost::make_shared< tiz::playlist > (tiz::playlist (uri_list,
+//       shuffle));
 
 //   assert (playlist);
 //   playlist->set_loop_playback (true);
@@ -1414,7 +1421,7 @@ tiz::playapp::youtube_stream_chromecast ()
   const uri_lst_t &uri_list = popts_.youtube_playlist_container ();
   const OMX_TIZONIA_AUDIO_YOUTUBEPLAYLISTTYPE playlist_type
       = popts_.youtube_playlist_type ();
-  const uint32_t unused_buffer_seconds = 0; // this is not used during casting
+  const uint32_t unused_buffer_seconds = 0;  // this is not used during casting
 
   print_banner ();
 
@@ -1466,7 +1473,7 @@ tiz::playapp::plex_stream_chromecast ()
   const OMX_TIZONIA_AUDIO_PLEXPLAYLISTTYPE playlist_type
       = popts_.plex_playlist_type ();
   const std::string cc_name_or_ip (popts_.chromecast_name_or_ip ());
-  const uint32_t unused_buffer_seconds = 0; // this is not used during casting
+  const uint32_t unused_buffer_seconds = 0;  // this is not used during casting
 
   print_banner ();
 

@@ -29,27 +29,25 @@ To build and install from source, please read the following sections. Ubuntu
 
 ### Prerequisites
 
-Please make sure you have enough RAM available on your system to build
-Tizonia. A good 6GB of free RAM may be needed if you are planning to build
-everything, including the 'tizonia' player program. That means, if you have 8GB
-of physical RAM, you might encounter problems if you are trying to run the
-compilation while large programs like Chrome or Firefox are running. See [Known
-issues](#known-issues) for the kind of errors that you might encounter in those
-cases. Also look at [Conditional compilation of
-sub-projects](#conditional-compilation-of-sub-projects) for instructions on how
-to disable certain parts of the software.
+Please make sure you have enough RAM available on your system to build Tizonia.
+A good 6GB of free RAM may be needed if you are planning to build everything,
+including the 'tizonia' player program. That means, if you have 8GB of physical
+RAM, you might encounter problems if you are trying to run the compilation while
+large programs like Chrome or Firefox are running. See
+[Known issues](#known-issues) for the kind of errors that you might encounter in
+those cases. Also look at
+[Conditional compilation of sub-projects](#conditional-compilation-of-sub-projects)
+for instructions on how to disable certain parts of the software.
 
 > NOTE: Also make sure you have some time in your hands. Building Tizonia may
-  take at least 20 minutes on a fast SSD-based system. You may want to look at
-  [Speeding up (re-)compilation using
-  ccache](#speeding-up-re-compilation-using-ccache) if you are planning to
-  build the Tizonia tree multiple times.
-
+> take at least 20 minutes on a fast SSD-based system. You may want to look at
+> [Speeding up (re-)compilation using ccache](#speeding-up-re-compilation-using-ccache)
+> if you are planning to build the Tizonia tree multiple times.
 
 ### Dependencies
 
-To install all the development dependencies, the `tizonia-dev-build` tool is
-the recommended way. This script lives under the `tools` directory and internally
+To install all the development dependencies, the `tizonia-dev-build` tool is the
+recommended way. This script lives under the `tools` directory and internally
 maintains an up-to-date list of all the packages that are required in a
 Debian-compatible system to build Tizonia from source.
 
@@ -64,8 +62,11 @@ Debian-compatible system to build Tizonia from source.
     $ export TIZONIA_INSTALL_DIR=/path/to/install/dir # (e.g. /usr or /home/user/temp)
     $ export PATH=$TIZONIA_REPO_DIR/tools:$PATH
 
+    Set the PYTHONPATH accordingly (replace X to match the python version on your system)
+    $ export PYTHONPATH=$TIZONIA_INSTALL_DIR/lib/python3.X/site-packages:$PYTHONPATH
+
     Now install everything that is required to build Tizonia from source (Debian derivative assumed)
-    $ tools/tizonia-dev-build --deps
+    $ tizonia-dev-build --deps
 
 ```
 
@@ -77,12 +78,12 @@ the following methods.
 
 #### 'Debug' variant
 
-The following command re-configures all sub-projects with 'debug' type of
-flags, and then proceeds to build and install them.
+The following command re-configures all sub-projects with 'debug' type of flags,
+and then proceeds to build and install them.
 
 ```bash
 
-   $ tools/tizonia-dev-build --debug --install
+   $ tizonia-dev-build --debug --install
 
 ```
 
@@ -93,7 +94,7 @@ flags, builds and installs them.
 
 ```bash
 
-   $ tools/tizonia-dev-build --release --install
+   $ tizonia-dev-build --release --install
 
 ```
 
@@ -106,16 +107,16 @@ creates a single Debian package and installs it in the system. The package can
 then be removed via 'dpkg' or even moved to another machine for testing.
 
 > NOTE: This is the best way to build Tizonia if all you want is to install it
-  on a system that for which there are no official binaries.
+> on a system that for which there are no official binaries.
 
 > NOTE: This is not how the Debian packages hosted on Bintray are created. The
-  packages hosted on Bintray are fully 'debianized' packages created using the
-  'tizonia-qemu-debootstrap-env' script.
+> packages hosted on Bintray are fully 'debianized' packages created using the
+> 'tizonia-qemu-debootstrap-env' script.
 
 ```bash
 
    This produces and install a Debian package called 'tizonia-all-testing'
-   $ tools/tizonia-dev-build --debian
+   $ tizonia-dev-build --debian
 
    To remove from the system, run:
    $ dpkg -r tizonia-all-testing
@@ -140,9 +141,9 @@ Alternatively, from the top of Tizonia's repo, one can also do the familiar:
 ##### Excluding the `player` sub-project
 
 Some people are only interested in building the OpenMAX IL framework, without
-the `tizonia` player application (that lives under the 'player'
-sub-directory). During configuration, it can be disabled by including the
-`--disable-player` option:
+the `tizonia` player application (that lives under the 'player' sub-directory).
+During configuration, it can be disabled by including the `--disable-player`
+option:
 
 ```bash
 
@@ -157,7 +158,7 @@ disable configuration and build of the `tizonia` player.
 ```bash
 
    # Build and install in DEBUG mode without the command-line player program.
-   $ tools/tizonia-dev-build --no-player --debug --install
+   $ tizonia-dev-build --no-player --debug --install
 
 ```
 
@@ -176,8 +177,8 @@ disable the support for this plugin in the `tizonia` player program.
 
 ##### Excluding the `plugins/pcm_renderer_alsa` sub-project
 
-The `--without-alsa` option may be included to disable configuration and
-build of the ALSA-based OpenMAX IL pcm renderer.
+The `--without-alsa` option may be included to disable configuration and build
+of the ALSA-based OpenMAX IL pcm renderer.
 
 ```bash
 
@@ -188,7 +189,7 @@ build of the ALSA-based OpenMAX IL pcm renderer.
 
 ### Tizonia's configuration file
 
-Copy *tizonia.conf* into the user's config folder:
+Copy _tizonia.conf_ into the user's config folder:
 
 ```bash
 
@@ -200,9 +201,9 @@ Copy *tizonia.conf* into the user's config folder:
 ### Resource Manager's D-BUS service activation file (optional)
 
 OpenMAX IL Resource Management is present but disabled by default. This is a
-feature required on an compliant OpenMAX IL 1.2 implementation. Currently,
-there is no other use beyond enabling OpenMAX IL compliance. In case this is to
-be used during OpenMAX IL conformance testing (prior to that, it needs to be
+feature required on an compliant OpenMAX IL 1.2 implementation. Currently, there
+is no other use beyond enabling OpenMAX IL compliance. In case this is to be
+used during OpenMAX IL conformance testing (prior to that, it needs to be
 explicitly enabled in tizonia.conf), copy the Resource Manager's D-BUS
 activation file to some place where it can be found by the DBUS services. E.g:
 
@@ -226,10 +227,10 @@ are quite large and MSM is known for not being easy on the compilers. Building
 the `tizonia` command-line app in 'debug' configuration (with debug symbols,
 etc) requires quite a bit of RAM.
 
-You may see GCC crashing like below; simply keep running `make -j1` or `make
--j1 install` until the application is fully built (it will finish eventually,
-given the sufficient amount RAM). An alternative to that is to build in
-'release' mode (especially if you are on a 32-bit distro).
+You may see GCC crashing like below; simply keep running `make -j1` or
+`make -j1 install` until the application is fully built (it will finish
+eventually, given the sufficient amount RAM). An alternative to that is to build
+in 'release' mode (especially if you are on a 32-bit distro).
 
 ```bash
 
@@ -275,16 +276,16 @@ On a debian system, ccache can be installed using:
 $ sudo apt-get install ccache
 ```
 
-Once ccache is installed, `tizonia-dev-build` will detect its presence and
-start making use of it to (dramatically) reduce compilation time in most cases.
+Once ccache is installed, `tizonia-dev-build` will detect its presence and start
+making use of it to (dramatically) reduce compilation time in most cases.
 
 ### Creating a JSON compilation database, for use with e.g. Emacs RTags
 
-JSON compilation databases are used nowdays by many tools to provide
-information on how a single compilation unit is processed. This helps these
-programs to perform many useful tasks, like static analyses of various
-kinds. [RTags](https://github.com/Andersbakken/rtags) is an example of program
-that uses a JSON compilation database to index C/C++ code and keep a persistent
+JSON compilation databases are used nowdays by many tools to provide information
+on how a single compilation unit is processed. This helps these programs to
+perform many useful tasks, like static analyses of various kinds.
+[RTags](https://github.com/Andersbakken/rtags) is an example of program that
+uses a JSON compilation database to index C/C++ code and keep a persistent
 file-based database, for use within Emacs to provide powerful integrations.
 
 `tizonia-dev-build` has support for `bear` (a program that creates JSON
