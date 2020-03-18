@@ -40,5 +40,3 @@ libtizmp3dec_la_LIBADD = \
 	@TIZPLATFORM_LIBS@ \
 	@TIZONIA_LIBS@ \
 	@MAD_LIBS@
-
-

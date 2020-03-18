@@ -14,4 +14,3 @@ configure_file(input: 'libtizsoundcloud.pc.in',
 
 
 subdir('src')
-

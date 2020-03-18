@@ -40,6 +40,3 @@ libtizmp3meta_la_LIBADD = \
 	@TIZPLATFORM_LIBS@ \
 	@TIZONIA_LIBS@ \
 	@LIBMPG123_LIBS@
-
-
-

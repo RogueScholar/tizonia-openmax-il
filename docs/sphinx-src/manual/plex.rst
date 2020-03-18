@@ -107,5 +107,3 @@ EXAMPLES
    $ tizonia --plex-audio-album "Draconian Times"
 
    $ tizonia --plex-audio-playlist "Mike oldfield popular tracks"
-
-

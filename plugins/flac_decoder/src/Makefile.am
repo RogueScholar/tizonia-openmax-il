@@ -40,5 +40,3 @@ libtizflacd_la_LIBADD = \
 	@TIZPLATFORM_LIBS@ \
 	@TIZONIA_LIBS@ \
 	@FLAC_LIBS@
-
-

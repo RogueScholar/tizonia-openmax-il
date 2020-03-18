@@ -40,5 +40,3 @@ libtizopusfiled_la_LIBADD = \
 	@TIZPLATFORM_LIBS@ \
 	@TIZONIA_LIBS@ \
 	@OPUSFILE_LIBS@
-
-

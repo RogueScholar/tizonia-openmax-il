@@ -40,5 +40,3 @@ libtizoggdemux_la_LIBADD = \
 	@TIZPLATFORM_LIBS@ \
 	@TIZONIA_LIBS@ \
 	@OGGZ_LIBS@
-
-

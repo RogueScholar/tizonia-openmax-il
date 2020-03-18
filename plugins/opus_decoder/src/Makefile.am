@@ -43,5 +43,3 @@ libtizopusd_la_LIBADD = \
 	@TIZONIA_LIBS@ \
 	-lm \
 	@OPUS_LIBS@
-
-

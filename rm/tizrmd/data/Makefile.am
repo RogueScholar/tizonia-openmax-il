@@ -48,4 +48,3 @@ distclean-local: clean-local-tizrmdb
 .PHONY: clean-local-tizrmdb
 clean-local-tizrmdb:
 	-rm -f $(sqlite_databases)
-

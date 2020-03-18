@@ -11,5 +11,3 @@ subdir('doxygen-src')
 # Cannot find namespace "libtizchromecast" in doxygen
 # xml output for project "tizonia"
 # subdir('sphinx-src')
-
-

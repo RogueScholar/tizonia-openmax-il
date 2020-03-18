@@ -40,6 +40,3 @@ libtizsndfiled_la_LIBADD = \
 	@TIZPLATFORM_LIBS@ \
 	@TIZONIA_LIBS@ \
 	@LIBSNDFILE_LIBS@
-
-
-

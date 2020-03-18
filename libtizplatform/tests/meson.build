@@ -4,7 +4,7 @@ config_check_tizplatform_h.set('abs_top_builddir', meson.source_root())
 
 configure_file(input: 'check_tizplatform.h.in',
                output: 'check_tizplatform.h',
-               configuration: config_check_tizplatform_h 
+               configuration: config_check_tizplatform_h
                )
 
 

@@ -16,7 +16,7 @@ config_tizcore_h.set('abs_top_builddir', meson.source_root())
 
 configure_file(input: 'check_tizcore.h.in',
                output: 'check_tizcore.h',
-               configuration: config_tizcore_h 
+               configuration: config_tizcore_h
                )
 
 

@@ -28,4 +28,3 @@ check_tiztunein_CFLAGS = \
 check_tiztunein_LDADD = \
 	$(top_builddir)/src/libtiztunein.la \
 	@CHECK_LIBS@
-

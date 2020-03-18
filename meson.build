@@ -248,4 +248,3 @@ summary({'To compile all tizonia sub-projects, type': 'ninja',
         }, section: 'Building')
 summary({'Doc generation is not currently functional': 'run Doxygen/Sphinx manually'
         }, section: 'NOTE')
-

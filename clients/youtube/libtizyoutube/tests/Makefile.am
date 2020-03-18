@@ -28,4 +28,3 @@ check_tizyoutube_CFLAGS = \
 check_tizyoutube_LDADD = \
 	$(top_builddir)/src/libtizyoutube.la \
 	@CHECK_LIBS@
-
