@@ -19,14 +19,15 @@ $ sudo -H pip3 install meson --upgrade
 ```
 
 Ninja is the recommended Meson backend.
+
 ```
 $ sudo apt-get install ninja-build
 ```
 
 ### Dependencies
 
-To install all the development dependencies, the `tizonia-dev-build` tool is
-the recommended way. This script lives under the `tools` directory and internally
+To install all the development dependencies, the `tizonia-dev-build` tool is the
+recommended way. This script lives under the `tools` directory and internally
 maintains an up-to-date list of all the packages that are required in a
 Debian-compatible system to build Tizonia from source.
 
@@ -78,9 +79,13 @@ $ ninja -v -j1 -C build
 > compilation.
 
 And install with:
+
 ```
 $ DESTDIR=<mydir> /usr/bin/ninja install -v -j1 -C build
 ```
-On OSX things are still experimental. You'll have to install the required dependencies with brew and
-therefore use `/usr/local` as prefix and adjust everything else accordingly. Also you will have to
-pass `-Dpkg_config_path=/usr/local/lib` and `-Dcmake_prefix_path=/usr/local/lib`, plus other modifications.
+
+On OSX things are still experimental. You'll have to install the required
+dependencies with brew and therefore use `/usr/local` as prefix and adjust
+everything else accordingly. Also you will have to pass
+`-Dpkg_config_path=/usr/local/lib` and `-Dcmake_prefix_path=/usr/local/lib`,
+plus other modifications.
