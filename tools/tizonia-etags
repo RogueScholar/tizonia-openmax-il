@@ -15,73 +15,73 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-PWD=`pwd`
+PWD=$(pwd)
 SOURCEDIR="$TIZONIA_REPO_DIR"
 DESKTOPDIR="/home/$USER/temp/emacs-desktops/tiz"
 CSCOPEFILES='./cscope.files'
 EBROWSEFILES='./ebrowse.files'
-UBUNTU_VER=`cat /etc/os-release | grep VERSION_ID | grep -Po '".*?"' | awk -F'"' '{ print $2 }'`
+UBUNTU_VER=$(cat /etc/os-release | grep VERSION_ID | grep -Po '".*?"' | awk -F'"' '{ print $2 }')
 
 echo "Changing dir to $DESKTOPDIR..."
 cd "$DESKTOPDIR"
 
 if [ -a "$CSCOPEFILES" ]; then
-    echo "Deleting old cscope and TAGS files..."
-    ls
-    rm -f cscope.*
-    rm -f TAGS
+  echo "Deleting old cscope and TAGS files..."
+  ls
+  rm -f cscope.*
+  rm -f TAGS
 fi
 
 if [ -a "$EBROWSEFILES" ]; then
-    echo "Deleting old browse files..."
-    ls
-    rm -f ebrose.files
-    rm -f BROWSE
+  echo "Deleting old browse files..."
+  ls
+  rm -f ebrose.files
+  rm -f BROWSE
 fi
 
 # Make sure there are no temp files under $TIZONIA_REPO_DIR/tools
 rm -rf "$TIZONIA_REPO_DIR"/tools/tizonia-build/*
 
 echo "Collecting all *.h from $SOURCEDIR..."
-find "$SOURCEDIR" -name "*.h" -print > "$CSCOPEFILES"
+find "$SOURCEDIR" -name "*.h" -print >"$CSCOPEFILES"
 echo "Collecting all *.inl from $SOURCEDIR..."
-find "$SOURCEDIR" -name "*.inl" -print > "$CSCOPEFILES"
+find "$SOURCEDIR" -name "*.inl" -print >"$CSCOPEFILES"
 echo "Collecting all *.c from $SOURCEDIR..."
-find "$SOURCEDIR" -name "*.c" -print > "$CSCOPEFILES"
+find "$SOURCEDIR" -name "*.c" -print >"$CSCOPEFILES"
 echo "Collecting all *.hpp files from $SOURCEDIR..."
-find "$SOURCEDIR" -name "*.hpp" -print >> "$CSCOPEFILES"
+find "$SOURCEDIR" -name "*.hpp" -print >>"$CSCOPEFILES"
 echo "Collecting all *.cpp files from $SOURCEDIR..."
-find "$SOURCEDIR" -name "*.cpp" -print >> "$CSCOPEFILES"
+find "$SOURCEDIR" -name "*.cpp" -print >>"$CSCOPEFILES"
 
 echo "Collecting all *.hpp from $SOURCEDIR..."
-find "$SOURCEDIR" -name "*.hpp" -print > "$EBROWSEFILES"
+find "$SOURCEDIR" -name "*.hpp" -print >"$EBROWSEFILES"
 echo "Collecting all *.cpp files from $SOURCEDIR..."
-find "$SOURCEDIR" -name "*.cpp" -print >> "$EBROWSEFILES"
+find "$SOURCEDIR" -name "*.cpp" -print >>"$EBROWSEFILES"
 
 echo "Number of lines found: $(wc -l "$CSCOPEFILES")"
 echo "Running cscope..."
 cscope -v -b -q -k
 
 if [ "$UBUNTU_VER" == "12.04" ]; then
-    echo "Now running etags on UBUNTU $UBUNTU_VER..."
-    # For use in Ubuntu 12.04
-    #  Exuberant Ctags 5.9~svn20110310, Copyright (C) 1996-2009 Darren Hiebert
-    #  Compiled: Nov  9 2011, 17:42:21
-    #  Addresses: <dhiebert@users.sourceforge.net>, http://ctags.sourceforge.net
-    #  Optional compiled features: +wildcards, +regex
-    etags -V "$(find "$SOURCEDIR" -name "*.h" -o -name "*.inl" -o -name "*.c" -o -name "*.hpp" -o -name "*.cpp")"
+  echo "Now running etags on UBUNTU $UBUNTU_VER..."
+  # For use in Ubuntu 12.04
+  #  Exuberant Ctags 5.9~svn20110310, Copyright (C) 1996-2009 Darren Hiebert
+  #  Compiled: Nov  9 2011, 17:42:21
+  #  Addresses: <dhiebert@users.sourceforge.net>, http://ctags.sourceforge.net
+  #  Optional compiled features: +wildcards, +regex
+  etags -V "$(find "$SOURCEDIR" -name "*.h" -o -name "*.inl" -o -name "*.c" -o -name "*.hpp" -o -name "*.cpp")"
 elif [ "$UBUNTU_VER" == "13.04" ]; then
-    # For use in Ubuntu 13.04
-    echo "Now running etags on UBUNTU $UBUNTU_VER..."
-    find "$SOURCEDIR" -name "*.h" -o -name "*.inl" -o -name "*.c" -o -name "*.hpp" -o -name "*.cpp" | etags -
+  # For use in Ubuntu 13.04
+  echo "Now running etags on UBUNTU $UBUNTU_VER..."
+  find "$SOURCEDIR" -name "*.h" -o -name "*.inl" -o -name "*.c" -o -name "*.hpp" -o -name "*.cpp" | etags -
 elif [ "$UBUNTU_VER" == "14.04" ]; then
-    # For use in Ubuntu 14.04
-    echo "Now running etags on UBUNTU $UBUNTU_VER..."
-    find "$SOURCEDIR" -name "*.h" -o -name "*.inl" -o -name "*.c" -o -name "*.hpp" -o -name "*.cpp" | etags -
+  # For use in Ubuntu 14.04
+  echo "Now running etags on UBUNTU $UBUNTU_VER..."
+  find "$SOURCEDIR" -name "*.h" -o -name "*.inl" -o -name "*.c" -o -name "*.hpp" -o -name "*.cpp" | etags -
 elif [ "$UBUNTU_VER" == "16.04" ]; then
-    # For use in Ubuntu 16.04
-    echo "Now running etags on UBUNTU $UBUNTU_VER..."
-    find "$SOURCEDIR" -name "*.h" -o -name "*.inl" -o -name "*.c" -o -name "*.hpp" -o -name "*.cpp" | etags -
+  # For use in Ubuntu 16.04
+  echo "Now running etags on UBUNTU $UBUNTU_VER..."
+  find "$SOURCEDIR" -name "*.h" -o -name "*.inl" -o -name "*.c" -o -name "*.hpp" -o -name "*.cpp" | etags -
 fi
 
 echo "Now running ebrowse on $SOURCEDIR..."

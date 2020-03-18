@@ -23,8 +23,8 @@
 # The script uses gcli (github_cli)
 #
 
-declare -ar TIZONIA_COVERITY2GITHUB_DEPS=( \
-    'gcli' \
+declare -ar TIZONIA_COVERITY2GITHUB_DEPS=(
+  'gcli'
 )
 
 ##################################################################
@@ -37,31 +37,33 @@ declare -ar TIZONIA_COVERITY2GITHUB_DEPS=( \
 # Returns:
 #   None
 ##################################################################
-function main {
+function main() {
 
-    # Check dependencies
-    for cmd in "${TIZONIA_COVERITY2GITHUB_DEPS[@]}"; do
-        command -v "$cmd" >/dev/null 2>&1 \
-            || { echo >&2 "This program requires $cmd. Aborting."; exit 1; }
-    done
+  # Check dependencies
+  for cmd in "${TIZONIA_COVERITY2GITHUB_DEPS[@]}"; do
+    command -v "$cmd" >/dev/null 2>&1 ||
+      {
+        echo >&2 "This program requires $cmd. Aborting."
+        exit 1
+      }
+  done
 
-    while IFS=, read cid type impact status first_detected owner classification severity action component category file func
-    do
-        title="Coverity Scan (CID $cid) [$file:$func] : $type"
-        echo "Creating Githib issue : [$title]"
-        gcli issue create tizonia tizonia-openmax-il \
-            --title="Coverity Scan (CID $cid) [$file:$func] : $type" \
-            --labels=bug \
-            --body="* CID : $cid * Type : $type * Impact : $impact * Status : $status * First Detected : $first_detected * Classification : $classification * Severity : $severity * Component : $component * Category : $category * File : $file * Function : $func" \
-            --quiet
+  while IFS=, read cid type impact status first_detected owner classification severity action component category file func; do
+    title="Coverity Scan (CID $cid) [$file:$func] : $type"
+    echo "Creating Githib issue : [$title]"
+    gcli issue create tizonia tizonia-openmax-il \
+      --title="Coverity Scan (CID $cid) [$file:$func] : $type" \
+      --labels=bug \
+      --body="* CID : $cid * Type : $type * Impact : $impact * Status : $status * First Detected : $first_detected * Classification : $classification * Severity : $severity * Component : $component * Category : $category * File : $file * Function : $func" \
+      --quiet
 
-        if [[ $? -eq 0 ]]; then
-            echo "  Successfully created."
-        else
-            echo "  Something went wrong."
-        fi
+    if [[ $? -eq 0 ]]; then
+      echo "  Successfully created."
+    else
+      echo "  Something went wrong."
+    fi
 
-    done < coverity-scan-outstanding-defects.csv
+  done <coverity-scan-outstanding-defects.csv
 }
 
 main "$@"

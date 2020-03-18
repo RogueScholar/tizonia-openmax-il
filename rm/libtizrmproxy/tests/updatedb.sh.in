@@ -24,5 +24,5 @@ COMMANDS=$BASEDIR"/"$1
 
 echo -e "Updating $TIZ_RM_DB_NAME using $COMMANDS..."
 cat "$COMMANDS"
-"$SQLITE3" "$TIZ_RM_DB_NAME" < "$COMMANDS"
+"$SQLITE3" "$TIZ_RM_DB_NAME" <"$COMMANDS"
 echo -e "Done."

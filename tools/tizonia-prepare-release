@@ -48,9 +48,9 @@
 # 10.- Update CHANGELOG.md
 #     - using github-changelog-generator
 # 11.- Now Delete the tag in GitHub, push the changes to CHANGELOG.md and re-create the tag
-    # $ git tag -l
-    # $ git tag -d v0.2.0
-    # $ git push origin :refs/tags/v0.2.0
+# $ git tag -l
+# $ git tag -d v0.2.0
+# $ git push origin :refs/tags/v0.2.0
 # 12.- Build debian packages and upload to Bintray.
 # 13.- Update Tizonia's website.
 
@@ -58,11 +58,11 @@
 source tizonia-common.inc
 
 # Constants
-readonly TIZONIA_OLD_PACKAGE_VER="0.21.0"
+readonly TIZONIA_OLD_PACKAGE_VER="0.20.0"
 readonly TIZONIA_NEW_PACKAGE_VER="$TIZONIA_RELEASE_VERSION"
 
-readonly TIZONIA_OLD_SHLIB_VER="0:21:0"
-readonly TIZONIA_NEW_SHLIB_VER="0:22:0"
+readonly TIZONIA_OLD_SHLIB_VER="0:20:0"
+readonly TIZONIA_NEW_SHLIB_VER="0:21:0"
 
 readonly TIZONIA_PLUGIN_OLD_SHLIB_VER="$TIZONIA_OLD_SHLIB_VER"
 readonly TIZONIA_PLUGIN_NEW_SHLIB_VER="$TIZONIA_NEW_SHLIB_VER"
@@ -71,181 +71,182 @@ readonly TIZONIA_PYTHON_OLD_MODULE_VER="$TIZONIA_OLD_PACKAGE_VER"
 readonly TIZONIA_PYTHON_NEW_MODULE_VER="$TIZONIA_NEW_PACKAGE_VER"
 
 readonly TIZONIA_DEBIAN_CHANGELOG_VER="$TIZONIA_NEW_PACKAGE_VER"
-readonly TIZONIA_DEBIAN_CHANGELOG_CLOSING_BUG="735"
+readonly TIZONIA_DEBIAN_CHANGELOG_CLOSING_BUG="699"
 
 # Program dependencies
-declare -ar TIZONIA_PREPARE_RELEASE_DEPS=( \
-    'dch' \
-    'github_changelog_generator' \
-    'perl' \
-    'tail' \
-    'cut' \
-    'grcat' \
-    'tig' \
+declare -ar TIZONIA_PREPARE_RELEASE_DEPS=(
+  'dch'
+  'github_changelog_generator'
+  'perl'
+  'tail'
+  'cut'
+  'grcat'
+  'tig'
 )
 
+function update_package_versions() {
+  pretty_print "$MAG" "[START] : updating package versions."
+  cd "$TIZONIA_REPO_DIR"
+  local OLD_VER="$TIZONIA_OLD_PACKAGE_VER"
+  local NEW_VER="$TIZONIA_NEW_PACKAGE_VER"
+  local OLD_VER_QUOTED="$(echo "$OLD_VER" | sed -r 's/\./\\./g')"
+  perl -i -p -e "s/(?<=AC_INIT)(.*)\s\[$OLD_VER_QUOTED\]/\1 [$NEW_VER]/g" \
+    "$(find -L "$TIZONIA_REPO_DIR" -type f \( -path "./tools/*" -prune \) -o \( -name '*.ac' \) -print)"
+  pretty_print "$BLU" "[DONE] : updating package versions."
 
-function update_package_versions {
-    pretty_print "$MAG" "[START] : updating package versions."
-    cd "$TIZONIA_REPO_DIR"
-    local OLD_VER="$TIZONIA_OLD_PACKAGE_VER"
-    local NEW_VER="$TIZONIA_NEW_PACKAGE_VER"
-    local OLD_VER_QUOTED="$(echo "$OLD_VER" | sed -r 's/\./\\./g')"
-    perl -i -p -e "s/(?<=AC_INIT)(.*)\s\[$OLD_VER_QUOTED\]/\1 [$NEW_VER]/g" \
-        "$(find -L "$TIZONIA_REPO_DIR" -type f \( -path "./tools/*" -prune \) -o \( -name '*.ac' \) -print)"
-    pretty_print "$BLU" "[DONE] : updating package versions."
-
-    query_commit "update_package_versions"
+  query_commit "update_package_versions"
 }
 
-function update_shared_lib_versions {
-    pretty_print "$MAG" "[START] : updating shared lib versions."
-    cd "$TIZONIA_REPO_DIR"
-    local OLD_VER="$TIZONIA_OLD_SHLIB_VER"
-    local NEW_VER="$TIZONIA_NEW_SHLIB_VER"
-    perl -i -p -e "s/(?<=SHARED_VERSION_INFO=\")$OLD_VER/$NEW_VER/g" \
-        "$(find -L . -type f \( -path "./plugins/*" -prune \) -o \
-        \( -path "./tools/*" -prune \) -o \
-        \( -name '*.ac' \) -print)"
-    pretty_print "$BLU" "[DONE] : updating shared lib versions."
+function update_shared_lib_versions() {
+  pretty_print "$MAG" "[START] : updating shared lib versions."
+  cd "$TIZONIA_REPO_DIR"
+  local OLD_VER="$TIZONIA_OLD_SHLIB_VER"
+  local NEW_VER="$TIZONIA_NEW_SHLIB_VER"
+  perl -i -p -e "s/(?<=SHARED_VERSION_INFO=\")$OLD_VER/$NEW_VER/g" \
+    "$(find -L . -type f \( -path "./plugins/*" -prune \) -o \
+      \( -path "./tools/*" -prune \) -o \
+      \( -name '*.ac' \) -print)"
+  pretty_print "$BLU" "[DONE] : updating shared lib versions."
 
-    query_commit "update_shared_lib_versions"
+  query_commit "update_shared_lib_versions"
 }
 
-function update_plugin_shared_lib_versions {
-    pretty_print "$MAG" "[START] : updating plugins shared lib versions."
-    cd "$TIZONIA_REPO_DIR"/plugins
-    local OLD_VER="$TIZONIA_PLUGIN_OLD_SHLIB_VER"
-    local NEW_VER="$TIZONIA_PLUGIN_NEW_SHLIB_VER"
-    perl -i -p -e "s/(?<=SHARED_VERSION_INFO=\")$OLD_VER/$NEW_VER/g" \
-        "$(find -L . -type f \( -path "./tools/*" -prune \) -o \( -name '*.ac' \) -print)"
-    pretty_print "$BLU" "[DONE] : updating plugins shared lib versions."
+function update_plugin_shared_lib_versions() {
+  pretty_print "$MAG" "[START] : updating plugins shared lib versions."
+  cd "$TIZONIA_REPO_DIR"/plugins
+  local OLD_VER="$TIZONIA_PLUGIN_OLD_SHLIB_VER"
+  local NEW_VER="$TIZONIA_PLUGIN_NEW_SHLIB_VER"
+  perl -i -p -e "s/(?<=SHARED_VERSION_INFO=\")$OLD_VER/$NEW_VER/g" \
+    "$(find -L . -type f \( -path "./tools/*" -prune \) -o \( -name '*.ac' \) -print)"
+  pretty_print "$BLU" "[DONE] : updating plugins shared lib versions."
 
-    query_commit "update_plugin_shared_lib_versions"
+  query_commit "update_plugin_shared_lib_versions"
 }
 
-function update_python_version_strings {
-    pretty_print "$MAG" "[START] : updating python version strings."
-    cd "$TIZONIA_REPO_DIR"
-    local OLD_VER="$TIZONIA_PYTHON_OLD_MODULE_VER"
-    local NEW_VER="$TIZONIA_PYTHON_NEW_MODULE_VER"
-    perl -i -p -e "s/$OLD_VER/$NEW_VER/g" \
-        "$(find -L . -type f \( -path "./tools/*" -prune \) -o \( -name '_version.py' \) -print)"
-    pretty_print "$BLU" "[DONE] : updating python version strings."
+function update_python_version_strings() {
+  pretty_print "$MAG" "[START] : updating python version strings."
+  cd "$TIZONIA_REPO_DIR"
+  local OLD_VER="$TIZONIA_PYTHON_OLD_MODULE_VER"
+  local NEW_VER="$TIZONIA_PYTHON_NEW_MODULE_VER"
+  perl -i -p -e "s/$OLD_VER/$NEW_VER/g" \
+    "$(find -L . -type f \( -path "./tools/*" -prune \) -o \( -name '_version.py' \) -print)"
+  pretty_print "$BLU" "[DONE] : updating python version strings."
 
-    query_commit "update_python_version_strings"
+  query_commit "update_python_version_strings"
 }
 
-function update_debian_changelog_files {
-    pretty_print "$MAG" "[START] : updating Debian changelog files."
-    cd "$TIZONIA_REPO_DIR"
-    local NEW_VER="$TIZONIA_DEBIAN_CHANGELOG_VER"
-    local CLOSING_BUG="$TIZONIA_DEBIAN_CHANGELOG_CLOSING_BUG"
-    for proj in "${TIZ_PROJECTS_ORDERED[@]}"; do
-        local proj_dir="$TIZONIA_REPO_DIR/${TIZ_PROJECT_DIRS[$proj]}"
-        cd "$proj_dir"
-        dch --newversion "$NEW_VER"-1 --upstream --urgency low --distribution unstable "New upstream release (Closes: #$CLOSING_BUG)"
-    done
-    pretty_print "$BLU" "[DONE] : updating Debian changelog files."
+function update_debian_changelog_files() {
+  pretty_print "$MAG" "[START] : updating Debian changelog files."
+  cd "$TIZONIA_REPO_DIR"
+  local NEW_VER="$TIZONIA_DEBIAN_CHANGELOG_VER"
+  local CLOSING_BUG="$TIZONIA_DEBIAN_CHANGELOG_CLOSING_BUG"
+  for proj in "${TIZ_PROJECTS_ORDERED[@]}"; do
+    local proj_dir="$TIZONIA_REPO_DIR/${TIZ_PROJECT_DIRS[$proj]}"
+    cd "$proj_dir"
+    dch --newversion "$NEW_VER"-1 --upstream --urgency low --distribution unstable "New upstream release (Closes: #$CLOSING_BUG)"
+  done
+  pretty_print "$BLU" "[DONE] : updating Debian changelog files."
 
-    query_commit "update_debian_changelog_files"
+  query_commit "update_debian_changelog_files"
 }
 
-function update_doxygen_doc_version_strings {
-    pretty_print "$MAG" "[START] : updating Doxygen doc versions."
-    cd "$TIZONIA_REPO_DIR"/docs
-    local OLD_VER="$TIZONIA_OLD_PACKAGE_VER"
-    local NEW_VER="$TIZONIA_NEW_PACKAGE_VER"
-    perl -i -p -e "s/$OLD_VER/$NEW_VER/g" \
-        "$(find -L "$TIZONIA_REPO_DIR" -type f -name 'doxyfile.rtd' -print)"
-    pretty_print "$BLU" "[DONE] : updating Doxygen doc versions."
+function update_doxygen_doc_version_strings() {
+  pretty_print "$MAG" "[START] : updating Doxygen doc versions."
+  cd "$TIZONIA_REPO_DIR"/docs
+  local OLD_VER="$TIZONIA_OLD_PACKAGE_VER"
+  local NEW_VER="$TIZONIA_NEW_PACKAGE_VER"
+  perl -i -p -e "s/$OLD_VER/$NEW_VER/g" \
+    "$(find -L "$TIZONIA_REPO_DIR" -type f -name 'doxyfile.rtd' -print)"
+  pretty_print "$BLU" "[DONE] : updating Doxygen doc versions."
 
-    query_commit "update_doxygen_doc_version_strings"
+  query_commit "update_doxygen_doc_version_strings"
 }
 
-function update_sphinx_doc_version_strings {
-    pretty_print "$MAG" "[START] : updating Sphinx doc versions."
-    cd "$TIZONIA_REPO_DIR"/docs
-    local OLD_VER="$TIZONIA_OLD_PACKAGE_VER"
-    local NEW_VER="$TIZONIA_NEW_PACKAGE_VER"
-    perl -i -p -e "s/$OLD_VER/$NEW_VER/g" \
-        "$(find -L "$TIZONIA_REPO_DIR" -type f -name 'conf.py' -print)"
-    pretty_print "$BLU" "[DONE] : updating Sphinx doc versions."
+function update_sphinx_doc_version_strings() {
+  pretty_print "$MAG" "[START] : updating Sphinx doc versions."
+  cd "$TIZONIA_REPO_DIR"/docs
+  local OLD_VER="$TIZONIA_OLD_PACKAGE_VER"
+  local NEW_VER="$TIZONIA_NEW_PACKAGE_VER"
+  perl -i -p -e "s/$OLD_VER/$NEW_VER/g" \
+    "$(find -L "$TIZONIA_REPO_DIR" -type f -name 'conf.py' -print)"
+  pretty_print "$BLU" "[DONE] : updating Sphinx doc versions."
 
-    query_commit "update_sphinx_doc_version_strings"
+  query_commit "update_sphinx_doc_version_strings"
 }
 
-function update_man_page {
-    pretty_print "$MAG" "[START] : updating Tizonia man page."
-    cd "$TIZONIA_REPO_DIR"/docs
-    autoreconf -ifs && ./configure && make
-    cd "$TIZONIA_REPO_DIR"/docs/sphinx-src
-    make man
-    cp _build/man/tizonia.1 "$TIZONIA_REPO_DIR"/player/man/tizonia.1
-    pretty_print "$BLU" "[DONE] : updating Tizonia man page."
+function update_man_page() {
+  pretty_print "$MAG" "[START] : updating Tizonia man page."
+  cd "$TIZONIA_REPO_DIR"/docs
+  autoreconf -ifs && ./configure && make
+  cd "$TIZONIA_REPO_DIR"/docs/sphinx-src
+  make man
+  cp _build/man/tizonia.1 "$TIZONIA_REPO_DIR"/player/man/tizonia.1
+  pretty_print "$BLU" "[DONE] : updating Tizonia man page."
 
-    query_commit "update_man_page"
+  query_commit "update_man_page"
 }
 
-function update_changelog {
-    cd "$TIZONIA_REPO_DIR"
-    github_changelog_generator --since-tag v0.1.0 --user=tizonia --project=tizonia-openmax-il --future-release "$TIZONIA_RELEASE_VERSION" --enhancement-label "**Improvements:**"
+function update_changelog() {
+  cd "$TIZONIA_REPO_DIR"
+  github_changelog_generator --since-tag v0.1.0 --user=tizonia --project=tizonia-openmax-il --future-release "$TIZONIA_RELEASE_VERSION" --enhancement-label "**Improvements:**"
 
-    query_commit "update_changelog"
+  query_commit "update_changelog"
 }
 
-function query_commit {
-    tig
-    echo
-    read -p "Commmit? " -n 1 -r
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        git reset -- "$TIZONIA_REPO_DIR"/tools/tizonia-prepare-release
-        git commit -a --message="release $TIZONIA_RELEASE_VERSION: $1 (#$TIZONIA_DEBIAN_CHANGELOG_CLOSING_BUG)"
-    else
-        git-clear
-    fi
-    echo
-    read -p "Continue? " -n 1 -r && [[ $REPLY =~ ^[Yy]$ ]] || exit 1
-    echo
+function query_commit() {
+  tig
+  echo
+  read -p "Commmit? " -n 1 -r
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    git reset -- "$TIZONIA_REPO_DIR"/tools/tizonia-prepare-release
+    git commit -a --message="release $TIZONIA_RELEASE_VERSION: $1 (#$TIZONIA_DEBIAN_CHANGELOG_CLOSING_BUG)"
+  else
+    git-clear
+  fi
+  echo
+  read -p "Continue? " -n 1 -r && [[ $REPLY =~ ^[Yy]$ ]] || exit 1
+  echo
 }
 
-function main {
-    [[ "$TIZONIA_OLD_PACKAGE_VER" != "$TIZONIA_NEW_PACKAGE_VER" ]] || { echo >&2 "Forgot to update TIZONIA_RELEASE_VERSION. Aborting."; exit 1; }
+function main() {
+  [[ "$TIZONIA_OLD_PACKAGE_VER" != "$TIZONIA_NEW_PACKAGE_VER" ]] || {
+    echo >&2 "Forgot to update TIZONIA_RELEASE_VERSION. Aborting."
+    exit 1
+  }
 
-    # Check dependencies
-    for cmd in "${TIZONIA_PREPARE_RELEASE_DEPS[@]}"; do
-        command -v "$cmd" >/dev/null 2>&1 \
-            || { echo >&2 "This program requires $cmd. Aborting."; exit 1; }
-    done
+  # Check dependencies
+  for cmd in "${TIZONIA_PREPARE_RELEASE_DEPS[@]}"; do
+    command -v "$cmd" >/dev/null 2>&1 ||
+      {
+        echo >&2 "This program requires $cmd. Aborting."
+        exit 1
+      }
+  done
 
-    print_banner "[START] : Preparing Tizonia for release; version [$TIZONIA_RELEASE_VERSION]" "$YEL"
+  print_banner "[START] : Preparing Tizonia for release; version [$TIZONIA_RELEASE_VERSION]" "$YEL"
 
-    # These steps below are automated. Uncomment all of them. Run this script
-    # to do all this in one go.
+  # update_package_versions
+  # update_plugin_shared_lib_versions
+  # update_shared_lib_versions
+  # update_python_version_strings
+  # update_debian_changelog_files
+  # update_doxygen_doc_version_strings
+  # update_sphinx_doc_version_strings
+  # update_man_page
 
-    # update_package_versions
-    # update_plugin_shared_lib_versions
-    # update_shared_lib_versions
-    # update_python_version_strings
-    # update_debian_changelog_files
-    # update_doxygen_doc_version_strings
-    # update_sphinx_doc_version_strings
-    # update_man_page
+  # Do the following manual steps at this point
+  # 7.- Update README.md (as many changes as needed).
+  # 8.- Close github issue: release vx.x.x
+  # 9.- Create release and tag it on GitHub.
 
-    # Do the following manual steps at this point
+  # update_changelog
 
-    # 7.- Update README.md (as many changes as needed).
-    # 8.- Close github issue: release vx.x.x
-    # 9.- Create release and tag it on GitHub.
+  # Now Delete the tag on Github, push the changes to CHANGELOG.md and re-create the tag
+  # $ git tag -l
+  # $ git tag -d v0.2.0
+  # $ git push origin :refs/tags/v0.2.0
 
-    # update_changelog
-
-    # Now Delete the tag on Github, push the changes to CHANGELOG.md and re-create the tag
-    # $ git tag -l
-    # $ git tag -d v0.2.0
-    # $ git push origin :refs/tags/v0.2.0
-
-    print_banner "[DONE] : Updating files." "$BLU"
+  print_banner "[DONE] : Updating files." "$BLU"
 
 }
 

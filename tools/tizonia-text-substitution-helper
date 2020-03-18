@@ -26,35 +26,38 @@ source tizonia-common.inc
 # Constants
 
 # Program dependencies
-declare -ar TIZONIA_PREPARE_RELEASE_DEPS=( \
-    'perl' \
-    'tail' \
-    'cut' \
+declare -ar TIZONIA_PREPARE_RELEASE_DEPS=(
+  'perl'
+  'tail'
+  'cut'
 )
 
-function update_configure_ac_files {
-    pretty_print "$MAG" "[START] : updating configure.ac files."
-    cd "$TIZONIA_REPO_DIR"/plugins/file_reader
-    local NEW_TEXT="$(printf "# Define location of plugin directory\nAS_AC_EXPAND(PLUGINDIR, \${libdir}\/tizonia0-plugins12)\nAC_DEFINE_UNQUOTED(PLUGINDIR, \"\$PLUGINDIR\",\n  [Directory where Tizonia plugins are located])\nAC_MSG_NOTICE([Using \$PLUGINDIR as the components install location])\n# Define plugin directory configure-time variable\nAC_SUBST([plugindir], ['\${libdir}\/tizonia0-plugins12'])\n\n# Checks for header files")"
-    echo "$NEW_TEXT"
-    perl -i -p -e "s/\#\sChecks\sfor\sheader\sfiles/$NEW_TEXT/g" \
-        "$(find "$TIZONIA_REPO_DIR"/plugins -type f \( -path "./tools/*" -prune \) -o \( -name '*.ac' \) -print)"
-    pretty_print "$BLU" "[DONE] : updating configure.ac files."
+function update_configure_ac_files() {
+  pretty_print "$MAG" "[START] : updating configure.ac files."
+  cd "$TIZONIA_REPO_DIR"/plugins/file_reader
+  local NEW_TEXT="$(printf "# Define location of plugin directory\nAS_AC_EXPAND(PLUGINDIR, \${libdir}\/tizonia0-plugins12)\nAC_DEFINE_UNQUOTED(PLUGINDIR, \"\$PLUGINDIR\",\n  [Directory where Tizonia plugins are located])\nAC_MSG_NOTICE([Using \$PLUGINDIR as the components install location])\n# Define plugin directory configure-time variable\nAC_SUBST([plugindir], ['\${libdir}\/tizonia0-plugins12'])\n\n# Checks for header files")"
+  echo "$NEW_TEXT"
+  perl -i -p -e "s/\#\sChecks\sfor\sheader\sfiles/$NEW_TEXT/g" \
+    "$(find "$TIZONIA_REPO_DIR"/plugins -type f \( -path "./tools/*" -prune \) -o \( -name '*.ac' \) -print)"
+  pretty_print "$BLU" "[DONE] : updating configure.ac files."
 }
 
-function main {
+function main() {
 
-    # Check dependencies
-    for cmd in "${TIZONIA_PREPARE_RELEASE_DEPS[@]}"; do
-        command -v "$cmd" >/dev/null 2>&1 \
-            || { echo >&2 "This program requires $cmd. Aborting."; exit 1; }
-    done
+  # Check dependencies
+  for cmd in "${TIZONIA_PREPARE_RELEASE_DEPS[@]}"; do
+    command -v "$cmd" >/dev/null 2>&1 ||
+      {
+        echo >&2 "This program requires $cmd. Aborting."
+        exit 1
+      }
+  done
 
-    print_banner "[START] : Updating files." "$YEL"
+  print_banner "[START] : Updating files." "$YEL"
 
-    update_configure_ac_files
+  update_configure_ac_files
 
-    print_banner "[DONE] : Updating files." "$BLU"
+  print_banner "[DONE] : Updating files." "$BLU"
 
 }
 

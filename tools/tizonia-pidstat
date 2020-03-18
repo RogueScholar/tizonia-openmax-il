@@ -19,37 +19,40 @@
 # Simple pidstat wrapper for the tizonia process
 #
 
-declare -ar TIZONIA_PIDSTAT_DEPS=( \
-    'pidstat' \
-    'pidof' \
+declare -ar TIZONIA_PIDSTAT_DEPS=(
+  'pidstat'
+  'pidof'
 )
 
 PROCNAME=tizonia
 [[ -n "$2" ]] && { PROCNAME=$2; }
 
-function usagexit {
-    echo >&2 "$(basename "$0") [cpu|mem] [interval]"
-    exit 1
+function usagexit() {
+  echo >&2 "$(basename "$0") [cpu|mem] [interval]"
+  exit 1
 }
 
-function main {
+function main() {
 
-    # Check dependencies
-    for cmd in "${TIZONIA_PIDSTAT_DEPS[@]}"; do
-        command -v "$cmd" >/dev/null 2>&1 \
-            || { echo >&2 "This program requires $cmd. Aborting."; exit 1; }
-    done
+  # Check dependencies
+  for cmd in "${TIZONIA_PIDSTAT_DEPS[@]}"; do
+    command -v "$cmd" >/dev/null 2>&1 ||
+      {
+        echo >&2 "This program requires $cmd. Aborting."
+        exit 1
+      }
+  done
 
-    report=""
-    case "$1" in
-        cpu) report="-I";;
-        mem) report="-r";;
-        *) usagexit;;
-    esac
+  report=""
+  case "$1" in
+    cpu) report="-I" ;;
+    mem) report="-r" ;;
+    *) usagexit ;;
+  esac
 
-    interval=10
+  interval=10
 
-    pidstat "$interval" "$report" -p "$(pidof "$PROCNAME")"
+  pidstat "$interval" "$report" -p "$(pidof "$PROCNAME")"
 }
 
 main "$@"

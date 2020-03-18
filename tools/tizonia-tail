@@ -21,16 +21,19 @@
 TIZONIA_GRCAT_CONFIG="$TIZONIA_REPO_DIR"/tools/tizonia.grcat.conf
 TIZONIA_LOG_FILE="$HOME"/temp/tizonia.log.0
 
-declare -ar TIZONIA_TAIL_DEPS=( \
-    'tail' \
-    'cut' \
-    'grcat' \
+declare -ar TIZONIA_TAIL_DEPS=(
+  'tail'
+  'cut'
+  'grcat'
 )
 
 # Check dependencies
 for cmd in "${TIZONIA_TAIL_DEPS[@]}"; do
-    command -v "$cmd" >/dev/null 2>&1 \
-        || { echo >&2 "This program requires $cmd. Aborting."; exit 1; }
+  command -v "$cmd" >/dev/null 2>&1 ||
+    {
+      echo >&2 "This program requires $cmd. Aborting."
+      exit 1
+    }
 done
 
 tail -F "$TIZONIA_LOG_FILE" | awk '{for (i=5; i<NF; i++) printf $i " "; print $NF}' | grcat "$TIZONIA_GRCAT_CONFIG"

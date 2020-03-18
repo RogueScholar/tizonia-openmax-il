@@ -21,4 +21,3 @@
 
 sudo apt-get -y remove --purge tizonia-all && sudo apt-get -y autoremove
 tizonia-dpkg-build -r
-
