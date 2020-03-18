@@ -24,10 +24,10 @@ from setuptools import setup
 
 if sys.version_info[:3] < (3, 5, 1):
     warnings.warn(
-        "tizyoutubeproxy does not officially support versions below " "Python 3.5.1",
+        "tizyoutubeproxy does not officially support versions below "
+        "Python 3.5.1",
         RuntimeWarning,
     )
-
 
 VERSIONFILE = "_version.py"
 
