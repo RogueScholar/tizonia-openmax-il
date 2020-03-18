@@ -36,7 +36,7 @@ fi
 readonly E_BADARGS=85
 readonly E_NOFILE=86
 readonly E_BAD_CLONE=87
-readonly CWD=$(pwd)
+readonly CWD="$PWD"
 
 readonly TIZONIA_CONF_PATH="$HOME/.config/tizonia/tizonia.conf"
 
@@ -135,12 +135,12 @@ function exists_in_array {
 ##################################################################
 function start_dbus {
     # Only start D-BUS and the RM daemon if RM is enabled in tizonia.conf
-    local rm_needed=$(sed -rn 's/^enabled(\s*)=(\s*)(true|false)/\3/p' "$TIZONIA_CONF_PATH")
+    local rm_needed="$(sed -rn 's/^enabled(\s*)=(\s*)(true|false)/\3/p' "$TIZONIA_CONF_PATH")"
     if [[ "$rm_needed" == "true" ]]; then
         ## test for an existing bus daemon, just to be safe
         if test -z "$DBUS_SESSION_BUS_ADDRESS" ; then
             ## if not found, launch a new one
-            export $(dbus-launch --exit-with-session)
+            export "$(dbus-launch --exit-with-session)"
             echo "D-Bus per-session daemon address is: $DBUS_SESSION_BUS_ADDRESS"
             echo "D-Bus per-session daemon PID is    : $DBUS_SESSION_BUS_PID"
         fi
@@ -175,7 +175,7 @@ function install_deps {
         libev-dev libtag1-dev libfishsound-dev libmediainfo-dev \
         libcurl3-dev libpulse-dev libsndfile1-dev libatomic-ops-dev \
         python-dev python-pip curl check wget sqlite3 dbus-x11 &>/dev/null \
-        && sudo apt-get remove --purge $(dpkg -l | grep libboost | awk '{print $2}') \
+        && sudo apt-get remove --purge "$(dpkg -l | grep libboost | awk '{print $2}')" \
         && sudo add-apt-repository -y ppa:boost-latest/ppa \
         && sudo apt-get update -qq \
         && sudo apt-get install -qq libboost1.54-all-dev
@@ -218,7 +218,7 @@ function install_python_deps {
         fi
     fi
 
-    return $exit_status
+    return "$exit_status"
 }
 
 ##################################################################
@@ -248,8 +248,8 @@ function install_src_deps {
     for (( i=0; i<=$(( total -1 )); i++ ))
     do
         cd "$WORKING_DIR" \
-            && git clone ${repos[$i]} &>/dev/null \
-            && cd ${folders[$i]} &>/dev/null ; \
+            && git clone "${repos[$i]}" &>/dev/null \
+            && cd "${folders[$i]}" &>/dev/null ; \
             ./autogen.sh &>/dev/null ; \
             ./configure --prefix="$INSTALL_DIR" &>/dev/null ; \
             make -s -j8 V=0 install &>/dev/null
@@ -302,8 +302,8 @@ function copy_config_files {
     cd_to_working_dir
     echo "Copy the Resource Manager's D-bus service file " \
          "to the user's local D-Bus search path"
-    echo "${INSTALL_DIR}"
-    local DBUS_SERVICE_FILE=${INSTALL_DIR}"/share/dbus-1/services/com.aratelia.tiz.rm.service"
+    echo "$INSTALL_DIR"
+    local DBUS_SERVICE_FILE="$INSTALL_DIR/share/dbus-1/services/com.aratelia.tiz.rm.service"
     local DBUS_DIR="$HOME/.local/share/dbus-1/services"
     mkdir -p "$DBUS_DIR" && cp "$DBUS_SERVICE_FILE" "$DBUS_DIR"
     local exit_status=$?
@@ -402,7 +402,7 @@ function build_release {
     echo "Reconfiguring Tizonia for [RELEASE] build - Install dir [$INSTALL_DIR]..."
     autoreconf -ifs
     local exit_status=$?
-    if [ $exit_status -eq 0 ] ; then
+    if [ "$exit_status" -eq 0 ] ; then
         ./configure --prefix="$INSTALL_DIR" CFLAGS="-O3 -DNDEBUG"
         exit_status=$?
     fi
@@ -455,13 +455,13 @@ function install_skema {
     local exit_status=$?
     if [[ "$exit_status" -ne 0 ]]; then
         err "Unable to clone skema's repo: $SKEMA_GIT_REPO"
-        exit "${E_BAD_CLONE}"
+        exit "$E_BAD_CLONE"
     fi
 
     # Step #2: Install skema's tags
     cd "$SKEMA_BIN_DIR"
 
-    local tags=( $(./skema list_tags) )
+    local tags=( "$(./skema list_tags)" )
     local tag_count="${#tags[@]}"
     echo "Installing all $tag_count tags..."
     for t in "${tags[@]}"; do
@@ -471,7 +471,7 @@ function install_skema {
     done
 
     # This is to verify that the tags are installed
-    local installed_tags=( $(./skema list_installed_tags) )
+    local installed_tags=( "$(./skema list_installed_tags)" )
     local installed_tag_count="${#installed_tags[@]}"
     if [[ "$installed_tag_count" -ne "$tag_count" ]]; then
         err "Error while installing tags"
@@ -480,7 +480,7 @@ function install_skema {
 
     # Step #3: Install skema's test suites
     echo
-    local suites=( $(./skema list_suites) )
+    local suites=( "$(./skema list_suites)" )
     local suite_count="${#suites[@]}"
     echo "Installing all $suite_count suites..."
     for s in "${suites[@]}"; do
@@ -490,7 +490,7 @@ function install_skema {
     done
 
     # This is to verify that the suites are installed
-    local installed_suites=( $(./skema list_installed_suites) )
+    local installed_suites=( "$(./skema list_installed_suites)" )
     local installed_suite_count="${#installed_suites[@]}"
     if [[ "$installed_suite_count" -ne "$suite_count" ]]; then
         err "Error while installing suites"
@@ -516,7 +516,7 @@ function run_tests {
     cd "$SKEMA_BIN_DIR"
 
     # Retrieve the list of installed suites
-    local installed_suites=( $(./skema list_installed_suites) )
+    local installed_suites=( "$(./skema list_installed_suites)" )
     local installed_suite_count="${#installed_suite_count[@]}"
     local exit_status=0
     for s in "${installed_suites[@]}"; do

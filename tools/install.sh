@@ -99,7 +99,7 @@ fi
 if [[ ! -f /etc/apt/sources.list.d/mopidy.list ]]; then
     echo "Setting up Mopidy's APT archive for $DISTRO:$MOPRELEASE (to install 'libspotify')"
     curl 'https://apt.mopidy.com/mopidy.gpg' | sudo apt-key add -
-    sudo curl https://apt.mopidy.com/$MOPRELEASE.list -o /etc/apt/sources.list.d/mopidy.list
+    sudo curl https://apt.mopidy.com/"$MOPRELEASE".list -o /etc/apt/sources.list.d/mopidy.list
 fi
 
 # Add Tizonia's APT archive

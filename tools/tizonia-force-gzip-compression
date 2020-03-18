@@ -22,8 +22,8 @@
 #
 
 TAB="$(printf '\t')"
-for file in $(find . -type f \( -path "./tools/*" -prune \) -o \( -name 'rules' \) -print); do
-tee -a $file << END
+for file in "$(find . -type f \( -path "./tools/*" -prune \) -o \( -name 'rules' \) -print)"; do
+tee -a "$file" << END
 
 override_dh_builddeb:
 ${TAB}# Bintray does not support xz currently.

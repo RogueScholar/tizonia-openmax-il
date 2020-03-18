@@ -32,4 +32,4 @@ for cmd in "${SKEMA_KILL_DEPS[@]}"; do
         || { echo >&2 "This program requires $cmd. Aborting."; exit 1; }
 done
 
-htop -p $(ps aux | grep run_suite | grep python | awk '{ print $2 }')
+htop -p "$(ps aux | grep run_suite | grep python | awk '{ print $2 }')"
