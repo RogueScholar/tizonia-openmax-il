@@ -69,8 +69,7 @@ class ConfigColors:
         active_theme = active_theme + "."
         self.FAIL = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C08", fallback="91")
+            + self.config.get("color-themes", active_theme + "C08", fallback="91")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -78,8 +77,7 @@ class ConfigColors:
         )
         self.OKGREEN = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C09", fallback="92")
+            + self.config.get("color-themes", active_theme + "C09", fallback="92")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -87,8 +85,7 @@ class ConfigColors:
         )
         self.WARNING = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C10", fallback="93")
+            + self.config.get("color-themes", active_theme + "C10", fallback="93")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -96,8 +93,7 @@ class ConfigColors:
         )
         self.OKBLUE = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C11", fallback="94")
+            + self.config.get("color-themes", active_theme + "C11", fallback="94")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -105,8 +101,7 @@ class ConfigColors:
         )
         self.OKMAGENTA = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C12", fallback="95")
+            + self.config.get("color-themes", active_theme + "C12", fallback="95")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -250,8 +245,7 @@ class tizsoundcloudproxy(object):
                     playlist_tracks_uri = (
                         "/playlists/" + str(item.get("id")) + "/tracks"
                     )
-                    tracks_resource = self.__api.get(
-                        playlist_tracks_uri, offset=0)
+                    tracks_resource = self.__api.get(playlist_tracks_uri, offset=0)
                     for resource in tracks_resource:
                         track = resource.fields()
                         if track["streamable"]:
@@ -288,8 +282,7 @@ class tizsoundcloudproxy(object):
                         for track in tracks:
                             if track["streamable"]:
                                 title = to_ascii(track.get("title"))
-                                print_nfo(
-                                    "[SoundCloud] [Track] '{0}'.".format(title))
+                                print_nfo("[SoundCloud] [Track] '{0}'.".format(title))
                                 self.queue.append(track)
                                 count += 1
 
@@ -326,14 +319,12 @@ class tizsoundcloudproxy(object):
                     for track in tracks:
                         if track["streamable"]:
                             title = to_ascii(track.get("title"))
-                            print_nfo(
-                                "[SoundCloud] [Track] '{0}'.".format(title))
+                            print_nfo("[SoundCloud] [Track] '{0}'.".format(title))
                             self.queue.append(track)
                             count += 1
 
             if count == 0:
-                raise RuntimeError(
-                    "SoundCloud did not return any" " playlists.")
+                raise RuntimeError("SoundCloud did not return any" " playlists.")
 
             logging.info("Added {0} stream tracks to queue".format(count))
             self._update_play_queue_order()
@@ -377,8 +368,7 @@ class tizsoundcloudproxy(object):
                         track = track_resource.fields()
                         if track["streamable"]:
                             title = to_ascii(track.get("title"))
-                            print_nfo(
-                                "[SoundCloud] [Track] '{0}'.".format(title))
+                            print_nfo("[SoundCloud] [Track] '{0}'.".format(title))
                             self.queue.append(track)
                             count += 1
                     if count > 0:
@@ -447,8 +437,7 @@ class tizsoundcloudproxy(object):
                 playlist = resource.fields()
                 pid = resource.id
                 title = playlist.get("title")
-                print_nfo("[SoundCloud] [Playlist] '{0}'.".format(
-                    to_ascii(title)))
+                print_nfo("[SoundCloud] [Playlist] '{0}'.".format(to_ascii(title)))
                 choice_titles.append(title)
                 choices[title] = pid
 
@@ -457,8 +446,7 @@ class tizsoundcloudproxy(object):
             while len(choice_titles) and not len(tracks):
                 playlist_title = process.extractOne(arg, choice_titles)[0]
                 playlist_id = choices[playlist_title]
-                playlist_resource = self.__api.get(
-                    "/playlists/%s" % playlist_id)
+                playlist_resource = self.__api.get("/playlists/%s" % playlist_id)
                 tracks = playlist_resource.tracks
                 if not len(tracks):
                     print_err(
@@ -469,8 +457,7 @@ class tizsoundcloudproxy(object):
                     del choices[playlist_title]
                     choice_titles.remove(playlist_title)
 
-            print_wrn("[SoundCloud] Playing '{0}'.".format(
-                to_ascii(playlist_title)))
+            print_wrn("[SoundCloud] Playing '{0}'.".format(to_ascii(playlist_title)))
             for track in tracks:
                 if track["streamable"]:
                     self.queue.append(track)
@@ -688,8 +675,7 @@ class tizsoundcloudproxy(object):
                     user_avatar = user.get("avatar_url")
                     if user_avatar:
                         track_user_avatar = user_avatar
-                        logging.info(
-                            "track user_avatar {0}".format(user_avatar))
+                        logging.info("track user_avatar {0}".format(user_avatar))
             except KeyError:
                 logging.info("user_avatar : not found")
         return track_user_avatar
@@ -756,8 +742,7 @@ class tizsoundcloudproxy(object):
                 self.play_queue_order = list(range(total_tracks))
             if self.current_play_mode == self.play_modes.SHUFFLE:
                 random.shuffle(self.play_queue_order)
-            print_nfo(
-                "[SoundCloud] [Tracks in queue] '{0}'.".format(total_tracks))
+            print_nfo("[SoundCloud] [Tracks in queue] '{0}'.".format(total_tracks))
 
     def _retrieve_track_url(self, track):
         """ Retrieve a track url

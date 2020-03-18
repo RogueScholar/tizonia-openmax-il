@@ -24,10 +24,12 @@ import sys
 import warnings
 
 if sys.version_info[:3] < (3, 5, 1):
-    warnings.warn("spotifyproxy does not officially support versions below "
-                  "Python 3.5.1", RuntimeWarning)
+    warnings.warn(
+        "spotifyproxy does not officially support versions below " "Python 3.5.1",
+        RuntimeWarning,
+    )
 
-VERSIONFILE = '_version.py'
+VERSIONFILE = "_version.py"
 
 version_line = open(VERSIONFILE).read()
 version_re = r"^__version__ = ['\"]([^'\"]*)['\"]"
@@ -38,15 +40,15 @@ else:
     raise RuntimeError("Could not find version in '%s'" % VERSIONFILE)
 
 setup(
-    name='tizspotifyproxy',
+    name="tizspotifyproxy",
     version=version,
-    author='Juan A. Rubio',
-    author_email='juan.rubio@aratelia.com',
-    url='https://tizonia.org',
-    py_modules=['tizspotifyproxy'],
+    author="Juan A. Rubio",
+    author_email="juan.rubio@aratelia.com",
+    url="https://tizonia.org",
+    py_modules=["tizspotifyproxy"],
     scripts=[],
     license="Apache License, Version 2.0",
-    description='Tizonia Spotify proxy',
+    description="Tizonia Spotify proxy",
     install_requires=[
         #        'pfy >= 0.5.2',
     ],
@@ -55,13 +57,13 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Multimedia :: Sound/Audio',
-        'Topic :: Software Development :: Libraries :: Python Modules',
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Topic :: Internet :: WWW/HTTP",
+        "Topic :: Multimedia :: Sound/Audio",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     zip_safe=False,
-    include_package_data=True
+    include_package_data=True,
 )

@@ -74,8 +74,7 @@ class ConfigColors:
         active_theme = active_theme + "."
         self.FAIL = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C08", fallback="91")
+            + self.config.get("color-themes", active_theme + "C08", fallback="91")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -83,8 +82,7 @@ class ConfigColors:
         )
         self.OKGREEN = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C09", fallback="92")
+            + self.config.get("color-themes", active_theme + "C09", fallback="92")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -92,8 +90,7 @@ class ConfigColors:
         )
         self.WARNING = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C10", fallback="93")
+            + self.config.get("color-themes", active_theme + "C10", fallback="93")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -101,8 +98,7 @@ class ConfigColors:
         )
         self.OKBLUE = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C11", fallback="94")
+            + self.config.get("color-themes", active_theme + "C11", fallback="94")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -110,8 +106,7 @@ class ConfigColors:
         )
         self.OKMAGENTA = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C12", fallback="95")
+            + self.config.get("color-themes", active_theme + "C12", fallback="95")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -229,8 +224,7 @@ class tizchromecastproxy(object):
         self.media_status_listener = None
 
     def _do_activate(self):
-        self.cast = pychromecast.Chromecast(
-            self.ip_addr, timeout=0.5, blocking=False)
+        self.cast = pychromecast.Chromecast(self.ip_addr, timeout=0.5, blocking=False)
         self.cast.register_status_listener(self)
         self.cast.media_controller.register_status_listener(self)
         self.cast.start()
@@ -244,8 +238,7 @@ class tizchromecastproxy(object):
                 print_exception(exc_type, value, traceback)
 
     def activate(self, cast_status_listener, media_status_listener):
-        print_nfo("[Chromecast] [{0}] [Activating]".format(
-            to_ascii(self.ip_addr)))
+        print_nfo("[Chromecast] [{0}] [Activating]".format(to_ascii(self.ip_addr)))
         self.cast_status_listener = cast_status_listener
         self.media_status_listener = media_status_listener
         self._do_activate()
@@ -262,8 +255,7 @@ class tizchromecastproxy(object):
 
     def poll_socket(self, polltime_ms):
         print_nfo(
-            "[Chromecast] [{0}] [poll_socket start]".format(
-                to_ascii(self.ip_addr))
+            "[Chromecast] [{0}] [poll_socket start]".format(to_ascii(self.ip_addr))
         )
         polltime_s = polltime_ms / 1000
         sock = self.cast.socket_client.get_socket()
@@ -286,8 +278,7 @@ class tizchromecastproxy(object):
                     )
                 except Exception as exception:
                     pass
-        print_wrn("[Chromecast] [{0}] [poll_socket end]".format(
-            to_ascii(self.ip_addr)))
+        print_wrn("[Chromecast] [{0}] [poll_socket end]".format(to_ascii(self.ip_addr)))
 
     def media_load(
         self,
@@ -300,8 +291,7 @@ class tizchromecastproxy(object):
         stream_type=STREAM_TYPE_UNKNOWN,
     ):
         print_nfo(
-            "[Chromecast] [{0}] [media_load start]".format(
-                to_ascii(self.ip_addr))
+            "[Chromecast] [{0}] [media_load start]".format(to_ascii(self.ip_addr))
         )
         mc = self.cast.media_controller
         if not mc.is_active:
@@ -321,8 +311,7 @@ class tizchromecastproxy(object):
             exc_type, value, traceback = sys.exc_info()
             print_exception(exc_type, value, traceback)
 
-        print_wrn("[Chromecast] [{0}] [media_load end]".format(
-            to_ascii(self.ip_addr)))
+        print_wrn("[Chromecast] [{0}] [media_load end]".format(to_ascii(self.ip_addr)))
 
     def media_play(self):
         if self.cast.media_controller.is_active:
@@ -376,8 +365,7 @@ class tizchromecastproxy(object):
 
         # CastStatus(is_active_input=None, is_stand_by=None, volume_level=0.8999999761581421, volume_muted=False, app_id=u'CC1AD845', display_name=u'Default Media Receiver', namespaces=[u'urn:x-cast:com.google.cast.debugoverlay', u'urn:x-cast:com.google.cast.broadcast', u'urn:x-cast:com.google.cast.media'], session_id=u'2f63312e-4777-454f-acc7-8be72572c7c8', transport_id=u'2f63312e-4777-454f-acc7-8be72572c7c8', status_text=u'Now Casting: Tizonia Audio Stream')
         print_nfo(
-            "[Chromecast] [{0}] [new_cast_status start]".format(
-                to_ascii(self.ip_addr))
+            "[Chromecast] [{0}] [new_cast_status start]".format(to_ascii(self.ip_addr))
         )
         if status:
             try:
@@ -387,8 +375,7 @@ class tizchromecastproxy(object):
                             to_ascii(self.ip_addr)
                         )
                     )
-                    self.cast_status_listener(
-                        to_ascii("UNKNOWN"), status.volume_level)
+                    self.cast_status_listener(to_ascii("UNKNOWN"), status.volume_level)
                 elif (
                     status.app_id == APP_MEDIA_RECEIVER
                     and "Default Media Receiver" in status.status_text
@@ -419,14 +406,11 @@ class tizchromecastproxy(object):
                             to_ascii(self.ip_addr)
                         )
                     )
-                    self.cast_status_listener(
-                        to_ascii("UNKNOWN"), status.volume_level)
+                    self.cast_status_listener(to_ascii("UNKNOWN"), status.volume_level)
             except Exception as exception:
-                logging.info(
-                    "Unable to deliver cast status callback %s", exception)
+                logging.info("Unable to deliver cast status callback %s", exception)
         print_wrn(
-            "[Chromecast] [{0}] [new_cast_status end]".format(
-                to_ascii(self.ip_addr))
+            "[Chromecast] [{0}] [new_cast_status end]".format(to_ascii(self.ip_addr))
         )
 
     def new_media_status(self, status):
@@ -437,8 +421,7 @@ class tizchromecastproxy(object):
         # <MediaStatus {'player_state': u'BUFFERING', 'volume_level': 1, 'images': [MediaImage(url=u'https://avatars0.githubusercontent.com/u/3161606?v=3&s=400', height=None, width=None)], 'media_custom_data': {}, 'duration': None, 'current_time': 0, 'playback_rate': 1, 'title': u'Tizonia Audio Stream', 'media_session_id': 4, 'volume_muted': False, 'supports_skip_forward': False, 'track': None, 'season': None, 'idle_reason': None, 'stream_type': u'LIVE', 'supports_stream_mute': True, 'supports_stream_volume': True, 'content_type': u'audio/mpeg', 'metadata_type': None, 'subtitle_tracks': {}, 'album_name': None, 'series_title': None, 'album_artist': None, 'media_metadata': {u'images': [{u'url': u'https://avatars0.githubusercontent.com/u/3161606?v=3&s=400'}], u'thumb': u'https://avatars0.githubusercontent.com/u/3161606?v=3&s=400', u'title': u'Tizonia Audio Stream'}, 'episode': None, 'artist': None, 'supported_media_commands': 15, 'supports_seek': True, 'current_subtitle_tracks': [], 'content_id': u'http://streams.radiobob.de/bob-acdc/mp3-192/dirble/', 'supports_skip_backward': False, 'supports_pause': True}>
 
         print_nfo(
-            "[Chromecast] [{0}] [new_media_status start]".format(
-                to_ascii(self.ip_addr))
+            "[Chromecast] [{0}] [new_media_status start]".format(to_ascii(self.ip_addr))
         )
         if not self.active:
             print_wrn("new_media_status: not active!")
@@ -454,11 +437,9 @@ class tizchromecastproxy(object):
                     to_ascii(status.player_state), status.volume_level
                 )
             except Exception as exception:
-                logging.info(
-                    "Unable to deliver media status callback %s", exception)
+                logging.info("Unable to deliver media status callback %s", exception)
         print_wrn(
-            "[Chromecast] [{0}] [new_media_status end]".format(
-                to_ascii(self.ip_addr))
+            "[Chromecast] [{0}] [new_media_status end]".format(to_ascii(self.ip_addr))
         )
 
 

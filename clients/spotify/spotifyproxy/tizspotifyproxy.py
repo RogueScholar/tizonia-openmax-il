@@ -63,8 +63,7 @@ class ConfigColors:
         active_theme = active_theme + "."
         self.FAIL = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C08", fallback="91")
+            + self.config.get("color-themes", active_theme + "C08", fallback="91")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -72,8 +71,7 @@ class ConfigColors:
         )
         self.OKGREEN = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C09", fallback="92")
+            + self.config.get("color-themes", active_theme + "C09", fallback="92")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -81,8 +79,7 @@ class ConfigColors:
         )
         self.WARNING = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C10", fallback="93")
+            + self.config.get("color-themes", active_theme + "C10", fallback="93")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -90,8 +87,7 @@ class ConfigColors:
         )
         self.OKBLUE = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C11", fallback="94")
+            + self.config.get("color-themes", active_theme + "C11", fallback="94")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -99,8 +95,7 @@ class ConfigColors:
         )
         self.OKMAGENTA = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C12", fallback="95")
+            + self.config.get("color-themes", active_theme + "C12", fallback="95")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -200,8 +195,7 @@ class TrackInfo(object):
         self.title = track["name"]
         self.artist = track["artists"][0]["name"]
         self.artist_uri = track["artists"][0]["uri"]
-        self.album = track["album"]["name"] if track.get(
-            "album") else album_name
+        self.album = track["album"]["name"] if track.get("album") else album_name
         self.album_uri = (
             track["album"]["uri"]
             if track.get("album") and track.get("album").get("uri")
@@ -212,8 +206,7 @@ class TrackInfo(object):
             if track.get("album") and track.get("album").get("release_date")
             else "n/a"
         )
-        self.duration = track["duration_ms"] / \
-            1000 if track["duration_ms"] else 0
+        self.duration = track["duration_ms"] / 1000 if track["duration_ms"] else 0
         self.uri = track["uri"]
         self.thumb_url = (
             track["album"]["images"][0]["url"]
@@ -282,8 +275,7 @@ class tizspotifyproxy(object):
         print_msg("[Spotify] [Track search] '{0}'.".format(arg_dec))
         try:
             count = len(self.queue)
-            results = self._spotify.search(
-                arg_dec, limit=20, offset=0, type="track")
+            results = self._spotify.search(arg_dec, limit=20, offset=0, type="track")
             tracks = results["tracks"]
             for i, track in enumerate(tracks["items"]):
                 self._enqueue_track(track)
@@ -329,8 +321,7 @@ class tizspotifyproxy(object):
                 for i, track in enumerate(tracks["items"]):
                     artist_id = track["artists"][0]["id"]
                     artist_name = track["artists"][0]["name"]
-                    logging.info(
-                        "Artist found with track search : %s", artist_name)
+                    logging.info("Artist found with track search : %s", artist_name)
                     artist = self._spotify.artist(artist_id)
                     if artist:
                         break
@@ -364,8 +355,7 @@ class tizspotifyproxy(object):
         print_msg("[Spotify] [Album search] '{0}'.".format(arg_dec))
         try:
             count = len(self.queue)
-            results = self._spotify.search(
-                arg_dec, limit=10, offset=0, type="album")
+            results = self._spotify.search(arg_dec, limit=10, offset=0, type="album")
             albums = results["albums"]
             for i, album in enumerate(albums["items"]):
                 if album:
@@ -401,8 +391,7 @@ class tizspotifyproxy(object):
             playlist_name = None
             playlist_dict = dict()
             playlist_names = list()
-            results = self._spotify.search(
-                arg_dec, limit=10, offset=0, type="playlist")
+            results = self._spotify.search(arg_dec, limit=10, offset=0, type="playlist")
             playlists = results["playlists"]
             for i, pl in enumerate(playlists["items"]):
                 if pl:
@@ -423,8 +412,7 @@ class tizspotifyproxy(object):
 
             if not playlist_name:
                 if len(playlist_names) > 1:
-                    playlist_name = process.extractOne(
-                        arg_dec, playlist_names)[0]
+                    playlist_name = process.extractOne(arg_dec, playlist_names)[0]
                     playlist = playlist_dict[playlist_name]
                 elif len(playlist_names) == 1:
                     playlist_name = playlist_names[0]
@@ -464,15 +452,13 @@ class tizspotifyproxy(object):
         arg_dec = arg
         logging.info("arg : %s", arg_dec)
         print_msg(
-            "[Spotify] [Playlist search] '{0}' (owner: {1}).".format(
-                arg_dec, owner)
+            "[Spotify] [Playlist search] '{0}' (owner: {1}).".format(arg_dec, owner)
         )
         try:
             count = len(self.queue)
 
             if owner != "anyuser":
-                playlist = self._search_playlist(
-                    arg_dec, owner, is_featured=False)
+                playlist = self._search_playlist(arg_dec, owner, is_featured=False)
                 if playlist:
                     results = self._spotify.user_playlist(
                         owner, playlist["id"], fields="tracks,next"
@@ -542,12 +528,10 @@ class tizspotifyproxy(object):
         """
         arg_dec = arg
         logging.info("arg : %s", arg_dec)
-        print_msg(
-            "[Spotify] [Featured playlist search] '{0}'.".format(arg_dec))
+        print_msg("[Spotify] [Featured playlist search] '{0}'.".format(arg_dec))
         try:
             count = len(self.queue)
-            playlist = self._search_playlist(
-                arg_dec, owner=None, is_featured=True)
+            playlist = self._search_playlist(arg_dec, owner=None, is_featured=True)
             if playlist:
                 results = self._spotify.user_playlist(
                     playlist["owner"]["id"], playlist["id"], fields="tracks,next"
@@ -715,8 +699,7 @@ class tizspotifyproxy(object):
 
         """
         logging.info("id : %s", id)
-        print_msg(
-            "[Spotify] [Playlist id] '{0}' (owner: {1}).".format(id, owner))
+        print_msg("[Spotify] [Playlist id] '{0}' (owner: {1}).".format(id, owner))
         try:
             count = len(self.queue)
             playlist = self._spotify.user_playlist(owner, id)
@@ -827,8 +810,7 @@ class tizspotifyproxy(object):
 
             if genre_name:
                 genre_seed.append(genre_name)
-                print_wrn(
-                    "[Spotify] [Genre] Playing '{0}'.".format(genre_name))
+                print_wrn("[Spotify] [Genre] Playing '{0}'.".format(genre_name))
                 tracks = self._spotify.recommendations(
                     seed_artists=None,
                     seed_genres=genre_seed,
@@ -982,8 +964,7 @@ class tizspotifyproxy(object):
         logging.info("%d - %d", self.queue_index, len(self.queue))
         if len(self.queue) and self.queue_index >= 0:
             track = self.queue[self.queue_index]
-            print_nfo("[Spotify] [Track] '{0}' removed.".format(
-                to_ascii(track.title)))
+            print_nfo("[Spotify] [Track] '{0}' removed.".format(to_ascii(track.title)))
             del self.queue[self.queue_index]
             self.queue_index -= 1
             if self.queue_index < 0:
@@ -1059,8 +1040,7 @@ class tizspotifyproxy(object):
         """
         if artist:
             artist_name = artist["name"]
-            print_wrn(
-                "[Spotify] [Artist top tracks] '{0}'.".format(artist_name))
+            print_wrn("[Spotify] [Artist top tracks] '{0}'.".format(artist_name))
 
             track_results = self._spotify.artist_top_tracks(artist["id"])
             tracks = track_results["tracks"]
@@ -1071,12 +1051,10 @@ class tizspotifyproxy(object):
             if include_albums:
                 # Now enqueue albums
                 try:
-                    album_results = self._spotify.artist_albums(
-                        artist["id"], limit=30)
+                    album_results = self._spotify.artist_albums(artist["id"], limit=30)
                     album_items = album_results["items"]
                     for i, album in enumerate(album_items):
-                        print_wrn(
-                            "[Spotify] [Album] '{0}'.".format(album["name"]))
+                        print_wrn("[Spotify] [Album] '{0}'.".format(album["name"]))
                         tracks = self._spotify.album_tracks(
                             album["id"], limit=50, offset=0
                         )
@@ -1097,8 +1075,7 @@ class tizspotifyproxy(object):
             print_wrn("[Spotify] [Related artists] '{0}'.".format(artist_name))
             try:
                 self._enqueue_artist(artist, include_albums=False)
-                artist_results = self._spotify.artist_related_artists(
-                    artist["id"])
+                artist_results = self._spotify.artist_related_artists(artist["id"])
                 artists = artist_results["artists"]
                 for i, art in enumerate(artists):
                     self._enqueue_artist(art, include_albums=False)
@@ -1116,8 +1093,7 @@ class tizspotifyproxy(object):
             album_name = album["name"]
             print_wrn("[Spotify] [Album] '{0}'.".format(album_name))
             try:
-                results = self._spotify.album_tracks(
-                    album["id"], limit=50, offset=0)
+                results = self._spotify.album_tracks(album["id"], limit=50, offset=0)
                 for track in results["items"]:
                     track_info = TrackInfo(track, album_name)
                     self._add_to_playback_queue(track_info)
@@ -1153,8 +1129,7 @@ class tizspotifyproxy(object):
             artist_name = None
             artist_dict = dict()
             artist_names = list()
-            results = self._spotify.search(
-                arg, limit=20, offset=0, type="artist")
+            results = self._spotify.search(arg, limit=20, offset=0, type="artist")
             artists = results["artists"]
             for i, art in enumerate(artists["items"]):
                 name = art["name"]
@@ -1239,8 +1214,7 @@ class tizspotifyproxy(object):
                     )
                 else:
                     print_wrn(
-                        "[Spotify] [Playlist] Playing '{0}'.".format(
-                            playlist_name)
+                        "[Spotify] [Playlist] Playing '{0}'.".format(playlist_name)
                     )
 
         return playlist
@@ -1259,8 +1233,7 @@ class tizspotifyproxy(object):
                 self.play_queue_order = list(range(total_tracks))
             if self.current_play_mode == self.play_modes.SHUFFLE:
                 random.shuffle(self.play_queue_order)
-            print_nfo(
-                "[Spotify] [Tracks in queue] '{0}'.".format(total_tracks))
+            print_nfo("[Spotify] [Tracks in queue] '{0}'.".format(total_tracks))
 
     def _remove_explicit_tracks(self):
         """ Remove all explicit tracks from the playback queue.
@@ -1284,8 +1257,7 @@ class tizspotifyproxy(object):
             elif self.queue_index >= len(self.queue):
                 self.queue_index = 0
 
-            logging.info(
-                "_remove_explicit_tracks : tracks after %d", len(self.queue))
+            logging.info("_remove_explicit_tracks : tracks after %d", len(self.queue))
             if ntracks_in_queue_before > len(self.queue):
                 self.ntracks_removed_from_queue = ntracks_in_queue_before - len(
                     self.queue

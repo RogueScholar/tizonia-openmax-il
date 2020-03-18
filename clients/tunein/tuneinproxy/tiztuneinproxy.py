@@ -75,8 +75,7 @@ CACHE_DIR_PREFIX = os.getenv("SNAP_USER_COMMON") or TMPDIR
 TUNEIN_CACHE_LOCATION = os.path.join(
     CACHE_DIR_PREFIX, "tizonia-" + getpass.getuser() + "-tunein"
 )
-MEMORY = Memory(TUNEIN_CACHE_LOCATION, compress=9,
-                verbose=0, bytes_limit=10485760)
+MEMORY = Memory(TUNEIN_CACHE_LOCATION, compress=9, verbose=0, bytes_limit=10485760)
 MEMORY.reduce_size()
 
 FORMAT = (
@@ -106,8 +105,7 @@ class ConfigColors:
         active_theme = active_theme + "."
         self.FAIL = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C08", fallback="91")
+            + self.config.get("color-themes", active_theme + "C08", fallback="91")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -115,8 +113,7 @@ class ConfigColors:
         )
         self.OKGREEN = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C09", fallback="92")
+            + self.config.get("color-themes", active_theme + "C09", fallback="92")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -124,8 +121,7 @@ class ConfigColors:
         )
         self.WARNING = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C10", fallback="93")
+            + self.config.get("color-themes", active_theme + "C10", fallback="93")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -133,8 +129,7 @@ class ConfigColors:
         )
         self.OKBLUE = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C11", fallback="94")
+            + self.config.get("color-themes", active_theme + "C11", fallback="94")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -142,8 +137,7 @@ class ConfigColors:
         )
         self.OKMAGENTA = (
             "\033["
-            + self.config.get("color-themes", active_theme +
-                              "C12", fallback="95")
+            + self.config.get("color-themes", active_theme + "C12", fallback="95")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -364,8 +358,7 @@ def run_playlist_query(session, timeout, url):
                 logging.error(f"TuneIn playlist parsing failed {e}")
             if not results:
                 playlist_str = data.decode(errors="ignore")
-                logging.debug(
-                    f"Parsing failure, malformed playlist: {playlist_str}")
+                logging.debug(f"Parsing failure, malformed playlist: {playlist_str}")
     elif content_type:
         results = [url]
 
@@ -680,8 +673,7 @@ class tiztuneinproxy(object):
             self._filter_play_queue("Search", remaining_keywords)
 
             logging.info(
-                "Added {0} stations/shows to queue".format(
-                    len(self.queue) - count)
+                "Added {0} stations/shows to queue".format(len(self.queue) - count)
             )
 
             if count == len(self.queue):
@@ -719,12 +711,10 @@ class tiztuneinproxy(object):
             elif category == "trending":
                 self._enqueue_trending(keywords1)
             else:
-                self._enqueue_category(
-                    category, keywords1, keywords2, keywords3)
+                self._enqueue_category(category, keywords1, keywords2, keywords3)
 
             logging.info(
-                "Added {0} stations/shows to queue".format(
-                    len(self.queue) - count)
+                "Added {0} stations/shows to queue".format(len(self.queue) - count)
             )
 
             if count == len(self.queue):
@@ -925,8 +915,7 @@ class tiztuneinproxy(object):
         cat = self._select_one(results, keywords1, category)
 
         if cat:
-            print_adv("[TuneIn] [{0}] Searching '{1}'.".format(
-                category, cat["text"]))
+            print_adv("[TuneIn] [{0}] Searching '{1}'.".format(category, cat["text"]))
 
             # Enqueue stations
             if (
@@ -1077,8 +1066,7 @@ class tiztuneinproxy(object):
             "_enqueue_trending : 1: %s 2: %s 3: %s", keywords1, keywords2, keywords3
         )
         print_msg(
-            "[TuneIn] [TuneIn 'trending' category search] : '{0}'. ".format(
-                keywords1)
+            "[TuneIn] [TuneIn 'trending' category search] : '{0}'. ".format(keywords1)
         )
 
         category = "trending"
@@ -1115,8 +1103,7 @@ class tiztuneinproxy(object):
 
         if topic:
             print_adv(
-                "[TuneIn] [Shows] Selecting podcast topic '{0}'.".format(
-                    topic["text"])
+                "[TuneIn] [Shows] Selecting podcast topic '{0}'.".format(topic["text"])
             )
             guide_id = topic["guide_id"]
             shows = self.tunein.shows(guide_id)
@@ -1221,8 +1208,7 @@ class tiztuneinproxy(object):
                 # order shows by date (newest first)
                 self.queue = sorted(
                     self.queue,
-                    key=lambda k: datetime.datetime.strptime(
-                        k["subtext"], "%d %b %Y"),
+                    key=lambda k: datetime.datetime.strptime(k["subtext"], "%d %b %Y"),
                     reverse=True,
                 )
             if self.current_play_mode == self.play_modes.SHUFFLE:
@@ -1273,8 +1259,7 @@ class tiztuneinproxy(object):
             new_date = self._ensure_expected_date_format(r["subtext"])
             if not new_date:
                 logging.info(
-                    "Ignoring podcast with unknown date format : {0}".format(
-                        new_date)
+                    "Ignoring podcast with unknown date format : {0}".format(new_date)
                 )
                 return
             r["subtext"] = new_date
@@ -1314,8 +1299,7 @@ class tiztuneinproxy(object):
                 # Make sure we allow only mp3 stations for now
                 if "mp3" not in r.get("formats") and "ogg" not in r.get("formats"):
                     logging.info(
-                        "Ignoring non-mp3/non-ogg station : {0}".format(
-                            r["formats"])
+                        "Ignoring non-mp3/non-ogg station : {0}".format(r["formats"])
                     )
                     continue
 
@@ -1366,13 +1350,11 @@ class tiztuneinproxy(object):
             if phrase:
                 filtered_queue = list()
                 print_adv(
-                    "[TuneIn] [{0}] Filtering results: '{1}'.".format(
-                        category, phrase)
+                    "[TuneIn] [{0}] Filtering results: '{1}'.".format(category, phrase)
                 )
                 for item in self.queue:
                     title = item["text"] if item.get("text") else ""
-                    title = title + " " + \
-                        item["subtext"] if item.get("subtext") else ""
+                    title = title + " " + item["subtext"] if item.get("subtext") else ""
                     if fuzz.partial_ratio(phrase, title) > 50:
                         filtered_queue.append(item)
                 if len(filtered_queue):
