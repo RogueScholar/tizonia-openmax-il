@@ -30,16 +30,17 @@
 #define TIZFSM_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "tizfsm.h"
 #include "tizservant_decls.h"
 #include "tizplatform.h"
 
-typedef struct tiz_fsm tiz_fsm_t;
-struct tiz_fsm
-{
+  typedef struct tiz_fsm tiz_fsm_t;
+  struct tiz_fsm
+  {
     /* Object */
     const tiz_srv_t _;
     void * p_states_[EStateMax];
@@ -49,11 +50,11 @@ struct tiz_fsm
     OMX_COMMANDTYPE in_progress_cmd_;
     OMX_U32 in_progress_param1_;
     OMX_COMMANDTYPE cancellation_cmd_;
-};
+  };
 
-typedef struct tiz_fsm_class tiz_fsm_class_t;
-struct tiz_fsm_class
-{
+  typedef struct tiz_fsm_class tiz_fsm_class_t;
+  struct tiz_fsm_class
+  {
     /* Class */
     const tiz_srv_class_t _;
 
@@ -68,7 +69,7 @@ struct tiz_fsm_class
     tiz_fsm_state_id_t (*get_substate) (const void * ap_obj);
 
     OMX_ERRORTYPE (*tunneled_ports_status_update) (void * ap_obj);
-};
+  };
 
 #ifdef __cplusplus
 }

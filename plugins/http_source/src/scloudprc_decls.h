@@ -29,7 +29,8 @@
 #define SCLOUDPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -41,9 +42,9 @@ extern "C" {
 
 #include "tizplatform.h"
 
-typedef struct scloud_prc scloud_prc_t;
-struct scloud_prc
-{
+  typedef struct scloud_prc scloud_prc_t;
+  struct scloud_prc
+  {
     /* Object */
     const tiz_prc_t _;
     OMX_BUFFERHEADERTYPE * p_outhdr_;
@@ -65,15 +66,15 @@ struct scloud_prc
     bool auto_detect_on_;
     int bitrate_;
     int buffer_bytes_;
-};
+  };
 
-typedef struct scloud_prc_class scloud_prc_class_t;
-struct scloud_prc_class
-{
+  typedef struct scloud_prc_class scloud_prc_class_t;
+  struct scloud_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

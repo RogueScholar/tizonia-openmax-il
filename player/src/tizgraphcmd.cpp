@@ -36,23 +36,23 @@
 namespace graph = tiz::graph;
 
 graph::cmd::cmd (boost::any any_event, bool kill_thread /* = false */)
-    : evt_ (any_event), kill_thread_ (kill_thread), cmd_name_("CMD [")
+  : evt_ (any_event), kill_thread_ (kill_thread), cmd_name_ ("CMD [")
 {
-    cmd_name_.append (typeid(evt ()).name ());
-    cmd_name_.append ("]");
+  cmd_name_.append (typeid (evt ()).name ());
+  cmd_name_.append ("]");
 }
 
 const boost::any graph::cmd::evt () const
 {
-    return evt_;
+  return evt_;
 }
 
 /*@observer@*/ const char* graph::cmd::c_str () const
 {
-    return cmd_name_.c_str ();
+  return cmd_name_.c_str ();
 }
 
 bool graph::cmd::kill_thread () const
 {
-    return kill_thread_;
+  return kill_thread_;
 }

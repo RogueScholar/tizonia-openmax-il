@@ -45,82 +45,57 @@
 
 namespace tiz
 {
-namespace graph
-{
+  namespace graph
+  {
 
-class cmd
-{
-
-private:
-    template < typename T >
-    bool is_type (const boost::any& operand) const
+    class cmd
     {
-        return operand.type () == typeid(T);
-    }
 
-public:
-    explicit cmd (boost::any any_event, bool kill_thread = false);
+    private:
+      template < typename T >
+      bool is_type (const boost::any& operand) const
+      {
+        return operand.type () == typeid (T);
+      }
 
-public:
-    const boost::any evt () const;
-    const char* c_str () const;
-    bool kill_thread () const;
-    template < typename Fsm >
-    void inject (
-        Fsm& machine,
-        boost::function< char const* const(Fsm const& machine) > pstate) const
-    {
-#define INJECT_EVENT(the_evt)                                           \
-        if (is_type< the_evt >(evt_))                                   \
-          {                                                             \
-            std::string arg (#the_evt);                                 \
-            TIZ_LOG (TIZ_PRIORITY_NOTICE,                               \
-                     "GRAPH : Injecting "                               \
-                     "CMD [%s] in STATE [%s]...",                       \
-                     arg.c_str (), pstate (machine));                   \
-            machine.process_event (boost::any_cast< the_evt >(evt_));   \
-          }
+    public:
+      explicit cmd (boost::any any_event, bool kill_thread = false);
+
+    public:
+      const boost::any evt () const;
+      const char* c_str () const;
+      bool kill_thread () const;
+      template < typename Fsm >
+      void inject (
+          Fsm& machine,
+          boost::function< char const* const(Fsm const& machine) > pstate) const
+      {
+#define INJECT_EVENT(the_evt)                                  \
+  if (is_type< the_evt > (evt_))                               \
+  {                                                            \
+    std::string arg (#the_evt);                                \
+    TIZ_LOG (TIZ_PRIORITY_NOTICE,                              \
+             "GRAPH : Injecting "                              \
+             "CMD [%s] in STATE [%s]...",                      \
+             arg.c_str (), pstate (machine));                  \
+    machine.process_event (boost::any_cast< the_evt > (evt_)); \
+  }
 
         INJECT_EVENT (load_evt)
-        else INJECT_EVENT (execute_evt)
-            else INJECT_EVENT (configured_evt)
-                else INJECT_EVENT (omx_trans_evt)
-                    else INJECT_EVENT (skip_evt)
-                        else INJECT_EVENT (skipped_evt)
-                            else INJECT_EVENT (seek_evt)
-                                else INJECT_EVENT (volume_step_evt)
-                                    else INJECT_EVENT (volume_evt)
-                                        else INJECT_EVENT (mute_evt)
-                                            else INJECT_EVENT (pause_evt)
-                                                else INJECT_EVENT (omx_evt)
-                                                    else INJECT_EVENT (omx_eos_evt)
-                                                        else INJECT_EVENT (stop_evt)
-                                                            else INJECT_EVENT (unload_evt)
-                                                                else INJECT_EVENT (omx_port_disabled_evt)
-                                                                    else INJECT_EVENT (omx_port_enabled_evt)
-                                                                        else INJECT_EVENT (omx_port_settings_evt)
-                                                                            else INJECT_EVENT (omx_index_setting_evt)
-                                                                                else INJECT_EVENT (omx_format_detected_evt)
-                                                                                    else INJECT_EVENT (omx_err_evt)
-                                                                                        else INJECT_EVENT (err_evt)
-                                                                                            else INJECT_EVENT (auto_detected_evt)
-                                                                                                else INJECT_EVENT (graph_updated_evt)
-                                                                                                    else INJECT_EVENT (graph_reconfigured_evt)
-                                                                                                        else INJECT_EVENT (tunnel_reconfigured_evt)
-                                                                                                            else INJECT_EVENT (timer_evt)
-                                                                                                                else
-                                                                                                                {
-                                                                                                                    assert (0);
-                                                                                                                }
-    }
+        else INJECT_EVENT (execute_evt) else INJECT_EVENT (configured_evt) else INJECT_EVENT (omx_trans_evt) else INJECT_EVENT (skip_evt) else INJECT_EVENT (skipped_evt) else INJECT_EVENT (seek_evt) else INJECT_EVENT (volume_step_evt) else INJECT_EVENT (volume_evt) else INJECT_EVENT (mute_evt) else INJECT_EVENT (
+            pause_evt) else INJECT_EVENT (omx_evt) else INJECT_EVENT (omx_eos_evt) else INJECT_EVENT (stop_evt) else INJECT_EVENT (unload_evt) else INJECT_EVENT (omx_port_disabled_evt) else INJECT_EVENT (omx_port_enabled_evt) else INJECT_EVENT (omx_port_settings_evt) else INJECT_EVENT (omx_index_setting_evt) else INJECT_EVENT (omx_format_detected_evt) else INJECT_EVENT (omx_err_evt) else INJECT_EVENT (err_evt) else INJECT_EVENT (auto_detected_evt) else INJECT_EVENT (graph_updated_evt) else INJECT_EVENT (graph_reconfigured_evt) else INJECT_EVENT (tunnel_reconfigured_evt) else INJECT_EVENT (timer_evt) else
+        {
+          assert (0);
+        }
+      }
 
-private:
-    const boost::any evt_;
-    const bool kill_thread_;
-    std::string cmd_name_;
-};
+    private:
+      const boost::any evt_;
+      const bool kill_thread_;
+      std::string cmd_name_;
+    };
 
-}  // namespace graph
+  }  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZGRAPHCMD_HPP

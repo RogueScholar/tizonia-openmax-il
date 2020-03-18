@@ -30,15 +30,16 @@
 #define TIZVP8PORT_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "OMX_Component.h"
 #include "tizvideoport_decls.h"
 
-typedef struct tiz_vp8port tiz_vp8port_t;
-struct tiz_vp8port
-{
+  typedef struct tiz_vp8port tiz_vp8port_t;
+  struct tiz_vp8port
+  {
     /* Object */
     const tiz_videoport_t _;
     OMX_VIDEO_PARAM_VP8TYPE vp8type_;
@@ -47,15 +48,15 @@ struct tiz_vp8port
     OMX_VIDEO_PARAM_BITRATETYPE pbrtype_;
     OMX_VIDEO_CONFIG_BITRATETYPE cbrtype_;
     OMX_CONFIG_FRAMERATETYPE frtype_;
-};
+  };
 
-typedef struct tiz_vp8port_class tiz_vp8port_class_t;
-struct tiz_vp8port_class
-{
+  typedef struct tiz_vp8port_class tiz_vp8port_class_t;
+  struct tiz_vp8port_class
+  {
     /* Class */
     const tiz_videoport_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

@@ -30,28 +30,29 @@
 #define TIZIMAGEPORT_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "tizport_decls.h"
 
-typedef struct tiz_imageport tiz_imageport_t;
-struct tiz_imageport
-{
+  typedef struct tiz_imageport tiz_imageport_t;
+  struct tiz_imageport
+  {
     /* Object */
     const tiz_port_t _;
     OMX_IMAGE_PARAM_PORTFORMATTYPE port_format_;
     tiz_vector_t * p_image_encodings_;
     tiz_vector_t * p_color_formats_;
-};
+  };
 
-typedef struct tiz_imageport_class tiz_imageport_class_t;
-struct tiz_imageport_class
-{
+  typedef struct tiz_imageport_class tiz_imageport_class_t;
+  struct tiz_imageport_class
+  {
     /* Class */
     const tiz_port_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

@@ -30,8 +30,8 @@
 #include <config.h>
 #endif
 
-#include <tizplatform.h>
 #include <tizmacros.h>
+#include <tizplatform.h>
 
 #include <tizgraph.hpp>
 
@@ -47,23 +47,23 @@ namespace graph = tiz::graph;
 graph::omx_event_info::omx_event_info (OMX_HANDLETYPE component,
                                        OMX_EVENTTYPE event, OMX_U32 ndata1,
                                        OMX_U32 ndata2, OMX_PTR pEventData)
-    : component_ (component),
-      event_ (event),
-      ndata1_ (ndata1),
-      ndata2_ (ndata2),
-      pEventData_ (pEventData)
+  : component_ (component),
+    event_ (event),
+    ndata1_ (ndata1),
+    ndata2_ (ndata2),
+    pEventData_ (pEventData)
 {
 }
 
 graph::omx_event_info::omx_event_info (OMX_HANDLETYPE component,
                                        OMX_STATETYPE state, OMX_ERRORTYPE error)
-    : component_ (component),
-      event_ (OMX_EventCmdComplete),
-      ndata1_ (OMX_CommandStateSet),
-      ndata2_ (state),
-      pEventData_ (NULL)
+  : component_ (component),
+    event_ (OMX_EventCmdComplete),
+    ndata1_ (OMX_CommandStateSet),
+    ndata2_ (state),
+    pEventData_ (NULL)
 {
-    pEventData_ = (OMX_PTR)error;
+  pEventData_ = (OMX_PTR)error;
 }
 
 // port transition constructor
@@ -71,135 +71,135 @@ graph::omx_event_info::omx_event_info (OMX_HANDLETYPE component,
                                        OMX_U32 port_id,
                                        OMX_COMMANDTYPE disable_or_enable,
                                        OMX_ERRORTYPE error)
-    : component_ (component),
-      event_ (OMX_EventCmdComplete),
-      ndata1_ (disable_or_enable),
-      ndata2_ (port_id),
-      pEventData_ (NULL)
+  : component_ (component),
+    event_ (OMX_EventCmdComplete),
+    ndata1_ (disable_or_enable),
+    ndata2_ (port_id),
+    pEventData_ (NULL)
 {
-    pEventData_ = (OMX_PTR)error;
+  pEventData_ = (OMX_PTR)error;
 }
 
-bool graph::omx_event_info::operator==(const omx_event_info &b)
+bool graph::omx_event_info::operator== (const omx_event_info &b)
 {
-    if (component_ == b.component_ && event_ == b.event_ && ndata1_ == b.ndata1_
-            && ndata2_ == b.ndata2_)
-        // TODO: Ignore pEventData for now. This is to make events like this pass the
-        // comparison:
-        // e.g.: [tizgraph.cpp:receive_event:238] ---
-        // [OMX.Aratelia.file_reader.binary]
-        // : [OMX_EventCmdComplete] [OMX_CommandStateSet] [OMX_StateLoaded] error
-        // [0x80001017]
-        //       && pEventData_ == b.pEventData_)
-    {
-        return true;
-    }
-    return false;
+  if (component_ == b.component_ && event_ == b.event_ && ndata1_ == b.ndata1_
+      && ndata2_ == b.ndata2_)
+  // TODO: Ignore pEventData for now. This is to make events like this pass the
+  // comparison:
+  // e.g.: [tizgraph.cpp:receive_event:238] ---
+  // [OMX.Aratelia.file_reader.binary]
+  // : [OMX_EventCmdComplete] [OMX_CommandStateSet] [OMX_StateLoaded] error
+  // [0x80001017]
+  //       && pEventData_ == b.pEventData_)
+  {
+    return true;
+  }
+  return false;
 }
 
 std::string graph::omx_event_info::to_string () const
 {
-    std::string info ("[");
-    info.append (tiz_evt_to_str (static_cast< OMX_EVENTTYPE >(event_)));
-    info.append ("]");
-    switch (event_)
-    {
+  std::string info ("[");
+  info.append (tiz_evt_to_str (static_cast< OMX_EVENTTYPE > (event_)));
+  info.append ("]");
+  switch (event_)
+  {
     case OMX_EventCmdComplete:
     {
+      info.append (" [");
+      info.append (tiz_cmd_to_str (static_cast< OMX_COMMANDTYPE > (ndata1_)));
+      info.append ("]");
+      if (OMX_CommandStateSet == ndata1_)
+      {
         info.append (" [");
-        info.append (tiz_cmd_to_str (static_cast< OMX_COMMANDTYPE >(ndata1_)));
+        info.append (tiz_state_to_str (static_cast< OMX_STATETYPE > (ndata2_)));
         info.append ("]");
-        if (OMX_CommandStateSet == ndata1_)
-        {
-            info.append (" [");
-            info.append (tiz_state_to_str (static_cast< OMX_STATETYPE >(ndata2_)));
-            info.append ("]");
-        }
-        else
-        {
-            info.append (" PORT [");
-            info.append (boost::lexical_cast< std::string >(ndata2_));
-            info.append ("]");
-        }
+      }
+      else
+      {
+        info.append (" PORT [");
+        info.append (boost::lexical_cast< std::string > (ndata2_));
+        info.append ("]");
+      }
     }
     break;
 
     case OMX_EventError:
     {
-        info.append (" [");
-        info.append (tiz_err_to_str (static_cast< OMX_ERRORTYPE >(ndata1_)));
-        info.append ("]");
-        info.append (" [");
-        info.append (boost::lexical_cast< std::string >(ndata2_));
-        info.append ("]");
+      info.append (" [");
+      info.append (tiz_err_to_str (static_cast< OMX_ERRORTYPE > (ndata1_)));
+      info.append ("]");
+      info.append (" [");
+      info.append (boost::lexical_cast< std::string > (ndata2_));
+      info.append ("]");
     }
     break;
 
     case OMX_EventPortSettingsChanged:
     {
-        info.append (" PORT [");
-        info.append (boost::lexical_cast< std::string >(ndata1_));
-        info.append ("]");
-        info.append (" [");
-        info.append (tiz_idx_to_str (static_cast< OMX_INDEXTYPE >(ndata2_)));
-        info.append ("]");
+      info.append (" PORT [");
+      info.append (boost::lexical_cast< std::string > (ndata1_));
+      info.append ("]");
+      info.append (" [");
+      info.append (tiz_idx_to_str (static_cast< OMX_INDEXTYPE > (ndata2_)));
+      info.append ("]");
     }
     break;
 
     case OMX_EventBufferFlag:
     {
-        info.append (" PORT [");
-        info.append (boost::lexical_cast< std::string >(ndata1_));
-        info.append ("]");
-        info.append (" nFlags [");
-        info.append (boost::lexical_cast< std::string >(ndata2_));
-        info.append ("]");
+      info.append (" PORT [");
+      info.append (boost::lexical_cast< std::string > (ndata1_));
+      info.append ("]");
+      info.append (" nFlags [");
+      info.append (boost::lexical_cast< std::string > (ndata2_));
+      info.append ("]");
     }
     break;
 
     default:
     {
-        info.append (" [TO BE DONE]");
+      info.append (" [TO BE DONE]");
     }
     break;
-    };
-    return info;
+  };
+  return info;
 }
 
 //
 // cbackhandler
 //
 graph::cbackhandler::cbackhandler (graph *p_graph)
-    : p_graph_ (p_graph), cbacks_ ()
+  : p_graph_ (p_graph), cbacks_ ()
 {
-    assert (p_graph);
-    cbacks_.EventHandler = &cbackhandler::event_handler_wrapper;
-    cbacks_.EmptyBufferDone = NULL;
-    cbacks_.FillBufferDone = NULL;
+  assert (p_graph);
+  cbacks_.EventHandler = &cbackhandler::event_handler_wrapper;
+  cbacks_.EmptyBufferDone = NULL;
+  cbacks_.FillBufferDone = NULL;
 }
 
 OMX_ERRORTYPE
 graph::cbackhandler::event_handler_wrapper (OMX_HANDLETYPE hComponent,
-        OMX_PTR pAppData,
-        OMX_EVENTTYPE eEvent,
-        OMX_U32 nData1, OMX_U32 nData2,
-        OMX_PTR pEventData)
+                                            OMX_PTR pAppData,
+                                            OMX_EVENTTYPE eEvent,
+                                            OMX_U32 nData1, OMX_U32 nData2,
+                                            OMX_PTR pEventData)
 {
-    cbackhandler *p_handler = static_cast< cbackhandler * >(pAppData);
-    assert (p_handler);
-    p_handler->event_handler (hComponent, eEvent, nData1, nData2, pEventData);
-    return OMX_ErrorNone;
+  cbackhandler *p_handler = static_cast< cbackhandler * > (pAppData);
+  assert (p_handler);
+  p_handler->event_handler (hComponent, eEvent, nData1, nData2, pEventData);
+  return OMX_ErrorNone;
 }
 
 OMX_CALLBACKTYPE *graph::cbackhandler::get_omx_cbacks ()
 {
-    return &cbacks_;
+  return &cbacks_;
 }
 
 void graph::cbackhandler::event_handler (OMX_HANDLETYPE hComponent,
-        OMX_EVENTTYPE eEvent, OMX_U32 nData1,
-        OMX_U32 nData2, OMX_PTR pEventData)
+                                         OMX_EVENTTYPE eEvent, OMX_U32 nData1,
+                                         OMX_U32 nData2, OMX_PTR pEventData)
 {
-    const_cast< graph * >(p_graph_)->omx_evt (
-        omx_event_info (hComponent, eEvent, nData1, nData2, pEventData));
+  const_cast< graph * > (p_graph_)->omx_evt (
+      omx_event_info (hComponent, eEvent, nData1, nData2, pEventData));
 }

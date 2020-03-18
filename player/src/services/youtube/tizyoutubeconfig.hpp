@@ -38,40 +38,40 @@
 
 namespace tiz
 {
-namespace graph
-{
-class youtubeconfig : public config
-{
+  namespace graph
+  {
+    class youtubeconfig : public config
+    {
 
-public:
-    youtubeconfig (const std::string &api_key,
-                   const tizplaylist_ptr_t &playlist, uint32_t buffer_seconds,
-                   const OMX_TIZONIA_AUDIO_YOUTUBEPLAYLISTTYPE &playlist_type)
+    public:
+      youtubeconfig (const std::string &api_key,
+                     const tizplaylist_ptr_t &playlist, uint32_t buffer_seconds,
+                     const OMX_TIZONIA_AUDIO_YOUTUBEPLAYLISTTYPE &playlist_type)
         : config (playlist, buffer_seconds),
           api_key_ (api_key),
           playlist_type_ (playlist_type)
-    {
-    }
+      {
+      }
 
-    ~youtubeconfig ()
-    {
-    }
+      ~youtubeconfig ()
+      {
+      }
 
-    std::string get_api_key () const
-    {
+      std::string get_api_key () const
+      {
         return api_key_;
-    }
+      }
 
-    OMX_TIZONIA_AUDIO_YOUTUBEPLAYLISTTYPE get_playlist_type () const
-    {
+      OMX_TIZONIA_AUDIO_YOUTUBEPLAYLISTTYPE get_playlist_type () const
+      {
         return playlist_type_;
-    }
+      }
 
-protected:
-    const std::string api_key_;
-    const OMX_TIZONIA_AUDIO_YOUTUBEPLAYLISTTYPE playlist_type_;
-};
-}  // namespace graph
+    protected:
+      const std::string api_key_;
+      const OMX_TIZONIA_AUDIO_YOUTUBEPLAYLISTTYPE playlist_type_;
+    };
+  }  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZYOUTUBECONFIG_HPP

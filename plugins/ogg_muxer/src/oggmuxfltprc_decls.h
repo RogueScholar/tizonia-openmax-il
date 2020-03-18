@@ -29,7 +29,8 @@
 #define OGGDMUXFLTPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -43,9 +44,9 @@ extern "C" {
 #include <tizfilterprc.h>
 #include <tizfilterprc_decls.h>
 
-typedef struct oggmuxflt_prc oggmuxflt_prc_t;
-struct oggmuxflt_prc
-{
+  typedef struct oggmuxflt_prc oggmuxflt_prc_t;
+  struct oggmuxflt_prc
+  {
     /* Object */
     const tiz_filter_prc_t _;
     OGGZ * p_oggz_;
@@ -55,15 +56,15 @@ struct oggmuxflt_prc
     long oggz_video_granulepos_;
     long oggz_audio_packetno_;
     long oggz_video_packetno_;
-};
+  };
 
-typedef struct oggmuxflt_prc_class oggmuxflt_prc_class_t;
-struct oggmuxflt_prc_class
-{
+  typedef struct oggmuxflt_prc_class oggmuxflt_prc_class_t;
+  struct oggmuxflt_prc_class
+  {
     /* Class */
     const tiz_filter_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

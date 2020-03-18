@@ -30,7 +30,8 @@
 #define TIZFILTERPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_Core.h>
@@ -39,24 +40,24 @@ extern "C" {
 
 #include "tizprc_decls.h"
 
-typedef struct tiz_filter_prc tiz_filter_prc_t;
-struct tiz_filter_prc
-{
+  typedef struct tiz_filter_prc tiz_filter_prc_t;
+  struct tiz_filter_prc
+  {
     /* Object */
     const tiz_prc_t _;
     tiz_vector_t * p_hdrs_;
     tiz_vector_t * p_disabled_flags_;
     tiz_vector_t * p_port_dirs_;
     bool eos_;
-};
+  };
 
-typedef struct tiz_filter_prc_class tiz_filter_prc_class_t;
-struct tiz_filter_prc_class
-{
+  typedef struct tiz_filter_prc_class tiz_filter_prc_class_t;
+  struct tiz_filter_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     OMX_BUFFERHEADERTYPE ** (*get_header_ptr) (void * ap_obj,
-            const OMX_U32 a_pid);
+                                               const OMX_U32 a_pid);
     OMX_BUFFERHEADERTYPE * (*get_header) (void * ap_obj, const OMX_U32 a_pid);
     bool (*headers_available) (const void * ap_obj);
     bool (*output_headers_available) (const void * ap_obj);
@@ -69,7 +70,7 @@ struct tiz_filter_prc_class
     void (*update_eos_flag) (void * ap_obj, const bool flag);
     void (*update_port_disabled_flag) (void * ap_obj, const OMX_U32 a_pid,
                                        const bool flag);
-};
+  };
 
 #ifdef __cplusplus
 }

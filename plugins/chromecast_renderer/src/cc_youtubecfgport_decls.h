@@ -30,7 +30,8 @@
 #define CC_YOUTUBECFGPORT_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_TizoniaExt.h>
@@ -38,22 +39,22 @@ extern "C" {
 
 #include "cc_cfgport_decls.h"
 
-typedef struct cc_youtube_cfgport cc_youtube_cfgport_t;
-struct cc_youtube_cfgport
-{
+  typedef struct cc_youtube_cfgport cc_youtube_cfgport_t;
+  struct cc_youtube_cfgport
+  {
     /* Object */
     const cc_cfgport_t _;
     OMX_TIZONIA_AUDIO_PARAM_YOUTUBESESSIONTYPE session_;
     OMX_TIZONIA_AUDIO_PARAM_YOUTUBEPLAYLISTTYPE playlist_;
-};
+  };
 
-typedef struct cc_youtube_cfgport_class cc_youtube_cfgport_class_t;
-struct cc_youtube_cfgport_class
-{
+  typedef struct cc_youtube_cfgport_class cc_youtube_cfgport_class_t;
+  struct cc_youtube_cfgport_class
+  {
     /* Class */
     const cc_cfgport_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

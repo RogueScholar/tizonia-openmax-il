@@ -39,24 +39,24 @@ extern "C"
 
 #include <tizprc_decls.h>
 
-typedef struct fr_prc fr_prc_t;
-struct fr_prc
-{
+  typedef struct fr_prc fr_prc_t;
+  struct fr_prc
+  {
     /* Object */
     const tiz_prc_t _;
     bool eos_;
-};
+  };
 
-typedef struct fr_prc_class fr_prc_class_t;
-struct fr_prc_class
-{
+  typedef struct fr_prc_class fr_prc_class_t;
+  struct fr_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* FRPRC_DECLS_H */
+#endif /* FRPRC_DECLS_H */

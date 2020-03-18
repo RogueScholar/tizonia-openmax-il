@@ -30,7 +30,8 @@
 #define MP3DPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -43,9 +44,9 @@ extern "C" {
 #define INPUT_BUFFER_SIZE (5 * 8192)
 #define OUTPUT_BUFFER_SIZE 8192 /* Must be an integer multiple of 4. */
 
-typedef struct mp3d_prc mp3d_prc_t;
-struct mp3d_prc
-{
+  typedef struct mp3d_prc mp3d_prc_t;
+  struct mp3d_prc
+  {
     /* Object */
     const tiz_prc_t _;
     OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
@@ -62,15 +63,15 @@ struct mp3d_prc
     bool eos_;
     bool in_port_disabled_;
     bool out_port_disabled_;
-};
+  };
 
-typedef struct mp3d_prc_class mp3d_prc_class_t;
-struct mp3d_prc_class
-{
+  typedef struct mp3d_prc_class mp3d_prc_class_t;
+  struct mp3d_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

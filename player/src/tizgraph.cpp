@@ -31,17 +31,17 @@
 
 #include <assert.h>
 
+#include <OMX_Component.h>
+#include <OMX_Core.h>
+#include <tizmacros.h>
 #include <tizomxutil.hpp>
 #include <tizplatform.h>
-#include <tizmacros.h>
-#include <OMX_Core.h>
-#include <OMX_Component.h>
 
-#include "tizprogressdisplay.hpp"
-#include "tizgraphmgr.hpp"
+#include "tizgraph.hpp"
 #include "tizgraphcmd.hpp"
 #include "tizgraphfsm.hpp"
-#include "tizgraph.hpp"
+#include "tizgraphmgr.hpp"
+#include "tizprogressdisplay.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -54,49 +54,49 @@ namespace graph = tiz::graph;
 
 void *graph::thread_func (void *p_arg)
 {
-    graph *p_graph = static_cast< graph * >(p_arg);
-    void *p_data = NULL;
-    bool done = false;
+  graph *p_graph = static_cast< graph * > (p_arg);
+  void *p_data = NULL;
+  bool done = false;
 
-    assert (p_graph);
+  assert (p_graph);
 
-    (void)tiz_thread_setname (&(p_graph->thread_),
-                              (char *)p_graph->get_graph_name ().c_str ());
-    tiz_check_omx_ret_null (tiz_sem_post (&(p_graph->sem_)));
+  (void)tiz_thread_setname (&(p_graph->thread_),
+                            (char *)p_graph->get_graph_name ().c_str ());
+  tiz_check_omx_ret_null (tiz_sem_post (&(p_graph->sem_)));
 
-    while (!done)
-    {
-        tiz_check_omx_ret_null (tiz_queue_receive (p_graph->p_queue_, &p_data));
+  while (!done)
+  {
+    tiz_check_omx_ret_null (tiz_queue_receive (p_graph->p_queue_, &p_data));
 
-        assert (p_data);
+    assert (p_data);
 
-        cmd *p_cmd = static_cast< cmd * >(p_data);
-        done = p_graph->dispatch_cmd (p_cmd);
+    cmd *p_cmd = static_cast< cmd * > (p_data);
+    done = p_graph->dispatch_cmd (p_cmd);
 
-        delete p_cmd;
-    }
+    delete p_cmd;
+  }
 
-    tiz_check_omx_ret_null (tiz_sem_post (&(p_graph->sem_)));
-    TIZ_LOG (TIZ_PRIORITY_TRACE, "[%s] thread exiting...",
-             p_graph->get_graph_name ().c_str ());
+  tiz_check_omx_ret_null (tiz_sem_post (&(p_graph->sem_)));
+  TIZ_LOG (TIZ_PRIORITY_TRACE, "[%s] thread exiting...",
+           p_graph->get_graph_name ().c_str ());
 
-    return NULL;
+  return NULL;
 }
 
 //
 // tizgraph
 //
 graph::graph::graph (const std::string &graph_name)
-    : graph_name_ (graph_name),
-      cback_handler_ (this),
-      p_mgr_ (NULL),
-      p_ops_ (NULL),
-      thread_ (0),
-      mutex_ (),
-      sem_ (),
-      p_queue_ (NULL),
-      p_ev_timer_ (NULL),
-      p_progress_(NULL)
+  : graph_name_ (graph_name),
+    cback_handler_ (this),
+    p_mgr_ (NULL),
+    p_ops_ (NULL),
+    thread_ (0),
+    mutex_ (),
+    sem_ (),
+    p_queue_ (NULL),
+    p_ev_timer_ (NULL),
+    p_progress_ (NULL)
 {
 }
 
@@ -107,372 +107,370 @@ graph::graph::~graph ()
 OMX_ERRORTYPE
 graph::graph::init ()
 {
-    TIZ_LOG (TIZ_PRIORITY_TRACE, "Constructing...");
+  TIZ_LOG (TIZ_PRIORITY_TRACE, "Constructing...");
 
-    // Init command queue infrastructure
-    tiz_check_omx_ret_oom (init_cmd_queue ());
+  // Init command queue infrastructure
+  tiz_check_omx_ret_oom (init_cmd_queue ());
 
-    // Init this graph's operations using the do_init template method
-    tiz_check_null_ret_oom ((p_ops_ = do_init ()));
+  // Init this graph's operations using the do_init template method
+  tiz_check_null_ret_oom ((p_ops_ = do_init ()));
 
-    // Create the graph's thread
-    tiz_check_omx_ret_oom (tiz_mutex_lock (&mutex_));
-    tiz_check_omx_ret_oom (
-        tiz_thread_create (&thread_, 0, 0, thread_func, this));
-    tiz_check_omx_ret_oom (tiz_mutex_unlock (&mutex_));
+  // Create the graph's thread
+  tiz_check_omx_ret_oom (tiz_mutex_lock (&mutex_));
+  tiz_check_omx_ret_oom (tiz_thread_create (&thread_, 0, 0, thread_func, this));
+  tiz_check_omx_ret_oom (tiz_mutex_unlock (&mutex_));
 
-    // Let's wait until the graph's thread is ready to receive requests
-    tiz_check_omx_ret_oom (tiz_sem_wait (&sem_));
+  // Let's wait until the graph's thread is ready to receive requests
+  tiz_check_omx_ret_oom (tiz_sem_wait (&sem_));
 
-    return OMX_ErrorNone;
+  return OMX_ErrorNone;
 }
 
 void graph::graph::deinit ()
 {
-    void *p_result = NULL;
+  void *p_result = NULL;
 
-    // Kill the graph thread
-    const bool kill_thread = true;
-    const int anyvalue = 0;
-    static_cast< void >(post_cmd (new tiz::graph::cmd (anyvalue, kill_thread)));
+  // Kill the graph thread
+  const bool kill_thread = true;
+  const int anyvalue = 0;
+  static_cast< void > (post_cmd (new tiz::graph::cmd (anyvalue, kill_thread)));
 
-    TIZ_LOG (TIZ_PRIORITY_NOTICE, "[%s] Waiting for thread exit...",
-             get_graph_name ().c_str ());
-    static_cast< void >(tiz_sem_wait (&sem_));
+  TIZ_LOG (TIZ_PRIORITY_NOTICE, "[%s] Waiting for thread exit...",
+           get_graph_name ().c_str ());
+  static_cast< void > (tiz_sem_wait (&sem_));
 
-    // Wait for thread to join
-    static_cast< void >(tiz_thread_join (&thread_, &p_result));
-    deinit_cmd_queue ();
+  // Wait for thread to join
+  static_cast< void > (tiz_thread_join (&thread_, &p_result));
+  deinit_cmd_queue ();
 
-    delete p_ops_;
-    p_ops_ = NULL;
+  delete p_ops_;
+  p_ops_ = NULL;
 }
 
 OMX_ERRORTYPE
 graph::graph::load (const tizgraphconfig_ptr_t config)
 {
-    return post_cmd (new tiz::graph::cmd (tiz::graph::load_evt (config)));
+  return post_cmd (new tiz::graph::cmd (tiz::graph::load_evt (config)));
 }
 
 OMX_ERRORTYPE
 graph::graph::execute (const tizgraphconfig_ptr_t config)
 {
-    return post_cmd (new tiz::graph::cmd (tiz::graph::execute_evt (config)));
+  return post_cmd (new tiz::graph::cmd (tiz::graph::execute_evt (config)));
 }
 
 OMX_ERRORTYPE
 graph::graph::pause ()
 {
-    return post_cmd (new tiz::graph::cmd (tiz::graph::pause_evt ()));
+  return post_cmd (new tiz::graph::cmd (tiz::graph::pause_evt ()));
 }
 
 OMX_ERRORTYPE
 graph::graph::seek ()
 {
-    return post_cmd (new tiz::graph::cmd (tiz::graph::seek_evt ()));
+  return post_cmd (new tiz::graph::cmd (tiz::graph::seek_evt ()));
 }
 
 OMX_ERRORTYPE
 graph::graph::skip (const int jump)
 {
-    return post_cmd (new tiz::graph::cmd (tiz::graph::skip_evt (jump)));
+  return post_cmd (new tiz::graph::cmd (tiz::graph::skip_evt (jump)));
 }
 
 OMX_ERRORTYPE
 graph::graph::volume_step (const int step)
 {
-    return post_cmd (new tiz::graph::cmd (tiz::graph::volume_step_evt (step)));
+  return post_cmd (new tiz::graph::cmd (tiz::graph::volume_step_evt (step)));
 }
 
 OMX_ERRORTYPE
 graph::graph::volume (const double vol)
 {
-    return post_cmd (new tiz::graph::cmd (tiz::graph::volume_evt (vol)));
+  return post_cmd (new tiz::graph::cmd (tiz::graph::volume_evt (vol)));
 }
 
 OMX_ERRORTYPE
 graph::graph::mute ()
 {
-    return post_cmd (new tiz::graph::cmd (tiz::graph::mute_evt ()));
+  return post_cmd (new tiz::graph::cmd (tiz::graph::mute_evt ()));
 }
 
 OMX_ERRORTYPE
 graph::graph::stop ()
 {
-    return post_cmd (new tiz::graph::cmd (tiz::graph::stop_evt ()));
+  return post_cmd (new tiz::graph::cmd (tiz::graph::stop_evt ()));
 }
 
 void graph::graph::unload ()
 {
-    post_cmd (new tiz::graph::cmd (tiz::graph::unload_evt ()));
+  post_cmd (new tiz::graph::cmd (tiz::graph::unload_evt ()));
 }
 
 void graph::graph::omx_evt (const omx_event_info &evt_info)
 {
-    if (p_ops_)
-    {
-        TIZ_LOG (TIZ_PRIORITY_NOTICE, "[%s] : [%s] -> %s",
-                 get_graph_name ().c_str (),
-                 p_ops_->handle2name (evt_info.component_).c_str (),
-                 evt_info.to_string ().c_str ());
-        TIZ_PRINTF_DBG_RED ("[%s] : [%s] -> %s\n",
-                            get_graph_name ().c_str (),
-                            p_ops_->handle2name (evt_info.component_).c_str (),
-                            evt_info.to_string ().c_str ());
+  if (p_ops_)
+  {
+    TIZ_LOG (TIZ_PRIORITY_NOTICE, "[%s] : [%s] -> %s",
+             get_graph_name ().c_str (),
+             p_ops_->handle2name (evt_info.component_).c_str (),
+             evt_info.to_string ().c_str ());
+    TIZ_PRINTF_DBG_RED ("[%s] : [%s] -> %s\n", get_graph_name ().c_str (),
+                        p_ops_->handle2name (evt_info.component_).c_str (),
+                        evt_info.to_string ().c_str ());
 
-        if (evt_info.event_ == OMX_EventCmdComplete
-                && static_cast< OMX_COMMANDTYPE > (evt_info.ndata1_)
-                == OMX_CommandStateSet)
-        {
-            OMX_ERRORTYPE error
-                = static_cast< OMX_ERRORTYPE >(*((int *)&((evt_info.pEventData_))));
-            post_cmd (new tiz::graph::cmd (tiz::graph::omx_trans_evt (
-                                               evt_info.component_, static_cast< OMX_STATETYPE >(evt_info.ndata2_),
-                                               error)));
-        }
-        else if (evt_info.event_ == OMX_EventCmdComplete
-                 && static_cast< OMX_COMMANDTYPE > (evt_info.ndata1_)
-                 == OMX_CommandPortDisable)
-        {
-            OMX_ERRORTYPE error
-                = static_cast< OMX_ERRORTYPE >(*((int *)&((evt_info.pEventData_))));
-            post_cmd (new tiz::graph::cmd (tiz::graph::omx_port_disabled_evt (
-                                               evt_info.component_, evt_info.ndata2_, error)));
-        }
-        else if (evt_info.event_ == OMX_EventCmdComplete
-                 && static_cast< OMX_COMMANDTYPE > (evt_info.ndata1_)
-                 == OMX_CommandPortEnable)
-        {
-            OMX_ERRORTYPE error
-                = static_cast< OMX_ERRORTYPE > (*((int *)&((evt_info.pEventData_))));
-            post_cmd (new tiz::graph::cmd (tiz::graph::omx_port_enabled_evt (
-                                               evt_info.component_, evt_info.ndata2_, error)));
-        }
-        else if (evt_info.event_ == OMX_EventError)
-        {
-            post_cmd (new tiz::graph::cmd (tiz::graph::omx_err_evt (
-                                               evt_info.component_, static_cast< OMX_ERRORTYPE >(evt_info.ndata1_),
-                                               evt_info.ndata2_, evt_info.pEventData_)));
-        }
-        else if (evt_info.event_ == OMX_EventPortSettingsChanged)
-        {
-            post_cmd (new tiz::graph::cmd (tiz::graph::omx_port_settings_evt (
-                                               evt_info.component_, evt_info.ndata1_,
-                                               static_cast< OMX_INDEXTYPE >(evt_info.ndata2_))));
-        }
-        else if (evt_info.event_ == OMX_EventIndexSettingChanged)
-        {
-            post_cmd (new tiz::graph::cmd (tiz::graph::omx_index_setting_evt (
-                                               evt_info.component_, evt_info.ndata1_,
-                                               static_cast< OMX_INDEXTYPE >(evt_info.ndata2_))));
-        }
-        else if (evt_info.event_ == OMX_EventPortFormatDetected)
-        {
-            post_cmd (new tiz::graph::cmd (
-                          tiz::graph::omx_format_detected_evt (evt_info.component_)));
-        }
-        else if (evt_info.event_ == OMX_EventBufferFlag)
-        {
-            post_cmd (new tiz::graph::cmd (tiz::graph::omx_eos_evt (
-                                               evt_info.component_, evt_info.ndata1_, evt_info.ndata2_)));
-        }
-        else
-        {
-            post_cmd (new tiz::graph::cmd (tiz::graph::omx_evt (
-                                               evt_info.component_, evt_info.event_, evt_info.ndata1_,
-                                               evt_info.ndata2_, evt_info.pEventData_)));
-        }
+    if (evt_info.event_ == OMX_EventCmdComplete
+        && static_cast< OMX_COMMANDTYPE > (evt_info.ndata1_)
+               == OMX_CommandStateSet)
+    {
+      OMX_ERRORTYPE error
+          = static_cast< OMX_ERRORTYPE > (*((int *)&((evt_info.pEventData_))));
+      post_cmd (new tiz::graph::cmd (tiz::graph::omx_trans_evt (
+          evt_info.component_, static_cast< OMX_STATETYPE > (evt_info.ndata2_),
+          error)));
     }
+    else if (evt_info.event_ == OMX_EventCmdComplete
+             && static_cast< OMX_COMMANDTYPE > (evt_info.ndata1_)
+                    == OMX_CommandPortDisable)
+    {
+      OMX_ERRORTYPE error
+          = static_cast< OMX_ERRORTYPE > (*((int *)&((evt_info.pEventData_))));
+      post_cmd (new tiz::graph::cmd (tiz::graph::omx_port_disabled_evt (
+          evt_info.component_, evt_info.ndata2_, error)));
+    }
+    else if (evt_info.event_ == OMX_EventCmdComplete
+             && static_cast< OMX_COMMANDTYPE > (evt_info.ndata1_)
+                    == OMX_CommandPortEnable)
+    {
+      OMX_ERRORTYPE error
+          = static_cast< OMX_ERRORTYPE > (*((int *)&((evt_info.pEventData_))));
+      post_cmd (new tiz::graph::cmd (tiz::graph::omx_port_enabled_evt (
+          evt_info.component_, evt_info.ndata2_, error)));
+    }
+    else if (evt_info.event_ == OMX_EventError)
+    {
+      post_cmd (new tiz::graph::cmd (tiz::graph::omx_err_evt (
+          evt_info.component_, static_cast< OMX_ERRORTYPE > (evt_info.ndata1_),
+          evt_info.ndata2_, evt_info.pEventData_)));
+    }
+    else if (evt_info.event_ == OMX_EventPortSettingsChanged)
+    {
+      post_cmd (new tiz::graph::cmd (tiz::graph::omx_port_settings_evt (
+          evt_info.component_, evt_info.ndata1_,
+          static_cast< OMX_INDEXTYPE > (evt_info.ndata2_))));
+    }
+    else if (evt_info.event_ == OMX_EventIndexSettingChanged)
+    {
+      post_cmd (new tiz::graph::cmd (tiz::graph::omx_index_setting_evt (
+          evt_info.component_, evt_info.ndata1_,
+          static_cast< OMX_INDEXTYPE > (evt_info.ndata2_))));
+    }
+    else if (evt_info.event_ == OMX_EventPortFormatDetected)
+    {
+      post_cmd (new tiz::graph::cmd (
+          tiz::graph::omx_format_detected_evt (evt_info.component_)));
+    }
+    else if (evt_info.event_ == OMX_EventBufferFlag)
+    {
+      post_cmd (new tiz::graph::cmd (tiz::graph::omx_eos_evt (
+          evt_info.component_, evt_info.ndata1_, evt_info.ndata2_)));
+    }
+    else
+    {
+      post_cmd (new tiz::graph::cmd (tiz::graph::omx_evt (
+          evt_info.component_, evt_info.event_, evt_info.ndata1_,
+          evt_info.ndata2_, evt_info.pEventData_)));
+    }
+  }
 }
 
 void graph::graph::set_manager (tiz::graphmgr::mgr *ap_mgr)
 {
-    assert (ap_mgr);
-    p_mgr_ = ap_mgr;
+  assert (ap_mgr);
+  p_mgr_ = ap_mgr;
 }
 
 void graph::graph::timer_cback (void *ap_graph, tiz_event_timer_t *ap_ev_timer,
                                 void *ap_arg1, const uint32_t a_id)
 {
-    tiz::graph::graph *p_graph = static_cast<tiz::graph::graph *>(ap_graph);
-    assert(ap_graph);
-    (void)p_graph->post_cmd (
-        new tiz::graph::cmd (tiz::graph::timer_evt (ap_arg1, a_id)));
+  tiz::graph::graph *p_graph = static_cast< tiz::graph::graph * > (ap_graph);
+  assert (ap_graph);
+  (void)p_graph->post_cmd (
+      new tiz::graph::cmd (tiz::graph::timer_evt (ap_arg1, a_id)));
 }
 
 void graph::graph::graph_loaded ()
 {
-    if (p_mgr_)
-    {
-        p_mgr_->graph_loaded ();
-    }
+  if (p_mgr_)
+  {
+    p_mgr_->graph_loaded ();
+  }
 }
 
 void graph::graph::graph_execd ()
 {
-    if (p_mgr_)
-    {
-        p_mgr_->graph_execd ();
-    }
+  if (p_mgr_)
+  {
+    p_mgr_->graph_execd ();
+  }
 }
 
 void graph::graph::graph_stopped ()
 {
-    if (p_mgr_)
-    {
-        p_mgr_->graph_stopped ();
-    }
+  if (p_mgr_)
+  {
+    p_mgr_->graph_stopped ();
+  }
 }
 
 void graph::graph::graph_paused ()
 {
-    if (p_mgr_)
-    {
-        p_mgr_->graph_paused ();
-    }
+  if (p_mgr_)
+  {
+    p_mgr_->graph_paused ();
+  }
 }
 
 void graph::graph::graph_resumed ()
 {
-    if (p_mgr_)
-    {
-        p_mgr_->graph_resumed ();
-    }
+  if (p_mgr_)
+  {
+    p_mgr_->graph_resumed ();
+  }
 }
 
 void graph::graph::graph_metadata (const track_metadata_map_t &metadata)
 {
-    if (p_mgr_)
-    {
-        p_mgr_->graph_metadata (metadata);
-    }
+  if (p_mgr_)
+  {
+    p_mgr_->graph_metadata (metadata);
+  }
 }
 
 void graph::graph::graph_volume (const int volume)
 {
-    if (p_mgr_)
-    {
-        p_mgr_->graph_volume (volume);
-    }
+  if (p_mgr_)
+  {
+    p_mgr_->graph_volume (volume);
+  }
 }
 
 void graph::graph::graph_unloaded ()
 {
-    if (p_mgr_)
-    {
-        p_mgr_->graph_unloaded ();
-    }
+  if (p_mgr_)
+  {
+    p_mgr_->graph_unloaded ();
+  }
 }
 
 void graph::graph::graph_end_of_play ()
 {
-    if (p_mgr_)
-    {
-        p_mgr_->graph_end_of_play ();
-    }
+  if (p_mgr_)
+  {
+    p_mgr_->graph_end_of_play ();
+  }
 }
 
 void graph::graph::graph_error (const OMX_ERRORTYPE error,
                                 const std::string &msg)
 {
-    if (p_mgr_)
-    {
-        p_mgr_->graph_error (error, msg);
-    }
+  if (p_mgr_)
+  {
+    p_mgr_->graph_error (error, msg);
+  }
 }
 
-void graph::graph::progress_display_start(unsigned long duration)
+void graph::graph::progress_display_start (unsigned long duration)
 {
-    uint32_t id = 0;
-    if (!p_progress_)
-    {
-        p_progress_ = new tiz::graph::progress_display(duration);
-        assert (p_ev_timer_);
-        (void)tiz_event_timer_set (p_ev_timer_, 1.0, 1.0);
-        (void)tiz_event_timer_start (p_ev_timer_, id);
-    }
-    else
-    {
-        p_progress_->restart(duration);
-        (void)tiz_event_timer_restart (p_ev_timer_, id);
-    }
+  uint32_t id = 0;
+  if (!p_progress_)
+  {
+    p_progress_ = new tiz::graph::progress_display (duration);
+    assert (p_ev_timer_);
+    (void)tiz_event_timer_set (p_ev_timer_, 1.0, 1.0);
+    (void)tiz_event_timer_start (p_ev_timer_, id);
+  }
+  else
+  {
+    p_progress_->restart (duration);
+    (void)tiz_event_timer_restart (p_ev_timer_, id);
+  }
+  ++(*p_progress_);
+}
+
+void graph::graph::progress_display_increase ()
+{
+  if (p_progress_)
+  {
     ++(*p_progress_);
+  }
 }
 
-void graph::graph::progress_display_increase()
+void graph::graph::progress_display_pause ()
 {
-    if (p_progress_)
-    {
-        ++(*p_progress_);
-    }
+  if (p_ev_timer_)
+  {
+    (void)tiz_event_timer_stop (p_ev_timer_);
+  }
 }
 
-void graph::graph::progress_display_pause()
+void graph::graph::progress_display_resume ()
 {
-    if (p_ev_timer_)
-    {
-        (void)tiz_event_timer_stop (p_ev_timer_);
-    }
-}
-
-void graph::graph::progress_display_resume()
-{
-    if (p_ev_timer_)
-    {
-        uint32_t id = 0;
-        (void)tiz_event_timer_restart (p_ev_timer_, id);
-    }
+  if (p_ev_timer_)
+  {
+    uint32_t id = 0;
+    (void)tiz_event_timer_restart (p_ev_timer_, id);
+  }
 }
 
 void graph::graph::progress_display_stop ()
 {
-    if (p_ev_timer_)
-    {
-        (void)tiz_event_timer_stop (p_ev_timer_);
-    }
+  if (p_ev_timer_)
+  {
+    (void)tiz_event_timer_stop (p_ev_timer_);
+  }
 
-    if (p_progress_)
-    {
-        // Make sure we finish with a nice and full progress display
-        (*p_progress_) += (p_progress_->expected_count () - p_progress_->count ());
-        delete p_progress_;
-        p_progress_ = NULL;
-    }
+  if (p_progress_)
+  {
+    // Make sure we finish with a nice and full progress display
+    (*p_progress_) += (p_progress_->expected_count () - p_progress_->count ());
+    delete p_progress_;
+    p_progress_ = NULL;
+  }
 }
 
 std::string graph::graph::get_graph_name () const
 {
-    return graph_name_;
+  return graph_name_;
 }
 
 OMX_ERRORTYPE
 graph::graph::init_cmd_queue ()
 {
-    tiz_check_omx_ret_oom (tiz_mutex_init (&mutex_));
-    tiz_check_omx_ret_oom (tiz_sem_init (&sem_, 0));
-    tiz_check_omx_ret_oom (tiz_queue_init (&p_queue_, TIZ_GRAPH_QUEUE_MAX_ITEMS));
-    tiz_check_omx_ret_oom (tiz_event_timer_init (
-                               &p_ev_timer_, this, tiz::graph::graph::timer_cback, NULL));
-    return OMX_ErrorNone;
+  tiz_check_omx_ret_oom (tiz_mutex_init (&mutex_));
+  tiz_check_omx_ret_oom (tiz_sem_init (&sem_, 0));
+  tiz_check_omx_ret_oom (tiz_queue_init (&p_queue_, TIZ_GRAPH_QUEUE_MAX_ITEMS));
+  tiz_check_omx_ret_oom (tiz_event_timer_init (
+      &p_ev_timer_, this, tiz::graph::graph::timer_cback, NULL));
+  return OMX_ErrorNone;
 }
 
 void graph::graph::deinit_cmd_queue ()
 {
-    tiz_mutex_destroy (&mutex_);
-    tiz_sem_destroy (&sem_);
-    tiz_queue_destroy (p_queue_);
-    p_queue_ = NULL;
+  tiz_mutex_destroy (&mutex_);
+  tiz_sem_destroy (&sem_);
+  tiz_queue_destroy (p_queue_);
+  p_queue_ = NULL;
 }
 
 OMX_ERRORTYPE
 graph::graph::post_cmd (tiz::graph::cmd *p_cmd)
 {
-    assert (p_cmd);
-    if (p_ops_ && p_queue_)
-    {
-        tiz_check_omx_ret_oom (tiz_mutex_lock (&mutex_));
-        (void) tiz_queue_send (p_queue_, p_cmd);
-        tiz_check_omx_ret_oom (tiz_mutex_unlock (&mutex_));
-    }
-    return OMX_ErrorNone;
+  assert (p_cmd);
+  if (p_ops_ && p_queue_)
+  {
+    tiz_check_omx_ret_oom (tiz_mutex_lock (&mutex_));
+    (void)tiz_queue_send (p_queue_, p_cmd);
+    tiz_check_omx_ret_oom (tiz_mutex_unlock (&mutex_));
+  }
+  return OMX_ErrorNone;
 }

@@ -29,12 +29,12 @@
 #include <config.h>
 #endif
 
-#include <boost/assign/list_of.hpp> // for 'list_of()'
+#include <boost/assign/list_of.hpp>  // for 'list_of()'
 
 #include <tizplatform.h>
 
-#include "tizgraphmgrcaps.hpp"
 #include "tizdecgraphmgr.hpp"
+#include "tizgraphmgrcaps.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -48,7 +48,7 @@ namespace graphmgr = tiz::graphmgr;
 //
 graphmgr::decodemgr::decodemgr () : graphmgr::mgr ()
 {
-    TIZ_LOG (TIZ_PRIORITY_TRACE, "Constructing...");
+  TIZ_LOG (TIZ_PRIORITY_TRACE, "Constructing...");
 }
 
 graphmgr::decodemgr::~decodemgr ()
@@ -56,40 +56,41 @@ graphmgr::decodemgr::~decodemgr ()
 }
 
 graphmgr::ops *graphmgr::decodemgr::do_init (
-    const tizplaylist_ptr_t &playlist, const termination_callback_t &termination_cback,
+    const tizplaylist_ptr_t &playlist,
+    const termination_callback_t &termination_cback,
     graphmgr_capabilities_t &graphmgr_caps)
 {
-    // Fill this graph manager capabilities
-    graphmgr_caps.can_quit_ = false;
-    graphmgr_caps.can_raise_ = false;
-    graphmgr_caps.has_track_list_ = true;
-    graphmgr_caps.identity_.assign ("Tizonia version ");
-    graphmgr_caps.identity_.append (PACKAGE_VERSION);
-    graphmgr_caps.uri_schemes_
-        = boost::assign::list_of ("file")
-          .convert_to_container< std::vector< std::string > > ();
-    graphmgr_caps.mime_types_
-        = boost::assign::list_of ("audio/mpg") ("audio/mp3") ("audio/aac") (
-              "audio/aacp") ("audio/vorbis") ("audio/opus") ("audio/flac")
-          .convert_to_container< std::vector< std::string > > ();
-    graphmgr_caps.minimum_rate_ = 1.0;
-    graphmgr_caps.maximum_rate_ = 1.0;
-    graphmgr_caps.can_go_next_ = true;
-    graphmgr_caps.can_go_previous_ = true;
-    graphmgr_caps.can_play_ = true;
-    graphmgr_caps.can_pause_ = true;
-    graphmgr_caps.can_seek_ = false;
-    graphmgr_caps.can_control_ = false;
+  // Fill this graph manager capabilities
+  graphmgr_caps.can_quit_ = false;
+  graphmgr_caps.can_raise_ = false;
+  graphmgr_caps.has_track_list_ = true;
+  graphmgr_caps.identity_.assign ("Tizonia version ");
+  graphmgr_caps.identity_.append (PACKAGE_VERSION);
+  graphmgr_caps.uri_schemes_
+      = boost::assign::list_of ("file")
+            .convert_to_container< std::vector< std::string > > ();
+  graphmgr_caps.mime_types_
+      = boost::assign::list_of ("audio/mpg") ("audio/mp3") ("audio/aac") (
+            "audio/aacp") ("audio/vorbis") ("audio/opus") ("audio/flac")
+            .convert_to_container< std::vector< std::string > > ();
+  graphmgr_caps.minimum_rate_ = 1.0;
+  graphmgr_caps.maximum_rate_ = 1.0;
+  graphmgr_caps.can_go_next_ = true;
+  graphmgr_caps.can_go_previous_ = true;
+  graphmgr_caps.can_play_ = true;
+  graphmgr_caps.can_pause_ = true;
+  graphmgr_caps.can_seek_ = false;
+  graphmgr_caps.can_control_ = false;
 
-    return new decodemgrops (this, playlist, termination_cback);
+  return new decodemgrops (this, playlist, termination_cback);
 }
 
 //
 // decodemgrops
 //
-graphmgr::decodemgrops::decodemgrops (mgr *p_mgr,
-                                      const tizplaylist_ptr_t &playlist,
-                                      const termination_callback_t &termination_cback)
-    : tiz::graphmgr::ops (p_mgr, playlist, termination_cback)
+graphmgr::decodemgrops::decodemgrops (
+    mgr *p_mgr, const tizplaylist_ptr_t &playlist,
+    const termination_callback_t &termination_cback)
+  : tiz::graphmgr::ops (p_mgr, playlist, termination_cback)
 {
 }

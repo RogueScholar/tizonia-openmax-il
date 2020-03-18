@@ -29,7 +29,8 @@
 #define HTTPSRCPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -40,9 +41,9 @@ extern "C" {
 
 #include <tizplatform.h>
 
-typedef struct httpsrc_prc httpsrc_prc_t;
-struct httpsrc_prc
-{
+  typedef struct httpsrc_prc httpsrc_prc_t;
+  struct httpsrc_prc
+  {
     /* Object */
     const tiz_prc_t _;
     OMX_BUFFERHEADERTYPE * p_outhdr_;
@@ -58,15 +59,15 @@ struct httpsrc_prc
     int buffer_bytes_;
     bool connection_closed_;
     bool first_buffer_delivered_;
-};
+  };
 
-typedef struct httpsrc_prc_class httpsrc_prc_class_t;
-struct httpsrc_prc_class
-{
+  typedef struct httpsrc_prc_class httpsrc_prc_class_t;
+  struct httpsrc_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

@@ -29,7 +29,8 @@
 #define TUNEINPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -41,9 +42,9 @@ extern "C" {
 #include <tizplatform.h>
 #include <tiztunein_c.h>
 
-typedef struct tunein_prc tunein_prc_t;
-struct tunein_prc
-{
+  typedef struct tunein_prc tunein_prc_t;
+  struct tunein_prc
+  {
     /* Object */
     const tiz_prc_t _;
     OMX_BUFFERHEADERTYPE * p_outhdr_;
@@ -66,15 +67,15 @@ struct tunein_prc
     bool remove_current_url_;
     bool connection_closed_;
     bool first_buffer_delivered_;
-};
+  };
 
-typedef struct tunein_prc_class tunein_prc_class_t;
-struct tunein_prc_class
-{
+  typedef struct tunein_prc_class tunein_prc_class_t;
+  struct tunein_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

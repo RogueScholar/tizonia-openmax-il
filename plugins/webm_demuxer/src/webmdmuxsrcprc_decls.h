@@ -29,7 +29,8 @@
 #define WEBMDMUXSRCPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -42,9 +43,9 @@ extern "C" {
 
 #include "nestegg.h"
 
-typedef struct webmdmuxsrc_prc webmdmuxsrc_prc_t;
-struct webmdmuxsrc_prc
-{
+  typedef struct webmdmuxsrc_prc webmdmuxsrc_prc_t;
+  struct webmdmuxsrc_prc
+  {
     /* Object */
     const tiz_prc_t _;
     OMX_BUFFERHEADERTYPE * p_outhdr_;
@@ -59,15 +60,15 @@ struct webmdmuxsrc_prc
     int cache_bytes_;
     nestegg * p_ne_;
     nestegg_io ne_io_;
-};
+  };
 
-typedef struct webmdmuxsrc_prc_class webmdmuxsrc_prc_class_t;
-struct webmdmuxsrc_prc_class
-{
+  typedef struct webmdmuxsrc_prc_class webmdmuxsrc_prc_class_t;
+  struct webmdmuxsrc_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

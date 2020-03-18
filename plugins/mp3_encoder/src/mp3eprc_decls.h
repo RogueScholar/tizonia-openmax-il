@@ -30,7 +30,8 @@
 #define MP3EPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "mp3eprc.h"
@@ -44,9 +45,9 @@ extern "C" {
 #define INPUT_BUFFER_SIZE (5 * 8192)
 #define OUTPUT_BUFFER_SIZE 8192 /* Must be an integer multiple of 4. */
 
-typedef struct mp3e_prc mp3e_prc_t;
-struct mp3e_prc
-{
+  typedef struct mp3e_prc mp3e_prc_t;
+  struct mp3e_prc
+  {
     /* Object */
     const tiz_prc_t _;
     OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
@@ -57,15 +58,15 @@ struct mp3e_prc
     OMX_BUFFERHEADERTYPE * p_outhdr_;
     bool eos_;
     bool lame_flushed_;
-};
+  };
 
-typedef struct mp3e_prc_class mp3e_prc_class_t;
-struct mp3e_prc_class
-{
+  typedef struct mp3e_prc_class mp3e_prc_class_t;
+  struct mp3e_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

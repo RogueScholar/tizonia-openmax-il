@@ -31,9 +31,9 @@
 
 namespace tiz
 {
-class daemon
-{
-public:
+  class daemon
+  {
+  public:
     /**
      *  This function performs the steps required to turn a process into a
      *  deamon.
@@ -41,7 +41,7 @@ public:
      *  @return 0 on success, -1 on error
      */
     static int daemonize ();
-};
+  };
 }  // namespace tiz
 
 #endif  // TIZDAEMON_HPP

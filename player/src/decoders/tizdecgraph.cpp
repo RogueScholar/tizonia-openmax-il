@@ -31,8 +31,8 @@
 #endif
 
 #include "tizgraph.hpp"
-#include "tizgraphfsm.hpp"
 #include "tizgraphcmd.hpp"
+#include "tizgraphfsm.hpp"
 #include "tizgraphops.hpp"
 
 #include "tizdecgraph.hpp"
@@ -48,81 +48,79 @@ namespace graph = tiz::graph;
 // decoder
 //
 graph::decoder::decoder (const std::string &graph_name)
-    : graph::graph (graph_name),
-      fsm_ (new fsm (boost::msm::back::states_
-                     << tiz::graph::fsm::configuring (&p_ops_)
-                     << tiz::graph::fsm::skipping (&p_ops_),
-                     &p_ops_))
+  : graph::graph (graph_name),
+    fsm_ (new fsm (boost::msm::back::states_ << tiz::graph::fsm::configuring (
+                       &p_ops_) << tiz::graph::fsm::skipping (&p_ops_),
+                   &p_ops_))
 {
 }
 
 graph::decoder::~decoder ()
 {
-    delete (boost::any_cast< fsm * >(fsm_));
+  delete (boost::any_cast< fsm * > (fsm_));
 }
 
 bool graph::decoder::dispatch_cmd (const tiz::graph::cmd *p_cmd)
 {
-    assert (p_ops_);
-    assert (p_cmd);
+  assert (p_ops_);
+  assert (p_cmd);
 
-    if (!p_cmd->kill_thread ())
+  if (!p_cmd->kill_thread ())
+  {
+    fsm *p_fsm = boost::any_cast< fsm * > (fsm_);
+    assert (p_fsm);
+
+    if (p_cmd->evt ().type () == typeid (tiz::graph::load_evt))
     {
-        fsm * p_fsm = boost::any_cast< fsm * >(fsm_);
-        assert (p_fsm);
-
-        if (p_cmd->evt ().type () == typeid(tiz::graph::load_evt))
-        {
-            // Time to start the FSM
-            TIZ_LOG (TIZ_PRIORITY_NOTICE, "Starting [%s] fsm...",
-                     get_graph_name ().c_str ());
-            p_fsm->start ();
-        }
-
-        p_cmd->inject< fsm >(*p_fsm, tiz::graph::pstate);
-
-        // Check for internal errors produced during the processing of the last
-        // event. If any, inject an "internal" error event. This is fatal and shall
-        // terminate the state machine.
-        if (OMX_ErrorNone != p_ops_->internal_error ())
-        {
-            p_fsm->process_event (tiz::graph::err_evt (p_ops_->internal_error (),
-                                  p_ops_->internal_error_msg ()));
-        }
-
-        if (p_fsm->terminated_)
-        {
-            TIZ_LOG (TIZ_PRIORITY_NOTICE, "[%s] fsm terminated...",
-                     get_graph_name ().c_str ());
-        }
+      // Time to start the FSM
+      TIZ_LOG (TIZ_PRIORITY_NOTICE, "Starting [%s] fsm...",
+               get_graph_name ().c_str ());
+      p_fsm->start ();
     }
 
-    return p_cmd->kill_thread ();
+    p_cmd->inject< fsm > (*p_fsm, tiz::graph::pstate);
+
+    // Check for internal errors produced during the processing of the last
+    // event. If any, inject an "internal" error event. This is fatal and shall
+    // terminate the state machine.
+    if (OMX_ErrorNone != p_ops_->internal_error ())
+    {
+      p_fsm->process_event (tiz::graph::err_evt (
+          p_ops_->internal_error (), p_ops_->internal_error_msg ()));
+    }
+
+    if (p_fsm->terminated_)
+    {
+      TIZ_LOG (TIZ_PRIORITY_NOTICE, "[%s] fsm terminated...",
+               get_graph_name ().c_str ());
+    }
+  }
+
+  return p_cmd->kill_thread ();
 }
 
 //
 // decops
 //
-graph::decops::decops (graph *p_graph,
-                       const omx_comp_name_lst_t &comp_lst,
+graph::decops::decops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
                        const omx_comp_role_lst_t &role_lst)
-    : tiz::graph::ops (p_graph, comp_lst, role_lst)
+  : tiz::graph::ops (p_graph, comp_lst, role_lst)
 {
 }
 
 void graph::decops::do_disable_comp_ports (const int /* comp_id */,
-        const int /* port_id */)
+                                           const int /* port_id */)
 {
-    // NOTE: This is a no-op in most audio decoder graphs, i.e those where the
-    // file reader is used because this component has no video port. When an
-    // actual demuxer is used, then this method should be overriden to allow
-    // disabling of the demuxer's video port. See transition table for
-    // configuring in tizgraphfsm.hpp.
+  // NOTE: This is a no-op in most audio decoder graphs, i.e those where the
+  // file reader is used because this component has no video port. When an
+  // actual demuxer is used, then this method should be overriden to allow
+  // disabling of the demuxer's video port. See transition table for
+  // configuring in tizgraphfsm.hpp.
 }
 
 bool graph::decops::is_disabled_evt_required () const
 {
-    // It returns false because in the default case there is no video port to be
-    // disabled in the graph. See comment in do_disable_comp_ports.
-    return false;
+  // It returns false because in the default case there is no video port to be
+  // disabled in the graph. See comment in do_disable_comp_ports.
+  return false;
 }

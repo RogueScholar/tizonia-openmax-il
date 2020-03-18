@@ -34,6 +34,6 @@
 
 int main (int argc, char **argv)
 {
-    tiz::playapp app (argc, argv);
-    return app.run ();
+  tiz::playapp app (argc, argv);
+  return app.run ();
 }

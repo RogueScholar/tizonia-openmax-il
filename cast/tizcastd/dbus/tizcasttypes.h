@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -30,10 +31,12 @@
 #define TIZCASTTYPES_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif /* __cplusplus */
 
-typedef enum tiz_cast_error_t {
+  typedef enum tiz_cast_error_t
+  {
     TIZ_CAST_SUCCESS = 0,
     TIZ_CAST_MISUSE,
     TIZ_CAST_URL_LOAD_FAILURE,
@@ -42,7 +45,7 @@ typedef enum tiz_cast_error_t {
     TIZ_CAST_DBUS,
     TIZ_CAST_UNKNOWN,
     TIZ_CAST_ERROR_MAX
-} tiz_cast_error_t;
+  } tiz_cast_error_t;
 
 #ifdef __cplusplus
 }

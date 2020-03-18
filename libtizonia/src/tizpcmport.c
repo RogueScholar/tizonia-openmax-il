@@ -47,93 +47,93 @@ static OMX_ERRORTYPE
 pcmport_SetParameter_common (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
                              OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
-    tiz_pcmport_t * p_obj = (tiz_pcmport_t *) ap_obj;
+  tiz_pcmport_t * p_obj = (tiz_pcmport_t *) ap_obj;
 
-    assert (ap_obj);
+  assert (ap_obj);
 
-    TIZ_TRACE (ap_hdl, "PORT [%d] SetParameter [%s]...", tiz_port_dir (p_obj),
-               tiz_idx_to_str (a_index));
+  TIZ_TRACE (ap_hdl, "PORT [%d] SetParameter [%s]...", tiz_port_dir (p_obj),
+             tiz_idx_to_str (a_index));
 
-    switch (a_index)
+  switch (a_index)
     {
-    case OMX_IndexParamAudioPcm:
-    {
-        OMX_S32 i = 0;
-        const OMX_AUDIO_PARAM_PCMMODETYPE * p_pcmmode
+      case OMX_IndexParamAudioPcm:
+        {
+          OMX_S32 i = 0;
+          const OMX_AUDIO_PARAM_PCMMODETYPE * p_pcmmode
             = (OMX_AUDIO_PARAM_PCMMODETYPE *) ap_struct;
 
-        switch (p_pcmmode->nSamplingRate)
-        {
-        case 8000:
-        case 11025:
-        case 12000:
-        case 16000:
-        case 22050:
-        case 24000:
-        case 32000:
-        case 44100:
-        case 48000:
-        case 96000:
-        {
-            break;
-        }
-        default:
-        {
-            TIZ_ERROR (ap_hdl,
-                       "[OMX_ErrorBadParameter] : PORT [%d] "
-                       "SetParameter [%s]... Invalid sampling rate [%d]",
-                       tiz_port_dir (p_obj), tiz_idx_to_str (a_index),
-                       p_pcmmode->nSamplingRate);
-            return OMX_ErrorBadParameter;
-        }
-        };
+          switch (p_pcmmode->nSamplingRate)
+            {
+              case 8000:
+              case 11025:
+              case 12000:
+              case 16000:
+              case 22050:
+              case 24000:
+              case 32000:
+              case 44100:
+              case 48000:
+              case 96000:
+                {
+                  break;
+                }
+              default:
+                {
+                  TIZ_ERROR (ap_hdl,
+                             "[OMX_ErrorBadParameter] : PORT [%d] "
+                             "SetParameter [%s]... Invalid sampling rate [%d]",
+                             tiz_port_dir (p_obj), tiz_idx_to_str (a_index),
+                             p_pcmmode->nSamplingRate);
+                  return OMX_ErrorBadParameter;
+                }
+            };
 
-        switch (p_pcmmode->nBitPerSample)
-        {
-        case 8:
-        case 16:
-        case 32:
-        {
-            break;
-        }
-        default:
-        {
-            TIZ_ERROR (
-                ap_hdl,
-                "[OMX_ErrorBadParameter] : PORT [%d] "
-                "SetParameter [%s]... Invalid bits per sample [%d]",
-                tiz_port_dir (p_obj), tiz_idx_to_str (a_index),
-                p_pcmmode->nBitPerSample);
-            return OMX_ErrorBadParameter;
-        }
-        };
+          switch (p_pcmmode->nBitPerSample)
+            {
+              case 8:
+              case 16:
+              case 32:
+                {
+                  break;
+                }
+              default:
+                {
+                  TIZ_ERROR (
+                    ap_hdl,
+                    "[OMX_ErrorBadParameter] : PORT [%d] "
+                    "SetParameter [%s]... Invalid bits per sample [%d]",
+                    tiz_port_dir (p_obj), tiz_idx_to_str (a_index),
+                    p_pcmmode->nBitPerSample);
+                  return OMX_ErrorBadParameter;
+                }
+            };
 
-        /* Apply the new default values */
-        p_obj->pcmmode_.nChannels = p_pcmmode->nChannels;
-        p_obj->pcmmode_.eNumData = p_pcmmode->eNumData;
-        p_obj->pcmmode_.eEndian = p_pcmmode->eEndian;
-        p_obj->pcmmode_.bInterleaved = p_pcmmode->bInterleaved;
-        p_obj->pcmmode_.nBitPerSample = p_pcmmode->nBitPerSample;
-        p_obj->pcmmode_.nSamplingRate = p_pcmmode->nSamplingRate;
-        p_obj->pcmmode_.ePCMMode = p_pcmmode->ePCMMode;
+          /* Apply the new default values */
+          p_obj->pcmmode_.nChannels = p_pcmmode->nChannels;
+          p_obj->pcmmode_.eNumData = p_pcmmode->eNumData;
+          p_obj->pcmmode_.eEndian = p_pcmmode->eEndian;
+          p_obj->pcmmode_.bInterleaved = p_pcmmode->bInterleaved;
+          p_obj->pcmmode_.nBitPerSample = p_pcmmode->nBitPerSample;
+          p_obj->pcmmode_.nSamplingRate = p_pcmmode->nSamplingRate;
+          p_obj->pcmmode_.ePCMMode = p_pcmmode->ePCMMode;
 
-        for (i = 0; i < OMX_AUDIO_MAXCHANNELS; ++i)
-        {
-            p_obj->pcmmode_.eChannelMapping[i]
+          for (i = 0; i < OMX_AUDIO_MAXCHANNELS; ++i)
+            {
+              p_obj->pcmmode_.eChannelMapping[i]
                 = p_pcmmode->eChannelMapping[i];
+            }
         }
-    }
-    break;
+        break;
 
-    default:
-    {
-        /* Try the parent's indexes */
-        return super_SetParameter (typeOf (ap_obj, "tizpcmport"), ap_obj,
-                                   ap_hdl, a_index, ap_struct);
-    }
+      default:
+        {
+          /* Try the parent's indexes */
+          return super_SetParameter (typeOf (ap_obj, "tizpcmport"), ap_obj,
+                                     ap_hdl, a_index, ap_struct);
+        }
     };
 
-    return OMX_ErrorNone;
+  return OMX_ErrorNone;
 }
 
 /*
@@ -143,65 +143,65 @@ pcmport_SetParameter_common (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
 static void *
 pcmport_ctor (void * ap_obj, va_list * app)
 {
-    tiz_pcmport_t * p_obj
-        = super_ctor (typeOf (ap_obj, "tizpcmport"), ap_obj, app);
-    tiz_port_t * p_base = ap_obj;
-    OMX_AUDIO_PARAM_PCMMODETYPE * p_pcmmode = NULL;
-    OMX_AUDIO_CONFIG_VOLUMETYPE * p_volume = NULL;
-    OMX_AUDIO_CONFIG_MUTETYPE * p_mute = NULL;
+  tiz_pcmport_t * p_obj
+    = super_ctor (typeOf (ap_obj, "tizpcmport"), ap_obj, app);
+  tiz_port_t * p_base = ap_obj;
+  OMX_AUDIO_PARAM_PCMMODETYPE * p_pcmmode = NULL;
+  OMX_AUDIO_CONFIG_VOLUMETYPE * p_volume = NULL;
+  OMX_AUDIO_CONFIG_MUTETYPE * p_mute = NULL;
 
-    tiz_check_omx_ret_null (
-        tiz_port_register_index (p_obj, OMX_IndexParamAudioPcm));
-    tiz_check_omx_ret_null (
-        tiz_port_register_index (p_obj, OMX_IndexConfigAudioVolume));
-    tiz_check_omx_ret_null (
-        tiz_port_register_index (p_obj, OMX_IndexConfigAudioMute));
+  tiz_check_omx_ret_null (
+    tiz_port_register_index (p_obj, OMX_IndexParamAudioPcm));
+  tiz_check_omx_ret_null (
+    tiz_port_register_index (p_obj, OMX_IndexConfigAudioVolume));
+  tiz_check_omx_ret_null (
+    tiz_port_register_index (p_obj, OMX_IndexConfigAudioMute));
 
-    /* Initialize the OMX_AUDIO_PARAM_PCMMODETYPE structure */
-    if ((p_pcmmode = va_arg (*app, OMX_AUDIO_PARAM_PCMMODETYPE *)))
+  /* Initialize the OMX_AUDIO_PARAM_PCMMODETYPE structure */
+  if ((p_pcmmode = va_arg (*app, OMX_AUDIO_PARAM_PCMMODETYPE *)))
     {
-        int i = 0;
-        (void) tiz_mem_set (&p_obj->pcmmode_, 0, sizeof p_obj->pcmmode_);
-        p_obj->pcmmode_ = *p_pcmmode;
-        for (i = 0; i < OMX_AUDIO_MAXCHANNELS; ++i)
+      int i = 0;
+      (void) tiz_mem_set (&p_obj->pcmmode_, 0, sizeof p_obj->pcmmode_);
+      p_obj->pcmmode_ = *p_pcmmode;
+      for (i = 0; i < OMX_AUDIO_MAXCHANNELS; ++i)
         {
-            p_obj->pcmmode_.eChannelMapping[i] = p_pcmmode->eChannelMapping[i];
+          p_obj->pcmmode_.eChannelMapping[i] = p_pcmmode->eChannelMapping[i];
         }
 
-        TIZ_TRACE (handleOf (ap_obj), "nChannels = [%d]",
-                   p_obj->pcmmode_.nChannels);
-        TIZ_TRACE (handleOf (ap_obj), "nBitPerSample = [%d]",
-                   p_obj->pcmmode_.nBitPerSample);
-        TIZ_TRACE (handleOf (ap_obj), "nSamplingRate = [%d]",
-                   p_obj->pcmmode_.nSamplingRate);
+      TIZ_TRACE (handleOf (ap_obj), "nChannels = [%d]",
+                 p_obj->pcmmode_.nChannels);
+      TIZ_TRACE (handleOf (ap_obj), "nBitPerSample = [%d]",
+                 p_obj->pcmmode_.nBitPerSample);
+      TIZ_TRACE (handleOf (ap_obj), "nSamplingRate = [%d]",
+                 p_obj->pcmmode_.nSamplingRate);
     }
 
-    /* Initialize the OMX_AUDIO_CONFIG_VOLUMETYPE structure */
-    if ((p_volume = va_arg (*app, OMX_AUDIO_CONFIG_VOLUMETYPE *)))
+  /* Initialize the OMX_AUDIO_CONFIG_VOLUMETYPE structure */
+  if ((p_volume = va_arg (*app, OMX_AUDIO_CONFIG_VOLUMETYPE *)))
     {
-        p_obj->volume_ = *p_volume;
+      p_obj->volume_ = *p_volume;
     }
 
-    /* Initialize the OMX_AUDIO_CONFIG_MUTETYPE structure */
-    if ((p_mute = va_arg (*app, OMX_AUDIO_CONFIG_MUTETYPE *)))
+  /* Initialize the OMX_AUDIO_CONFIG_MUTETYPE structure */
+  if ((p_mute = va_arg (*app, OMX_AUDIO_CONFIG_MUTETYPE *)))
     {
-        p_obj->mute_ = *p_mute;
+      p_obj->mute_ = *p_mute;
     }
 
-    /* TODO: Extract this from the va_list */
-    p_base->portdef_.eDomain = OMX_PortDomainAudio;
-    /* NOTE: MIME type is gone in 1.2 */
-    p_base->portdef_.format.audio.pNativeRender = 0;
-    p_base->portdef_.format.audio.bFlagErrorConcealment = OMX_FALSE;
-    p_base->portdef_.format.audio.eEncoding = OMX_AUDIO_CodingPCM;
+  /* TODO: Extract this from the va_list */
+  p_base->portdef_.eDomain = OMX_PortDomainAudio;
+  /* NOTE: MIME type is gone in 1.2 */
+  p_base->portdef_.format.audio.pNativeRender = 0;
+  p_base->portdef_.format.audio.bFlagErrorConcealment = OMX_FALSE;
+  p_base->portdef_.format.audio.eEncoding = OMX_AUDIO_CodingPCM;
 
-    return p_obj;
+  return p_obj;
 }
 
 static void *
 pcmport_dtor (void * ap_obj)
 {
-    return super_dtor (typeOf (ap_obj, "tizpcmport"), ap_obj);
+  return super_dtor (typeOf (ap_obj, "tizpcmport"), ap_obj);
 }
 
 /*
@@ -212,222 +212,222 @@ static OMX_ERRORTYPE
 pcmport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
                       OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
-    const tiz_pcmport_t * p_obj = ap_obj;
+  const tiz_pcmport_t * p_obj = ap_obj;
 
-    TIZ_TRACE (ap_hdl, "GetParameter [%s]...", tiz_idx_to_str (a_index));
-    assert (ap_obj);
+  TIZ_TRACE (ap_hdl, "GetParameter [%s]...", tiz_idx_to_str (a_index));
+  assert (ap_obj);
 
-    switch (a_index)
+  switch (a_index)
     {
-    case OMX_IndexParamAudioPcm:
-    {
-        int i = 0;
-        OMX_AUDIO_PARAM_PCMMODETYPE * p_pcmmode
-            = (OMX_AUDIO_PARAM_PCMMODETYPE *) ap_struct;
-        *p_pcmmode = p_obj->pcmmode_;
-        for (i = 0; i < OMX_AUDIO_MAXCHANNELS; ++i)
+      case OMX_IndexParamAudioPcm:
         {
-            p_pcmmode->eChannelMapping[i]
+          int i = 0;
+          OMX_AUDIO_PARAM_PCMMODETYPE * p_pcmmode
+            = (OMX_AUDIO_PARAM_PCMMODETYPE *) ap_struct;
+          *p_pcmmode = p_obj->pcmmode_;
+          for (i = 0; i < OMX_AUDIO_MAXCHANNELS; ++i)
+            {
+              p_pcmmode->eChannelMapping[i]
                 = p_obj->pcmmode_.eChannelMapping[i];
+            }
+          break;
         }
-        break;
-    }
 
-    default:
-    {
-        /* Try the parent's indexes */
-        return super_GetParameter (typeOf (ap_obj, "tizpcmport"), ap_obj,
-                                   ap_hdl, a_index, ap_struct);
-    }
+      default:
+        {
+          /* Try the parent's indexes */
+          return super_GetParameter (typeOf (ap_obj, "tizpcmport"), ap_obj,
+                                     ap_hdl, a_index, ap_struct);
+        }
     };
 
-    return OMX_ErrorNone;
+  return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
 pcmport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
                       OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
-    tiz_pcmport_t * p_obj = (tiz_pcmport_t *) ap_obj;
-    OMX_ERRORTYPE rc = OMX_ErrorNone;
+  tiz_pcmport_t * p_obj = (tiz_pcmport_t *) ap_obj;
+  OMX_ERRORTYPE rc = OMX_ErrorNone;
 
-    assert (ap_obj);
+  assert (ap_obj);
 
-    TIZ_TRACE (ap_hdl, "PORT [%d] SetParameter [%s]...", tiz_port_dir (p_obj),
-               tiz_idx_to_str (a_index));
+  TIZ_TRACE (ap_hdl, "PORT [%d] SetParameter [%s]...", tiz_port_dir (p_obj),
+             tiz_idx_to_str (a_index));
 
-    switch (a_index)
+  switch (a_index)
     {
-    case OMX_IndexParamAudioPcm:
-    {
-        const tiz_port_t * p_base = ap_obj;
+      case OMX_IndexParamAudioPcm:
+        {
+          const tiz_port_t * p_base = ap_obj;
 
-        /* Do now allow changes to sampling rate, num of channels or bits per
+          /* Do now allow changes to sampling rate, num of channels or bits per
         * sample if this is a slave output port */
 
-        if ((OMX_DirOutput == p_base->portdef_.eDir)
-                && (p_base->opts_.mos_port != (OMX_U32) -1)
-                && (p_base->opts_.mos_port != p_base->portdef_.nPortIndex))
-        {
-            TIZ_ERROR (
+          if ((OMX_DirOutput == p_base->portdef_.eDir)
+              && (p_base->opts_.mos_port != (OMX_U32) -1)
+              && (p_base->opts_.mos_port != p_base->portdef_.nPortIndex))
+            {
+              TIZ_ERROR (
                 ap_hdl,
                 "[OMX_ErrorBadParameter] : PORT [%d] "
                 "SetParameter [OMX_IndexParamAudioPcm]... "
                 "Slave port, cannot allow external updates of port properties "
                 "like sample rate, bits per sample or number of channels",
                 tiz_port_dir (p_obj));
-            rc = OMX_ErrorBadParameter;
+              rc = OMX_ErrorBadParameter;
+            }
+          else
+            {
+              pcmport_SetParameter_common (ap_obj, ap_hdl, a_index, ap_struct);
+            }
         }
-        else
-        {
-            pcmport_SetParameter_common (ap_obj, ap_hdl, a_index, ap_struct);
-        }
-    }
-    break;
+        break;
 
-    default:
-    {
-        /* Try the parent's indexes */
-        rc = super_SetParameter (typeOf (ap_obj, "tizpcmport"), ap_obj,
-                                 ap_hdl, a_index, ap_struct);
-    }
+      default:
+        {
+          /* Try the parent's indexes */
+          rc = super_SetParameter (typeOf (ap_obj, "tizpcmport"), ap_obj,
+                                   ap_hdl, a_index, ap_struct);
+        }
     };
 
-    return rc;
+  return rc;
 }
 
 static OMX_ERRORTYPE
 pcmport_GetConfig (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
                    OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
-    const tiz_pcmport_t * p_obj = ap_obj;
+  const tiz_pcmport_t * p_obj = ap_obj;
 
-    switch (a_index)
+  switch (a_index)
     {
 
-    case OMX_IndexConfigAudioVolume:
-    {
-        OMX_AUDIO_CONFIG_VOLUMETYPE * p_volume
+      case OMX_IndexConfigAudioVolume:
+        {
+          OMX_AUDIO_CONFIG_VOLUMETYPE * p_volume
             = (OMX_AUDIO_CONFIG_VOLUMETYPE *) ap_struct;
 
-        *p_volume = p_obj->volume_;
-    }
-    break;
+          *p_volume = p_obj->volume_;
+        }
+        break;
 
-    case OMX_IndexConfigAudioMute:
-    {
-        OMX_AUDIO_CONFIG_MUTETYPE * p_mute
+      case OMX_IndexConfigAudioMute:
+        {
+          OMX_AUDIO_CONFIG_MUTETYPE * p_mute
             = (OMX_AUDIO_CONFIG_MUTETYPE *) ap_struct;
 
-        *p_mute = p_obj->mute_;
-    }
-    break;
+          *p_mute = p_obj->mute_;
+        }
+        break;
 
-    default:
-    {
-        /* Try the parent's indexes */
-        return super_GetConfig (typeOf (ap_obj, "tizpcmport"), ap_obj, ap_hdl,
-                                a_index, ap_struct);
-    }
+      default:
+        {
+          /* Try the parent's indexes */
+          return super_GetConfig (typeOf (ap_obj, "tizpcmport"), ap_obj, ap_hdl,
+                                  a_index, ap_struct);
+        }
     };
 
-    return OMX_ErrorNone;
+  return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
 pcmport_SetConfig (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
                    OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
-    tiz_pcmport_t * p_obj = (tiz_pcmport_t *) ap_obj;
-    OMX_ERRORTYPE rc = OMX_ErrorNone;
+  tiz_pcmport_t * p_obj = (tiz_pcmport_t *) ap_obj;
+  OMX_ERRORTYPE rc = OMX_ErrorNone;
 
-    assert (ap_obj);
+  assert (ap_obj);
 
-    TIZ_TRACE (ap_hdl, "PORT [%d] SetConfig [%s]...", tiz_port_dir (p_obj),
-               tiz_idx_to_str (a_index));
+  TIZ_TRACE (ap_hdl, "PORT [%d] SetConfig [%s]...", tiz_port_dir (p_obj),
+             tiz_idx_to_str (a_index));
 
-    switch (a_index)
+  switch (a_index)
     {
 
-    case OMX_IndexConfigAudioVolume:
-    {
-        const OMX_AUDIO_CONFIG_VOLUMETYPE * p_volume
+      case OMX_IndexConfigAudioVolume:
+        {
+          const OMX_AUDIO_CONFIG_VOLUMETYPE * p_volume
             = (OMX_AUDIO_CONFIG_VOLUMETYPE *) ap_struct;
 
-        /* Apply the new default values */
-        if (p_obj->volume_.bLinear != p_volume->bLinear
-                || p_obj->volume_.sVolume.nValue != p_volume->sVolume.nValue
-                || p_obj->volume_.sVolume.nMin != p_volume->sVolume.nMin
-                || p_obj->volume_.sVolume.nMax != p_volume->sVolume.nMax)
-        {
-            p_obj->volume_.bLinear = p_volume->bLinear;
-            p_obj->volume_.sVolume.nValue = p_volume->sVolume.nValue;
-            p_obj->volume_.sVolume.nMin = p_volume->sVolume.nMin;
-            p_obj->volume_.sVolume.nMax = p_volume->sVolume.nMax;
+          /* Apply the new default values */
+          if (p_obj->volume_.bLinear != p_volume->bLinear
+              || p_obj->volume_.sVolume.nValue != p_volume->sVolume.nValue
+              || p_obj->volume_.sVolume.nMin != p_volume->sVolume.nMin
+              || p_obj->volume_.sVolume.nMax != p_volume->sVolume.nMax)
+            {
+              p_obj->volume_.bLinear = p_volume->bLinear;
+              p_obj->volume_.sVolume.nValue = p_volume->sVolume.nValue;
+              p_obj->volume_.sVolume.nMin = p_volume->sVolume.nMin;
+              p_obj->volume_.sVolume.nMax = p_volume->sVolume.nMax;
+            }
         }
-    }
-    break;
+        break;
 
-    case OMX_IndexConfigAudioMute:
-    {
-        const OMX_AUDIO_CONFIG_MUTETYPE * p_mute
+      case OMX_IndexConfigAudioMute:
+        {
+          const OMX_AUDIO_CONFIG_MUTETYPE * p_mute
             = (OMX_AUDIO_CONFIG_MUTETYPE *) ap_struct;
 
-        if (p_obj->mute_.bMute != p_mute->bMute)
-        {
-            p_obj->mute_.bMute = p_mute->bMute;
+          if (p_obj->mute_.bMute != p_mute->bMute)
+            {
+              p_obj->mute_.bMute = p_mute->bMute;
+            }
         }
-    }
-    break;
+        break;
 
-    default:
-    {
-        /* Try the parent's indexes */
-        rc = super_SetConfig (typeOf (ap_obj, "tizpcmport"), ap_obj, ap_hdl,
-                              a_index, ap_struct);
-    }
-    break;
+      default:
+        {
+          /* Try the parent's indexes */
+          rc = super_SetConfig (typeOf (ap_obj, "tizpcmport"), ap_obj, ap_hdl,
+                                a_index, ap_struct);
+        }
+        break;
     };
 
-    return rc;
+  return rc;
 }
 
 static OMX_ERRORTYPE
 pcmport_SetParameter_internal (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
                                OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
-    tiz_pcmport_t * p_obj = (tiz_pcmport_t *) ap_obj;
-    OMX_ERRORTYPE rc = OMX_ErrorNone;
+  tiz_pcmport_t * p_obj = (tiz_pcmport_t *) ap_obj;
+  OMX_ERRORTYPE rc = OMX_ErrorNone;
 
-    assert (p_obj);
+  assert (p_obj);
 
-    TIZ_TRACE (ap_hdl, "PORT [%d] SetParameter [%s]...", tiz_port_index (ap_obj),
-               tiz_idx_to_str (a_index));
+  TIZ_TRACE (ap_hdl, "PORT [%d] SetParameter [%s]...", tiz_port_index (ap_obj),
+             tiz_idx_to_str (a_index));
 
-    switch (a_index)
+  switch (a_index)
     {
-    case OMX_IndexParamAudioPcm:
-    {
-        rc = pcmport_SetParameter_common (ap_obj, ap_hdl, a_index, ap_struct);
-    }
-    break;
-    default:
-    {
-        /* Try the parent's indexes */
-        rc = super_SetParameter (typeOf (ap_obj, "tizpcmport"), ap_obj,
-                                 ap_hdl, a_index, ap_struct);
-    }
-    break;
+      case OMX_IndexParamAudioPcm:
+        {
+          rc = pcmport_SetParameter_common (ap_obj, ap_hdl, a_index, ap_struct);
+        }
+        break;
+      default:
+        {
+          /* Try the parent's indexes */
+          rc = super_SetParameter (typeOf (ap_obj, "tizpcmport"), ap_obj,
+                                   ap_hdl, a_index, ap_struct);
+        }
+        break;
     };
 
-    return rc;
+  return rc;
 }
 
 static OMX_ERRORTYPE
 pcmport_SetConfig_internal (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
                             OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
-    return pcmport_SetConfig (ap_obj, ap_hdl, a_index, ap_struct);
+  return pcmport_SetConfig (ap_obj, ap_hdl, a_index, ap_struct);
 }
 
 static bool
@@ -435,40 +435,40 @@ pcmport_check_tunnel_compat (const void * ap_obj,
                              OMX_PARAM_PORTDEFINITIONTYPE * ap_this_def,
                              OMX_PARAM_PORTDEFINITIONTYPE * ap_other_def)
 {
-    tiz_port_t * p_obj = (tiz_port_t *) ap_obj;
+  tiz_port_t * p_obj = (tiz_port_t *) ap_obj;
 
-    assert (ap_this_def);
-    assert (ap_other_def);
+  assert (ap_this_def);
+  assert (ap_other_def);
 
-    if (ap_other_def->eDomain != ap_this_def->eDomain)
+  if (ap_other_def->eDomain != ap_this_def->eDomain)
     {
-        TIZ_ERROR (
-            handleOf (ap_obj),
-            "PORT [%d] : Audio domain not found, instead found domain [%d]",
-            p_obj->pid_, ap_other_def->eDomain);
-        return false;
+      TIZ_ERROR (
+        handleOf (ap_obj),
+        "PORT [%d] : Audio domain not found, instead found domain [%d]",
+        p_obj->pid_, ap_other_def->eDomain);
+      return false;
     }
 
-    /* INFO: */
-    /* This is not specified in the spec, but a binary audio reader */
-    /* could use OMX_AUDIO_CodingUnused as a means to singal "any" format */
+  /* INFO: */
+  /* This is not specified in the spec, but a binary audio reader */
+  /* could use OMX_AUDIO_CodingUnused as a means to singal "any" format */
 
-    if (ap_other_def->format.audio.eEncoding != OMX_AUDIO_CodingUnused)
+  if (ap_other_def->format.audio.eEncoding != OMX_AUDIO_CodingUnused)
     {
-        if (ap_other_def->format.audio.eEncoding != OMX_AUDIO_CodingPCM)
+      if (ap_other_def->format.audio.eEncoding != OMX_AUDIO_CodingPCM)
         {
-            TIZ_ERROR (handleOf (ap_obj),
-                       "PORT [%d] : "
-                       "PCM encoding not found, instead foudn encoding [%d]",
-                       p_obj->pid_, ap_other_def->format.audio.eEncoding);
-            return false;
+          TIZ_ERROR (handleOf (ap_obj),
+                     "PORT [%d] : "
+                     "PCM encoding not found, instead foudn encoding [%d]",
+                     p_obj->pid_, ap_other_def->format.audio.eEncoding);
+          return false;
         }
     }
 
-    TIZ_TRACE (handleOf (ap_obj), "PORT [%d] check_tunnel_compat [OK]",
-               p_obj->pid_);
+  TIZ_TRACE (handleOf (ap_obj), "PORT [%d] check_tunnel_compat [OK]",
+             p_obj->pid_);
 
-    return true;
+  return true;
 }
 
 static OMX_ERRORTYPE
@@ -477,29 +477,29 @@ pcmport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
                                  const OMX_PTR ap_struct,
                                  tiz_vector_t * ap_changed_idxs)
 {
-    tiz_pcmport_t * p_obj = ap_obj;
-    tiz_port_t * p_base = ap_obj;
-    OMX_ERRORTYPE rc = OMX_ErrorNone;
+  tiz_pcmport_t * p_obj = ap_obj;
+  tiz_port_t * p_base = ap_obj;
+  OMX_ERRORTYPE rc = OMX_ErrorNone;
 
-    /* OpenMAX IL 1.2 Section 3.5 : Slaving behaviour for nSamplingRate and
+  /* OpenMAX IL 1.2 Section 3.5 : Slaving behaviour for nSamplingRate and
      * nChannels, both in OMX_AUDIO_PARAM_PCMMODETYPE. nBufferSize may also
      * change if the current value is not big enough to fit 5 ms of PCM audio
      * data - see OpenMAX IL 1.2 section 4.1.2. */
 
-    assert (p_obj);
-    assert (ap_struct);
-    assert (ap_changed_idxs);
+  assert (p_obj);
+  assert (ap_struct);
+  assert (ap_changed_idxs);
 
-    {
-        OMX_U32 new_min_buf_sz = 0;
-        OMX_U32 new_rate = p_obj->pcmmode_.nSamplingRate;
-        OMX_U32 new_channels = p_obj->pcmmode_.nChannels;
-        OMX_U32 new_bps = p_obj->pcmmode_.nBitPerSample;
+  {
+    OMX_U32 new_min_buf_sz = 0;
+    OMX_U32 new_rate = p_obj->pcmmode_.nSamplingRate;
+    OMX_U32 new_channels = p_obj->pcmmode_.nChannels;
+    OMX_U32 new_bps = p_obj->pcmmode_.nBitPerSample;
 
-        switch (a_index)
-        {
+    switch (a_index)
+      {
         case OMX_IndexParamAudioPcm:
-        {
+          {
             const OMX_AUDIO_PARAM_PCMMODETYPE * p_pcmmode = ap_struct;
             new_rate = p_pcmmode->nSamplingRate;
             new_channels = p_pcmmode->nChannels;
@@ -511,11 +511,11 @@ pcmport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
                        "OMX_IndexParamAudioPcm : new sampling rate[%d] "
                        "new num channels[%d] new_bps[%d]",
                        new_rate, new_channels, new_bps);
-        }
-        break;
+          }
+          break;
 
         case OMX_IndexParamAudioMp3:
-        {
+          {
             const OMX_AUDIO_PARAM_MP3TYPE * p_mp3type = ap_struct;
             new_rate = p_mp3type->nSampleRate;
             new_channels = p_mp3type->nChannels;
@@ -526,11 +526,11 @@ pcmport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
                        "OMX_IndexParamAudioMp3 : new sampling rate[%d] "
                        "new num channels[%d] new_bps[%d]",
                        new_rate, new_channels, new_bps);
-        }
-        break;
+          }
+          break;
 
         case OMX_IndexParamAudioAac:
-        {
+          {
             const OMX_AUDIO_PARAM_AACPROFILETYPE * p_aactype = ap_struct;
             new_rate = p_aactype->nSampleRate;
             new_channels = p_aactype->nChannels;
@@ -541,11 +541,11 @@ pcmport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
                        "OMX_IndexParamAudioAac : new sampling rate[%d] "
                        "new num channels[%d] new_bps[%d]",
                        new_rate, new_channels, new_bps);
-        }
-        break;
+          }
+          break;
 
         case OMX_IndexParamAudioVorbis:
-        {
+          {
             const OMX_AUDIO_PARAM_VORBISTYPE * p_vortype = ap_struct;
             new_rate = p_vortype->nSampleRate;
             new_channels = p_vortype->nChannels;
@@ -556,11 +556,11 @@ pcmport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
                        "OMX_IndexParamAudioVorbis : new sampling rate[%d] "
                        "new num channels[%d] new_bps[%d]",
                        new_rate, new_channels, new_bps);
-        }
-        break;
+          }
+          break;
 
         case OMX_IndexParamAudioWma:
-        {
+          {
             const OMX_AUDIO_PARAM_WMATYPE * p_wmatype = ap_struct;
             new_rate = p_wmatype->nSamplingRate;
             new_channels = p_wmatype->nChannels;
@@ -571,11 +571,11 @@ pcmport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
                        "OMX_IndexParamAudioWma : new sampling rate[%d] "
                        "new num channels[%d] new_bps[%d]",
                        new_rate, new_channels, new_bps);
-        }
-        break;
+          }
+          break;
 
         case OMX_IndexParamAudioRa:
-        {
+          {
             const OMX_AUDIO_PARAM_RATYPE * p_ratype = ap_struct;
             new_rate = p_ratype->nSamplingRate;
             new_channels = p_ratype->nChannels;
@@ -586,11 +586,11 @@ pcmport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
                        "OMX_IndexParamAudioRa : new sampling rate[%d] "
                        "new num channels[%d] new_bps[%d]",
                        new_rate, new_channels, new_bps);
-        }
-        break;
+          }
+          break;
 
         case OMX_IndexParamAudioSbc:
-        {
+          {
             const OMX_AUDIO_PARAM_SBCTYPE * p_sbctype = ap_struct;
             new_rate = p_sbctype->nSampleRate;
             new_channels = p_sbctype->nChannels;
@@ -601,11 +601,11 @@ pcmport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
                        "OMX_IndexParamAudioSbc : new sampling rate[%d] "
                        "new num channels[%d] new_bps[%d]",
                        new_rate, new_channels, new_bps);
-        }
-        break;
+          }
+          break;
 
         case OMX_IndexParamAudioAdpcm:
-        {
+          {
             const OMX_AUDIO_PARAM_ADPCMTYPE * p_adpcmtype = ap_struct;
             new_rate = p_adpcmtype->nSampleRate;
             new_channels = p_adpcmtype->nChannels;
@@ -616,13 +616,13 @@ pcmport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
                        "OMX_IndexParamAudioAdpcm : new sampling rate[%d] "
                        "new num channels[%d] new_bps[%d]",
                        new_rate, new_channels, new_bps);
-        }
-        break;
+          }
+          break;
 
         default:
-        {
+          {
             if (OMX_TizoniaIndexParamAudioOpus == a_index)
-            {
+              {
                 const OMX_TIZONIA_AUDIO_PARAM_OPUSTYPE * p_opustype = ap_struct;
                 new_rate = p_opustype->nSampleRate;
                 new_channels = p_opustype->nChannels;
@@ -631,71 +631,71 @@ pcmport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
                            "OMX_IndexParamAudioOpus : new sampling rate[%d] "
                            "new num channels[%d]",
                            new_rate, new_channels);
-            }
+              }
 
             else if (OMX_TizoniaIndexParamAudioFlac == a_index)
-            {
+              {
                 const OMX_TIZONIA_AUDIO_PARAM_FLACTYPE * p_flactype = ap_struct;
                 new_rate = p_flactype->nSampleRate;
                 new_channels = p_flactype->nChannels;
 
                 TIZ_TRACE (
-                    handleOf (ap_obj),
-                    "OMX_TizoniaIndexParamAudioFlac : new sampling rate[%d] "
-                    "new num channels[%d]",
-                    new_rate, new_channels);
-            }
+                  handleOf (ap_obj),
+                  "OMX_TizoniaIndexParamAudioFlac : new sampling rate[%d] "
+                  "new num channels[%d]",
+                  new_rate, new_channels);
+              }
 
             else if (OMX_TizoniaIndexParamAudioMp2 == a_index)
-            {
+              {
                 const OMX_TIZONIA_AUDIO_PARAM_MP2TYPE * p_mp2type = ap_struct;
                 new_rate = p_mp2type->nSampleRate;
                 new_channels = p_mp2type->nChannels;
 
                 TIZ_TRACE (
-                    handleOf (ap_obj),
-                    "OMX_TizoniaIndexParamAudioMp2 : new sampling rate[%d] "
-                    "new num channels[%d]",
-                    new_rate, new_channels);
-            }
-        }
-        };
+                  handleOf (ap_obj),
+                  "OMX_TizoniaIndexParamAudioMp2 : new sampling rate[%d] "
+                  "new num channels[%d]",
+                  new_rate, new_channels);
+              }
+          }
+      };
 
-        if ((p_obj->pcmmode_.nSamplingRate != new_rate)
-                || (p_obj->pcmmode_.nChannels != new_channels)
-                || (p_obj->pcmmode_.nBitPerSample != new_bps))
-        {
-            OMX_INDEXTYPE id = OMX_IndexParamAudioPcm;
+    if ((p_obj->pcmmode_.nSamplingRate != new_rate)
+        || (p_obj->pcmmode_.nChannels != new_channels)
+        || (p_obj->pcmmode_.nBitPerSample != new_bps))
+      {
+        OMX_INDEXTYPE id = OMX_IndexParamAudioPcm;
 
-            p_obj->pcmmode_.nSamplingRate = new_rate;
-            p_obj->pcmmode_.nChannels = new_channels;
-            p_obj->pcmmode_.nBitPerSample = new_bps;
+        p_obj->pcmmode_.nSamplingRate = new_rate;
+        p_obj->pcmmode_.nChannels = new_channels;
+        p_obj->pcmmode_.nBitPerSample = new_bps;
 
-            tiz_check_omx_ret_oom (tiz_vector_push_back (ap_changed_idxs, &id));
+        tiz_check_omx_ret_oom (tiz_vector_push_back (ap_changed_idxs, &id));
 
-            TIZ_TRACE (handleOf (ap_obj),
-                       "original PORT [%d] this PORT [%d] : [%s] -> "
-                       "changed [OMX_IndexParamAudioPcm]...",
-                       tiz_port_index (ap_mos_port), p_base->portdef_.nPortIndex,
-                       tiz_idx_to_str (a_index));
-        }
+        TIZ_TRACE (handleOf (ap_obj),
+                   "original PORT [%d] this PORT [%d] : [%s] -> "
+                   "changed [OMX_IndexParamAudioPcm]...",
+                   tiz_port_index (ap_mos_port), p_base->portdef_.nPortIndex,
+                   tiz_idx_to_str (a_index));
+      }
 
-        /* Also update the port's minimum buffer size, if needed */
-        if (new_min_buf_sz > p_base->portdef_.nBufferSize)
-        {
-            OMX_INDEXTYPE id = OMX_IndexParamPortDefinition;
+    /* Also update the port's minimum buffer size, if needed */
+    if (new_min_buf_sz > p_base->portdef_.nBufferSize)
+      {
+        OMX_INDEXTYPE id = OMX_IndexParamPortDefinition;
 
-            p_base->portdef_.nBufferSize = new_min_buf_sz;
-            tiz_check_omx_ret_oom (tiz_vector_push_back (ap_changed_idxs, &id));
+        p_base->portdef_.nBufferSize = new_min_buf_sz;
+        tiz_check_omx_ret_oom (tiz_vector_push_back (ap_changed_idxs, &id));
 
-            TIZ_TRACE (handleOf (ap_obj),
-                       "original PORT [%d] this PORT [%d] : [%s] -> "
-                       "changed [OMX_IndexParamPortDefinition] nBufferSize [%d]...",
-                       tiz_port_index (ap_mos_port), p_base->portdef_.nPortIndex,
-                       tiz_idx_to_str (a_index), p_base->portdef_.nBufferSize);
-        }
-    }
-    return rc;
+        TIZ_TRACE (handleOf (ap_obj),
+                   "original PORT [%d] this PORT [%d] : [%s] -> "
+                   "changed [OMX_IndexParamPortDefinition] nBufferSize [%d]...",
+                   tiz_port_index (ap_mos_port), p_base->portdef_.nPortIndex,
+                   tiz_idx_to_str (a_index), p_base->portdef_.nBufferSize);
+      }
+  }
+  return rc;
 }
 
 /*
@@ -705,8 +705,8 @@ pcmport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
 static void *
 pcmport_class_ctor (void * ap_obj, va_list * app)
 {
-    /* NOTE: Class methods might be added in the future. None for now. */
-    return super_ctor (typeOf (ap_obj, "tizpcmport_class"), ap_obj, app);
+  /* NOTE: Class methods might be added in the future. None for now. */
+  return super_ctor (typeOf (ap_obj, "tizpcmport_class"), ap_obj, app);
 }
 
 /*
@@ -716,53 +716,53 @@ pcmport_class_ctor (void * ap_obj, va_list * app)
 void *
 tiz_pcmport_class_init (void * ap_tos, void * ap_hdl)
 {
-    void * tizaudioport = tiz_get_type (ap_hdl, "tizaudioport");
-    void * tizpcmport_class = factory_new
-                              /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
-                              (classOf (tizaudioport), "tizpcmport_class", classOf (tizaudioport),
-                               sizeof (tiz_pcmport_class_t),
-                               /* TIZ_CLASS_COMMENT: */
-                               ap_tos, ap_hdl,
-                               /* TIZ_CLASS_COMMENT: class constructor */
-                               ctor, pcmport_class_ctor,
-                               /* TIZ_CLASS_COMMENT: stop value*/
-                               0);
-    return tizpcmport_class;
+  void * tizaudioport = tiz_get_type (ap_hdl, "tizaudioport");
+  void * tizpcmport_class = factory_new
+    /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
+    (classOf (tizaudioport), "tizpcmport_class", classOf (tizaudioport),
+     sizeof (tiz_pcmport_class_t),
+     /* TIZ_CLASS_COMMENT: */
+     ap_tos, ap_hdl,
+     /* TIZ_CLASS_COMMENT: class constructor */
+     ctor, pcmport_class_ctor,
+     /* TIZ_CLASS_COMMENT: stop value*/
+     0);
+  return tizpcmport_class;
 }
 
 void *
 tiz_pcmport_init (void * ap_tos, void * ap_hdl)
 {
-    void * tizaudioport = tiz_get_type (ap_hdl, "tizaudioport");
-    void * tizpcmport_class = tiz_get_type (ap_hdl, "tizpcmport_class");
-    TIZ_LOG_CLASS (tizpcmport_class);
-    void * tizpcmport = factory_new
-                        /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
-                        (tizpcmport_class, "tizpcmport", tizaudioport, sizeof (tiz_pcmport_t),
-                         /* TIZ_CLASS_COMMENT: */
-                         ap_tos, ap_hdl,
-                         /* TIZ_CLASS_COMMENT: class constructor */
-                         ctor, pcmport_ctor,
-                         /* TIZ_CLASS_COMMENT: class destructor */
-                         dtor, pcmport_dtor,
-                         /* TIZ_CLASS_COMMENT: */
-                         tiz_api_GetParameter, pcmport_GetParameter,
-                         /* TIZ_CLASS_COMMENT: */
-                         tiz_api_SetParameter, pcmport_SetParameter,
-                         /* TIZ_CLASS_COMMENT: */
-                         tiz_api_GetConfig, pcmport_GetConfig,
-                         /* TIZ_CLASS_COMMENT: */
-                         tiz_api_SetConfig, pcmport_SetConfig,
-                         /* TIZ_CLASS_COMMENT: */
-                         tiz_port_SetParameter_internal, pcmport_SetParameter_internal,
-                         /* TIZ_CLASS_COMMENT: */
-                         tiz_port_SetConfig_internal, pcmport_SetConfig_internal,
-                         /* TIZ_CLASS_COMMENT: */
-                         tiz_port_check_tunnel_compat, pcmport_check_tunnel_compat,
-                         /* TIZ_CLASS_COMMENT: */
-                         tiz_port_apply_slaving_behaviour, pcmport_apply_slaving_behaviour,
-                         /* TIZ_CLASS_COMMENT: stop value*/
-                         0);
+  void * tizaudioport = tiz_get_type (ap_hdl, "tizaudioport");
+  void * tizpcmport_class = tiz_get_type (ap_hdl, "tizpcmport_class");
+  TIZ_LOG_CLASS (tizpcmport_class);
+  void * tizpcmport = factory_new
+    /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
+    (tizpcmport_class, "tizpcmport", tizaudioport, sizeof (tiz_pcmport_t),
+     /* TIZ_CLASS_COMMENT: */
+     ap_tos, ap_hdl,
+     /* TIZ_CLASS_COMMENT: class constructor */
+     ctor, pcmport_ctor,
+     /* TIZ_CLASS_COMMENT: class destructor */
+     dtor, pcmport_dtor,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_api_GetParameter, pcmport_GetParameter,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_api_SetParameter, pcmport_SetParameter,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_api_GetConfig, pcmport_GetConfig,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_api_SetConfig, pcmport_SetConfig,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_port_SetParameter_internal, pcmport_SetParameter_internal,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_port_SetConfig_internal, pcmport_SetConfig_internal,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_port_check_tunnel_compat, pcmport_check_tunnel_compat,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_port_apply_slaving_behaviour, pcmport_apply_slaving_behaviour,
+     /* TIZ_CLASS_COMMENT: stop value*/
+     0);
 
-    return tizpcmport;
+  return tizpcmport;
 }

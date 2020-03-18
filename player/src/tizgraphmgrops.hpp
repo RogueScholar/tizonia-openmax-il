@@ -29,8 +29,8 @@
 #ifndef TIZGRAPHMGROPS_HPP
 #define TIZGRAPHMGROPS_HPP
 
-#include <string>
 #include <boost/function.hpp>
+#include <string>
 
 #include <OMX_Core.h>
 
@@ -62,74 +62,75 @@
 
 namespace tiz
 {
-namespace graphmgr
-{
-// forward decl
-class mgr;
+  namespace graphmgr
+  {
+    // forward decl
+    class mgr;
 
-/**
- *  @class ops
- *  @brief The graph manager operations class.
- *
- */
-class ops
-{
+    /**
+     *  @class ops
+     *  @brief The graph manager operations class.
+     *
+     */
+    class ops
+    {
 
-public:
-    typedef boost::function< void(OMX_ERRORTYPE, std::string) >
-    termination_callback_t;
+    public:
+      typedef boost::function< void (OMX_ERRORTYPE, std::string) >
+          termination_callback_t;
 
-public:
-    ops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
-         const termination_callback_t &termination_cback);
-    virtual ~ops ();
+    public:
+      ops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
+           const termination_callback_t &termination_cback);
+      virtual ~ops ();
 
-    void deinit ();
+      void deinit ();
 
-public:
-    virtual void do_load ();
-    virtual void do_execute ();
-    virtual void do_stop ();
-    virtual void do_unload ();
-    virtual void do_deinit ();
-    virtual void do_next ();
-    virtual void do_prev ();
-    virtual void do_fwd ();
-    virtual void do_rwd ();
-    virtual void do_vol_up ();
-    virtual void do_vol_down ();
-    virtual void do_vol (const double vol);
-    virtual void do_mute ();
-    virtual void do_pause ();
-    virtual void do_report_fatal_error (const OMX_ERRORTYPE error,
-                                        const std::string &msg);
-    virtual void do_end_of_play ();
-    virtual void do_update_control_ifcs (const control::playback_status_t status);
-    virtual void do_update_metadata (const track_metadata_map_t &metadata);
-    virtual void do_update_volume (const int volume);
-    virtual bool is_fatal_error (const OMX_ERRORTYPE error,
-                                 const std::string &msg);
+    public:
+      virtual void do_load ();
+      virtual void do_execute ();
+      virtual void do_stop ();
+      virtual void do_unload ();
+      virtual void do_deinit ();
+      virtual void do_next ();
+      virtual void do_prev ();
+      virtual void do_fwd ();
+      virtual void do_rwd ();
+      virtual void do_vol_up ();
+      virtual void do_vol_down ();
+      virtual void do_vol (const double vol);
+      virtual void do_mute ();
+      virtual void do_pause ();
+      virtual void do_report_fatal_error (const OMX_ERRORTYPE error,
+                                          const std::string &msg);
+      virtual void do_end_of_play ();
+      virtual void do_update_control_ifcs (
+          const control::playback_status_t status);
+      virtual void do_update_metadata (const track_metadata_map_t &metadata);
+      virtual void do_update_volume (const int volume);
+      virtual bool is_fatal_error (const OMX_ERRORTYPE error,
+                                   const std::string &msg);
 
-    OMX_ERRORTYPE internal_error () const;
-    std::string internal_error_msg () const;
+      OMX_ERRORTYPE internal_error () const;
+      std::string internal_error_msg () const;
 
-    tizplaylist_ptr_t find_next_sub_list () const;
+      tizplaylist_ptr_t find_next_sub_list () const;
 
-protected:
-    virtual tizgraph_ptr_t get_graph (const std::string &uri);
+    protected:
+      virtual tizgraph_ptr_t get_graph (const std::string &uri);
 
-protected:
-    mgr *p_mgr_;              // Not owned
-    tizplaylist_ptr_t playlist_;
-    tizplaylist_ptr_t next_playlist_;
-    tizgraphconfig_ptr_t graph_config_;
-    tizgraph_ptr_map_t graph_registry_;
-    tizgraph_ptr_t p_managed_graph_;
-    termination_callback_t termination_cback_;
-    OMX_ERRORTYPE error_code_;
-    std::string error_msg_;
-};
-}  // namespace graphmgr
+    protected:
+      mgr *p_mgr_;  // Not owned
+      tizplaylist_ptr_t playlist_;
+      tizplaylist_ptr_t next_playlist_;
+      tizgraphconfig_ptr_t graph_config_;
+      tizgraph_ptr_map_t graph_registry_;
+      tizgraph_ptr_t p_managed_graph_;
+      termination_callback_t termination_cback_;
+      OMX_ERRORTYPE error_code_;
+      std::string error_msg_;
+    };
+  }  // namespace graphmgr
 }  // namespace tiz
 
 #endif  // TIZGRAPHMGROPS_HPP

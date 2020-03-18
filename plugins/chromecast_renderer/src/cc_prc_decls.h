@@ -31,7 +31,8 @@
 #define CC_PRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_Core.h>
@@ -42,9 +43,9 @@ extern "C" {
 
 #include "tizprc_decls.h"
 
-typedef struct cc_prc cc_prc_t;
-struct cc_prc
-{
+  typedef struct cc_prc cc_prc_t;
+  struct cc_prc
+  {
     /* Object */
     const tiz_prc_t _;
     OMX_TIZONIA_PARAM_CHROMECASTSESSIONTYPE cc_session_;
@@ -58,11 +59,11 @@ struct cc_prc
     char * p_cc_err_msg_;
     bool uri_changed_;
     long volume_;
-};
+  };
 
-typedef struct cc_prc_class cc_prc_class_t;
-struct cc_prc_class
-{
+  typedef struct cc_prc_class cc_prc_class_t;
+  struct cc_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     const char * (*get_next_url) (const void * p_obj);
@@ -74,7 +75,7 @@ struct cc_prc_class
      const char * ap_header_info);
     OMX_ERRORTYPE (*store_display_title)
     (const void * p_obj, const char * ap_artist, const char * ap_title);
-};
+  };
 
 #ifdef __cplusplus
 }

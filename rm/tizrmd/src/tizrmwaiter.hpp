@@ -36,97 +36,97 @@ class tizrmwaiter
 {
 
 public:
-    tizrmwaiter (const uint32_t &rid, const uint32_t &quantity,
-                 const std::string &cname, const std::vector< uint8_t > &uuid,
-                 const uint32_t &grpid, const uint32_t &pri)
-        : cname_ (cname),
-          uuid_ (uuid),
-          grpid_ (pri),
-          pri_ (pri),
-          rid_ (rid),
-          quantity_ (quantity)
-    {
-    }
+  tizrmwaiter (const uint32_t &rid, const uint32_t &quantity,
+               const std::string &cname, const std::vector< uint8_t > &uuid,
+               const uint32_t &grpid, const uint32_t &pri)
+    : cname_ (cname),
+      uuid_ (uuid),
+      grpid_ (pri),
+      pri_ (pri),
+      rid_ (rid),
+      quantity_ (quantity)
+  {
+  }
 
-    std::string cname () const
-    {
-        return cname_;
-    }
+  std::string cname () const
+  {
+    return cname_;
+  }
 
-    uint32_t resid () const
-    {
-        return rid_;
-    }
+  uint32_t resid () const
+  {
+    return rid_;
+  }
 
-    uint32_t quantity () const
-    {
-        return quantity_;
-    }
+  uint32_t quantity () const
+  {
+    return quantity_;
+  }
 
-    const std::vector< uint8_t > &uuid () const
-    {
-        return uuid_;
-    }
+  const std::vector< uint8_t > &uuid () const
+  {
+    return uuid_;
+  }
 
-    uint32_t grpid () const
-    {
-        return grpid_;
-    }
+  uint32_t grpid () const
+  {
+    return grpid_;
+  }
 
-    uint32_t pri () const
-    {
-        return pri_;
-    }
+  uint32_t pri () const
+  {
+    return pri_;
+  }
 
-    bool operator==(const tizrmwaiter &rhs) const
-    {
-        return ((uuid_ == rhs.uuid_) && (rid_ == rhs.rid_));
-    }
+  bool operator== (const tizrmwaiter &rhs) const
+  {
+    return ((uuid_ == rhs.uuid_) && (rid_ == rhs.rid_));
+  }
 
-    bool operator<(const tizrmwaiter &rhs) const
+  bool operator< (const tizrmwaiter &rhs) const
+  {
+    if (rid_ < rhs.rid_)
     {
-        if (rid_ < rhs.rid_)
-        {
-            return true;
-        }
-        else
-        {
-            if (uuid_ < rhs.uuid_)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+      return true;
     }
+    else
+    {
+      if (uuid_ < rhs.uuid_)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+  }
 
 private:
-    std::string cname_;
-    std::vector< uint8_t > uuid_;
-    uint32_t grpid_;
-    uint32_t pri_;
-    uint32_t rid_;
-    uint32_t quantity_;
+  std::string cname_;
+  std::vector< uint8_t > uuid_;
+  uint32_t grpid_;
+  uint32_t pri_;
+  uint32_t rid_;
+  uint32_t quantity_;
 };
 
 class remove_waiter_functor
 {
 
 public:
-    explicit remove_waiter_functor (const std::vector< unsigned char > &uuid)
-        : uuid_ (uuid)
-    {
-    }
+  explicit remove_waiter_functor (const std::vector< unsigned char > &uuid)
+    : uuid_ (uuid)
+  {
+  }
 
-    bool operator()(const tizrmwaiter &waiter)
-    {
-        return (uuid_ == waiter.uuid ());
-    }
+  bool operator() (const tizrmwaiter &waiter)
+  {
+    return (uuid_ == waiter.uuid ());
+  }
 
 private:
-    std::vector< unsigned char > uuid_;
+  std::vector< unsigned char > uuid_;
 };
 
 #endif  // TIZRMWAITER_HPP

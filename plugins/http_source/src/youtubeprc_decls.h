@@ -29,7 +29,8 @@
 #define YOUTUBEPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -41,9 +42,9 @@ extern "C" {
 #include <tizplatform.h>
 #include <tizyoutube_c.h>
 
-typedef struct youtube_prc youtube_prc_t;
-struct youtube_prc
-{
+  typedef struct youtube_prc youtube_prc_t;
+  struct youtube_prc
+  {
     /* Object */
     const tiz_prc_t _;
     OMX_BUFFERHEADERTYPE * p_outhdr_;
@@ -66,15 +67,15 @@ struct youtube_prc
     int bitrate_;
     int buffer_bytes_;
     bool remove_current_url_;
-};
+  };
 
-typedef struct youtube_prc_class youtube_prc_class_t;
-struct youtube_prc_class
-{
+  typedef struct youtube_prc_class youtube_prc_class_t;
+  struct youtube_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

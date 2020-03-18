@@ -30,7 +30,8 @@
 #define PLEXCFGPORT_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_TizoniaExt.h>
@@ -38,22 +39,22 @@ extern "C" {
 
 #include <tizconfigport_decls.h>
 
-typedef struct plex_cfgport plex_cfgport_t;
-struct plex_cfgport
-{
+  typedef struct plex_cfgport plex_cfgport_t;
+  struct plex_cfgport
+  {
     /* Object */
     const tiz_configport_t _;
     OMX_TIZONIA_AUDIO_PARAM_PLEXSESSIONTYPE session_;
     OMX_TIZONIA_AUDIO_PARAM_PLEXPLAYLISTTYPE playlist_;
-};
+  };
 
-typedef struct plex_cfgport_class plex_cfgport_class_t;
-struct plex_cfgport_class
-{
+  typedef struct plex_cfgport_class plex_cfgport_class_t;
+  struct plex_cfgport_class
+  {
     /* Class */
     const tiz_configport_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

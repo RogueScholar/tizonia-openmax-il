@@ -29,7 +29,8 @@
 #define OGGDMUXSRCPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -42,9 +43,9 @@ extern "C" {
 
 #include <oggz/oggz.h>
 
-typedef struct oggmuxsnk_prc oggmuxsnk_prc_t;
-struct oggmuxsnk_prc
-{
+  typedef struct oggmuxsnk_prc oggmuxsnk_prc_t;
+  struct oggmuxsnk_prc
+  {
     /* Object */
     const tiz_prc_t _;
     tiz_buffer_t * p_audio_store_;
@@ -64,15 +65,15 @@ struct oggmuxsnk_prc
     tiz_urltrans_t * p_trans_;
     int bitrate_;
     int cache_bytes_;
-};
+  };
 
-typedef struct oggmuxsnk_prc_class oggmuxsnk_prc_class_t;
-struct oggmuxsnk_prc_class
-{
+  typedef struct oggmuxsnk_prc_class oggmuxsnk_prc_class_t;
+  struct oggmuxsnk_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

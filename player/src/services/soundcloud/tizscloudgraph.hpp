@@ -29,26 +29,26 @@
 #ifndef TIZSCLOUDGRAPH_HPP
 #define TIZSCLOUDGRAPH_HPP
 
-#include "tizservicegraph.hpp"
 #include "tizgraphops.hpp"
+#include "tizservicegraph.hpp"
 
 namespace tiz
 {
-namespace graph
-{
-// Forward declarations
-class ops;
+  namespace graph
+  {
+    // Forward declarations
+    class ops;
 
-class scloud : public servicegraph
-{
+    class scloud : public servicegraph
+    {
 
-public:
-    scloud ();
+    public:
+      scloud ();
 
-protected:
-    ops *do_init ();
-};
-}  // namespace graph
+    protected:
+      ops *do_init ();
+    };
+  }  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZSCLOUDGRAPH_HPP

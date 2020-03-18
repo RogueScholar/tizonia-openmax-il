@@ -29,26 +29,26 @@
 #ifndef TIZPLEXGRAPH_HPP
 #define TIZPLEXGRAPH_HPP
 
-#include "tizservicegraph.hpp"
 #include "tizgraphops.hpp"
+#include "tizservicegraph.hpp"
 
 namespace tiz
 {
-namespace graph
-{
-// Forward declarations
-class ops;
+  namespace graph
+  {
+    // Forward declarations
+    class ops;
 
-class plex : public servicegraph
-{
+    class plex : public servicegraph
+    {
 
-public:
-    plex ();
+    public:
+      plex ();
 
-protected:
-    ops *do_init ();
-};
-}  // namespace graph
+    protected:
+      ops *do_init ();
+    };
+  }  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZPLEXGRAPH_HPP

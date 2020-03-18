@@ -34,37 +34,36 @@
 
 namespace tiz
 {
-namespace graph
-{
-class pcmdecoder : public decoder
-{
+  namespace graph
+  {
+    class pcmdecoder : public decoder
+    {
 
-public:
-    pcmdecoder ();
+    public:
+      pcmdecoder ();
 
-protected:
-    ops *do_init ();
+    protected:
+      ops *do_init ();
+    };
 
-};
+    class pcmdecops : public decops
+    {
+    public:
+      pcmdecops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
+                 const omx_comp_role_lst_t &role_lst);
 
-class pcmdecops : public decops
-{
-public:
-    pcmdecops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-               const omx_comp_role_lst_t &role_lst);
+    public:
+      void do_probe ();
+      bool is_port_settings_evt_required () const;
+      void do_configure ();
 
-public:
-    void do_probe ();
-    bool is_port_settings_evt_required () const;
-    void do_configure ();
+    protected:
+      bool need_port_settings_changed_evt_;
 
-protected:
-    bool need_port_settings_changed_evt_;
-
-private:
-    void get_pcm_codec_info (OMX_AUDIO_PARAM_PCMMODETYPE &pcmtype);
-};
-}  // namespace graph
+    private:
+      void get_pcm_codec_info (OMX_AUDIO_PARAM_PCMMODETYPE &pcmtype);
+    };
+  }  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZPCMGRAPH_HPP

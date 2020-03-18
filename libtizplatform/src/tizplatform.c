@@ -37,12 +37,12 @@
 
 void __attribute__ ((constructor)) tiz_platform_load (void)
 {
-    /*   tiz_log_init (); */
-    /*   (void) tiz_event_loop_init (); */
+  /*   tiz_log_init (); */
+  /*   (void) tiz_event_loop_init (); */
 }
 
 void __attribute__ ((destructor)) tiz_platform_unload (void)
 {
-    /*   (void) tiz_event_loop_destroy (); */
-    /*   tiz_log_deinit (); */
+  /*   (void) tiz_event_loop_destroy (); */
+  /*   tiz_log_deinit (); */
 }

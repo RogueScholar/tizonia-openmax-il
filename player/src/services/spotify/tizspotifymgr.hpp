@@ -29,56 +29,55 @@
 #ifndef TIZSPOTIFYMGR_HPP
 #define TIZSPOTIFYMGR_HPP
 
-#include "tizgraphtypes.hpp"
-#include "tizgraphmgrcaps.hpp"
 #include "tizgraphmgr.hpp"
+#include "tizgraphmgrcaps.hpp"
+#include "tizgraphtypes.hpp"
 
 namespace tiz
 {
-namespace graphmgr
-{
-class spotifymgrops;
-class graphmgr_capabilities;
+  namespace graphmgr
+  {
+    class spotifymgrops;
+    class graphmgr_capabilities;
 
-/**
- *  @class spotifymgr
- *  @brief The Spotify client graph manager class.
- *
- */
-class spotifymgr : public mgr
-{
-    friend class spotifymgrops;
+    /**
+     *  @class spotifymgr
+     *  @brief The Spotify client graph manager class.
+     *
+     */
+    class spotifymgr : public mgr
+    {
+      friend class spotifymgrops;
 
-public:
-    spotifymgr (tizgraphconfig_ptr_t config);
-    virtual ~spotifymgr ();
+    public:
+      spotifymgr (tizgraphconfig_ptr_t config);
+      virtual ~spotifymgr ();
 
-private:
-    ops *do_init (const tizplaylist_ptr_t &playlist,
-                  const termination_callback_t &termination_cback,
-                  graphmgr_capabilities &graphmgr_caps);
+    private:
+      ops *do_init (const tizplaylist_ptr_t &playlist,
+                    const termination_callback_t &termination_cback,
+                    graphmgr_capabilities &graphmgr_caps);
 
-private:
-    tizgraphconfig_ptr_t config_;
-};
+    private:
+      tizgraphconfig_ptr_t config_;
+    };
 
-typedef boost::shared_ptr< spotifymgr > spotifymgr_ptr_t;
+    typedef boost::shared_ptr< spotifymgr > spotifymgr_ptr_t;
 
-class spotifymgrops : public ops
-{
-public:
-    spotifymgrops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
-                   const termination_callback_t &termination_cback);
+    class spotifymgrops : public ops
+    {
+    public:
+      spotifymgrops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
+                     const termination_callback_t &termination_cback);
 
-    void do_load ();
-    void do_execute ();
+      void do_load ();
+      void do_execute ();
 
-private:
-    bool is_fatal_error (const OMX_ERRORTYPE error,
-                         const std::string &msg);
-    tizgraph_ptr_t get_graph (const std::string &uri);
-};
-}  // namespace graphmgr
+    private:
+      bool is_fatal_error (const OMX_ERRORTYPE error, const std::string &msg);
+      tizgraph_ptr_t get_graph (const std::string &uri);
+    };
+  }  // namespace graphmgr
 }  // namespace tiz
 
 #endif  // TIZSPOTIFYMGR_HPP

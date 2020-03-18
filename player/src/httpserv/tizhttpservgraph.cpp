@@ -32,16 +32,16 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <OMX_TizoniaExt.h>
 #include <tizplatform.h>
 
-#include "tizgraphutil.hpp"
 #include "tizgraphcmd.hpp"
-#include "tizprobe.hpp"
+#include "tizgraphutil.hpp"
 #include "tizhttpservconfig.hpp"
 #include "tizhttpservgraph.hpp"
+#include "tizprobe.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -54,58 +54,57 @@ namespace graph = tiz::graph;
 // httpserver
 //
 graph::httpserver::httpserver ()
-    : graph::graph ("httpservgraph"),
-      fsm_ (boost::msm::back::states_
-            << tiz::graph::hsfsm::fsm::configuring (&p_ops_)
-            << tiz::graph::hsfsm::fsm::skipping (&p_ops_),
-            &p_ops_)
+  : graph::graph ("httpservgraph"),
+    fsm_ (boost::msm::back::states_ << tiz::graph::hsfsm::fsm::configuring (
+              &p_ops_) << tiz::graph::hsfsm::fsm::skipping (&p_ops_),
+          &p_ops_)
 {
 }
 
 graph::ops *graph::httpserver::do_init ()
 {
-    omx_comp_name_lst_t comp_list;
-    comp_list.push_back ("OMX.Aratelia.audio_metadata_eraser.mp3");
-    comp_list.push_back ("OMX.Aratelia.audio_renderer.http");
+  omx_comp_name_lst_t comp_list;
+  comp_list.push_back ("OMX.Aratelia.audio_metadata_eraser.mp3");
+  comp_list.push_back ("OMX.Aratelia.audio_renderer.http");
 
-    omx_comp_role_lst_t role_list;
-    role_list.push_back ("audio_metadata_eraser.mp3");
-    role_list.push_back ("audio_renderer.http");
+  omx_comp_role_lst_t role_list;
+  role_list.push_back ("audio_metadata_eraser.mp3");
+  role_list.push_back ("audio_renderer.http");
 
-    return new httpservops (this, comp_list, role_list);
+  return new httpservops (this, comp_list, role_list);
 }
 
 bool graph::httpserver::dispatch_cmd (const tiz::graph::cmd *p_cmd)
 {
-    assert (p_cmd);
+  assert (p_cmd);
 
-    if (!p_cmd->kill_thread ())
+  if (!p_cmd->kill_thread ())
+  {
+    if (p_cmd->evt ().type () == typeid (tiz::graph::load_evt))
     {
-        if (p_cmd->evt ().type () == typeid(tiz::graph::load_evt))
-        {
-            // Time to start the FSM
-            TIZ_LOG (TIZ_PRIORITY_NOTICE, "Starting [%s] fsm...",
-                     get_graph_name ().c_str ());
-            fsm_.start ();
-        }
-
-        p_cmd->inject< hsfsm::fsm >(fsm_, tiz::graph::hsfsm::pstate);
-
-        // Check for internal errors produced during the processing of the last
-        // event. If any, inject an "internal" error event. This is fatal and shall
-        // terminate the state machine.
-        if (OMX_ErrorNone != p_ops_->internal_error ())
-        {
-            fsm_.process_event (tiz::graph::err_evt (p_ops_->internal_error (),
-                                p_ops_->internal_error_msg ()));
-        }
-
-        if (fsm_.terminated_)
-        {
-            TIZ_LOG (TIZ_PRIORITY_NOTICE, "[%s] fsm terminated...",
-                     get_graph_name ().c_str ());
-        }
+      // Time to start the FSM
+      TIZ_LOG (TIZ_PRIORITY_NOTICE, "Starting [%s] fsm...",
+               get_graph_name ().c_str ());
+      fsm_.start ();
     }
 
-    return p_cmd->kill_thread ();
+    p_cmd->inject< hsfsm::fsm > (fsm_, tiz::graph::hsfsm::pstate);
+
+    // Check for internal errors produced during the processing of the last
+    // event. If any, inject an "internal" error event. This is fatal and shall
+    // terminate the state machine.
+    if (OMX_ErrorNone != p_ops_->internal_error ())
+    {
+      fsm_.process_event (tiz::graph::err_evt (p_ops_->internal_error (),
+                                               p_ops_->internal_error_msg ()));
+    }
+
+    if (fsm_.terminated_)
+    {
+      TIZ_LOG (TIZ_PRIORITY_NOTICE, "[%s] fsm terminated...",
+               get_graph_name ().c_str ());
+    }
+  }
+
+  return p_cmd->kill_thread ();
 }

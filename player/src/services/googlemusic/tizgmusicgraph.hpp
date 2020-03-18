@@ -29,26 +29,26 @@
 #ifndef TIZGMUSICGRAPH_HPP
 #define TIZGMUSICGRAPH_HPP
 
-#include "tizservicegraph.hpp"
 #include "tizgraphops.hpp"
+#include "tizservicegraph.hpp"
 
 namespace tiz
 {
-namespace graph
-{
-// Forward declarations
-class ops;
+  namespace graph
+  {
+    // Forward declarations
+    class ops;
 
-class gmusic : public servicegraph
-{
+    class gmusic : public servicegraph
+    {
 
-public:
-    gmusic ();
+    public:
+      gmusic ();
 
-protected:
-    ops *do_init ();
-};
-}  // namespace graph
+    protected:
+      ops *do_init ();
+    };
+  }  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZGMUSICGRAPH_HPP

@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -36,65 +37,65 @@
 class tizsoundcloud
 {
 public:
-    /**
-     * Various playback modes that control the playback queue.
-     */
-    enum playback_mode
-    {
-        PlaybackModeNormal,
-        PlaybackModeShuffle,
-        PlaybackModeMax
-    };
+  /**
+   * Various playback modes that control the playback queue.
+   */
+  enum playback_mode
+  {
+    PlaybackModeNormal,
+    PlaybackModeShuffle,
+    PlaybackModeMax
+  };
 
 public:
-    tizsoundcloud (const std::string &oauth_token);
-    ~tizsoundcloud ();
+  tizsoundcloud (const std::string &oauth_token);
+  ~tizsoundcloud ();
 
-    int init ();
-    int start ();
-    void stop ();
-    void deinit ();
+  int init ();
+  int start ();
+  void stop ();
+  void deinit ();
 
-    int play_user_stream ();
-    int play_user_likes ();
-    int play_user_playlist (const std::string &playlist);
-    int play_creator (const std::string &creator);
-    int play_tracks (const std::string &tracks);
-    int play_playlists (const std::string &playlists);
-    int play_genres (const std::string &genres);
-    int play_tags (const std::string &tags);
+  int play_user_stream ();
+  int play_user_likes ();
+  int play_user_playlist (const std::string &playlist);
+  int play_creator (const std::string &creator);
+  int play_tracks (const std::string &tracks);
+  int play_playlists (const std::string &playlists);
+  int play_genres (const std::string &genres);
+  int play_tags (const std::string &tags);
 
-    void clear_queue ();
-    void set_playback_mode (const playback_mode mode);
+  void clear_queue ();
+  void set_playback_mode (const playback_mode mode);
 
-    const char * get_next_url ();
-    const char * get_prev_url ();
-    const char * get_current_track_user ();
-    const char * get_current_track_title ();
-    const char * get_current_track_duration ();
-    const char * get_current_track_year ();
-    const char * get_current_track_permalink ();
-    const char * get_current_track_license ();
-    const char * get_current_track_likes ();
-    const char * get_current_track_user_avatar ();
-
-private:
-    void get_current_track ();
+  const char *get_next_url ();
+  const char *get_prev_url ();
+  const char *get_current_track_user ();
+  const char *get_current_track_title ();
+  const char *get_current_track_duration ();
+  const char *get_current_track_year ();
+  const char *get_current_track_permalink ();
+  const char *get_current_track_license ();
+  const char *get_current_track_likes ();
+  const char *get_current_track_user_avatar ();
 
 private:
-    std::string oauth_token_;
-    std::string current_url_;
-    std::string current_user_;
-    std::string current_title_;
-    std::string current_duration_;
-    std::string current_track_year_;
-    std::string current_track_permalink_;
-    std::string current_track_license_;
-    std::string current_track_likes_;
-    std::string current_track_user_avatar_;
-    boost::python::object py_main_;
-    boost::python::object py_global_;
-    boost::python::object py_gm_proxy_;
+  void get_current_track ();
+
+private:
+  std::string oauth_token_;
+  std::string current_url_;
+  std::string current_user_;
+  std::string current_title_;
+  std::string current_duration_;
+  std::string current_track_year_;
+  std::string current_track_permalink_;
+  std::string current_track_license_;
+  std::string current_track_likes_;
+  std::string current_track_user_avatar_;
+  boost::python::object py_main_;
+  boost::python::object py_global_;
+  boost::python::object py_gm_proxy_;
 };
 
 #endif  // TIZSOUNDCLOUD_HPP

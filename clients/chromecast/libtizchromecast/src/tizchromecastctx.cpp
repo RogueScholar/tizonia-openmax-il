@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -63,13 +64,13 @@ namespace bp = boost::python;
 
 namespace
 {
-void init_cc_ctx (bp::object &py_main, bp::object &py_global,
-                  bp::object &py_chromecastproxy)
-{
+  void init_cc_ctx (bp::object &py_main, bp::object &py_global,
+                    bp::object &py_chromecastproxy)
+  {
     if (!Py_IsInitialized ())
-    {
+      {
         Py_Initialize ();
-    }
+      }
 
     // Import the Chromecast proxy module
     py_main = bp::import ("tizchromecastproxy");
@@ -78,47 +79,49 @@ void init_cc_ctx (bp::object &py_main, bp::object &py_global,
     py_global = py_main.attr ("__dict__");
 
     py_chromecastproxy = py_global["tizchromecastproxy"];
-}
-}
+  }
+}  // namespace
 
 tizchromecastctx::tizchromecastctx ()
 {
-    try_catch_wrapper (init_cc_ctx (py_main_, py_global_, py_chromecastproxy_));
+  try_catch_wrapper (init_cc_ctx (py_main_, py_global_, py_chromecastproxy_));
 }
 
 tizchromecastctx::~tizchromecastctx ()
 {
-    // boost::python doesn't support Py_Finalize() yet!
+  // boost::python doesn't support Py_Finalize() yet!
 }
 
-bp::object &tizchromecastctx::create_cc_proxy (const std::string &name_or_ip) const
+bp::object &tizchromecastctx::create_cc_proxy (
+    const std::string &name_or_ip) const
 {
-    if (instances_.count (name_or_ip))
+  if (instances_.count (name_or_ip))
     {
-        instances_.erase (name_or_ip);
+      instances_.erase (name_or_ip);
     }
-    try_catch_wrapper (instances_[name_or_ip] = py_chromecastproxy_ (name_or_ip.c_str ()));
-    return instances_[name_or_ip];
+  try_catch_wrapper (instances_[name_or_ip]
+                     = py_chromecastproxy_ (name_or_ip.c_str ()));
+  return instances_[name_or_ip];
 }
 
 void tizchromecastctx::destroy_cc_proxy (const std::string &name_or_ip) const
 {
-    if (instances_.count (name_or_ip))
+  if (instances_.count (name_or_ip))
     {
-        instances_.erase (name_or_ip);
+      instances_.erase (name_or_ip);
     }
 }
 
 bp::object &tizchromecastctx::get_cc_proxy (const std::string &name_or_ip) const
 {
-    if (!instances_.count (name_or_ip))
+  if (!instances_.count (name_or_ip))
     {
-        assert (0);
+      assert (0);
     }
-    return instances_[name_or_ip];
+  return instances_[name_or_ip];
 }
 
 bool tizchromecastctx::cc_proxy_exists (const std::string &name_or_ip) const
 {
-    return (instances_.count (name_or_ip) > 0);
+  return (instances_.count (name_or_ip) > 0);
 }

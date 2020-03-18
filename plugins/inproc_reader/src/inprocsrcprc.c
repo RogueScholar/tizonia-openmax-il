@@ -51,23 +51,24 @@
  */
 
 static void *
-inprocsrc_prc_ctor (void *ap_obj, va_list * app)
+inprocsrc_prc_ctor (void * ap_obj, va_list * app)
 {
-    inprocsrc_prc_t *p_obj = super_ctor (typeOf (ap_obj, "inprocsrcprc"), ap_obj, app);
-    p_obj->eos_ = false;
-    return p_obj;
+  inprocsrc_prc_t * p_obj
+    = super_ctor (typeOf (ap_obj, "inprocsrcprc"), ap_obj, app);
+  p_obj->eos_ = false;
+  return p_obj;
 }
 
 static void *
-inprocsrc_prc_dtor (void *ap_obj)
+inprocsrc_prc_dtor (void * ap_obj)
 {
-    return super_dtor (typeOf (ap_obj, "inprocsrcprc"), ap_obj);
+  return super_dtor (typeOf (ap_obj, "inprocsrcprc"), ap_obj);
 }
 
 static OMX_ERRORTYPE
-inprocsrc_prc_read_buffer (const void *ap_obj, OMX_BUFFERHEADERTYPE * p_hdr)
+inprocsrc_prc_read_buffer (const void * ap_obj, OMX_BUFFERHEADERTYPE * p_hdr)
 {
-    return OMX_ErrorNone;
+  return OMX_ErrorNone;
 }
 
 /*
@@ -75,33 +76,33 @@ inprocsrc_prc_read_buffer (const void *ap_obj, OMX_BUFFERHEADERTYPE * p_hdr)
  */
 
 static OMX_ERRORTYPE
-inprocsrc_prc_allocate_resources (void *ap_obj, OMX_U32 a_pid)
+inprocsrc_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
 {
-    return OMX_ErrorNone;
+  return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-inprocsrc_prc_deallocate_resources (void *ap_obj)
+inprocsrc_prc_deallocate_resources (void * ap_obj)
 {
-    return OMX_ErrorNone;
+  return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-inprocsrc_prc_prepare_to_transfer (void *ap_obj, OMX_U32 a_pid)
+inprocsrc_prc_prepare_to_transfer (void * ap_obj, OMX_U32 a_pid)
 {
-    return OMX_ErrorNone;
+  return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-inprocsrc_prc_transfer_and_process (void *ap_obj, OMX_U32 a_pid)
+inprocsrc_prc_transfer_and_process (void * ap_obj, OMX_U32 a_pid)
 {
-    return OMX_ErrorNone;
+  return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-inprocsrc_prc_stop_and_return (void *ap_obj)
+inprocsrc_prc_stop_and_return (void * ap_obj)
 {
-    return OMX_ErrorNone;
+  return OMX_ErrorNone;
 }
 
 /*
@@ -109,9 +110,9 @@ inprocsrc_prc_stop_and_return (void *ap_obj)
  */
 
 static OMX_ERRORTYPE
-inprocsrc_prc_buffers_ready (const void *ap_obj)
+inprocsrc_prc_buffers_ready (const void * ap_obj)
 {
-    return OMX_ErrorNone;
+  return OMX_ErrorNone;
 }
 
 /*
@@ -119,10 +120,10 @@ inprocsrc_prc_buffers_ready (const void *ap_obj)
  */
 
 static void *
-inprocsrc_prc_class_ctor (void *ap_obj, va_list * app)
+inprocsrc_prc_class_ctor (void * ap_obj, va_list * app)
 {
-    /* NOTE: Class methods might be added in the future. None for now. */
-    return super_ctor (typeOf (ap_obj, "inprocsrcprc_class"), ap_obj, app);
+  /* NOTE: Class methods might be added in the future. None for now. */
+  return super_ctor (typeOf (ap_obj, "inprocsrcprc_class"), ap_obj, app);
 }
 
 /*
@@ -132,48 +133,49 @@ inprocsrc_prc_class_ctor (void *ap_obj, va_list * app)
 void *
 inprocsrc_prc_class_init (void * ap_tos, void * ap_hdl)
 {
-    void * tizprc = tiz_get_type (ap_hdl, "tizprc");
-    void * inprocsrcprc_class = factory_new
-                                /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
-                                (classOf (tizprc), "inprocsrcprc_class", classOf (tizprc), sizeof (inprocsrc_prc_class_t),
-                                 /* TIZ_CLASS_COMMENT: */
-                                 ap_tos, ap_hdl,
-                                 /* TIZ_CLASS_COMMENT: class constructor */
-                                 ctor, inprocsrc_prc_class_ctor,
-                                 /* TIZ_CLASS_COMMENT: stop value*/
-                                 0);
-    return inprocsrcprc_class;
+  void * tizprc = tiz_get_type (ap_hdl, "tizprc");
+  void * inprocsrcprc_class = factory_new
+    /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
+    (classOf (tizprc), "inprocsrcprc_class", classOf (tizprc),
+     sizeof (inprocsrc_prc_class_t),
+     /* TIZ_CLASS_COMMENT: */
+     ap_tos, ap_hdl,
+     /* TIZ_CLASS_COMMENT: class constructor */
+     ctor, inprocsrc_prc_class_ctor,
+     /* TIZ_CLASS_COMMENT: stop value*/
+     0);
+  return inprocsrcprc_class;
 }
 
 void *
 inprocsrc_prc_init (void * ap_tos, void * ap_hdl)
 {
-    void * tizprc = tiz_get_type (ap_hdl, "tizprc");
-    void * inprocsrcprc_class = tiz_get_type (ap_hdl, "inprocsrcprc_class");
-    TIZ_LOG_CLASS (inprocsrcprc_class);
-    void * inprocsrcprc = factory_new
-                          /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
-                          (inprocsrcprc_class, "inprocsrcprc", tizprc, sizeof (inprocsrc_prc_t),
-                           /* TIZ_CLASS_COMMENT: */
-                           ap_tos, ap_hdl,
-                           /* TIZ_CLASS_COMMENT: class constructor */
-                           ctor, inprocsrc_prc_ctor,
-                           /* TIZ_CLASS_COMMENT: class destructor */
-                           dtor, inprocsrc_prc_dtor,
-                           /* TIZ_CLASS_COMMENT: */
-                           tiz_srv_allocate_resources, inprocsrc_prc_allocate_resources,
-                           /* TIZ_CLASS_COMMENT: */
-                           tiz_srv_deallocate_resources, inprocsrc_prc_deallocate_resources,
-                           /* TIZ_CLASS_COMMENT: */
-                           tiz_srv_prepare_to_transfer, inprocsrc_prc_prepare_to_transfer,
-                           /* TIZ_CLASS_COMMENT: */
-                           tiz_srv_transfer_and_process, inprocsrc_prc_transfer_and_process,
-                           /* TIZ_CLASS_COMMENT: */
-                           tiz_srv_stop_and_return, inprocsrc_prc_stop_and_return,
-                           /* TIZ_CLASS_COMMENT: */
-                           tiz_prc_buffers_ready, inprocsrc_prc_buffers_ready,
-                           /* TIZ_CLASS_COMMENT: stop value */
-                           0);
+  void * tizprc = tiz_get_type (ap_hdl, "tizprc");
+  void * inprocsrcprc_class = tiz_get_type (ap_hdl, "inprocsrcprc_class");
+  TIZ_LOG_CLASS (inprocsrcprc_class);
+  void * inprocsrcprc = factory_new
+    /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
+    (inprocsrcprc_class, "inprocsrcprc", tizprc, sizeof (inprocsrc_prc_t),
+     /* TIZ_CLASS_COMMENT: */
+     ap_tos, ap_hdl,
+     /* TIZ_CLASS_COMMENT: class constructor */
+     ctor, inprocsrc_prc_ctor,
+     /* TIZ_CLASS_COMMENT: class destructor */
+     dtor, inprocsrc_prc_dtor,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_allocate_resources, inprocsrc_prc_allocate_resources,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_deallocate_resources, inprocsrc_prc_deallocate_resources,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_prepare_to_transfer, inprocsrc_prc_prepare_to_transfer,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_transfer_and_process, inprocsrc_prc_transfer_and_process,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_stop_and_return, inprocsrc_prc_stop_and_return,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_prc_buffers_ready, inprocsrc_prc_buffers_ready,
+     /* TIZ_CLASS_COMMENT: stop value */
+     0);
 
-    return inprocsrcprc;
+  return inprocsrcprc;
 }

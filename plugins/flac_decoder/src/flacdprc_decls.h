@@ -30,7 +30,8 @@
 #define FLACDPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -38,9 +39,9 @@ extern "C" {
 
 #include "tizprc_decls.h"
 
-typedef struct flacd_prc flacd_prc_t;
-struct flacd_prc
-{
+  typedef struct flacd_prc flacd_prc_t;
+  struct flacd_prc
+  {
     /* Object */
     const tiz_prc_t _;
     FLAC__StreamDecoder * p_flac_dec_;
@@ -56,15 +57,15 @@ struct flacd_prc
     OMX_U8 * p_store_;
     OMX_U32 store_offset_;
     OMX_U32 store_size_;
-};
+  };
 
-typedef struct flacd_prc_class flacd_prc_class_t;
-struct flacd_prc_class
-{
+  typedef struct flacd_prc_class flacd_prc_class_t;
+  struct flacd_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

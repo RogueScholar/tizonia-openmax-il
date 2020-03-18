@@ -30,7 +30,8 @@
 #define TIZWEBMPORT_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_TizoniaExt.h>
@@ -38,20 +39,20 @@ extern "C" {
 
 #include <tizport_decls.h>
 
-typedef struct tiz_webmport tiz_webmport_t;
-struct tiz_webmport
-{
+  typedef struct tiz_webmport tiz_webmport_t;
+  struct tiz_webmport
+  {
     /* Object */
     const tiz_port_t _;
-};
+  };
 
-typedef struct tiz_webmport_class tiz_webmport_class_t;
-struct tiz_webmport_class
-{
+  typedef struct tiz_webmport_class tiz_webmport_class_t;
+  struct tiz_webmport_class
+  {
     /* Class */
     const tiz_port_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

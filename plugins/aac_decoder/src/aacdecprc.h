@@ -30,11 +30,14 @@
 #define AACDECPRC_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-void *aacdec_prc_class_init (void *ap_tos, void *ap_hdl);
-void *aacdec_prc_init (void *ap_tos, void *ap_hdl);
+  void *
+  aacdec_prc_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  aacdec_prc_init (void * ap_tos, void * ap_hdl);
 
 #ifdef __cplusplus
 }

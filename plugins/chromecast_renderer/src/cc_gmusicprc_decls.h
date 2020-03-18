@@ -29,7 +29,8 @@
 #define CC_GMUSICPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -43,23 +44,23 @@ extern "C" {
 #include "cc_prc_decls.h"
 #include "cc_prc.h"
 
-typedef struct cc_gmusic_prc cc_gmusic_prc_t;
-struct cc_gmusic_prc
-{
+  typedef struct cc_gmusic_prc cc_gmusic_prc_t;
+  struct cc_gmusic_prc
+  {
     /* Object */
     const cc_prc_t _;
     OMX_TIZONIA_AUDIO_PARAM_GMUSICSESSIONTYPE gm_session_;
     OMX_TIZONIA_AUDIO_PARAM_GMUSICPLAYLISTTYPE gm_playlist_;
     tiz_gmusic_t * p_gm_;
-};
+  };
 
-typedef struct cc_gmusic_prc_class cc_gmusic_prc_class_t;
-struct cc_gmusic_prc_class
-{
+  typedef struct cc_gmusic_prc_class cc_gmusic_prc_class_t;
+  struct cc_gmusic_prc_class
+  {
     /* Class */
     const cc_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }
