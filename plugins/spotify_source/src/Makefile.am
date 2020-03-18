@@ -46,7 +46,3 @@ libtizspotifysrc_la_LIBADD = \
 	@TIZONIA_LIBS@ \
 	@SPOTIFY_LIBS@ \
 	@TIZSPOTIFY_LIBS@
-
-
-
-

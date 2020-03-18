@@ -29,7 +29,7 @@ tizcastclient_dbus_hh = custom_target(
          'tizcastclient-dbus.hh',
          build_by_default: true,
          input: 'tizcast-introspect.xml',
-         output: 'tizcastclient-dbus.hh', 
+         output: 'tizcastclient-dbus.hh',
          command: [tizonia_dbusxx_xml2cpp, '@INPUT@', '--proxy=@OUTPUT@'],
          install: true,
          install_dir: tizincludedir

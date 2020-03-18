@@ -36,7 +36,7 @@ option('docs_options', type: 'array', description: 'which documentation to build
 )
 option('docs_paper', type: 'combo', choices: ['a4', 'legal'], value: 'a4')
 option('clients', type: 'boolean', value: 'true', description: 'build the clients (default: enabled)')
-  
+
 option('plugins', type: 'array', description: 'which plugins to build',
    choices: [
    'aac_decoder',
@@ -64,7 +64,7 @@ option('plugins', type: 'array', description: 'which plugins to build',
    'vorbis_decoder',
    'vp8_decoder',
    'webm_demuxer',
-   'yuv_renderer' 
+   'yuv_renderer'
    ],
    value: [
    'aac_decoder',
@@ -92,5 +92,5 @@ option('plugins', type: 'array', description: 'which plugins to build',
    'vorbis_decoder',
    'vp8_decoder',
    'webm_demuxer',
-   'yuv_renderer' 
+   'yuv_renderer'
    ])

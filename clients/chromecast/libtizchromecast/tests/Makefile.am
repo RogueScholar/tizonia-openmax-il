@@ -30,4 +30,3 @@ check_tizchromecast_CFLAGS = \
 check_tizchromecast_LDADD = \
 	$(top_builddir)/src/libtizchromecast.la \
 	@CHECK_LIBS@
-

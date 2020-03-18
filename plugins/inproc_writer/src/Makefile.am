@@ -40,5 +40,3 @@ libtizinprocrnd_la_LIBADD = \
 	@TIZPLATFORM_LIBS@ \
 	@TIZONIA_LIBS@ \
 	@LIBZMQ3_LIBS@
-
-

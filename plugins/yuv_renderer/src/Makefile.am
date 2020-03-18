@@ -40,5 +40,3 @@ libtizsdlivr_la_LIBADD = \
 	@TIZPLATFORM_LIBS@ \
 	@TIZONIA_LIBS@ \
 	@SDL_LIBS@
-
-

@@ -28,4 +28,3 @@ check_tizgmusic_CFLAGS = \
 check_tizgmusic_LDADD = \
 	$(top_builddir)/src/libtizgmusic.la \
 	@CHECK_LIBS@
-

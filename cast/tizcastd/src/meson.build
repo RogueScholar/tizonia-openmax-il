@@ -20,4 +20,3 @@ tizcastd = executable(
    ],
    install: true
 )
-

@@ -39,5 +39,3 @@ libtizmp3enc_la_LIBADD = \
 	@TIZPLATFORM_LIBS@ \
 	@TIZONIA_LIBS@ \
 	-lmp3lame
-
-
