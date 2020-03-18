@@ -16,8 +16,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-
 """@package tizgmusicproxy
 Simple Google Play Music proxy/wrapper.
 
@@ -29,21 +27,21 @@ Simon Weber's 'gmusicapi' Python module. For further information:
 - https://github.com/simon-weber/Unofficial-Google-Music-API
 
 """
-
-import os
-import sys
-import logging
-import random
-import unicodedata
-import pickle
 import configparser
+import logging
+import os
+import pickle
+import random
+import sys
+import unicodedata
 from datetime import datetime
 from operator import itemgetter
+
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 from gmusicapi import Mobileclient
 from gmusicapi.exceptions import CallFailure
 from requests.structures import CaseInsensitiveDict
-from fuzzywuzzy import process
-from fuzzywuzzy import fuzz
 
 # For use during debugging
 # from pprint import pprint

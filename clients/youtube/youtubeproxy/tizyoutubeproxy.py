@@ -13,27 +13,27 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """@package tizyoutubeproxy
 Simple YouTube proxy/wrapper.
 
 Access YouTube to retrieve audio stream URLs and create a playback queue.
 
 """
-
-import sys
-import os
-import logging
-import random
-import unicodedata
-import re
-import getpass
-import pafy
 import configparser
-from multiprocessing.dummy import Process, Queue
-from joblib import Memory
-from fuzzywuzzy import process
+import getpass
+import logging
+import os
+import random
+import re
+import sys
+import unicodedata
+from multiprocessing.dummy import Process
+from multiprocessing.dummy import Queue
+
+import pafy
 from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
+from joblib import Memory
 
 # For use during debugging
 # from pprint import pprint

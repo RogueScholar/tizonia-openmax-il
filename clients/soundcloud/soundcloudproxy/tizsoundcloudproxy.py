@@ -13,7 +13,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """@package tizsoundcloudproxy
 Simple SoundCloud API proxy/wrapper.
 
@@ -21,19 +20,19 @@ Access SoundCloud using a user account to retrieve track URLs and create a play
 queue for streaming.
 
 """
-
-import os
-import sys
-import logging
-import random
-import soundcloud
 import collections
-import unicodedata
-from requests.exceptions import HTTPError
-from operator import itemgetter
-from fuzzywuzzy import process
-import imp
 import configparser
+import imp
+import logging
+import os
+import random
+import sys
+import unicodedata
+from operator import itemgetter
+
+import soundcloud
+from fuzzywuzzy import process
+from requests.exceptions import HTTPError
 
 if sys.version[0] == "2":
     imp.reload(sys)

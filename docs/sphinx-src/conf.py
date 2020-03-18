@@ -10,14 +10,14 @@
 #
 # All configuration values have a default; values that are commented out
 # serve to show the default.
-
-import sys
 import os
-import subprocess
 import re
-import alabaster
+import subprocess
+import sys
 import zipfile
 from collections import OrderedDict
+
+import alabaster
 from recommonmark.parser import CommonMarkParser
 
 # If extensions (or modules to document with autodoc) are in another directory,

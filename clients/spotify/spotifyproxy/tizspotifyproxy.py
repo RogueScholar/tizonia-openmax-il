@@ -13,28 +13,26 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """@package tizspotifyproxy
 Simple Spotify API proxy/wrapper.
 
 Access Spotify servers to retrieve audio track URIs and create a playback queue.
 
 """
-
-import sys
-import os
-import logging
-import random
-import unicodedata
-import re
-import spotipy
 import configparser
-from spotipy.oauth2 import SpotifyClientCredentials
-from fuzzywuzzy import process
-from fuzzywuzzy import fuzz
-
-# For use during debugging
+import logging
+import os
+import random
+import re
+import sys
+import unicodedata
 from pprint import pprint
+
+import spotipy
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
+from spotipy.oauth2 import SpotifyClientCredentials
+# For use during debugging
 
 FORMAT = (
     "[%(asctime)s] [%(levelname)5s] [%(thread)d] "

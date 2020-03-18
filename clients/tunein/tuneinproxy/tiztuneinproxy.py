@@ -16,7 +16,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """@package tiztuneinproxy
 Simple Tunein proxy/wrapper.
 
@@ -26,28 +25,28 @@ With ideas and code from mopidy_tunein. For further information see:
 - https://github.com/kingosticks/mopidy-tunein/blob/master/mopidy_tunein/tunein.py
 
 """
-
 from __future__ import unicode_literals
 
 import configparser
-import sys
-import os
-import io
-import re
-import logging
-import random
 import datetime
 import getpass
+import io
+import logging
+import os
+import random
+import re
+import sys
 import xml.etree.ElementTree as elementtree
 from collections import OrderedDict
 from contextlib import closing
-from requests import Session
-from urllib.parse import urlparse
-from joblib import Memory
-from fuzzywuzzy import process
-from fuzzywuzzy import fuzz
 from functools import reduce
+from urllib.parse import urlparse
+
 import requests
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
+from joblib import Memory
+from requests import Session
 
 # FOR REFERENCE
 # {'URL': 'http://opml.radiotime.com/Tune.ashx?id=s290003',

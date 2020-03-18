@@ -13,35 +13,32 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """@package tizchromecastproxy
 Simple Chromecast proxy/wrapper.
 
 Access a Chromecast device to initiate and manage audio streaming sessions..
 
 """
-
-import socket
-import select
-import time
-import sys
-import os
-import logging
-import unicodedata
-import pychromecast
 import configparser
-from pychromecast.controllers.media import (
-    STREAM_TYPE_UNKNOWN,
-    STREAM_TYPE_BUFFERED,
-    STREAM_TYPE_LIVE,
-    MEDIA_PLAYER_STATE_PLAYING,
-    MEDIA_PLAYER_STATE_BUFFERING,
-    MEDIA_PLAYER_STATE_PAUSED,
-    MEDIA_PLAYER_STATE_IDLE,
-    MEDIA_PLAYER_STATE_UNKNOWN,
-)
-from pychromecast.error import PyChromecastError
+import logging
+import os
+import select
+import socket
+import sys
+import time
+import unicodedata
+
+import pychromecast
 from pychromecast.config import APP_MEDIA_RECEIVER
+from pychromecast.controllers.media import MEDIA_PLAYER_STATE_BUFFERING
+from pychromecast.controllers.media import MEDIA_PLAYER_STATE_IDLE
+from pychromecast.controllers.media import MEDIA_PLAYER_STATE_PAUSED
+from pychromecast.controllers.media import MEDIA_PLAYER_STATE_PLAYING
+from pychromecast.controllers.media import MEDIA_PLAYER_STATE_UNKNOWN
+from pychromecast.controllers.media import STREAM_TYPE_BUFFERED
+from pychromecast.controllers.media import STREAM_TYPE_LIVE
+from pychromecast.controllers.media import STREAM_TYPE_UNKNOWN
+from pychromecast.error import PyChromecastError
 
 # For use during debugging
 # from pprint import pprint
