@@ -69,7 +69,8 @@ class ConfigColors:
         active_theme = active_theme + "."
         self.FAIL = (
             "\033["
-            + self.config.get("color-themes", active_theme + "C08", fallback="91")
+            + self.config.get("color-themes", active_theme +
+                              "C08", fallback="91")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -77,7 +78,8 @@ class ConfigColors:
         )
         self.OKGREEN = (
             "\033["
-            + self.config.get("color-themes", active_theme + "C09", fallback="92")
+            + self.config.get("color-themes", active_theme +
+                              "C09", fallback="92")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -85,7 +87,8 @@ class ConfigColors:
         )
         self.WARNING = (
             "\033["
-            + self.config.get("color-themes", active_theme + "C10", fallback="93")
+            + self.config.get("color-themes", active_theme +
+                              "C10", fallback="93")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -93,7 +96,8 @@ class ConfigColors:
         )
         self.OKBLUE = (
             "\033["
-            + self.config.get("color-themes", active_theme + "C11", fallback="94")
+            + self.config.get("color-themes", active_theme +
+                              "C11", fallback="94")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -101,7 +105,8 @@ class ConfigColors:
         )
         self.OKMAGENTA = (
             "\033["
-            + self.config.get("color-themes", active_theme + "C12", fallback="95")
+            + self.config.get("color-themes", active_theme +
+                              "C12", fallback="95")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -245,7 +250,8 @@ class tizsoundcloudproxy(object):
                     playlist_tracks_uri = (
                         "/playlists/" + str(item.get("id")) + "/tracks"
                     )
-                    tracks_resource = self.__api.get(playlist_tracks_uri, offset=0)
+                    tracks_resource = self.__api.get(
+                        playlist_tracks_uri, offset=0)
                     for resource in tracks_resource:
                         track = resource.fields()
                         if track["streamable"]:
@@ -254,7 +260,8 @@ class tizsoundcloudproxy(object):
             if count == 0:
                 raise RuntimeError("The user stream is empty")
 
-            self._finalise_play_queue()
+            logging.info("Added {0} stream tracks to queue".format(count))
+            self._update_play_queue_order()
 
         except KeyError:
             raise
@@ -270,6 +277,8 @@ class tizsoundcloudproxy(object):
             for resource in likes_resource:
                 like = resource.fields()
                 if like and like["streamable"]:
+                    title = to_ascii(like.get("title"))
+                    print_nfo("[SoundCloud] [Track] '{0}'.".format(title))
                     self.queue.append(like)
                     count += 1
                 playlist = like.get("playlist")
@@ -278,6 +287,9 @@ class tizsoundcloudproxy(object):
                     if isinstance(tracks, collections.Iterable):
                         for track in tracks:
                             if track["streamable"]:
+                                title = to_ascii(track.get("title"))
+                                print_nfo(
+                                    "[SoundCloud] [Track] '{0}'.".format(title))
                                 self.queue.append(track)
                                 count += 1
 
@@ -286,7 +298,8 @@ class tizsoundcloudproxy(object):
                     "SoundCloud did not return any" " tracks favourited by the user."
                 )
 
-            self._finalise_play_queue()
+            logging.info("Added {0} stream tracks to queue".format(count))
+            self._update_play_queue_order()
 
         except KeyError:
             raise
@@ -300,34 +313,30 @@ class tizsoundcloudproxy(object):
         """
         logging.info("enqueue_playlist")
         try:
-            count = 0
             resources = self.__api.get("/me/playlists")
-            if not resources:
-                raise RuntimeError(
-                    "Playlist search '{}' returned no tracks".format(title)
-                )
-            resource = self._select_one(resources, arg, "Playlist")
-            playlist = resource.fields()
-            pid = playlist["id"]
-            title = playlist.get("title")
-            print_wrn(
-                "[SoundCloud] [Playlist] Retrieve tracks from '{0}'.".format(title)
-            )
-            playlist_resource = self.__api.get("/playlists/%s" % pid)
-            tracks = playlist_resource.tracks
-            if not tracks:
-                raise RuntimeError("Playlist '{}' returned no tracks".format(title))
-            for track in tracks:
-                if track["streamable"]:
-                    self.queue.append(track)
-                    count += 1
+            count = 0
+            for resource in resources:
+                playlist = resource.fields()
+                pid = playlist.get("id")
+                title = playlist.get("title")
+                print_nfo("[SoundCloud] [Playlist] '{0}'.".format(title))
+                if arg.lower() in title.lower():
+                    playlist_resource = self.__api.get("/playlists/%s" % pid)
+                    tracks = playlist_resource.tracks
+                    for track in tracks:
+                        if track["streamable"]:
+                            title = to_ascii(track.get("title"))
+                            print_nfo(
+                                "[SoundCloud] [Track] '{0}'.".format(title))
+                            self.queue.append(track)
+                            count += 1
 
             if count == 0:
                 raise RuntimeError(
-                    "SoundCloud did not return any playlists : {}".format(arg)
-                )
+                    "SoundCloud did not return any" " playlists.")
 
-            self._finalise_play_queue()
+            logging.info("Added {0} stream tracks to queue".format(count))
+            self._update_play_queue_order()
 
         except KeyError:
             raise KeyError(str("Playlist not found : %s" % arg))
@@ -367,6 +376,9 @@ class tizsoundcloudproxy(object):
                     for track_resource in track_resources:
                         track = track_resource.fields()
                         if track["streamable"]:
+                            title = to_ascii(track.get("title"))
+                            print_nfo(
+                                "[SoundCloud] [Track] '{0}'.".format(title))
                             self.queue.append(track)
                             count += 1
                     if count > 0:
@@ -375,7 +387,8 @@ class tizsoundcloudproxy(object):
             if count == 0:
                 raise RuntimeError(str("Creator not found : %s" % arg))
 
-            self._finalise_play_queue()
+            logging.info("Added {0} user tracks to queue".format(count))
+            self._update_play_queue_order()
 
         except KeyError:
             raise
@@ -396,13 +409,23 @@ class tizsoundcloudproxy(object):
             count = 0
             for resource in track_resources:
                 track = resource.fields()
+                title = to_ascii(track.get("title"))
+                print_nfo("[SoundCloud] [Track] '{0}'.".format(title))
                 self.queue.append(track)
                 count += 1
 
             if count == 0:
                 raise RuntimeError(str("No tracks found : %s" % arg))
 
-            self._finalise_play_queue()
+            logging.info("Added {0} tracks to queue".format(count))
+            try:
+                self.queue = sorted(
+                    self.queue, key=itemgetter("likes_count"), reverse=True
+                )
+            except KeyError:
+                pass
+
+            self._update_play_queue_order()
 
         except KeyError:
             raise KeyError(str("No tracks found : %s" % arg))
@@ -424,13 +447,8 @@ class tizsoundcloudproxy(object):
                 playlist = resource.fields()
                 pid = resource.id
                 title = playlist.get("title")
-                track_count = playlist.get("track_count")
-                user_name = playlist.get("user").get("username")
-                print_nfo(
-                    "[SoundCloud] [Playlist] '{0}' by {1} ({2} tracks).".format(
-                        title, user_name, track_count
-                    )
-                )
+                print_nfo("[SoundCloud] [Playlist] '{0}'.".format(
+                    to_ascii(title)))
                 choice_titles.append(title)
                 choices[title] = pid
 
@@ -439,7 +457,8 @@ class tizsoundcloudproxy(object):
             while len(choice_titles) and not len(tracks):
                 playlist_title = process.extractOne(arg, choice_titles)[0]
                 playlist_id = choices[playlist_title]
-                playlist_resource = self.__api.get("/playlists/%s" % playlist_id)
+                playlist_resource = self.__api.get(
+                    "/playlists/%s" % playlist_id)
                 tracks = playlist_resource.tracks
                 if not len(tracks):
                     print_err(
@@ -450,14 +469,13 @@ class tizsoundcloudproxy(object):
                     del choices[playlist_title]
                     choice_titles.remove(playlist_title)
 
-            print_wrn(
-                "[SoundCloud] Playing '{0}' by {1}.".format(
-                    playlist_title, playlist_resource.user["username"]
-                )
-            )
+            print_wrn("[SoundCloud] Playing '{0}'.".format(
+                to_ascii(playlist_title)))
             for track in tracks:
                 if track["streamable"]:
                     self.queue.append(track)
+                    title = to_ascii(track.get("title"))
+                    print_nfo("[SoundCloud] [Track] '{0}'.".format(title))
                     count += 1
 
             if count == 0:
@@ -467,7 +485,8 @@ class tizsoundcloudproxy(object):
                     " playlist."
                 )
 
-            self._finalise_play_queue()
+            logging.info("Added {0} playlist tracks to queue".format(count))
+            self._update_play_queue_order()
 
         except KeyError:
             raise KeyError(str("No playlists found : %s" % arg))
@@ -488,13 +507,23 @@ class tizsoundcloudproxy(object):
             count = 0
             for resource in genre_resources:
                 track = resource.fields()
+                title = to_ascii(track.get("title"))
+                print_nfo("[SoundCloud] [Track] '{0}'.".format(title))
                 self.queue.append(track)
                 count += 1
 
             if count == 0:
                 raise RuntimeError(str("No genres found : %s" % arg))
 
-            self._finalise_play_queue()
+            logging.info("Added {0} tracks to queue".format(count))
+            try:
+                self.queue = sorted(
+                    self.queue, key=itemgetter("likes_count"), reverse=True
+                )
+            except KeyError:
+                pass
+
+            self._update_play_queue_order()
 
         except KeyError:
             raise KeyError(str("Genre not found : %s" % arg))
@@ -517,13 +546,23 @@ class tizsoundcloudproxy(object):
             count = 0
             for resource in tag_resources:
                 track = resource.fields()
+                title = to_ascii(track.get("title"))
+                print_nfo("[SoundCloud] [Track] '{0}'.".format(title))
                 self.queue.append(track)
                 count += 1
 
             if count == 0:
                 raise RuntimeError(str("No tags found : %s" % arg))
 
-            self._finalise_play_queue()
+            logging.info("Added {0} tracks to queue".format(count))
+            try:
+                self.queue = sorted(
+                    self.queue, key=itemgetter("likes_count"), reverse=True
+                )
+            except KeyError:
+                pass
+
+            self._update_play_queue_order()
 
         except KeyError:
             raise KeyError(str("Tag(s) not found : %s" % arg))
@@ -649,18 +688,11 @@ class tizsoundcloudproxy(object):
                     user_avatar = user.get("avatar_url")
                     if user_avatar:
                         track_user_avatar = user_avatar
-                        logging.info("track user_avatar {0}".format(user_avatar))
+                        logging.info(
+                            "track user_avatar {0}".format(user_avatar))
             except KeyError:
                 logging.info("user_avatar : not found")
         return track_user_avatar
-
-    def current_track_queue_index_and_queue_length(self):
-        """ Retrieve index in the queue (starting from 1) of the current track and the
-        length of the playback queue.
-
-        """
-        logging.info("current_track_queue_index_and_queue_length")
-        return self.play_queue_order[self.queue_index] + 1, len(self.queue)
 
     def clear_queue(self):
         """ Clears the playback queue.
@@ -668,42 +700,6 @@ class tizsoundcloudproxy(object):
         """
         self.queue = list()
         self.queue_index = -1
-
-    def print_queue(self):
-        """ Print the contents of the playback queue.
-
-        """
-        logging.info("print_queue")
-
-        for i in range(0, len(self.queue)):
-            track = self.queue[self.play_queue_order[i]]
-            order_num = str("#{:0{}d}".format(i + 1, len(str(len(self.queue)))))
-            info_str = str(
-                "[SoundCloud] [Track] [{0}] '{1}' [{2}]".format(
-                    order_num,
-                    to_ascii(track["title"]),
-                    to_ascii(track["user"]["username"]),
-                )
-            )
-            duration = track["duration"] if track.get("duration") else None
-            if duration:
-                duration_str = ""
-                m, s = divmod(duration / 1000, 60)
-                h, m = divmod(m, 60)
-                if h > 0:
-                    duration_str = str(
-                        "{:d}h:{:d}m:{:02d}s".format(int(h), int(m), round(s))
-                    )
-                elif m > 0:
-                    duration_str = str("{:d}m:{:02d}s".format(int(m), round(s)))
-                else:
-                    duration_str = str("{:02d}s".format(round(s)))
-
-                info_str = info_str + str(" ({0})").format(duration_str)
-
-            print_nfo(info_str + ".")
-
-        print_nfo("[SoundCloud] [Tracks in queue] '{0}'.".format(len(self.queue)))
 
     def next_url(self):
         """ Retrieve the url of the next track in the playback queue.
@@ -746,36 +742,6 @@ class tizsoundcloudproxy(object):
             del self.queue[self.queue_index]
             return self.prev_url()
 
-    def get_url(self, position=None):
-        """Retrieve the url on a particular position in the playback queue. If no
-        position is given, the url at the current position of the playback is returned.
-
-        """
-        logging.info("get_url {}".format(position if position else "-1"))
-        try:
-            if len(self.queue):
-                queue_pos = self.play_queue_order[self.queue_index]
-                if position and position > 0 and position <= len(self.queue):
-                    self.queue_index = position - 1
-                    queue_pos = self.play_queue_order[self.queue_index]
-                    logging.info(
-                        "get_url : self.queue_index {}".format(self.queue_index)
-                    )
-                logging.info(
-                    "get_url : play_queue_order {}".format(
-                        self.play_queue_order[self.queue_index]
-                    )
-                )
-                track = self.queue[queue_pos]
-                return self._retrieve_track_url(track)
-            else:
-                return ""
-        except (KeyError, AttributeError):
-            # TODO: We don't remove this for now
-            # del self.queue[self.queue_index]
-            logging.info("exception")
-            return ""
-
     def _update_play_queue_order(self):
         """ Update the queue playback order.
 
@@ -790,6 +756,8 @@ class tizsoundcloudproxy(object):
                 self.play_queue_order = list(range(total_tracks))
             if self.current_play_mode == self.play_modes.SHUFFLE:
                 random.shuffle(self.play_queue_order)
+            print_nfo(
+                "[SoundCloud] [Tracks in queue] '{0}'.".format(total_tracks))
 
     def _retrieve_track_url(self, track):
         """ Retrieve a track url
@@ -804,43 +772,6 @@ class tizsoundcloudproxy(object):
         except AttributeError:
             logging.info("Could not retrieve the track url!")
             raise
-
-    def _finalise_play_queue(self):
-        """ Helper function to group the various actions needed to ready play
-        queue.
-
-        """
-        logging.info("_finalise_play_queue")
-        try:
-            self.queue = sorted(self.queue, key=itemgetter("likes_count"), reverse=True)
-        except KeyError:
-            pass
-        self._update_play_queue_order()
-        self.print_queue()
-
-    def _select_one(self, resources, keywords, name=""):
-        res = None
-        res_dict = dict()
-        res_names = list()
-        for resource in resources:
-            r = resource.fields()
-            title = r["title"]
-            print_nfo("[SoundCloud] [{0}] '{1}'.".format(name, title))
-            res_names.append(title)
-            res_dict[title] = resource
-
-        if not keywords:
-            res_name = random.choice(res_names)
-            res = res_dict[res_name]
-        else:
-            if len(res_names) > 1:
-                res_name = process.extractOne(keywords, res_names)[0]
-                res = res_dict[res_name]
-            elif len(res_names) == 1:
-                res_name = res_names[0]
-                res = res_dict[res_name]
-
-        return res
 
 
 if __name__ == "__main__":

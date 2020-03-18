@@ -24,8 +24,8 @@ from recommonmark.parser import CommonMarkParser
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 # sys.path.insert(0, os.path.abspath('.'))
-#sys.path.append(os.path.abspath('/usr/local/lib/python2.7/dist-packages/breathe'))
-#sys.path.append('/home/joni/work/3rdparty/breathe')
+# sys.path.append(os.path.abspath('/usr/local/lib/python2.7/dist-packages/breathe'))
+# sys.path.append('/home/joni/work/3rdparty/breathe')
 
 # -- General configuration -----------------------------------------------------
 
@@ -102,18 +102,18 @@ pygments_style = 'sphinx'
 # -----------------------------
 
 breathe_projects = {
-    "tizonia":"../doxygen-src/xml/",
-    }
+    "tizonia": "../doxygen-src/xml/",
+}
 
 breathe_default_project = "tizonia"
 
 breathe_domain_by_extension = {
-        "h" : "c",
-        "c" : "c",
-        "hpp" : "cpp",
-        "cpp" : "cpp",
-        "py": "py",
-        }
+    "h": "c",
+    "c": "c",
+    "hpp": "cpp",
+    "cpp": "cpp",
+    "py": "py",
+}
 
 # -- Options for HTML output ---------------------------------------------------
 
@@ -122,10 +122,10 @@ breathe_domain_by_extension = {
 html_theme = 'alabaster'
 
 extra_nav_links = OrderedDict()
-extra_nav_links['Tizonia Website']  = 'https://tizonia.org'
+extra_nav_links['Tizonia Website'] = 'https://tizonia.org'
 extra_nav_links['Source (GitHub)'] = 'https://github.com/tizonia/tizonia-openmax-il'
 extra_nav_links['Issues (GitHub)'] = 'https://github.com/tizonia/tizonia-openmax-il/issues'
-extra_nav_links['Binaries (Bintray)']  = 'https://bintray.com/tizonia'
+extra_nav_links['Binaries (Bintray)'] = 'https://bintray.com/tizonia'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -226,21 +226,21 @@ htmlhelp_basename = 'Tizoniadoc'
 # -- Options for LaTeX output --------------------------------------------------
 
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
+    # The paper size ('letterpaper' or 'a4paper').
+    # 'papersize': 'letterpaper',
 
-# The font size ('10pt', '11pt' or '12pt').
-#'pointsize': '10pt',
+    # The font size ('10pt', '11pt' or '12pt').
+    # 'pointsize': '10pt',
 
-# Additional stuff for the LaTeX preamble.
-#'preamble': '',
+    # Additional stuff for the LaTeX preamble.
+    # 'preamble': '',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'Tizonia.tex', u'Tizonia Documentation',
-   u'Juan A. Rubio', 'manual'),
+    ('index', 'Tizonia.tex', u'Tizonia Documentation',
+     u'Juan A. Rubio', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -269,7 +269,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('manual/manual', 'tizonia', u'A command-line streaming music client/server for Linux with support for Spotify (Premium), Google Play Music (free and paid tiers), YouTube, SoundCloud, TuneIn Internet Radio, Plex servers and Chromecast devices.', [u'Juan A. Rubio'], 1)
+    ('manual/manual', 'tizonia',
+     u'A command-line streaming music client/server for Linux with support for Spotify (Premium), Google Play Music (free and paid tiers), YouTube, SoundCloud, TuneIn Internet Radio, Plex servers and Chromecast devices.', [u'Juan A. Rubio'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -282,9 +283,9 @@ man_show_urls = False
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'Tizonia', u'Tizonia Documentation',
-   u'Juan A. Rubio', 'Tizonia', 'One line description of project.',
-   'Miscellaneous'),
+    ('index', 'Tizonia', u'Tizonia Documentation',
+     u'Juan A. Rubio', 'Tizonia', 'One line description of project.',
+     'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.
@@ -296,6 +297,7 @@ texinfo_documents = [
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
 
+
 def run_doxygen(app):
     """Run the doxygen make command in the docs/ top level folder"""
 
@@ -306,32 +308,34 @@ def run_doxygen(app):
         sys.stdout.write("CWD : %s\n" % cwd)
 
         links = \
-            [ \
-              [ 'README.md', 'overview/README.md' ] , \
-              [ 'CHANGELOG.md', 'overview/CHANGELOG.md' ] , \
-              [ 'ROADMAP.md', 'overview/ROADMAP.md' ] , \
-              [ 'CONTRIBUTING.md', 'overview/CONTRIBUTING.md' ] , \
-              [ 'COPYING.LESSER.md', 'overview/COPYING.LESSER.md' ] , \
-              [ 'CODE_OF_CONDUCT.md', 'overview/CODE_OF_CONDUCT.md' ] , \
-              [ 'PROJECT.md', 'overview/PROJECT.md' ] , \
-              [ 'BUILDING.md', 'overview/BUILDING.md' ] , \
-              [ 'BUILDING_with_meson.md', 'overview/BUILDING_with_meson.md' ] , \
-              [ 'PROJECT.md', 'development/PROJECT.md' ] , \
-              [ 'BUILDING.md', 'development/BUILDING.md' ] , \
-              [ 'BUILDING_with_meson.md', 'development/BUILDING_with_meson.md' ] , \
+            [
+                ['README.md', 'overview/README.md'],
+                ['CHANGELOG.md', 'overview/CHANGELOG.md'],
+                ['ROADMAP.md', 'overview/ROADMAP.md'],
+                ['CONTRIBUTING.md', 'overview/CONTRIBUTING.md'],
+                ['COPYING.LESSER.md', 'overview/COPYING.LESSER.md'],
+                ['CODE_OF_CONDUCT.md', 'overview/CODE_OF_CONDUCT.md'],
+                ['PROJECT.md', 'overview/PROJECT.md'],
+                ['BUILDING.md', 'overview/BUILDING.md'],
+                ['BUILDING_with_meson.md', 'overview/BUILDING_with_meson.md'],
+                ['PROJECT.md', 'development/PROJECT.md'],
+                ['BUILDING.md', 'development/BUILDING.md'],
+                ['BUILDING_with_meson.md', 'development/BUILDING_with_meson.md'],
             ]
 
         for link in links:
             source = os.path.join(repo_path, link[0])
             target = os.path.join(cwd, link[1])
             if not os.path.lexists(target):
-                sys.stdout.write("Creating symlink : source %s -> target %s \n" % (source, target))
+                sys.stdout.write(
+                    "Creating symlink : source %s -> target %s \n" % (source, target))
                 os.symlink(source, target)
 
         read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
         if read_the_docs_build:
             sys.stdout.write("Running doxygen in RTD environment\n")
-            retcode = subprocess.call("cd ../doxygen-src && doxygen doxyfile.rtd", shell=True)
+            retcode = subprocess.call(
+                "cd ../doxygen-src && doxygen doxyfile.rtd", shell=True)
         else:
             sys.stdout.write("Running doxygen in local environment\n")
             retcode = subprocess.call("cd .. && make", shell=True)

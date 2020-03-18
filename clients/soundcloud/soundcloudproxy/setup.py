@@ -37,19 +37,19 @@ else:
     raise RuntimeError("Could not find version in '%s'" % VERSIONFILE)
 
 setup(
-    name                 = 'tizsoundcloudproxy',
-    version              = version,
-    author               = 'Juan A. Rubio',
-    author_email         = 'juan.rubio@aratelia.com',
-    url                  = 'https://tizonia.org',
-    py_modules           = ['tizsoundcloudproxy'],
-    scripts              = [],
-    license              = "Apache License, Version 2.0",
-    description          = 'Tizonia SoundCloud proxy',
-    install_requires     = [
-#        'soundcloud >= 0.4.1',
+    name='tizsoundcloudproxy',
+    version=version,
+    author='Juan A. Rubio',
+    author_email='juan.rubio@aratelia.com',
+    url='https://tizonia.org',
+    py_modules=['tizsoundcloudproxy'],
+    scripts=[],
+    license="Apache License, Version 2.0",
+    description='Tizonia SoundCloud proxy',
+    install_requires=[
+        #        'soundcloud >= 0.4.1',
     ],
-    classifiers          = [
+    classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
@@ -61,7 +61,6 @@ setup(
         'Topic :: Multimedia :: Sound/Audio',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-    zip_safe             = False,
-    include_package_data = True
+    zip_safe=False,
+    include_package_data=True
 )
-

@@ -75,7 +75,8 @@ CACHE_DIR_PREFIX = os.getenv("SNAP_USER_COMMON") or TMPDIR
 TUNEIN_CACHE_LOCATION = os.path.join(
     CACHE_DIR_PREFIX, "tizonia-" + getpass.getuser() + "-tunein"
 )
-MEMORY = Memory(TUNEIN_CACHE_LOCATION, compress=9, verbose=0, bytes_limit=10485760)
+MEMORY = Memory(TUNEIN_CACHE_LOCATION, compress=9,
+                verbose=0, bytes_limit=10485760)
 MEMORY.reduce_size()
 
 FORMAT = (
@@ -105,7 +106,8 @@ class ConfigColors:
         active_theme = active_theme + "."
         self.FAIL = (
             "\033["
-            + self.config.get("color-themes", active_theme + "C08", fallback="91")
+            + self.config.get("color-themes", active_theme +
+                              "C08", fallback="91")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -113,7 +115,8 @@ class ConfigColors:
         )
         self.OKGREEN = (
             "\033["
-            + self.config.get("color-themes", active_theme + "C09", fallback="92")
+            + self.config.get("color-themes", active_theme +
+                              "C09", fallback="92")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -121,7 +124,8 @@ class ConfigColors:
         )
         self.WARNING = (
             "\033["
-            + self.config.get("color-themes", active_theme + "C10", fallback="93")
+            + self.config.get("color-themes", active_theme +
+                              "C10", fallback="93")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -129,7 +133,8 @@ class ConfigColors:
         )
         self.OKBLUE = (
             "\033["
-            + self.config.get("color-themes", active_theme + "C11", fallback="94")
+            + self.config.get("color-themes", active_theme +
+                              "C11", fallback="94")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -137,7 +142,8 @@ class ConfigColors:
         )
         self.OKMAGENTA = (
             "\033["
-            + self.config.get("color-themes", active_theme + "C12", fallback="95")
+            + self.config.get("color-themes", active_theme +
+                              "C12", fallback="95")
             .replace(",", ";")
             .split("#", 1)[0]
             .strip()
@@ -205,6 +211,8 @@ def exception_handler(exception_type, exception, traceback):
 sys.excepthook = exception_handler
 
 # From https://github.com/kingosticks/mopidy-tunein/blob/master/mopidy_tunein/tunein.py
+
+
 def parse_m3u(data):
     # Copied from mopidy.audio.playlists
     # Mopidy version expects a header but it's not always present
@@ -356,7 +364,8 @@ def run_playlist_query(session, timeout, url):
                 logging.error(f"TuneIn playlist parsing failed {e}")
             if not results:
                 playlist_str = data.decode(errors="ignore")
-                logging.debug(f"Parsing failure, malformed playlist: {playlist_str}")
+                logging.debug(
+                    f"Parsing failure, malformed playlist: {playlist_str}")
     elif content_type:
         results = [url]
 
@@ -670,7 +679,15 @@ class tiztuneinproxy(object):
             remaining_keywords = [keywords1, keywords2, keywords3]
             self._filter_play_queue("Search", remaining_keywords)
 
-            self._finalise_play_queue(count, arg)
+            logging.info(
+                "Added {0} stations/shows to queue".format(
+                    len(self.queue) - count)
+            )
+
+            if count == len(self.queue):
+                raise ValueError
+
+            self._update_play_queue_order()
 
         except ValueError:
             raise ValueError(str("No stations/shows/episodes found"))
@@ -702,9 +719,18 @@ class tiztuneinproxy(object):
             elif category == "trending":
                 self._enqueue_trending(keywords1)
             else:
-                self._enqueue_category(category, keywords1, keywords2, keywords3)
+                self._enqueue_category(
+                    category, keywords1, keywords2, keywords3)
 
-            self._finalise_play_queue(count, category)
+            logging.info(
+                "Added {0} stations/shows to queue".format(
+                    len(self.queue) - count)
+            )
+
+            if count == len(self.queue):
+                raise ValueError
+
+            self._update_play_queue_order()
 
         except ValueError:
             raise ValueError(
@@ -810,44 +836,6 @@ class tiztuneinproxy(object):
         self.play_queue_order = list()
         self.now_playing_radio = None
 
-    def print_queue(self):
-        for i in range(0, len(self.queue)):
-            r = self.queue[self.play_queue_order[i]]
-            order_num = str("#{:0{}d}".format(i + 1, len(str(len(self.queue)))))
-            st_or_pod = r["item"]
-            if st_or_pod == "topic":
-                st_or_pod = "episode"
-
-            if r.get("formats") and r.get("bitrate"):
-                # Make sure we allow only mp3 stations for now
-                if "mp3" not in r.get("formats") and "ogg" not in r.get("formats"):
-                    logging.info(
-                        "Ignoring non-mp3/non-ogg station : {0}".format(r["formats"])
-                    )
-                    continue
-
-                print_nfo(
-                    "[TuneIn] [{0}] [{1}] '{2}' [{3}] ({4}, {5}kbps, reliability: {6}%).".format(
-                        st_or_pod,
-                        order_num,
-                        r["text"],
-                        r["subtext"],
-                        r["formats"],
-                        r["bitrate"],
-                        r["reliability"],
-                    )
-                )
-            else:
-                print_nfo(
-                    "[TuneIn] [{0}] [{1}] '{2}' [{3}].".format(
-                        st_or_pod,
-                        order_num,
-                        r["text"],
-                        r["subtext"]
-                    )
-                )
-        print_nfo("[TuneIn] [Stations/Podcasts in queue] '{0}'.".format(len(self.queue)))
-
     def remove_current_url(self):
         """Remove the currently active url from the playback queue.
 
@@ -865,33 +853,6 @@ class tiztuneinproxy(object):
             if self.queue_index < 0:
                 self.queue_index = 0
             self._update_play_queue_order(verbose=False)
-
-    def get_url(self, position=None):
-        """Retrieve the url on a particular position in the playback queue. If no
-        position is given, the url at the current position of the playback is returned.
-
-        """
-        logging.info("get_url {}".format(position if position else "-1"))
-        try:
-            if len(self.queue):
-                queue_pos = self.play_queue_order[self.queue_index]
-                if position and position > 0 and position <= len(self.queue):
-                    self.queue_index = position - 1
-                    queue_pos = self.play_queue_order[self.queue_index]
-                    logging.info("get_url : self.queue_index {}".format(self.queue_index))
-                logging.info(
-                    "get_url : play_queue_order {}".format(
-                        self.play_queue_order[self.queue_index]
-                    )
-                )
-                return self._retrieve_station_url(queue_pos)
-            else:
-                return ""
-        except (KeyError, AttributeError):
-            # TODO: We don't remove this for now
-            # del self.queue[self.queue_index]
-            logging.info("exception")
-            return ""
 
     def next_url(self):
         """ Retrieve the url of the next station/show in the playback queue.
@@ -964,7 +925,8 @@ class tiztuneinproxy(object):
         cat = self._select_one(results, keywords1, category)
 
         if cat:
-            print_adv("[TuneIn] [{0}] Searching '{1}'.".format(category, cat["text"]))
+            print_adv("[TuneIn] [{0}] Searching '{1}'.".format(
+                category, cat["text"]))
 
             # Enqueue stations
             if (
@@ -1115,7 +1077,8 @@ class tiztuneinproxy(object):
             "_enqueue_trending : 1: %s 2: %s 3: %s", keywords1, keywords2, keywords3
         )
         print_msg(
-            "[TuneIn] [TuneIn 'trending' category search] : '{0}'. ".format(keywords1)
+            "[TuneIn] [TuneIn 'trending' category search] : '{0}'. ".format(
+                keywords1)
         )
 
         category = "trending"
@@ -1152,7 +1115,8 @@ class tiztuneinproxy(object):
 
         if topic:
             print_adv(
-                "[TuneIn] [Shows] Selecting podcast topic '{0}'.".format(topic["text"])
+                "[TuneIn] [Shows] Selecting podcast topic '{0}'.".format(
+                    topic["text"])
             )
             guide_id = topic["guide_id"]
             shows = self.tunein.shows(guide_id)
@@ -1257,11 +1221,17 @@ class tiztuneinproxy(object):
                 # order shows by date (newest first)
                 self.queue = sorted(
                     self.queue,
-                    key=lambda k: datetime.datetime.strptime(k["subtext"], "%d %b %Y"),
+                    key=lambda k: datetime.datetime.strptime(
+                        k["subtext"], "%d %b %Y"),
                     reverse=True,
                 )
             if self.current_play_mode == self.play_modes.SHUFFLE:
                 random.shuffle(self.play_queue_order)
+
+        if verbose:
+            self._print_play_queue()
+
+        print_nfo("[TuneIn] [Items in queue] '{0}'.".format(total_stations))
 
     def _add_to_playback_queue(self, r):
 
@@ -1303,7 +1273,8 @@ class tiztuneinproxy(object):
             new_date = self._ensure_expected_date_format(r["subtext"])
             if not new_date:
                 logging.info(
-                    "Ignoring podcast with unknown date format : {0}".format(new_date)
+                    "Ignoring podcast with unknown date format : {0}".format(
+                        new_date)
                 )
                 return
             r["subtext"] = new_date
@@ -1332,6 +1303,38 @@ class tiztuneinproxy(object):
                 res = res_dict[res_name]
 
         return res
+
+    def _print_play_queue(self):
+        for r in self.queue:
+            st_or_pod = r["item"]
+            if st_or_pod == "topic":
+                st_or_pod = "episode"
+
+            if r.get("formats") and r.get("bitrate"):
+                # Make sure we allow only mp3 stations for now
+                if "mp3" not in r.get("formats") and "ogg" not in r.get("formats"):
+                    logging.info(
+                        "Ignoring non-mp3/non-ogg station : {0}".format(
+                            r["formats"])
+                    )
+                    continue
+
+                print_nfo(
+                    "[TuneIn] [{0}] '{1}' [{2}] ({3}, {4}kbps, reliability: {5}%).".format(
+                        st_or_pod,
+                        r["text"],
+                        r["subtext"],
+                        r["formats"],
+                        r["bitrate"],
+                        r["reliability"],
+                    )
+                )
+            else:
+                print_nfo(
+                    "[TuneIn] [{0}] '{1}' [{2}].".format(
+                        st_or_pod, r["text"], r["subtext"]
+                    )
+                )
 
     def _ensure_expected_date_format(self, date):
 
@@ -1363,27 +1366,18 @@ class tiztuneinproxy(object):
             if phrase:
                 filtered_queue = list()
                 print_adv(
-                    "[TuneIn] [{0}] Filtering results: '{1}'.".format(category, phrase)
+                    "[TuneIn] [{0}] Filtering results: '{1}'.".format(
+                        category, phrase)
                 )
                 for item in self.queue:
                     title = item["text"] if item.get("text") else ""
-                    title = title + " " + item["subtext"] if item.get("subtext") else ""
+                    title = title + " " + \
+                        item["subtext"] if item.get("subtext") else ""
                     if fuzz.partial_ratio(phrase, title) > 50:
                         filtered_queue.append(item)
                 if len(filtered_queue):
                     self.queue = filtered_queue
 
-    def _finalise_play_queue(self, count, arg):
-        """ Helper function to grou the various actions needed to ready play
-        queue.
-
-        """
-
-        if count == len(self.queue):
-            logging.info("no tracks found arg : %s", arg)
-            raise ValueError
-        self._update_play_queue_order()
-        self.print_queue()
 
 if __name__ == "__main__":
     tiztuneinproxy()

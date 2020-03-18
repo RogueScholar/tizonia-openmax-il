@@ -37,19 +37,19 @@ else:
     raise RuntimeError("Could not find version in '%s'" % VERSIONFILE)
 
 setup(
-    name                 = 'tizgmusicproxy',
-    version              = version,
-    author               = 'Juan A. Rubio',
-    author_email         = 'juan.rubio@aratelia.com',
-    url                  = 'https://tizonia.org',
-    py_modules           = ['tizgmusicproxy'],
-    scripts              = [],
-    license              = "Apache License, Version 2.0",
-    description          = 'Tizonia Google Play Music proxy',
-    install_requires     = [
-#        'gmusicapi >= 5.0.0',
+    name='tizgmusicproxy',
+    version=version,
+    author='Juan A. Rubio',
+    author_email='juan.rubio@aratelia.com',
+    url='https://tizonia.org',
+    py_modules=['tizgmusicproxy'],
+    scripts=[],
+    license="Apache License, Version 2.0",
+    description='Tizonia Google Play Music proxy',
+    install_requires=[
+        #        'gmusicapi >= 5.0.0',
     ],
-    classifiers          = [
+    classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
@@ -61,7 +61,6 @@ setup(
         'Topic :: Multimedia :: Sound/Audio',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-    zip_safe             = False,
-    include_package_data = True
+    zip_safe=False,
+    include_package_data=True
 )
-

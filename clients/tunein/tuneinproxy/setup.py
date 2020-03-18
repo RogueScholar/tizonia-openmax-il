@@ -37,18 +37,18 @@ else:
     raise RuntimeError("Could not find version in '%s'" % VERSIONFILE)
 
 setup(
-    name                 = 'tiztuneinproxy',
-    version              = version,
-    author               = 'Juan A. Rubio',
-    author_email         = 'juan.rubio@aratelia.com',
-    url                  = 'https://tizonia.org',
-    py_modules           = ['tiztuneinproxy'],
-    scripts              = [],
-    license              = "Apache License, Version 2.0",
-    description          = 'Tizonia Tunein proxy',
-    install_requires     = [
+    name='tiztuneinproxy',
+    version=version,
+    author='Juan A. Rubio',
+    author_email='juan.rubio@aratelia.com',
+    url='https://tizonia.org',
+    py_modules=['tiztuneinproxy'],
+    scripts=[],
+    license="Apache License, Version 2.0",
+    description='Tizonia Tunein proxy',
+    install_requires=[
     ],
-    classifiers          = [
+    classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
@@ -60,7 +60,6 @@ setup(
         'Topic :: Multimedia :: Sound/Audio',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-    zip_safe             = False,
-    include_package_data = True
+    zip_safe=False,
+    include_package_data=True
 )
-
