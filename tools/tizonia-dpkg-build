@@ -23,137 +23,137 @@ source tizonia-common.inc
 
 # Globals
 TIZONIA_DIR="$HOME/work/tizonia" # Default value for Tizonia repo's directory
-DEBIAN_DIR="$HOME/work/debian" # Default value for the debian packaging directory
-TEMP_DIR="$HOME/temp" # Default value for the debian packaging directory
+DEBIAN_DIR="$HOME/work/debian"   # Default value for the debian packaging directory
+TEMP_DIR="$HOME/temp"            # Default value for the debian packaging directory
 DPKG_BUILD_PKG_CMD=""
 DISTRO_ID=""
 DISTRO_CODENAME=""
 
-declare -ar TIZ_SUPPORTED_DISTROS=( \
-    ubuntu \
-    debian \
-    raspbian \
+declare -ar TIZ_SUPPORTED_DISTROS=(
+  ubuntu
+  debian
+  raspbian
 )
 
-declare -ar TIZ_SUPPORTED_RELEASES=( \
-    ubuntu-trusty \
-    ubuntu-vivid \
-    ubuntu-wily \
-    ubuntu-xenial \
-    ubuntu-bionic \
-    debian-jessie \
-    debian-stretch \
-    debian-buster \
-    debian-bullseye \
-    raspbian-jessie \
-    raspbian-stretch \
-    raspbian-buster \
+declare -ar TIZ_SUPPORTED_RELEASES=(
+  ubuntu-trusty
+  ubuntu-vivid
+  ubuntu-wily
+  ubuntu-xenial
+  ubuntu-bionic
+  debian-jessie
+  debian-stretch
+  debian-buster
+  debian-bullseye
+  raspbian-jessie
+  raspbian-stretch
+  raspbian-buster
 )
 
-declare -ar TIZ_LIBSPOTIFY_DEPS=( \
-    libspotify12 \
-    libspotify-dev \
+declare -ar TIZ_LIBSPOTIFY_DEPS=(
+  libspotify12
+  libspotify-dev
 )
 
-declare -ar TIZ_TIZONIA_DEPS=( \
-    apt-transport-https \
-    build-essential \
-    autoconf \
-    autoconf-archive \
-    automake \
-    autotools-dev \
-    bash-completion \
-    libtool \
-    libmad0-dev \
-    liblog4c-dev \
-    libasound2-dev \
-    libdbus-1-dev \
-    libsqlite3-dev \
-    libboost-all-dev \
-    uuid-dev \
-    libsdl1.2-dev \
-    libvpx-dev \
-    libmp3lame-dev \
-    libfaad-dev \
-    libtag1-dev \
-    libfishsound1-dev \
-    libmediainfo-dev \
-    libcurl4-gnutls-dev \
-    libpulse-dev \
-    libmpg123-dev \
-    libvorbis-dev \
-    libopus-dev \
-    libopusfile-dev \
-    libogg-dev \
-    libflac-dev \
-    liboggz2-dev \
-    libsndfile1-dev \
-    libffi-dev \
-    libssl-dev \
-    libmp4v2-dev \
-    libspotify12 \
-    libspotify-dev \
-    libexpat1-dev \
-    libev-dev \
-    libxml2-dev \
-    libxslt1-dev \
-    python3-dev \
-    python3-all-dev \
-    python3-setuptools \
-    python3-pip \
-    curl \
-    check \
-    wget \
-    sqlite3 \
-    dbus-x11 \
-    mercurial \
-    git \
-    checkinstall \
+declare -ar TIZ_TIZONIA_DEPS=(
+  apt-transport-https
+  build-essential
+  autoconf
+  autoconf-archive
+  automake
+  autotools-dev
+  bash-completion
+  libtool
+  libmad0-dev
+  liblog4c-dev
+  libasound2-dev
+  libdbus-1-dev
+  libsqlite3-dev
+  libboost-all-dev
+  uuid-dev
+  libsdl1.2-dev
+  libvpx-dev
+  libmp3lame-dev
+  libfaad-dev
+  libtag1-dev
+  libfishsound1-dev
+  libmediainfo-dev
+  libcurl4-gnutls-dev
+  libpulse-dev
+  libmpg123-dev
+  libvorbis-dev
+  libopus-dev
+  libopusfile-dev
+  libogg-dev
+  libflac-dev
+  liboggz2-dev
+  libsndfile1-dev
+  libffi-dev
+  libssl-dev
+  libmp4v2-dev
+  libspotify12
+  libspotify-dev
+  libexpat1-dev
+  libev-dev
+  libxml2-dev
+  libxslt1-dev
+  python3-dev
+  python3-all-dev
+  python3-setuptools
+  python3-pip
+  curl
+  check
+  wget
+  sqlite3
+  dbus-x11
+  mercurial
+  git
+  checkinstall
 )
 
-declare -ar TIZ_TIZONIA_PYPI_DEPS=( \
-    alabaster \
-    breathe \
-    gmusicapi \
-    soundcloud \
-    youtube-dl \
-    pafy \
-    pychromecast \
-    pycountry \
-    titlecase \
-    plexapi \
-    fuzzywuzzy \
-    eventlet \
+declare -ar TIZ_TIZONIA_PYPI_DEPS=(
+  alabaster
+  breathe
+  gmusicapi
+  soundcloud
+  youtube-dl
+  pafy
+  pychromecast
+  pycountry
+  titlecase
+  plexapi
+  fuzzywuzzy
+  eventlet
 )
 
-declare -ar TIZ_DEBIAN_PKGS=( \
-    dpkg-dev \
-    dh-make \
-    debhelper \
-    devscripts \
-    pbuilder \
-    fakeroot \
-    dh-autoreconf \
-    equivs \
-    python-stdeb \
-    python3-stdeb \
+declare -ar TIZ_DEBIAN_PKGS=(
+  dpkg-dev
+  dh-make
+  debhelper
+  devscripts
+  pbuilder
+  fakeroot
+  dh-autoreconf
+  equivs
+  python-stdeb
+  python3-stdeb
 )
 
-readonly TIZ_PYTHON_PROJECTS=( \
-    tizgmusicproxy \
-    tizsoundcloudproxy \
-    tizyoutubeproxy \
-    tizplexproxy \
-    tizchromecastproxy \
-    tizspotifyproxy \
-    tiztuneinproxy \
+readonly TIZ_PYTHON_PROJECTS=(
+  tizgmusicproxy
+  tizsoundcloudproxy
+  tizyoutubeproxy
+  tizplexproxy
+  tizchromecastproxy
+  tizspotifyproxy
+  tiztuneinproxy
 )
 
 # dpkg-dev package is required to have dpkg-architecture available
-readonly dpkgdevinstalled="$(dpkg-query -W -f='${Status} ${Version}\n' dpkg-dev 2> /dev/null | cut -d ' ' -f3)"
+readonly dpkgdevinstalled="$(dpkg-query -W -f='${Status} ${Version}\n' dpkg-dev 2>/dev/null | cut -d ' ' -f3)"
 if [[ "$dpkgdevinstalled" == "installed" ]]; then
-    pretty_print "$BLU" "[dpkg-dev] : installing. 'dpkg-architecture' is required in order to run this script."
-    sudo apt-get install -qq --force-yes "dpkg-dev" #> /dev/null
+  pretty_print "$BLU" "[dpkg-dev] : installing. 'dpkg-architecture' is required in order to run this script."
+  sudo apt-get install -qq --force-yes "dpkg-dev" #> /dev/null
 fi
 
 # &> /dev/null
@@ -161,163 +161,162 @@ readonly TIZ_C_CPP_PROJECT_DIST_CMD="autoreconf -ifs &> /dev/null && ./configure
 readonly TIZ_C_CPP_PROJECT_DIST_PLAYER_CMD="autoreconf -ifs &> /dev/null && ./configure --with-boost-libdir=/usr/lib/$(dpkg-architecture -qDEB_HOST_MULTIARCH) && make dist && cp *.tar.gz \"$DEBIAN_DIR\""
 readonly TIZ_PYTHON_PROJECT_DIST_CMD="python3 setup.py sdist && cp dist/*.tar.gz \"$DEBIAN_DIR\""
 
-declare -Ar TIZ_PROJECT_DIST_CMD=( \
-    [tizdbus-c++]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizilheaders]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizgmusicproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tizgmusic]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizsoundcloudproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tizsoundcloud]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizyoutubeproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tizyoutube]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizplexproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tizplex]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizchromecastproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tizchromecast]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizspotifyproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tizspotify]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tiztuneinproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tiztunein]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizplatform]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizcastd]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizcastclient]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizrmd]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizrmproxy]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizcore]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizonia]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizaacdec]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizchromecastrnd]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizfr]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizfw]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizflacdec]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizhttprnd]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizhttpsrc]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizmp3dec]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizmp3enc]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizmp3meta]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizmpgdec]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizoggdmux]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizopusdec]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizopusfiledec]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizpcmdec]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizalsapcmrnd]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizpulsepcmrnd]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizspotifysrc]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizvorbisdec]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizvp8dec]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizsdlivrnd]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizwebmdmux]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
-    [tizonia-player]="$TIZ_C_CPP_PROJECT_DIST_PLAYER_CMD" \
-    [tizonia-config]="$TIZ_C_CPP_PROJECT_DIST_CMD" \
+declare -Ar TIZ_PROJECT_DIST_CMD=(
+  [tizdbus - c++]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizilheaders]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizgmusicproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tizgmusic]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizsoundcloudproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tizsoundcloud]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizyoutubeproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tizyoutube]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizplexproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tizplex]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizchromecastproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tizchromecast]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizspotifyproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tizspotify]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tiztuneinproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tiztunein]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizplatform]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizcastd]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizcastclient]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizrmd]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizrmproxy]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizcore]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizonia]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizaacdec]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizchromecastrnd]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizfr]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizfw]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizflacdec]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizhttprnd]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizhttpsrc]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizmp3dec]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizmp3enc]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizmp3meta]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizmpgdec]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizoggdmux]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizopusdec]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizopusfiledec]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizpcmdec]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizalsapcmrnd]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizpulsepcmrnd]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizspotifysrc]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizvorbisdec]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizvp8dec]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizsdlivrnd]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizwebmdmux]="$TIZ_C_CPP_PROJECT_DIST_CMD"
+  [tizonia - player]="$TIZ_C_CPP_PROJECT_DIST_PLAYER_CMD"
+  [tizonia - config]="$TIZ_C_CPP_PROJECT_DIST_CMD"
 )
 
 readonly TIZ_PROJECT_DH_MAKE_I_CMD="dh_make -i --createorig --yes"
 readonly TIZ_PROJECT_DH_MAKE_C_CMD="dh_make -c lgpl3 -l --createorig --yes"
 
-declare -Ar TIZ_PROJECT_DH_MAKE_CMD=( \
-    [tizdbus-c++]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizilheaders]="$TIZ_PROJECT_DH_MAKE_I_CMD" \
-    [tizgmusicproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tizgmusic]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizsoundcloudproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tizsoundcloud]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizyoutubeproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tizyoutube]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizplexproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tizplex]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizchromecastproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tizchromecast]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizspotifyproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tizspotify]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tiztuneinproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD" \
-    [tiztunein]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizplatform]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizcastd]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizcastclient]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizrmd]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizrmproxy]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizcore]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizonia]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizaacdec]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizchromecastrnd]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizfr]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizfw]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizflacdec]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizhttprnd]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizhttpsrc]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizmp3dec]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizmp3enc]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizmp3meta]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizmpgdec]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizoggdmux]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizopusdec]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizopusfiledec]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizpcmdec]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizalsapcmrnd]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizpulsepcmrnd]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizspotifysrc]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizvorbisdec]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizvp8dec]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizsdlivrnd]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizwebmdmux]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizonia-player]="$TIZ_PROJECT_DH_MAKE_C_CMD" \
-    [tizonia-config]="$TIZ_PROJECT_DH_MAKE_I_CMD" \
+declare -Ar TIZ_PROJECT_DH_MAKE_CMD=(
+  [tizdbus - c++]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizilheaders]="$TIZ_PROJECT_DH_MAKE_I_CMD"
+  [tizgmusicproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tizgmusic]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizsoundcloudproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tizsoundcloud]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizyoutubeproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tizyoutube]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizplexproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tizplex]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizchromecastproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tizchromecast]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizspotifyproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tizspotify]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tiztuneinproxy]="$TIZ_PYTHON_PROJECT_DIST_CMD"
+  [tiztunein]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizplatform]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizcastd]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizcastclient]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizrmd]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizrmproxy]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizcore]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizonia]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizaacdec]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizchromecastrnd]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizfr]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizfw]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizflacdec]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizhttprnd]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizhttpsrc]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizmp3dec]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizmp3enc]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizmp3meta]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizmpgdec]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizoggdmux]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizopusdec]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizopusfiledec]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizpcmdec]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizalsapcmrnd]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizpulsepcmrnd]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizspotifysrc]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizvorbisdec]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizvp8dec]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizsdlivrnd]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizwebmdmux]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizonia - player]="$TIZ_PROJECT_DH_MAKE_C_CMD"
+  [tizonia - config]="$TIZ_PROJECT_DH_MAKE_I_CMD"
 )
 
-declare -Ar TIZ_PROJECT_MAIN_PKG=( \
-    [tizdbus-c++]="libtizdbus-c++0" \
-    [tizilheaders]="tizilheaders" \
-    [tizgmusicproxy]="python3-tizgmusicproxy" \
-    [tizgmusic]="libtizgmusic0" \
-    [tizsoundcloudproxy]="python3-tizsoundcloudproxy" \
-    [tizsoundcloud]="libtizsoundcloud0" \
-    [tizyoutubeproxy]="python3-tizyoutubeproxy" \
-    [tizyoutube]="libtizyoutube0" \
-    [tizplexproxy]="python3-tizplexproxy" \
-    [tizplex]="libtizplex0" \
-    [tizchromecastproxy]="python3-tizchromecastproxy" \
-    [tizchromecast]="libtizchromecast0" \
-    [tizspotifyproxy]="python3-tizspotifyproxy" \
-    [tizspotify]="libtizspotify0" \
-    [tiztuneinproxy]="python3-tiztuneinproxy" \
-    [tiztunein]="libtiztunein0" \
-    [tizplatform]="libtizplatform0" \
-    [tizcastd]="tizcastd" \
-    [tizcastclient]="libtizcastclient0" \
-    [tizrmd]="tizrmd" \
-    [tizrmproxy]="libtizrmproxy0" \
-    [tizcore]="libtizcore0" \
-    [tizonia]="libtizonia0" \
-    [tizaacdec]="libtizaacdec0" \
-    [tizchromecastrnd]="libtizchromecastrnd0" \
-    [tizfr]="libtizfr0" \
-    [tizfw]="libtizfw0" \
-    [tizflacdec]="libtizflacdec0" \
-    [tizhttprnd]="libtizhttprnd0" \
-    [tizhttpsrc]="libtizhttpsrc0" \
-    [tizmp3dec]="libtizmp3dec0" \
-    [tizmp3enc]="libtizmp3enc0" \
-    [tizmp3meta]="libtizmp3meta0" \
-    [tizmpgdec]="libtizmpgdec0" \
-    [tizoggdmux]="libtizoggdmux0" \
-    [tizopusdec]="libtizopusdec0" \
-    [tizopusfiledec]="libtizopusfiledec0" \
-    [tizpcmdec]="libtizpcmdec0" \
-    [tizalsapcmrnd]="libtizalsapcmrnd0" \
-    [tizpulsepcmrnd]="libtizpulsepcmrnd0" \
-    [tizspotifysrc]="libtizspotifysrc0" \
-    [tizvorbisdec]="libtizvorbisdec0" \
-    [tizvp8dec]="libtizvp8dec0" \
-    [tizsdlivrnd]="libtizsdlivrnd0" \
-    [tizwebmdmux]="libtizwebmdmux0" \
-    [tizonia-player]="tizonia-player" \
-    [tizonia-config]="tizonia-all" \
+declare -Ar TIZ_PROJECT_MAIN_PKG=(
+  [tizdbus - c++]="libtizdbus-c++0"
+  [tizilheaders]="tizilheaders"
+  [tizgmusicproxy]="python3-tizgmusicproxy"
+  [tizgmusic]="libtizgmusic0"
+  [tizsoundcloudproxy]="python3-tizsoundcloudproxy"
+  [tizsoundcloud]="libtizsoundcloud0"
+  [tizyoutubeproxy]="python3-tizyoutubeproxy"
+  [tizyoutube]="libtizyoutube0"
+  [tizplexproxy]="python3-tizplexproxy"
+  [tizplex]="libtizplex0"
+  [tizchromecastproxy]="python3-tizchromecastproxy"
+  [tizchromecast]="libtizchromecast0"
+  [tizspotifyproxy]="python3-tizspotifyproxy"
+  [tizspotify]="libtizspotify0"
+  [tiztuneinproxy]="python3-tiztuneinproxy"
+  [tiztunein]="libtiztunein0"
+  [tizplatform]="libtizplatform0"
+  [tizcastd]="tizcastd"
+  [tizcastclient]="libtizcastclient0"
+  [tizrmd]="tizrmd"
+  [tizrmproxy]="libtizrmproxy0"
+  [tizcore]="libtizcore0"
+  [tizonia]="libtizonia0"
+  [tizaacdec]="libtizaacdec0"
+  [tizchromecastrnd]="libtizchromecastrnd0"
+  [tizfr]="libtizfr0"
+  [tizfw]="libtizfw0"
+  [tizflacdec]="libtizflacdec0"
+  [tizhttprnd]="libtizhttprnd0"
+  [tizhttpsrc]="libtizhttpsrc0"
+  [tizmp3dec]="libtizmp3dec0"
+  [tizmp3enc]="libtizmp3enc0"
+  [tizmp3meta]="libtizmp3meta0"
+  [tizmpgdec]="libtizmpgdec0"
+  [tizoggdmux]="libtizoggdmux0"
+  [tizopusdec]="libtizopusdec0"
+  [tizopusfiledec]="libtizopusfiledec0"
+  [tizpcmdec]="libtizpcmdec0"
+  [tizalsapcmrnd]="libtizalsapcmrnd0"
+  [tizpulsepcmrnd]="libtizpulsepcmrnd0"
+  [tizspotifysrc]="libtizspotifysrc0"
+  [tizvorbisdec]="libtizvorbisdec0"
+  [tizvp8dec]="libtizvp8dec0"
+  [tizsdlivrnd]="libtizsdlivrnd0"
+  [tizwebmdmux]="libtizwebmdmux0"
+  [tizonia - player]="tizonia-player"
+  [tizonia - config]="tizonia-all"
 )
 
 readonly TIZ_DPKG_BUILD_RPI_FLAGS='-marm -march=armv6zk -mcpu=arm1176jzf-s -mtune=arm1176jzf-s -mfpu=vfp -mfloat-abi=hard'
 readonly TIZ_DPKG_BUILD_UNSIGNED_CMD='dpkg-buildpackage -us -uc -rfakeroot'
 readonly TIZ_DPKG_BUILD_SIGNED_CMD='dpkg-buildpackage --force-sign -rfakeroot'
-
 
 ##################################################################
 # Usage details
@@ -329,23 +328,23 @@ readonly TIZ_DPKG_BUILD_SIGNED_CMD='dpkg-buildpackage --force-sign -rfakeroot'
 # Returns:
 #   None
 ##################################################################
-function usage {
-    pretty_print "$BLU" "tizonia-dpkg-build $TIZONIA_RELEASE_VERSION. Copyright (C) 2020 Juan A. Rubio"
-    pretty_print "$BLU" "This software is part of the Tizonia project <https://tizonia.org>."
+function usage() {
+  pretty_print "$BLU" "tizonia-dpkg-build $TIZONIA_RELEASE_VERSION. Copyright (C) 2020 Juan A. Rubio"
+  pretty_print "$BLU" "This software is part of the Tizonia project <https://tizonia.org>."
 
-    echo
-    pretty_print "$BLU" "GNU Lesser GPL version 3 <http://gnu.org/licenses/lgpl.html>"
-    pretty_print "$BLU" "This is free software: you are free to change and redistribute it."
-    pretty_print "$BLU" "There is NO WARRANTY, to the extent permitted by law."
+  echo
+  pretty_print "$BLU" "GNU Lesser GPL version 3 <http://gnu.org/licenses/lgpl.html>"
+  pretty_print "$BLU" "This is free software: you are free to change and redistribute it."
+  pretty_print "$BLU" "There is NO WARRANTY, to the extent permitted by law."
 
-    echo
-    pretty_print "$GRN" "Usage : $(basename "$0") [-n|--makenext] [-d|--alldeps] [-p|--publish] [-r|--removeall] [-s|--signdebs] [-t|--tizdeps]"
-    pretty_print "$GRN" "       -n            : Make and install all debian packages, starting from the first one not yet installed."
-    pretty_print "$GRN" "       -d            : Install both Tizonia's and Debian maintainership dependencies."
-    pretty_print "$GRN" "       -p            : Publish to Bintray (requires Tizonia's Bintray API_KEY and Juan's GPG passphrase)."
-    pretty_print "$GRN" "       -r            : Uninstall (purge) all currently installed packages."
-    pretty_print "$GRN" "       -s            : (optional) Sign the .changes and .dsc files. DEB_SIGN_KEYID environment variable must be set."
-    pretty_print "$GRN" "       -t            : Install Tizonia's dependencies only."
+  echo
+  pretty_print "$GRN" "Usage : $(basename "$0") [-n|--makenext] [-d|--alldeps] [-p|--publish] [-r|--removeall] [-s|--signdebs] [-t|--tizdeps]"
+  pretty_print "$GRN" "       -n            : Make and install all debian packages, starting from the first one not yet installed."
+  pretty_print "$GRN" "       -d            : Install both Tizonia's and Debian maintainership dependencies."
+  pretty_print "$GRN" "       -p            : Publish to Bintray (requires Tizonia's Bintray API_KEY and Juan's GPG passphrase)."
+  pretty_print "$GRN" "       -r            : Uninstall (purge) all currently installed packages."
+  pretty_print "$GRN" "       -s            : (optional) Sign the .changes and .dsc files. DEB_SIGN_KEYID environment variable must be set."
+  pretty_print "$GRN" "       -t            : Install Tizonia's dependencies only."
 } >&2
 
 ##################################################################
@@ -359,26 +358,109 @@ function usage {
 # Returns:
 #   None
 ##################################################################
-function print_platform_info {
-    local exit_status=0
+function print_platform_info() {
+  local exit_status=0
 
-    # Print platform info
-    pretty_print "$BLU" "hostname = $(hostname)"
-    pretty_print "$BLU" "OS rel   = $(cat /etc/os-release | grep PRETTY | cut -d'=' -f2 | cut -d\" -f2)"
-    pretty_print "$BLU" "uname -m = $(uname -m)"
-    pretty_print "$BLU" "uname -r = $(uname -r)"
-    pretty_print "$BLU" "uname -s = $(uname -s)"
-    pretty_print "$BLU" "uname -v = $(uname -v)"
-    return "$exit_status"
+  # Print platform info
+  pretty_print "$BLU" "hostname = $(hostname)"
+  pretty_print "$BLU" "OS rel   = $(cat /etc/os-release | grep PRETTY | cut -d'=' -f2 | cut -d\" -f2)"
+  pretty_print "$BLU" "uname -m = $(uname -m)"
+  pretty_print "$BLU" "uname -r = $(uname -r)"
+  pretty_print "$BLU" "uname -s = $(uname -s)"
+  pretty_print "$BLU" "uname -v = $(uname -v)"
+  return "$exit_status"
 }
 
-function obtain_distro_id_and_codename {
-    if [[ -z "$DISTRO_ID_OVERRIDE" ]]; then
-        DISTRO_ID=$(cat /etc/*-release | grep -E '^ID=' | cut -d'=' -f2)
+function obtain_distro_id_and_codename() {
+  if [[ -z "$DISTRO_ID_OVERRIDE" ]]; then
+    DISTRO_ID=$(cat /etc/*-release | grep -E '^ID=' | cut -d'=' -f2)
+  else
+    DISTRO_ID="$DISTRO_ID_OVERRIDE"
+  fi
+  DISTRO_CODENAME=$(cat /etc/*-release | grep -i -m1 codename | cut -d'=' -f2)
+}
+
+##################################################################
+# Install all dependencies, both Tizonia's and for Debian packaging
+#
+# Globals
+#   None
+# Arguments:
+#   None
+# Returns:
+#   None
+##################################################################
+function do_tizonia_deps() {
+
+  # Install tizonia's binary dependencies
+  for pkg in "${TIZ_TIZONIA_DEPS[@]}"; do
+    local result="$(dpkg-query -W -f='${Status} ${Version}\n' "$pkg" 2>/dev/null | cut -d ' ' -f3)"
+    if [[ "$result" == "installed" ]]; then
+      pretty_print "$GRN" "[$pkg] : $result."
     else
-        DISTRO_ID="$DISTRO_ID_OVERRIDE"
+      pretty_print "$BLU" "[$pkg] : installing."
+      sudo apt-get install -qq --force-yes "$pkg" #> /dev/null
+      pretty_print "$GRN" "[$pkg] : installed."
     fi
-    DISTRO_CODENAME=$(cat /etc/*-release | grep -i -m1 codename | cut -d'=' -f2)
+  done
+
+  # Add mopidy APT archive to sources, if not added already
+  # and install libspotify using mopidy's deb packages
+  if [[ ! -f /etc/apt/sources.list.d/mopidy.list ]]; then
+    # Add Mopidy APT archive
+    pretty_print "$BLU" "[libspotify] : adding Mopidy APT archive."
+    curl -k 'https://apt.mopidy.com/mopidy.gpg' | sudo apt-key add -
+    MOPRELEASE=''
+    if [[ "$DISTRO_CODENAME" == "bionic" ]]; then
+      MOPRELEASE="stretch"
+    elif [[ "$DISTRO_CODENAME" == "xenial" ]]; then
+      MOPRELEASE="stretch"
+    elif [[ "$DISTRO_CODENAME" == "stretch" ]]; then
+      MOPRELEASE="stretch"
+    else
+      MOPRELEASE="buster"
+    fi
+    sudo curl -k https://apt.mopidy.com/"$MOPRELEASE".list -o /etc/apt/sources.list.d/mopidy.list
+    sudo apt-get update
+    pretty_print "$GRN" "[libspotify] : added Mopidy APT archive."
+    for pkg in "${TIZ_LIBSPOTIFY_DEPS[@]}"; do
+      local result="$(dpkg-query -W -f='${Status} ${Version}\n' "$pkg" 2>/dev/null | cut -d ' ' -f3)"
+      if [[ "$result" != "installed" ]]; then
+        pretty_print "$BLU" "[$pkg] : installing."
+        sudo apt-get install -qq --force-yes "$pkg" #> /dev/null
+        pretty_print "$GRN" "[$pkg] : installed."
+      fi
+    done
+  fi
+
+  # Install a new version of pip
+  echo "Installing a fresher version of pip3..."
+  wget https://bootstrap.pypa.io/get-pip.py &&
+    sudo -H python3 get-pip.py
+
+  for dep in "${TIZ_TIZONIA_PYPI_DEPS[@]}"; do
+    # Install Python pip3-based dependencies
+    python3 -c "import $dep"
+    if [[ "$?" -ne 0 ]]; then
+      sudo -H pip3 install --upgrade "$dep"
+    else
+      pretty_print "$GRN" "[$dep] : installed."
+    fi
+  done
+
+  # Backup installation of Spotify. Can be used if Modipy's repo is not available.
+  # Install libspotify binaries using my own tar files, in case the binary
+  # installation from mopidy's APT archive failed for whatever reason
+  #     if [[ "$spotify" -eq 0 ]]; then
+  #         cd "$TEMP_DIR" \
+  #             && wget http://www.juanrubio.me/tizonia/libspotify-12.1.51-Linux-$(uname -m).tgz \
+  #             && tar zxvf libspotify-12.1.51-Linux-$(uname -m).tgz \
+  #             && cd libspotify-12.1.51-Linux-$(uname -m) \
+  #             && sudo make install prefix=/usr \
+  #             && sudo ldconfig
+  #     else
+  #         pretty_print "$GRN" "[libspotify] : installed."
+  #     fi
 }
 
 ##################################################################
@@ -391,104 +473,21 @@ function obtain_distro_id_and_codename {
 # Returns:
 #   None
 ##################################################################
-function do_tizonia_deps {
+function do_all_deps() {
 
-    # Install tizonia's binary dependencies
-    for pkg in "${TIZ_TIZONIA_DEPS[@]}"; do
-        local result="$(dpkg-query -W -f='${Status} ${Version}\n' "$pkg" 2> /dev/null | cut -d ' ' -f3)"
-        if [[ "$result" == "installed" ]]; then
-            pretty_print "$GRN" "[$pkg] : $result."
-        else
-            pretty_print "$BLU" "[$pkg] : installing."
-            sudo apt-get install -qq --force-yes "$pkg" #> /dev/null
-            pretty_print "$GRN" "[$pkg] : installed."
-        fi
-    done
+  do_tizonia_deps
 
-    # Add mopidy APT archive to sources, if not added already
-    # and install libspotify using mopidy's deb packages
-    if [[ ! -f /etc/apt/sources.list.d/mopidy.list ]]; then
-        # Add Mopidy APT archive
-        pretty_print "$BLU" "[libspotify] : adding Mopidy APT archive."
-        curl -k 'https://apt.mopidy.com/mopidy.gpg' | sudo apt-key add -
-        MOPRELEASE=''
-        if [[ "$DISTRO_CODENAME" == "bionic" ]]; then
-            MOPRELEASE="stretch"
-        elif [[ "$DISTRO_CODENAME" == "xenial" ]]; then
-            MOPRELEASE="stretch"
-        elif [[ "$DISTRO_CODENAME" == "stretch" ]]; then
-            MOPRELEASE="stretch"
-        else
-            MOPRELEASE="buster"
-        fi
-        sudo curl -k https://apt.mopidy.com/"$MOPRELEASE".list -o /etc/apt/sources.list.d/mopidy.list
-        sudo apt-get update
-        pretty_print "$GRN" "[libspotify] : added Mopidy APT archive."
-        for pkg in "${TIZ_LIBSPOTIFY_DEPS[@]}"; do
-            local result="$(dpkg-query -W -f='${Status} ${Version}\n' "$pkg" 2> /dev/null | cut -d ' ' -f3)"
-            if [[ "$result" != "installed" ]]; then
-                pretty_print "$BLU" "[$pkg] : installing."
-                sudo apt-get install -qq --force-yes "$pkg" #> /dev/null
-                pretty_print "$GRN" "[$pkg] : installed."
-            fi
-        done
+  # Install debian dependencies
+  for pkg in "${TIZ_DEBIAN_PKGS[@]}"; do
+    local result="$(dpkg-query -W -f='${Status} ${Version}\n' "$pkg" 2>/dev/null | cut -d ' ' -f3)"
+    if [[ "$result" == "installed" ]]; then
+      pretty_print "$GRN" "[$pkg] : $result."
+    else
+      pretty_print "$BLU" "[$pkg] : installing."
+      sudo apt-get install -qq --force-yes "$pkg" #> /dev/null
+      pretty_print "$GRN" "[$pkg] : installed."
     fi
-
-    # Install a new version of pip
-    echo "Installing a fresher version of pip3..."
-    wget https://bootstrap.pypa.io/get-pip.py \
-        && sudo -H python3 get-pip.py
-
-    for dep in "${TIZ_TIZONIA_PYPI_DEPS[@]}"; do
-        # Install Python pip3-based dependencies
-        python3 -c "import $dep"
-        if [[ "$?" -ne 0 ]]; then
-            sudo -H pip3 install --upgrade "$dep"
-        else
-            pretty_print "$GRN" "[$dep] : installed."
-        fi
-    done
-
-    # Backup installation of Spotify. Can be used if Modipy's repo is not available.
-    # Install libspotify binaries using my own tar files, in case the binary
-    # installation from mopidy's APT archive failed for whatever reason
-    #     if [[ "$spotify" -eq 0 ]]; then
-    #         cd "$TEMP_DIR" \
-    #             && wget http://www.juanrubio.me/tizonia/libspotify-12.1.51-Linux-$(uname -m).tgz \
-    #             && tar zxvf libspotify-12.1.51-Linux-$(uname -m).tgz \
-    #             && cd libspotify-12.1.51-Linux-$(uname -m) \
-    #             && sudo make install prefix=/usr \
-    #             && sudo ldconfig
-    #     else
-    #         pretty_print "$GRN" "[libspotify] : installed."
-    #     fi
-}
-
-##################################################################
-# Install all dependencies, both Tizonia's and for Debian packaging
-#
-# Globals
-#   None
-# Arguments:
-#   None
-# Returns:
-#   None
-##################################################################
-function do_all_deps {
-
-    do_tizonia_deps
-
-    # Install debian dependencies
-    for pkg in "${TIZ_DEBIAN_PKGS[@]}"; do
-        local result="$(dpkg-query -W -f='${Status} ${Version}\n' "$pkg" 2> /dev/null | cut -d ' ' -f3)"
-        if [[ "$result" == "installed" ]]; then
-            pretty_print "$GRN" "[$pkg] : $result."
-        else
-            pretty_print "$BLU" "[$pkg] : installing."
-            sudo apt-get install -qq --force-yes "$pkg" #> /dev/null
-            pretty_print "$GRN" "[$pkg] : installed."
-        fi
-    done
+  done
 }
 
 ##################################################################
@@ -502,10 +501,10 @@ function do_all_deps {
 # Returns:
 #   0 if success, 1 on error
 ##################################################################
-function exists_in_array {
-    local e
-    for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
-    return 1
+function exists_in_array() {
+  local e
+  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
+  return 1
 }
 
 ##################################################################
@@ -518,7 +517,7 @@ function exists_in_array {
 # Returns:
 #   None
 ##################################################################
-function print_err {
+function print_err() {
   pretty_print "$RED" "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $@" >&2
 }
 
@@ -532,12 +531,12 @@ function print_err {
 # Returns:
 #   None
 ##################################################################
-function log_on_error {
-    local exit_status="$1"
-    local msg="$2"
-    if [[ "$exit_status" -ne 0 ]]; then
-        pretty_print "$RED" "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $2"
-    fi
+function log_on_error() {
+  local exit_status="$1"
+  local msg="$2"
+  if [[ "$exit_status" -ne 0 ]]; then
+    pretty_print "$RED" "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $2"
+  fi
 }
 
 ##################################################################
@@ -550,10 +549,10 @@ function log_on_error {
 # Returns:
 #   None
 ##################################################################
-function cd_to_dir {
-    local pkg_dir="$1"
-    #echo "package dir: $pkg_dir"
-    cd "$pkg_dir"
+function cd_to_dir() {
+  local pkg_dir="$1"
+  #echo "package dir: $pkg_dir"
+  cd "$pkg_dir"
 }
 
 ##################################################################
@@ -567,33 +566,32 @@ function cd_to_dir {
 # Returns:
 #   None
 ##################################################################
-function print_dashes {
-    local LEN="$1"
-    local CHAR='-'
-    while (( $# > 0 ))
-    do
-        case $1 in
-            [0-9]*) LEN=$1;;
-            -c) shift
-                CHAR=$1;;
-            *) usagexit;;
-        esac
+function print_dashes() {
+  local LEN="$1"
+  local CHAR='-'
+  while (($# > 0)); do
+    case $1 in
+      [0-9]*) LEN=$1 ;;
+      -c)
         shift
-    done
+        CHAR=$1
+        ;;
+      *) usagexit ;;
+    esac
+    shift
+  done
 
-    if (( LEN > 4096 ))
-    then
-        echo "too large" >&2
-        exit 3
-    fi
+  if ((LEN > 4096)); then
+    echo "too large" >&2
+    exit 3
+  fi
 
-    # build the string to the exact length
-    DASHES=""
-    for ((i=0; i<LEN; i++))
-    do
-        DASHES="$DASHES$CHAR"
-    done
-    echo "$DASHES"
+  # build the string to the exact length
+  DASHES=""
+  for ((i = 0; i < LEN; i++)); do
+    DASHES="$DASHES$CHAR"
+  done
+  echo "$DASHES"
 }
 
 ##################################################################
@@ -607,26 +605,26 @@ function print_dashes {
 # Returns:
 #   None
 ##################################################################
-function do_tar_file {
-    local pkg="$1"
-    local pkg_dir="$2"
-    local exit_status=1
-    local err_msg='Unknown error'
+function do_tar_file() {
+  local pkg="$1"
+  local pkg_dir="$2"
+  local exit_status=1
+  local err_msg='Unknown error'
 
-    print_banner "Creating distribution tar file for: $1 [$2]" "$GRN"
-    cd_to_dir "$pkg_dir"
+  print_banner "Creating distribution tar file for: $1 [$2]" "$GRN"
+  cd_to_dir "$pkg_dir"
 
-    git clean -f -d . > /dev/null && rm -rf "$DEBIAN_DIR/$pkg" && mkdir -p "$DEBIAN_DIR/$pkg"
+  git clean -f -d . >/dev/null && rm -rf "$DEBIAN_DIR/$pkg" && mkdir -p "$DEBIAN_DIR/$pkg"
+  exit_status=$?
+  if [[ "$exit_status" -eq 0 ]]; then
+    err_msg="[$pkg] : Error creating the tar file."
+    eval "${TIZ_PROJECT_DIST_CMD[$pkg]}" &&
+      mv "$DEBIAN_DIR"/*.gz "$DEBIAN_DIR/$pkg"
     exit_status=$?
-    if [[ "$exit_status" -eq 0 ]] ; then
-        err_msg="[$pkg] : Error creating the tar file."
-        eval "${TIZ_PROJECT_DIST_CMD[$pkg]}" \
-            && mv "$DEBIAN_DIR"/*.gz "$DEBIAN_DIR/$pkg"
-        exit_status=$?
-    fi
+  fi
 
-    log_on_error "$exit_status" "$err_msg"
-    return "$exit_status"
+  log_on_error "$exit_status" "$err_msg"
+  return "$exit_status"
 }
 
 ##################################################################
@@ -641,39 +639,39 @@ function do_tar_file {
 # Returns:
 #   None
 ##################################################################
-function do_c_package_debs {
-    local pkg="$1"
-    local pkg_dir="$2"
-    local pkg_ver=0
-    local exit_status=1
-    local err_msg='Unknown error'
+function do_c_package_debs() {
+  local pkg="$1"
+  local pkg_dir="$2"
+  local pkg_ver=0
+  local exit_status=1
+  local err_msg='Unknown error'
 
-    print_banner "Creating debian package for: $1 [$2]" "$YEL"
-    cd_to_dir "$pkg_dir"
-    pkg_ver=$(ls *.gz | perl -pe 'if(($v)=/([0-9]+([.][0-9]+)+)/){print"$v\n";exit}$_=""')
+  print_banner "Creating debian package for: $1 [$2]" "$YEL"
+  cd_to_dir "$pkg_dir"
+  pkg_ver=$(ls *.gz | perl -pe 'if(($v)=/([0-9]+([.][0-9]+)+)/){print"$v\n";exit}$_=""')
 
-    tar zxvf "$pkg-$pkg_ver".tar.gz && cd "$pkg-$pkg_ver"
+  tar zxvf "$pkg-$pkg_ver".tar.gz && cd "$pkg-$pkg_ver"
+  exit_status=$?
+  if [[ "$exit_status" -eq 0 ]]; then
+    err_msg="[$pkg] : Error while running dh_make."
+    eval "${TIZ_PROJECT_DH_MAKE_CMD[$pkg]}"
+    exit_status=0
+  fi
+
+  if [[ "$exit_status" -eq 0 ]]; then
+    err_msg="[$pkg] : Error while running dpkg-buildpackage."
+    local jobs='-jauto'
+    [[ "$pkg" == "tizonia-player" ]] && jobs='-j1'
+    if [[ "$DISTRO_ID" == "raspbian" ]]; then
+      export DEB_CFLAGS_APPEND="$TIZ_DPKG_BUILD_RPI_FLAGS"
+      export DEB_CXXFLAGS_APPEND="$TIZ_DPKG_BUILD_RPI_FLAGS"
+    fi
+    eval "$DPKG_BUILD_PKG_CMD $jobs"
     exit_status=$?
-    if [[ "$exit_status" -eq 0 ]] ; then
-        err_msg="[$pkg] : Error while running dh_make."
-        eval "${TIZ_PROJECT_DH_MAKE_CMD[$pkg]}"
-        exit_status=0
-    fi
+  fi
 
-    if [[ "$exit_status" -eq 0 ]] ; then
-        err_msg="[$pkg] : Error while running dpkg-buildpackage."
-        local jobs='-jauto'
-        [[ "$pkg" == "tizonia-player" ]] && jobs='-j1'
-        if [[ "$DISTRO_ID" == "raspbian" ]]; then
-            export DEB_CFLAGS_APPEND="$TIZ_DPKG_BUILD_RPI_FLAGS"
-            export DEB_CXXFLAGS_APPEND="$TIZ_DPKG_BUILD_RPI_FLAGS"
-        fi
-        eval "$DPKG_BUILD_PKG_CMD $jobs"
-        exit_status=$?
-    fi
-
-    log_on_error "$exit_status" "$err_msg"
-    return "$exit_status"
+  log_on_error "$exit_status" "$err_msg"
+  return "$exit_status"
 }
 
 ##################################################################
@@ -687,29 +685,29 @@ function do_c_package_debs {
 # Returns:
 #   None
 ##################################################################
-function do_python_package_debs {
-    local pkg="$1"
-    local pkg_dir="$2"
-    local pkg_ver=0
-    local exit_status=1
-    local err_msg='Unknown error'
+function do_python_package_debs() {
+  local pkg="$1"
+  local pkg_dir="$2"
+  local pkg_ver=0
+  local exit_status=1
+  local err_msg='Unknown error'
 
-    print_banner "Creating debian package for: $1 [$2]" "$YEL"
-    cd_to_dir "$pkg_dir"
-    pkg_ver=$(ls *.gz | perl -pe 'if(($v)=/([0-9]+([.][0-9]+)+)/){print"$v\n";exit}$_=""')
+  print_banner "Creating debian package for: $1 [$2]" "$YEL"
+  cd_to_dir "$pkg_dir"
+  pkg_ver=$(ls *.gz | perl -pe 'if(($v)=/([0-9]+([.][0-9]+)+)/){print"$v\n";exit}$_=""')
 
-    err_msg="[$pkg] : Error while running py2dsc."
-    py2dsc --with-python2=False --with-python3=True --dist-dir='.' "$pkg-$pkg_ver".tar.gz && cd "$pkg-$pkg_ver"
+  err_msg="[$pkg] : Error while running py2dsc."
+  py2dsc --with-python2=False --with-python3=True --dist-dir='.' "$pkg-$pkg_ver".tar.gz && cd "$pkg-$pkg_ver"
+  exit_status=$?
+
+  if [[ "$exit_status" -eq 0 ]]; then
+    err_msg="[$pkg] : Error while running debuild."
+    debuild -i -us -uc -b
     exit_status=$?
+  fi
 
-    if [[ "$exit_status" -eq 0 ]] ; then
-        err_msg="[$pkg] : Error while running debuild."
-        debuild -i -us -uc -b
-        exit_status=$?
-    fi
-
-    log_on_error "$exit_status" "$err_msg"
-    return "$exit_status"
+  log_on_error "$exit_status" "$err_msg"
+  return "$exit_status"
 }
 
 ##################################################################
@@ -723,128 +721,124 @@ function do_python_package_debs {
 # Returns:
 #   None
 ##################################################################
-function do_install_project_debs {
-    local pkg="$1"
-    local pkg_dir="$2"
-    local exit_status=1
-    local err_msg='Unknown error'
+function do_install_project_debs() {
+  local pkg="$1"
+  local pkg_dir="$2"
+  local exit_status=1
+  local err_msg='Unknown error'
 
-    # Uninstall them first, if installed
-    do_uninstall_project_debs "$pkg" "$pkg_dir"
+  # Uninstall them first, if installed
+  do_uninstall_project_debs "$pkg" "$pkg_dir"
 
-    print_banner "Installing debs from package: $1 [$2]" "$MAG"
-    cd_to_dir "$pkg_dir"
+  print_banner "Installing debs from package: $1 [$2]" "$MAG"
+  cd_to_dir "$pkg_dir"
 
-    # Check first for tizonia-config, this sub-project is special as it does
-    # not produce any -dev or -dbg packages.
-    if [[ "$pkg" == "tizonia-config" ]]; then
-        local deb="$(ls *config*.deb)"
-        err_msg="[$deb] : Error while installing the package."
-        pretty_print "$BLU" "[$deb] : installing."
-        sudo dpkg -i "$deb"
-        exit_status=$?
-        if [[ "$exit_status" -eq 0 ]] ; then
-            pretty_print "$GRN" "[$deb] : installed."
-        else
-            log_on_error "$exit_status" "$err_msg"
-            return "$exit_status"
-        fi
-
-        deb=$(ls *all*.deb)
-        err_msg="[$deb] : Error while installing the package."
-        pretty_print "$BLU" "[$deb] : installing."
-        sudo dpkg -i "$deb"
-        exit_status=$?
-        if [[ "$exit_status" -eq 0 ]] ; then
-            pretty_print "$GRN" "[$deb] : installed."
-        else
-            log_on_error "$exit_status" "$err_msg"
-            return "$exit_status"
-        fi
-        return 0
+  # Check first for tizonia-config, this sub-project is special as it does
+  # not produce any -dev or -dbg packages.
+  if [[ "$pkg" == "tizonia-config" ]]; then
+    local deb="$(ls *config*.deb)"
+    err_msg="[$deb] : Error while installing the package."
+    pretty_print "$BLU" "[$deb] : installing."
+    sudo dpkg -i "$deb"
+    exit_status=$?
+    if [[ "$exit_status" -eq 0 ]]; then
+      pretty_print "$GRN" "[$deb] : installed."
+    else
+      log_on_error "$exit_status" "$err_msg"
+      return "$exit_status"
     fi
 
-    # Install normal packages first
-    for deb in "$(find . -type f -name "*.deb" -print | cut -d'/' -f2)"
-    do
-        if [[ -e "$deb" ]]; then
-            if [[ "$deb" = *bin*.deb ]]; then
-                continue
-            fi
-            if [[ "$deb" = *dev*.deb ]]; then
-                continue
-            fi
-            if [[ "$deb" = *dbg*.deb ]]; then
-                continue
-            fi
-            err_msg="[$pkg] : Error while installing the package."
-            pretty_print "$BLU" "[$deb] : installing."
-            sudo dpkg -i "$deb"
-            exit_status=$?
-            if [[ "$exit_status" -eq 0 ]] ; then
-                pretty_print "$GRN" "[$deb] : installed."
-            else
-                break
-            fi
-        fi
-    done
+    deb=$(ls *all*.deb)
+    err_msg="[$deb] : Error while installing the package."
+    pretty_print "$BLU" "[$deb] : installing."
+    sudo dpkg -i "$deb"
+    exit_status=$?
+    if [[ "$exit_status" -eq 0 ]]; then
+      pretty_print "$GRN" "[$deb] : installed."
+    else
+      log_on_error "$exit_status" "$err_msg"
+      return "$exit_status"
+    fi
+    return 0
+  fi
 
-    # Install bin packages next
-    for deb in "$(find . -type f -name "*bin*.deb" -print | cut -d'/' -f2)"
-    do
-        if [[ -e "$deb" ]]; then
-            if [[ "$deb" = *dev*.deb ]]; then
-                continue
-            fi
-            if [[ "$deb" = *dbg*.deb ]]; then
-                continue
-            fi
-            err_msg="[$pkg] : Error while installing the package."
-            pretty_print "$BLU" "[$deb] : installing."
-            sudo dpkg -i "$deb"
-            exit_status=$?
-            if [[ "$exit_status" -eq 0 ]] ; then
-                pretty_print "$GRN" "[$deb] : installed."
-            else
-                break
-            fi
-        fi
-    done
+  # Install normal packages first
+  for deb in "$(find . -type f -name "*.deb" -print | cut -d'/' -f2)"; do
+    if [[ -e "$deb" ]]; then
+      if [[ "$deb" = *bin*.deb ]]; then
+        continue
+      fi
+      if [[ "$deb" = *dev*.deb ]]; then
+        continue
+      fi
+      if [[ "$deb" = *dbg*.deb ]]; then
+        continue
+      fi
+      err_msg="[$pkg] : Error while installing the package."
+      pretty_print "$BLU" "[$deb] : installing."
+      sudo dpkg -i "$deb"
+      exit_status=$?
+      if [[ "$exit_status" -eq 0 ]]; then
+        pretty_print "$GRN" "[$deb] : installed."
+      else
+        break
+      fi
+    fi
+  done
 
-    # Install dev packages next
-    for deb in "$(find . -type f -name "*dev*.deb" -print | cut -d'/' -f2)"
-    do
-        if [[ -e "$deb" ]]; then
-            err_msg="[$pkg] : Error while installing the package."
-            pretty_print "$BLU" "[$deb] : installing."
-            sudo dpkg -i "$deb"
-            exit_status=$?
-            if [[ "$exit_status" -eq 0 ]] ; then
-                pretty_print "$GRN" "[$deb] : installed."
-            else
-                break
-            fi
-        fi
-    done
+  # Install bin packages next
+  for deb in "$(find . -type f -name "*bin*.deb" -print | cut -d'/' -f2)"; do
+    if [[ -e "$deb" ]]; then
+      if [[ "$deb" = *dev*.deb ]]; then
+        continue
+      fi
+      if [[ "$deb" = *dbg*.deb ]]; then
+        continue
+      fi
+      err_msg="[$pkg] : Error while installing the package."
+      pretty_print "$BLU" "[$deb] : installing."
+      sudo dpkg -i "$deb"
+      exit_status=$?
+      if [[ "$exit_status" -eq 0 ]]; then
+        pretty_print "$GRN" "[$deb] : installed."
+      else
+        break
+      fi
+    fi
+  done
 
-    # Install dbg packages next
-    for deb in "$(find . -type f -name "*dbg*.deb" -print | cut -d'/' -f2)"
-    do
-        if [[ -e "$deb" ]]; then
-            err_msg="[$pkg] : Error while installing the package."
-            pretty_print "$BLU" "[$deb] : installing."
-            sudo dpkg -i "$deb"
-            exit_status=$?
-            if [[ "$exit_status" -eq 0 ]] ; then
-                pretty_print "$GRN" "[$deb] : installed."
-            else
-                break
-            fi
-        fi
-    done
+  # Install dev packages next
+  for deb in "$(find . -type f -name "*dev*.deb" -print | cut -d'/' -f2)"; do
+    if [[ -e "$deb" ]]; then
+      err_msg="[$pkg] : Error while installing the package."
+      pretty_print "$BLU" "[$deb] : installing."
+      sudo dpkg -i "$deb"
+      exit_status=$?
+      if [[ "$exit_status" -eq 0 ]]; then
+        pretty_print "$GRN" "[$deb] : installed."
+      else
+        break
+      fi
+    fi
+  done
 
-    log_on_error "$exit_status" "$err_msg"
-    return "$exit_status"
+  # Install dbg packages next
+  for deb in "$(find . -type f -name "*dbg*.deb" -print | cut -d'/' -f2)"; do
+    if [[ -e "$deb" ]]; then
+      err_msg="[$pkg] : Error while installing the package."
+      pretty_print "$BLU" "[$deb] : installing."
+      sudo dpkg -i "$deb"
+      exit_status=$?
+      if [[ "$exit_status" -eq 0 ]]; then
+        pretty_print "$GRN" "[$deb] : installed."
+      else
+        break
+      fi
+    fi
+  done
+
+  log_on_error "$exit_status" "$err_msg"
+  return "$exit_status"
 }
 
 ##################################################################
@@ -859,112 +853,109 @@ function do_install_project_debs {
 # Returns:
 #   None
 ##################################################################
-function do_next_package_debs {
-    local exit_status=0
-    for pkg in "${TIZ_PROJECTS_ORDERED[@]}"; do
-        dpkg -s "${TIZ_PROJECT_MAIN_PKG[$pkg]}"
-        result=$?
-        if [[ $result -ne 0 ]]; then
+function do_next_package_debs() {
+  local exit_status=0
+  for pkg in "${TIZ_PROJECTS_ORDERED[@]}"; do
+    dpkg -s "${TIZ_PROJECT_MAIN_PKG[$pkg]}"
+    result=$?
+    if [[ $result -ne 0 ]]; then
 
-            local pkg_dir="$TIZONIA_DIR/${TIZ_PROJECT_DIRS[$pkg]}"
-            do_tar_file "$pkg" "$pkg_dir"
-            exit_status=$?
-            if [[ "$exit_status" -ne 0 ]] ; then
-                break
-            fi
+      local pkg_dir="$TIZONIA_DIR/${TIZ_PROJECT_DIRS[$pkg]}"
+      do_tar_file "$pkg" "$pkg_dir"
+      exit_status=$?
+      if [[ "$exit_status" -ne 0 ]]; then
+        break
+      fi
 
-            local pkg_deb_dir="$DEBIAN_DIR/$pkg"
-            exists_in_array "$pkg" "${TIZ_PYTHON_PROJECTS[@]}"
-            if [[ $? -eq 0 ]]; then
-                do_python_package_debs "$pkg" "$pkg_deb_dir"
-                exit_status=$?
-            else
-                do_c_package_debs "$pkg" "$pkg_deb_dir"
-                exit_status=$?
-            fi
+      local pkg_deb_dir="$DEBIAN_DIR/$pkg"
+      exists_in_array "$pkg" "${TIZ_PYTHON_PROJECTS[@]}"
+      if [[ $? -eq 0 ]]; then
+        do_python_package_debs "$pkg" "$pkg_deb_dir"
+        exit_status=$?
+      else
+        do_c_package_debs "$pkg" "$pkg_deb_dir"
+        exit_status=$?
+      fi
 
-            if [[ "$exit_status" -ne 0 ]] ; then
-                break
-            fi
+      if [[ "$exit_status" -ne 0 ]]; then
+        break
+      fi
 
-            do_install_project_debs "$pkg" "$pkg_deb_dir"
-            exit_status=$?
-            if [[ "$exit_status" -ne 0 ]] ; then
-                break
-            fi
+      do_install_project_debs "$pkg" "$pkg_deb_dir"
+      exit_status=$?
+      if [[ "$exit_status" -ne 0 ]]; then
+        break
+      fi
 
-        else
-            pretty_print "$GRN" "[$pkg] : installed."
-        fi
-    done
-    return "$exit_status"
+    else
+      pretty_print "$GRN" "[$pkg] : installed."
+    fi
+  done
+  return "$exit_status"
 }
 
-function do_uninstall_project_debs {
-    local pkg="$1"
-    local pkg_dir="$2"
-    local exit_status=0
-    local err_msg='Unknown error'
+function do_uninstall_project_debs() {
+  local pkg="$1"
+  local pkg_dir="$2"
+  local exit_status=0
+  local err_msg='Unknown error'
 
-    print_banner "Uninstalling debs from package: $1 [$2]" "$MAG"
-    cd_to_dir "$pkg_dir"
+  print_banner "Uninstalling debs from package: $1 [$2]" "$MAG"
+  cd_to_dir "$pkg_dir"
 
-    if [[ "$pkg" == "tizonia-config" ]]; then
-        local deb_all="$(ls *all*.deb)"
-        local deb_all_name="$(echo "$deb_all" | cut -d'_' -f1)"
-        pretty_print "$BLU" "[$pkg] : uninstalling $deb_all_name."
-        sudo dpkg --purge "$deb_all_name"
-        pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
+  if [[ "$pkg" == "tizonia-config" ]]; then
+    local deb_all="$(ls *all*.deb)"
+    local deb_all_name="$(echo "$deb_all" | cut -d'_' -f1)"
+    pretty_print "$BLU" "[$pkg] : uninstalling $deb_all_name."
+    sudo dpkg --purge "$deb_all_name"
+    pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
 
-        local deb_config="$(ls *config*.deb)"
-        local deb_config_name="$(echo "$deb_config" | cut -d'_' -f1)"
-        pretty_print "$BLU" "[$pkg] : uninstalling $deb_config_name."
-        sudo dpkg --purge "$deb_config_name"
-        pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
-        return
+    local deb_config="$(ls *config*.deb)"
+    local deb_config_name="$(echo "$deb_config" | cut -d'_' -f1)"
+    pretty_print "$BLU" "[$pkg] : uninstalling $deb_config_name."
+    sudo dpkg --purge "$deb_config_name"
+    pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
+    return
+  fi
+
+  # Uninstall dbg packages fist, if any
+  for deb in "$(find . -type f -name "*dbg*.deb" -print | cut -d'/' -f2)"; do
+    if [[ -e "$deb" ]]; then
+      local deb_name="$(echo "$deb" | cut -d'_' -f1)"
+      pretty_print "$BLU" "[$pkg] : uninstalling $deb_name."
+      sudo dpkg --purge "$deb_name"
+      pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
     fi
+  done
 
-    # Uninstall dbg packages fist, if any
-    for deb in "$(find . -type f -name "*dbg*.deb" -print | cut -d'/' -f2)"
-    do
-        if [[ -e "$deb" ]]; then
-            local deb_name="$(echo "$deb" | cut -d'_' -f1)"
-            pretty_print "$BLU" "[$pkg] : uninstalling $deb_name."
-            sudo dpkg --purge "$deb_name"
-            pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
-        fi
-    done
+  # Uninstall dev packages next, if any
+  for deb in "$(find . -type f -name "*dev*.deb" -print | cut -d'/' -f2)"; do
+    if [[ -e "$deb" ]]; then
+      local deb_name="$(echo "$deb" | cut -d'_' -f1)"
+      pretty_print "$BLU" "[$pkg] : uninstalling $deb_name."
+      sudo dpkg --purge "$deb_name"
+      pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
+    fi
+  done
 
-    # Uninstall dev packages next, if any
-    for deb in "$(find . -type f -name "*dev*.deb" -print | cut -d'/' -f2)"
-    do
-        if [[ -e "$deb" ]]; then
-            local deb_name="$(echo "$deb" | cut -d'_' -f1)"
-            pretty_print "$BLU" "[$pkg] : uninstalling $deb_name."
-            sudo dpkg --purge "$deb_name"
-            pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
-        fi
-    done
+  # Uninstall any remaining packages next
+  for deb in "$(find . -type f -name "*.deb" -print | cut -d'/' -f2)"; do
+    if [[ -e "$deb" ]]; then
+      if [[ "$deb" = *dev*.deb ]]; then
+        continue
+      fi
+      if [[ "$deb" = *dbg*.deb ]]; then
+        continue
+      fi
+      local deb_name="$(echo "$deb" | cut -d'_' -f1)"
+      pretty_print "$BLU" "[$pkg] : uninstalling $deb_name."
+      sudo dpkg --purge "$deb_name"
+      pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
+    fi
+  done
 
-    # Uninstall any remaining packages next
-    for deb in "$(find . -type f -name "*.deb" -print | cut -d'/' -f2)"
-    do
-        if [[ -e "$deb" ]]; then
-            if [[ "$deb" = *dev*.deb ]]; then
-                continue
-            fi
-            if [[ "$deb" = *dbg*.deb ]]; then
-                continue
-            fi
-            local deb_name="$(echo "$deb" | cut -d'_' -f1)"
-            pretty_print "$BLU" "[$pkg] : uninstalling $deb_name."
-            sudo dpkg --purge "$deb_name"
-            pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
-        fi
-    done
-
-    log_on_error "$exit_status" "$err_msg"
-    return "$exit_status"
+  log_on_error "$exit_status" "$err_msg"
+  return "$exit_status"
 }
 
 ##################################################################
@@ -979,11 +970,11 @@ function do_uninstall_project_debs {
 # Returns:
 #   None
 ##################################################################
-function do_uninstall_all_debs {
-    local exit_status=0
-    sudo apt-get remove --purge tizonia-all -qq --force-yes && sudo apt-get autoremove -qq --force-yes
-    dpkg -l | grep -E '.*\s+(libtiz|tiz|python-tiz|python3-tiz)' | awk '{ print $2 }' | xargs sudo apt-get remove --purge -qq
-    return "$exit_status"
+function do_uninstall_all_debs() {
+  local exit_status=0
+  sudo apt-get remove --purge tizonia-all -qq --force-yes && sudo apt-get autoremove -qq --force-yes
+  dpkg -l | grep -E '.*\s+(libtiz|tiz|python-tiz|python3-tiz)' | awk '{ print $2 }' | xargs sudo apt-get remove --purge -qq
+  return "$exit_status"
 }
 
 ##################################################################
@@ -998,31 +989,30 @@ function do_uninstall_all_debs {
 # Returns:
 #   None
 ##################################################################
-function do_publish_project_debs {
-    local pkg="$1"
-    local pkg_dir="$2"
-    local password="$3"
-    local exit_status=0
-    local err_msg='Unknown error'
+function do_publish_project_debs() {
+  local pkg="$1"
+  local pkg_dir="$2"
+  local password="$3"
+  local exit_status=0
+  local err_msg='Unknown error'
 
-    print_banner "Publishing debs from package: $1 [$2]" "$MAG"
-    cd_to_dir "$pkg_dir"
+  print_banner "Publishing debs from package: $1 [$2]" "$MAG"
+  cd_to_dir "$pkg_dir"
 
-    local arch="$(dpkg --print-architecture)"
-    for deb in "$(find . -type f -name "*.deb" -print | cut -d'/' -f2)"
-    do
-        if [[ -e "$deb" ]]; then
-            local deb_name="$(echo "$deb" | cut -d'_' -f1)"
-            pretty_print "$YEL" "[$pkg] : uploading $deb_name."
-            curl -k -X PUT -T "$deb" -H "X-GPG-PASSPHRASE: $password" -utizonia:"$TIZONIA_BINTRAY_API_KEY" \
-                "https://api.bintray.com/content/tizonia/$DISTRO_ID/tizonia-$DISTRO_CODENAME/$TIZONIA_RELEASE_VERSION/pool/main/t/tizonia-$DISTRO_CODENAME/$deb;deb_distribution=$DISTRO_CODENAME;deb_component=main;deb_architecture=$arch"
-            echo
-            pretty_print "$GRN" "[$pkg] : uploaded $deb_name."
-        fi
-    done
+  local arch="$(dpkg --print-architecture)"
+  for deb in "$(find . -type f -name "*.deb" -print | cut -d'/' -f2)"; do
+    if [[ -e "$deb" ]]; then
+      local deb_name="$(echo "$deb" | cut -d'_' -f1)"
+      pretty_print "$YEL" "[$pkg] : uploading $deb_name."
+      curl -k -X PUT -T "$deb" -H "X-GPG-PASSPHRASE: $password" -utizonia:"$TIZONIA_BINTRAY_API_KEY" \
+        "https://api.bintray.com/content/tizonia/$DISTRO_ID/tizonia-$DISTRO_CODENAME/$TIZONIA_RELEASE_VERSION/pool/main/t/tizonia-$DISTRO_CODENAME/$deb;deb_distribution=$DISTRO_CODENAME;deb_component=main;deb_architecture=$arch"
+      echo
+      pretty_print "$GRN" "[$pkg] : uploaded $deb_name."
+    fi
+  done
 
-    log_on_error "$exit_status" "$err_msg"
-    return "$exit_status"
+  log_on_error "$exit_status" "$err_msg"
+  return "$exit_status"
 }
 
 ##################################################################
@@ -1037,29 +1027,29 @@ function do_publish_project_debs {
 # Returns:
 #   None
 ##################################################################
-function do_publish_to_bintray {
-    local exit_status=0
-    read -s -p "Enter GPG-PASSPHRASE: " password
-    echo
-    for pkg in "${TIZ_PROJECTS_ORDERED[@]}"; do
-        local pkg_deb_dir="$DEBIAN_DIR/$pkg"
-        if [[ -d "$pkg_deb_dir" ]]; then
-            do_publish_project_debs "$pkg" "$pkg_deb_dir" "$password"
-        fi
-    done
-    # Trigger metadata calculation
-    pretty_print "$GRN" "Bintray: Triggering metadata calculation on $DISTRO_ID repo"
-    curl -k -X POST -H "X-GPG-PASSPHRASE: $password" -utizonia:"$TIZONIA_BINTRAY_API_KEY" "https://api.bintray.com/calc_metadata/tizonia/$DISTRO_ID/"
-    echo
-    # GPG signing request
-    pretty_print "$GRN" "Bintray: Requesting GPG signing of $DISTRO_ID/tizonia-$DISTRO_CODENAME/$TIZONIA_RELEASE_VERSION"
-    curl -k -X POST -H "X-GPG-PASSPHRASE: $password" -utizonia:"$TIZONIA_BINTRAY_API_KEY" "https://api.bintray.com/gpg/tizonia/$DISTRO_ID/tizonia-$DISTRO_CODENAME/versions/$TIZONIA_RELEASE_VERSION"
-    echo
-    # Publish the repo
-    pretty_print "$GRN" "Bintray: publishing the $DISTRO_ID repo"
-    curl -k -X POST -H "X-GPG-PASSPHRASE: $password" -utizonia:"$TIZONIA_BINTRAY_API_KEY" "https://api.bintray.com/content/tizonia/$DISTRO_ID/tizonia-$DISTRO_CODENAME/$TIZONIA_RELEASE_VERSION/publish"
-    echo
-    return "$exit_status"
+function do_publish_to_bintray() {
+  local exit_status=0
+  read -s -p "Enter GPG-PASSPHRASE: " password
+  echo
+  for pkg in "${TIZ_PROJECTS_ORDERED[@]}"; do
+    local pkg_deb_dir="$DEBIAN_DIR/$pkg"
+    if [[ -d "$pkg_deb_dir" ]]; then
+      do_publish_project_debs "$pkg" "$pkg_deb_dir" "$password"
+    fi
+  done
+  # Trigger metadata calculation
+  pretty_print "$GRN" "Bintray: Triggering metadata calculation on $DISTRO_ID repo"
+  curl -k -X POST -H "X-GPG-PASSPHRASE: $password" -utizonia:"$TIZONIA_BINTRAY_API_KEY" "https://api.bintray.com/calc_metadata/tizonia/$DISTRO_ID/"
+  echo
+  # GPG signing request
+  pretty_print "$GRN" "Bintray: Requesting GPG signing of $DISTRO_ID/tizonia-$DISTRO_CODENAME/$TIZONIA_RELEASE_VERSION"
+  curl -k -X POST -H "X-GPG-PASSPHRASE: $password" -utizonia:"$TIZONIA_BINTRAY_API_KEY" "https://api.bintray.com/gpg/tizonia/$DISTRO_ID/tizonia-$DISTRO_CODENAME/versions/$TIZONIA_RELEASE_VERSION"
+  echo
+  # Publish the repo
+  pretty_print "$GRN" "Bintray: publishing the $DISTRO_ID repo"
+  curl -k -X POST -H "X-GPG-PASSPHRASE: $password" -utizonia:"$TIZONIA_BINTRAY_API_KEY" "https://api.bintray.com/content/tizonia/$DISTRO_ID/tizonia-$DISTRO_CODENAME/$TIZONIA_RELEASE_VERSION/publish"
+  echo
+  return "$exit_status"
 }
 
 ##################################################################
@@ -1073,141 +1063,147 @@ function do_publish_to_bintray {
 # Returns:
 #   None
 ##################################################################
-function main {
-    local exit_status=0
-    local makenext=0
-    local alldeps=0
-    local removeall=0
-    local publish=0
-    local signdebs=0
-    local tizdeps=0
+function main() {
+  local exit_status=0
+  local makenext=0
+  local alldeps=0
+  local removeall=0
+  local publish=0
+  local signdebs=0
+  local tizdeps=0
 
-    local progname="$(basename "$0")"
-    CMDLINE=$(getopt -o "dnprst" --long "alldeps,makenext,publish,removeall,signdebs,tizdeps" -n "$progname" -- "$@")
-    eval set -- "$CMDLINE"
-    while true; do
-        case "$1" in
-            -n|--makenext)
-                makenext=1; shift
-                ;;
-            -d|--alldeps)
-                alldeps=1; shift
-                ;;
-            -p|--publish)
-                publish=1; shift
-                ;;
-            -r|--removeall)
-                removeall=1; shift
-                ;;
-            -s|--signdebs)
-                signdebs=1; shift
-                ;;
-            -t|--tizdeps)
-                tizdeps=1; shift
-                ;;
-            --)
-                shift
-                break
-                ;;
-        esac
-    done
+  local progname="$(basename "$0")"
+  CMDLINE=$(getopt -o "dnprst" --long "alldeps,makenext,publish,removeall,signdebs,tizdeps" -n "$progname" -- "$@")
+  eval set -- "$CMDLINE"
+  while true; do
+    case "$1" in
+      -n | --makenext)
+        makenext=1
+        shift
+        ;;
+      -d | --alldeps)
+        alldeps=1
+        shift
+        ;;
+      -p | --publish)
+        publish=1
+        shift
+        ;;
+      -r | --removeall)
+        removeall=1
+        shift
+        ;;
+      -s | --signdebs)
+        signdebs=1
+        shift
+        ;;
+      -t | --tizdeps)
+        tizdeps=1
+        shift
+        ;;
+      --)
+        shift
+        break
+        ;;
+    esac
+  done
 
-    local total=$(( $makenext + $alldeps + $removeall + $publish + $tizdeps ))
-    if [[ "$total" != 1 ]]; then
-        usage
-        exit "$E_BADARGS"
-    fi
+  local total=$(($makenext + $alldeps + $removeall + $publish + $tizdeps))
+  if [[ "$total" != 1 ]]; then
+    usage
+    exit "$E_BADARGS"
+  fi
 
-    # Installing dependencies does not require verification of environment
-    # variables
-    if [[ "$tizdeps" == 1 ]]; then
-        do_tizonia_deps
-        exit 0
-    fi
+  # Installing dependencies does not require verification of environment
+  # variables
+  if [[ "$tizdeps" == 1 ]]; then
+    do_tizonia_deps
+    exit 0
+  fi
 
-    print_platform_info
+  print_platform_info
 
-    # Verify the existence of important environment variables
-    : "${DEBFULLNAME:?"Need to set DEBFULLNAME"}"
-    : "${DEBEMAIL:?"Need to set DEBEMAIL"}"
-    : "${TIZONIA_RELEASE_VERSION:?"Need to set TIZONIA_RELEASE_VERSION"}"
+  # Verify the existence of important environment variables
+  : "${DEBFULLNAME:?"Need to set DEBFULLNAME"}"
+  : "${DEBEMAIL:?"Need to set DEBEMAIL"}"
+  : "${TIZONIA_RELEASE_VERSION:?"Need to set TIZONIA_RELEASE_VERSION"}"
 
-    if [[ "$signdebs" == 1 ]]; then
-        # Check DEB_SIGN_KEYID environment variables is set. Will exit if it isn't.
-        : "${DEB_SIGN_KEYID:?"Need to set DEB_SIGN_KEYID"}"
-        DPKG_BUILD_PKG_CMD="$TIZ_DPKG_BUILD_SIGNED_CMD"
+  if [[ "$signdebs" == 1 ]]; then
+    # Check DEB_SIGN_KEYID environment variables is set. Will exit if it isn't.
+    : "${DEB_SIGN_KEYID:?"Need to set DEB_SIGN_KEYID"}"
+    DPKG_BUILD_PKG_CMD="$TIZ_DPKG_BUILD_SIGNED_CMD"
+  else
+    DPKG_BUILD_PKG_CMD="$TIZ_DPKG_BUILD_UNSIGNED_CMD"
+  fi
+
+  # Verify that this script is being run on a supported distro
+  obtain_distro_id_and_codename
+  if [[ "$DISTRO_ID" == "raspbian" || "$DISTRO_ID" == "debian" ]]; then
+    local version_id="$(cat /etc/*-release | grep -E '^VERSION_ID=' | cut -d'=' -f2)"
+    if [[ "$version_id" == "\"11\"" ]]; then
+      DISTRO_CODENAME="bullseye"
+    elif [[ "$version_id" == "\"10\"" ]]; then
+      DISTRO_CODENAME="buster"
+    elif [[ "$version_id" == "\"9\"" ]]; then
+      DISTRO_CODENAME="stretch"
+    elif [[ "$version_id" == "\"8\"" ]]; then
+      DISTRO_CODENAME="jessie"
+    elif [[ "$version_id" == "\"7\"" ]]; then
+      DISTRO_CODENAME="wheezy"
     else
-        DPKG_BUILD_PKG_CMD="$TIZ_DPKG_BUILD_UNSIGNED_CMD"
+      DISTRO_CODENAME="other debian"
     fi
+  fi
 
-    # Verify that this script is being run on a supported distro
-    obtain_distro_id_and_codename
-    if [[ "$DISTRO_ID" == "raspbian" || "$DISTRO_ID" == "debian" ]]; then
-        local version_id="$(cat /etc/*-release | grep -E '^VERSION_ID=' | cut -d'=' -f2)"
-        if [[ "$version_id" == "\"11\"" ]]; then
-            DISTRO_CODENAME="bullseye"
-        elif [[ "$version_id" == "\"10\"" ]]; then
-            DISTRO_CODENAME="buster"
-        elif [[ "$version_id" == "\"9\"" ]]; then
-            DISTRO_CODENAME="stretch"
-        elif [[ "$version_id" == "\"8\"" ]]; then
-            DISTRO_CODENAME="jessie"
-        elif [[ "$version_id" == "\"7\"" ]]; then
-            DISTRO_CODENAME="wheezy"
-        else
-            DISTRO_CODENAME="other debian"
-        fi
+  exists_in_array "$DISTRO_ID-$DISTRO_CODENAME" "${TIZ_SUPPORTED_RELEASES[@]}"
+  if [[ $? -ne 0 ]]; then
+    local err_msg="This script does not support : $DISTRO_ID/$DISTRO_CODENAME"
+    exit_status=1
+    log_on_error "$exit_status" "$err_msg"
+  fi
+
+  if [[ "$exit_status" -eq 0 ]]; then
+    if [[ "$alldeps" == 1 ]]; then
+      do_all_deps
+      exit_status=0
     fi
+  fi
 
-    exists_in_array "$DISTRO_ID-$DISTRO_CODENAME" "${TIZ_SUPPORTED_RELEASES[@]}"
-    if [[ $? -ne 0 ]]; then
-        local err_msg="This script does not support : $DISTRO_ID/$DISTRO_CODENAME"
+  if [[ "$exit_status" -eq 0 ]]; then
+    if [[ "$removeall" == 1 ]]; then
+      do_uninstall_all_debs
+      exit_status=$?
+    fi
+  fi
+
+  if [[ "$exit_status" -eq 0 ]]; then
+    if [[ "$publish" == 1 ]]; then
+      # Verify the existence of important environment variables
+      : "${TIZONIA_BINTRAY_API_KEY:?"Need to set TIZONIA_BINTRAY_API_KEY"}"
+      do_publish_to_bintray
+      exit_status=$?
+    fi
+  fi
+
+  if [[ "$exit_status" -eq 0 ]]; then
+    if [[ "$makenext" == 1 ]]; then
+      # Make suire $HOME/.config/tizonia/.tizonia.conf does not exist (may break
+      # unit tests during the package creation)
+      if [[ -e "$HOME/.config/tizonia/tizonia.conf" ]]; then
+        local err_msg="Please remove $HOME/.config/tizonia/tizonia.conf before proceeding"
         exit_status=1
         log_on_error "$exit_status" "$err_msg"
+      fi
+
+      if [[ "$exit_status" -eq 0 ]]; then
+        do_next_package_debs
+        exit_status=$?
+      fi
     fi
+  fi
 
-    if [[ "$exit_status" -eq 0 ]] ; then
-        if [[ "$alldeps" == 1 ]]; then
-            do_all_deps
-            exit_status=0
-        fi
-    fi
-
-    if [[ "$exit_status" -eq 0 ]] ; then
-        if [[ "$removeall" == 1 ]]; then
-            do_uninstall_all_debs
-            exit_status=$?
-        fi
-    fi
-
-    if [[ "$exit_status" -eq 0 ]] ; then
-        if [[ "$publish" == 1 ]]; then
-            # Verify the existence of important environment variables
-            : "${TIZONIA_BINTRAY_API_KEY:?"Need to set TIZONIA_BINTRAY_API_KEY"}"
-            do_publish_to_bintray
-            exit_status=$?
-        fi
-    fi
-
-    if [[ "$exit_status" -eq 0 ]] ; then
-        if [[ "$makenext" == 1 ]]; then
-            # Make suire $HOME/.config/tizonia/.tizonia.conf does not exist (may break
-            # unit tests during the package creation)
-            if [[ -e "$HOME/.config/tizonia/tizonia.conf" ]]; then
-                local err_msg="Please remove $HOME/.config/tizonia/tizonia.conf before proceeding"
-                exit_status=1
-                log_on_error "$exit_status" "$err_msg"
-            fi
-
-            if [[ "$exit_status" -eq 0 ]] ; then
-                do_next_package_debs
-                exit_status=$?
-            fi
-        fi
-    fi
-
-    cd "$CWD"
-    exit "$exit_status"
+  cd "$CWD"
+  exit "$exit_status"
 }
 
 main "$@"

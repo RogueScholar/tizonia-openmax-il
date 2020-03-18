@@ -25,19 +25,16 @@ exec_prefix=@exec_prefix@
 bindir=@bindir@
 datadir=@datadir@
 
-if [[ -z "$1" ]];
-then
-    TIZ_RM_DB_NAME=$BASEDIR"/tizrm.db"
+if [[ -z "$1" ]]; then
+  TIZ_RM_DB_NAME=$BASEDIR"/tizrm.db"
 else
-    TIZ_RM_DB_NAME=$1
+  TIZ_RM_DB_NAME=$1
 fi
 
-if [[ -f "$TIZ_RM_DB_NAME" ]];
-then
-    echo -e .dump | "$SQLITE3" "$TIZ_RM_DB_NAME" > /tmp/"$2"
-    cat /tmp/"$2"
-    echo -e "Dumped $TIZ_RM_DB_NAME database to /tmp/$2..."
+if [[ -f "$TIZ_RM_DB_NAME" ]]; then
+  echo -e .dump | "$SQLITE3" "$TIZ_RM_DB_NAME" >/tmp/"$2"
+  cat /tmp/"$2"
+  echo -e "Dumped $TIZ_RM_DB_NAME database to /tmp/$2..."
 fi
 
 echo -e "Done."
-
