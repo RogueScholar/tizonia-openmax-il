@@ -30,7 +30,8 @@
 #define SNDFILEDPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -40,9 +41,9 @@ extern "C" {
 #include <tizfilterprc.h>
 #include <tizfilterprc_decls.h>
 
-typedef struct sndfiled_prc sndfiled_prc_t;
-struct sndfiled_prc
-{
+  typedef struct sndfiled_prc sndfiled_prc_t;
+  struct sndfiled_prc
+  {
     /* Object */
     const tiz_filter_prc_t _;
     SNDFILE * p_sf_;
@@ -51,15 +52,15 @@ struct sndfiled_prc
     bool decoder_inited_;
     tiz_buffer_t * p_store_;
     OMX_U32 store_offset_;
-};
+  };
 
-typedef struct sndfiled_prc_class sndfiled_prc_class_t;
-struct sndfiled_prc_class
-{
+  typedef struct sndfiled_prc_class sndfiled_prc_class_t;
+  struct sndfiled_prc_class
+  {
     /* Class */
     const tiz_filter_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

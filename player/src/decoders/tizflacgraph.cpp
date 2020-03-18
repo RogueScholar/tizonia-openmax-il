@@ -32,16 +32,16 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <OMX_TizoniaExt.h>
 #include <tizplatform.h>
 
-#include "tizgraphutil.hpp"
-#include "tizgraphconfig.hpp"
-#include "tizgraphcmd.hpp"
-#include "tizprobe.hpp"
 #include "tizflacgraph.hpp"
+#include "tizgraphcmd.hpp"
+#include "tizgraphconfig.hpp"
+#include "tizgraphutil.hpp"
+#include "tizprobe.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -53,24 +53,23 @@ namespace graph = tiz::graph;
 //
 // flacdecoder
 //
-graph::flacdecoder::flacdecoder ()
-    : tiz::graph::decoder ("flacdecgraph")
+graph::flacdecoder::flacdecoder () : tiz::graph::decoder ("flacdecgraph")
 {
 }
 
 graph::ops *graph::flacdecoder::do_init ()
 {
-    omx_comp_name_lst_t comp_list;
-    comp_list.push_back ("OMX.Aratelia.file_reader.binary");
-    comp_list.push_back ("OMX.Aratelia.audio_decoder.flac");
-    comp_list.push_back (tiz::graph::util::get_default_pcm_renderer ());
+  omx_comp_name_lst_t comp_list;
+  comp_list.push_back ("OMX.Aratelia.file_reader.binary");
+  comp_list.push_back ("OMX.Aratelia.audio_decoder.flac");
+  comp_list.push_back (tiz::graph::util::get_default_pcm_renderer ());
 
-    omx_comp_role_lst_t role_list;
-    role_list.push_back ("audio_reader.binary");
-    role_list.push_back ("audio_decoder.flac");
-    role_list.push_back ("audio_renderer.pcm");
+  omx_comp_role_lst_t role_list;
+  role_list.push_back ("audio_reader.binary");
+  role_list.push_back ("audio_decoder.flac");
+  role_list.push_back ("audio_renderer.pcm");
 
-    return new flacdecops (this, comp_list, role_list);
+  return new flacdecops (this, comp_list, role_list);
 }
 
 //
@@ -79,38 +78,38 @@ graph::ops *graph::flacdecoder::do_init ()
 graph::flacdecops::flacdecops (graph *p_graph,
                                const omx_comp_name_lst_t &comp_lst,
                                const omx_comp_role_lst_t &role_lst)
-    : tiz::graph::decops (p_graph, comp_lst, role_lst),
-      need_port_settings_changed_evt_ (false)
+  : tiz::graph::decops (p_graph, comp_lst, role_lst),
+    need_port_settings_changed_evt_ (false)
 {
 }
 
 void graph::flacdecops::do_probe ()
 {
-    G_OPS_BAIL_IF_ERROR (
-        probe_stream (OMX_PortDomainAudio, OMX_AUDIO_CodingFLAC, "flac", "decode",
-                      &tiz::probe::dump_pcm_info),
-        "Unable to probe the stream.");
-    G_OPS_BAIL_IF_ERROR (
-        tiz::graph::util::set_flac_type (
-            handles_[1], 0,
-            boost::bind (&tiz::probe::get_flac_codec_info, probe_ptr_, _1),
-            need_port_settings_changed_evt_),
-        "Unable to set OMX_TizoniaIndexParamAudioFlac");
+  G_OPS_BAIL_IF_ERROR (
+      probe_stream (OMX_PortDomainAudio, OMX_AUDIO_CodingFLAC, "flac", "decode",
+                    &tiz::probe::dump_pcm_info),
+      "Unable to probe the stream.");
+  G_OPS_BAIL_IF_ERROR (
+      tiz::graph::util::set_flac_type (
+          handles_[1], 0,
+          boost::bind (&tiz::probe::get_flac_codec_info, probe_ptr_, _1),
+          need_port_settings_changed_evt_),
+      "Unable to set OMX_TizoniaIndexParamAudioFlac");
 }
 
 bool graph::flacdecops::is_port_settings_evt_required () const
 {
-    return need_port_settings_changed_evt_;
+  return need_port_settings_changed_evt_;
 }
 
 void graph::flacdecops::do_configure ()
 {
-    G_OPS_BAIL_IF_ERROR (
-        util::set_content_uri (handles_[0], probe_ptr_->get_uri ()),
-        "Unable to set OMX_IndexParamContentURI");
-    G_OPS_BAIL_IF_ERROR (
-        tiz::graph::util::set_pcm_mode (
-            handles_[2], 0,
-            boost::bind (&tiz::probe::get_pcm_codec_info, probe_ptr_, _1)),
-        "Unable to set OMX_IndexParamAudioPcm");
+  G_OPS_BAIL_IF_ERROR (
+      util::set_content_uri (handles_[0], probe_ptr_->get_uri ()),
+      "Unable to set OMX_IndexParamContentURI");
+  G_OPS_BAIL_IF_ERROR (
+      tiz::graph::util::set_pcm_mode (
+          handles_[2], 0,
+          boost::bind (&tiz::probe::get_pcm_codec_info, probe_ptr_, _1)),
+      "Unable to set OMX_IndexParamAudioPcm");
 }

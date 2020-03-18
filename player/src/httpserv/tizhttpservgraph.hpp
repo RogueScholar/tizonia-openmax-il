@@ -34,26 +34,26 @@
 
 namespace tiz
 {
-namespace graph
-{
-// Forward declarations
-class cmd;
-class ops;
+  namespace graph
+  {
+    // Forward declarations
+    class cmd;
+    class ops;
 
-class httpserver : public graph
-{
+    class httpserver : public graph
+    {
 
-public:
-    httpserver ();
+    public:
+      httpserver ();
 
-protected:
-    ops *do_init ();
-    bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
+    protected:
+      ops *do_init ();
+      bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
 
-protected:
-    hsfsm::fsm fsm_;
-};
-}  // namespace graph
+    protected:
+      hsfsm::fsm fsm_;
+    };
+  }  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZHTTPSERVGRAPH_HPP

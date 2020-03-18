@@ -29,7 +29,8 @@
 #define WEBMDMUXFLTPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -43,9 +44,9 @@ extern "C" {
 
 #include "nestegg.h"
 
-typedef struct webmdmuxflt_prc webmdmuxflt_prc_t;
-struct webmdmuxflt_prc
-{
+  typedef struct webmdmuxflt_prc webmdmuxflt_prc_t;
+  struct webmdmuxflt_prc
+  {
     /* Object */
     const tiz_filter_prc_t _;
     tiz_buffer_t * p_webm_store_;
@@ -72,15 +73,15 @@ struct webmdmuxflt_prc
     int ne_read_err_;
     int ne_last_read_len_;
     int ne_failed_init_count_;
-};
+  };
 
-typedef struct webmdmuxflt_prc_class webmdmuxflt_prc_class_t;
-struct webmdmuxflt_prc_class
-{
+  typedef struct webmdmuxflt_prc_class webmdmuxflt_prc_class_t;
+  struct webmdmuxflt_prc_class
+  {
     /* Class */
     const tiz_filter_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

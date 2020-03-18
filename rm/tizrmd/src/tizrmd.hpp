@@ -30,17 +30,17 @@
 #define TIZRMD_HPP
 
 /**
-* @defgroup tizrmd 'tizrmd' : Tizonia's OpenMAX IL Resource Manager
-* daemon process.
-*
-* This module implements an OpenMAX IL Resource Manager D-Bus-based daemon.
-*
-* @ingroup rm
-*/
+ * @defgroup tizrmd 'tizrmd' : Tizonia's OpenMAX IL Resource Manager
+ * daemon process.
+ *
+ * This module implements an OpenMAX IL Resource Manager D-Bus-based daemon.
+ *
+ * @ingroup rm
+ */
 
-#include <string.h>
 #include <deque>
 #include <map>
+#include <string.h>
 #include <string>
 
 #include <dbus-c++/dbus.h>
@@ -48,124 +48,124 @@
 #include <tizrmd-dbus.hh>
 
 #include "tizrmdb.hpp"
-#include "tizrmwaiter.hpp"
-#include "tizrmpreemptor.hpp"
 #include "tizrmowner.hpp"
+#include "tizrmpreemptor.hpp"
+#include "tizrmwaiter.hpp"
 
 class tizrmd : public com::aratelia::tiz::tizrmif_adaptor,
-    public Tiz::DBus::IntrospectableAdaptor,
-    public Tiz::DBus::ObjectAdaptor
+               public Tiz::DBus::IntrospectableAdaptor,
+               public Tiz::DBus::ObjectAdaptor
 
 {
 
 public:
-    tizrmd (Tiz::DBus::Connection &connection, char const *ap_dbname);
-    ~tizrmd ();
+  tizrmd (Tiz::DBus::Connection &connection, char const *ap_dbname);
+  ~tizrmd ();
 
-    /**
-     * \brief RM API for OMX_StateLoaded to OMX_StateIdle transitions where RM is
-     * present
-     *
-     * @param rid The resource identifier
-     * @param quantity The amount of resource required
-     * @param cname The OpenMAX IL component's name
-     * @param uuid The component's uuid
-     * @param grpid The component's group
-     * @param pri The component's group priority
-     *
-     * @return An tiz_rm_error_t error code
-     */
-    int32_t acquire (const uint32_t &rid, const uint32_t &quantity,
-                     const std::string &cname, const std::vector< uint8_t > &uuid,
-                     const uint32_t &grpid, const uint32_t &pri);
+  /**
+   * \brief RM API for OMX_StateLoaded to OMX_StateIdle transitions where RM is
+   * present
+   *
+   * @param rid The resource identifier
+   * @param quantity The amount of resource required
+   * @param cname The OpenMAX IL component's name
+   * @param uuid The component's uuid
+   * @param grpid The component's group
+   * @param pri The component's group priority
+   *
+   * @return An tiz_rm_error_t error code
+   */
+  int32_t acquire (const uint32_t &rid, const uint32_t &quantity,
+                   const std::string &cname, const std::vector< uint8_t > &uuid,
+                   const uint32_t &grpid, const uint32_t &pri);
 
-    /**
-     * \brief RM API for OMX_StateIdle to OMX_StateLoaded transitions where RM is
-     * present
-     *
-     * @param rid The resource identifier
-     * @param quantity The amount of resource to be released
-     * @param cname The OpenMAX IL component name
-     * @param uuid The component's uuid
-     * @param grpid The component's group
-     * @param pri The component's group priority
-     *
-     * @return An tiz_rm_error_t error code
-     */
-    int32_t release (const uint32_t &rid, const uint32_t &quantity,
-                     const std::string &cname, const std::vector< uint8_t > &uuid,
-                     const uint32_t &grpid, const uint32_t &pri);
+  /**
+   * \brief RM API for OMX_StateIdle to OMX_StateLoaded transitions where RM is
+   * present
+   *
+   * @param rid The resource identifier
+   * @param quantity The amount of resource to be released
+   * @param cname The OpenMAX IL component name
+   * @param uuid The component's uuid
+   * @param grpid The component's group
+   * @param pri The component's group priority
+   *
+   * @return An tiz_rm_error_t error code
+   */
+  int32_t release (const uint32_t &rid, const uint32_t &quantity,
+                   const std::string &cname, const std::vector< uint8_t > &uuid,
+                   const uint32_t &grpid, const uint32_t &pri);
 
-    /**
-     * \brief RM API for OMX_StateWaitForResources
-     *
-     * @param rid The resource identifier
-     * @param quantity The amount of resource required
-     * @param cname The OpenMAX IL component's name
-     * @param uuid The component's uuid
-     * @param grpid The component's group
-     * @param pri The component's group priority
-     *
-     * @return An tiz_rm_error_t error code
-     */
-    int32_t wait (const uint32_t &rid, const uint32_t &quantity,
-                  const std::string &cname, const std::vector< uint8_t > &uuid,
-                  const uint32_t &grpid, const uint32_t &pri);
+  /**
+   * \brief RM API for OMX_StateWaitForResources
+   *
+   * @param rid The resource identifier
+   * @param quantity The amount of resource required
+   * @param cname The OpenMAX IL component's name
+   * @param uuid The component's uuid
+   * @param grpid The component's group
+   * @param pri The component's group priority
+   *
+   * @return An tiz_rm_error_t error code
+   */
+  int32_t wait (const uint32_t &rid, const uint32_t &quantity,
+                const std::string &cname, const std::vector< uint8_t > &uuid,
+                const uint32_t &grpid, const uint32_t &pri);
 
-    /**
-     * \brief RM API for
-     *
-     * @param rid The resource identifier
-     * @param quantity The amount of resource required
-     * @param cname The OpenMAX IL component's name
-     * @param uuid The component's uuid
-     * @param grpid The component's group
-     * @param pri The component's group priority
-     *
-     * @return An tiz_rm_error_t error code
-     */
-    int32_t cancel_wait (const uint32_t &rid, const uint32_t &quantity,
-                         const std::string &cname,
-                         const std::vector< uint8_t > &uuid,
-                         const uint32_t &grpid, const uint32_t &pri);
+  /**
+   * \brief RM API for
+   *
+   * @param rid The resource identifier
+   * @param quantity The amount of resource required
+   * @param cname The OpenMAX IL component's name
+   * @param uuid The component's uuid
+   * @param grpid The component's group
+   * @param pri The component's group priority
+   *
+   * @return An tiz_rm_error_t error code
+   */
+  int32_t cancel_wait (const uint32_t &rid, const uint32_t &quantity,
+                       const std::string &cname,
+                       const std::vector< uint8_t > &uuid,
+                       const uint32_t &grpid, const uint32_t &pri);
 
-    /**
-     * \brief RM API for
-     *
-     * @param rid The resource identifier
-     * @param quantity The amount of resource required
-     * @param cname The OpenMAX IL component's name
-     * @param uuid The component's uuid
-     * @param grpid The component's group
-     * @param pri The component's group priority
-     *
-     * @return An tiz_rm_error_t error code
-     */
-    int32_t preemption_conf (const uint32_t &rid, const uint32_t &quantity,
-                             const std::string &cname,
-                             const std::vector< uint8_t > &uuid,
-                             const uint32_t &grpid, const uint32_t &pri);
+  /**
+   * \brief RM API for
+   *
+   * @param rid The resource identifier
+   * @param quantity The amount of resource required
+   * @param cname The OpenMAX IL component's name
+   * @param uuid The component's uuid
+   * @param grpid The component's group
+   * @param pri The component's group priority
+   *
+   * @return An tiz_rm_error_t error code
+   */
+  int32_t preemption_conf (const uint32_t &rid, const uint32_t &quantity,
+                           const std::string &cname,
+                           const std::vector< uint8_t > &uuid,
+                           const uint32_t &grpid, const uint32_t &pri);
 
-    /**
-     * \brief Release all currently allocated resources and cancel all allocation
-     * requests
-     *
-     * @param cname The OpenMAX IL component's name
-     * @param uuid The component's uuid
-     *
-     * @return A tiz_rm_error_t error code
-     */
-    int32_t relinquish_all (const std::string &cname,
-                            const std::vector< unsigned char > &uuid);
-
-private:
-    typedef std::deque< tizrmwaiter > waitlist_t;
-    typedef std::map< tizrmowner, tizrmpreemptor > preemptlist_t;
+  /**
+   * \brief Release all currently allocated resources and cancel all allocation
+   * requests
+   *
+   * @param cname The OpenMAX IL component's name
+   * @param uuid The component's uuid
+   *
+   * @return A tiz_rm_error_t error code
+   */
+  int32_t relinquish_all (const std::string &cname,
+                          const std::vector< unsigned char > &uuid);
 
 private:
-    tizrmdb rmdb_;
-    waitlist_t waiters_;
-    preemptlist_t preemptions_;
+  typedef std::deque< tizrmwaiter > waitlist_t;
+  typedef std::map< tizrmowner, tizrmpreemptor > preemptlist_t;
+
+private:
+  tizrmdb rmdb_;
+  waitlist_t waiters_;
+  preemptlist_t preemptions_;
 };
 
 #endif  // TIZRMD_HPP

@@ -38,15 +38,15 @@
 
 namespace tiz
 {
-class playapp
-{
-public:
+  class playapp
+  {
+  public:
     playapp (int argc, char* argv[]);
     ~playapp ();
 
     int run ();
 
-private:
+  private:
     void check_or_create_config_file ();
     void set_option_handlers ();
 
@@ -76,8 +76,8 @@ private:
 
     void print_banner () const;
 
-private:
+  private:
     programopts popts_;
-};
-}
+  };
+}  // namespace tiz
 #endif  // TIZPLAYAPP_HPP

@@ -30,10 +30,11 @@
 #define TIZCASTCLIENT_C_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif /* __cplusplus */
 
-/**
+  /**
 * @defgroup libtizcastclient 'libtizcastclient' : Tizonia's Chromecast daemon
 * client library
 *
@@ -47,56 +48,58 @@ extern "C" {
 #include <tizcasttypes.h>
 #include "tizcastclienttypes.h"
 
-tiz_cast_error_t
-tiz_cast_client_init (tiz_cast_ptr_t * app_cast,
-                      const char * ap_device_name_or_ip,
-                      const OMX_UUIDTYPE * ap_uuid,
-                      const tiz_cast_client_callbacks_t * ap_cbacks,
-                      OMX_PTR ap_data);
+  tiz_cast_error_t
+  tiz_cast_client_init (tiz_cast_ptr_t * app_cast,
+                        const char * ap_device_name_or_ip,
+                        const OMX_UUIDTYPE * ap_uuid,
+                        const tiz_cast_client_callbacks_t * ap_cbacks,
+                        OMX_PTR ap_data);
 
-tiz_cast_error_t
-tiz_cast_client_destroy (tiz_cast_t * ap_cast);
+  tiz_cast_error_t
+  tiz_cast_client_destroy (tiz_cast_t * ap_cast);
 
-OMX_S32
-tiz_cast_client_get_version (const tiz_cast_t * ap_cast);
+  OMX_S32
+  tiz_cast_client_get_version (const tiz_cast_t * ap_cast);
 
-tiz_cast_error_t
-tiz_cast_client_load_url (const tiz_cast_t * ap_cast, const char * url,
-                          const char * mime_type, const char * title,
-                          const char * album_art);
+  tiz_cast_error_t
+  tiz_cast_client_load_url (const tiz_cast_t * ap_cast, const char * url,
+                            const char * mime_type, const char * title,
+                            const char * album_art);
 
-tiz_cast_error_t
-tiz_cast_client_play (const tiz_cast_t * ap_cast);
+  tiz_cast_error_t
+  tiz_cast_client_play (const tiz_cast_t * ap_cast);
 
-tiz_cast_error_t
-tiz_cast_client_stop (const tiz_cast_t * ap_cast);
+  tiz_cast_error_t
+  tiz_cast_client_stop (const tiz_cast_t * ap_cast);
 
-tiz_cast_error_t
-tiz_cast_client_pause (const tiz_cast_t * ap_cast);
+  tiz_cast_error_t
+  tiz_cast_client_pause (const tiz_cast_t * ap_cast);
 
-tiz_cast_error_t
-tiz_cast_client_volume_set (const tiz_cast_t * ap_cast, int a_volume);
+  tiz_cast_error_t
+  tiz_cast_client_volume_set (const tiz_cast_t * ap_cast, int a_volume);
 
-tiz_cast_error_t
-tiz_cast_client_volume_up (const tiz_cast_t * ap_cast);
+  tiz_cast_error_t
+  tiz_cast_client_volume_up (const tiz_cast_t * ap_cast);
 
-tiz_cast_error_t
-tiz_cast_client_volume_down (const tiz_cast_t * ap_cast);
+  tiz_cast_error_t
+  tiz_cast_client_volume_down (const tiz_cast_t * ap_cast);
 
-tiz_cast_error_t
-tiz_cast_client_mute (const tiz_cast_t * ap_cast);
+  tiz_cast_error_t
+  tiz_cast_client_mute (const tiz_cast_t * ap_cast);
 
-tiz_cast_error_t
-tiz_cast_client_unmute (const tiz_cast_t * ap_cast);
+  tiz_cast_error_t
+  tiz_cast_client_unmute (const tiz_cast_t * ap_cast);
 
-const char *
-tiz_cast_client_cast_status_str (const tiz_cast_client_cast_status_t status);
+  const char *
+  tiz_cast_client_cast_status_str (const tiz_cast_client_cast_status_t status);
 
-const char *
-tiz_cast_client_media_status_str (const tiz_cast_client_media_status_t status);
+  const char *
+  tiz_cast_client_media_status_str (
+    const tiz_cast_client_media_status_t status);
 
-const char *
-tiz_cast_client_error_status_str (const tiz_cast_client_error_status_t status);
+  const char *
+  tiz_cast_client_error_status_str (
+    const tiz_cast_client_error_status_t status);
 
 #ifdef __cplusplus
 }

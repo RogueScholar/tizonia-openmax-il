@@ -36,135 +36,141 @@
 
 #include "tizrmproxytypes.h"
 
-class tizrmproxy
-    : public com::aratelia::tiz::tizrmif_proxy,
-      public Tiz::DBus::IntrospectableProxy,
-      public Tiz::DBus::ObjectProxy
+class tizrmproxy : public com::aratelia::tiz::tizrmif_proxy,
+                   public Tiz::DBus::IntrospectableProxy,
+                   public Tiz::DBus::ObjectProxy
 {
 
 public:
+  tizrmproxy (Tiz::DBus::Connection & connection, const char * path,
+              const char * name);
 
-    tizrmproxy(Tiz::DBus::Connection &connection, const char *path, const char *name);
+  ~tizrmproxy ();
 
-    ~tizrmproxy();
+  void *
+  register_client (const char * ap_cname, const uint8_t uuid[],
+                   const uint32_t & grp_id, const uint32_t & grp_pri,
+                   tiz_rm_proxy_wait_complete_f apf_waitend,
+                   tiz_rm_proxy_preemption_req_f apf_preempt,
+                   tiz_rm_proxy_preemption_complete_f apf_preempt_end,
+                   void * ap_data);
 
-    void *register_client(const char * ap_cname, const uint8_t uuid[],
-                          const uint32_t &grp_id, const uint32_t &grp_pri,
-                          tiz_rm_proxy_wait_complete_f apf_waitend,
-                          tiz_rm_proxy_preemption_req_f apf_preempt,
-                          tiz_rm_proxy_preemption_complete_f apf_preempt_end,
-                          void * ap_data);
+  void
+  unregister_client (const tiz_rm_t * ap_rm);
 
-    void unregister_client(const tiz_rm_t * ap_rm);
+  // DBUS Methods
 
-    // DBUS Methods
+  int32_t
+  acquire (const tiz_rm_t * ap_rm, const uint32_t & rid,
+           const uint32_t & quantity);
 
-    int32_t acquire(const tiz_rm_t * ap_rm, const uint32_t &rid,
-                    const uint32_t &quantity);
+  int32_t
+  release (const tiz_rm_t * ap_rm, const uint32_t & rid,
+           const uint32_t & quantity);
 
-    int32_t release(const tiz_rm_t * ap_rm, const uint32_t &rid,
-                    const uint32_t &quantity);
+  int32_t
+  wait (const tiz_rm_t * ap_rm, const uint32_t & rid,
+        const uint32_t & quantity);
 
-    int32_t wait(const tiz_rm_t * ap_rm, const uint32_t &rid,
-                 const uint32_t &quantity);
+  int32_t
+  cancel_wait (const tiz_rm_t * ap_rm, const uint32_t & rid,
+               const uint32_t & quantity);
 
-    int32_t cancel_wait(const tiz_rm_t * ap_rm, const uint32_t &rid,
-                        const uint32_t &quantity);
+  int32_t
+  relinquish_all (const tiz_rm_t * ap_rm);
 
-    int32_t relinquish_all(const tiz_rm_t * ap_rm);
-
-    int32_t preemption_conf(const tiz_rm_t * ap_rm, const uint32_t &rid,
-                            const uint32_t &quantity);
-
-private:
-
-    // DBUS Signals
-
-    void wait_complete(const uint32_t &rid, const std::vector< uint8_t >& uuid);
-
-    void preemption_req(const uint32_t &rid, const std::vector< uint8_t >& uuid);
-
-    void preemption_complete(const uint32_t &rid, const std::vector< uint8_t >& uuid);
+  int32_t
+  preemption_conf (const tiz_rm_t * ap_rm, const uint32_t & rid,
+                   const uint32_t & quantity);
 
 private:
+  // DBUS Signals
 
-    struct client_data
+  void
+  wait_complete (const uint32_t & rid, const std::vector< uint8_t > & uuid);
+
+  void
+  preemption_req (const uint32_t & rid, const std::vector< uint8_t > & uuid);
+
+  void
+  preemption_complete (const uint32_t & rid,
+                       const std::vector< uint8_t > & uuid);
+
+private:
+  struct client_data
+  {
+    client_data ()
+      : cname_ (""),
+        uuid_ (),
+        grp_id_ (0),
+        pri_ (0),
+        pf_waitend_ (NULL),
+        pf_preempt_ (NULL),
+        pf_preempt_end_ (NULL),
+        p_data_ (NULL)
     {
-        client_data()
-            :
-            cname_(""),
-            uuid_(),
-            grp_id_(0),
-            pri_(0),
-            pf_waitend_(NULL),
-            pf_preempt_(NULL),
-            pf_preempt_end_(NULL),
-            p_data_(NULL)
-        {}
+    }
 
-        client_data(const char * ap_cname, std::vector<unsigned char> uuid,
-                    const uint32_t &a_grp_id, const uint32_t &a_pri,
-                    tiz_rm_proxy_wait_complete_f apf_waitend,
-                    tiz_rm_proxy_preemption_req_f apf_preempt,
-                    tiz_rm_proxy_preemption_complete_f apf_preempt_end,
-                    void * ap_data)
-            :
-            cname_(ap_cname),
-            uuid_(uuid),
-            grp_id_(a_grp_id),
-            pri_(a_pri),
-            pf_waitend_(apf_waitend),
-            pf_preempt_(apf_preempt),
-            pf_preempt_end_(apf_preempt_end),
-            p_data_(ap_data)
-        {
-        }
+    client_data (const char * ap_cname, std::vector< unsigned char > uuid,
+                 const uint32_t & a_grp_id, const uint32_t & a_pri,
+                 tiz_rm_proxy_wait_complete_f apf_waitend,
+                 tiz_rm_proxy_preemption_req_f apf_preempt,
+                 tiz_rm_proxy_preemption_complete_f apf_preempt_end,
+                 void * ap_data)
+      : cname_ (ap_cname),
+        uuid_ (uuid),
+        grp_id_ (a_grp_id),
+        pri_ (a_pri),
+        pf_waitend_ (apf_waitend),
+        pf_preempt_ (apf_preempt),
+        pf_preempt_end_ (apf_preempt_end),
+        p_data_ (ap_data)
+    {
+    }
 
-        bool operator<(const client_data &rhs) const
-        {
-            return (uuid_ < rhs.uuid_);
-        }
+    bool
+    operator< (const client_data & rhs) const
+    {
+      return (uuid_ < rhs.uuid_);
+    }
 
-        bool operator==(const client_data &rhs) const
-        {
-            return (uuid_ == rhs.uuid_);
-        }
+    bool
+    operator== (const client_data & rhs) const
+    {
+      return (uuid_ == rhs.uuid_);
+    }
 
-        // Data members
-        std::string cname_;
-        std::vector<unsigned char> uuid_;
-        uint32_t grp_id_;
-        uint32_t pri_;
-        tiz_rm_proxy_wait_complete_f pf_waitend_;
-        tiz_rm_proxy_preemption_req_f pf_preempt_;
-        tiz_rm_proxy_preemption_complete_f pf_preempt_end_;
-        void *p_data_;
-    };
+    // Data members
+    std::string cname_;
+    std::vector< unsigned char > uuid_;
+    uint32_t grp_id_;
+    uint32_t pri_;
+    tiz_rm_proxy_wait_complete_f pf_waitend_;
+    tiz_rm_proxy_preemption_req_f pf_preempt_;
+    tiz_rm_proxy_preemption_complete_f pf_preempt_end_;
+    void * p_data_;
+  };
 
 private:
+  typedef std::map< std::vector< unsigned char >, client_data > clients_map_t;
 
-    typedef std::map<std::vector<unsigned char>,client_data> clients_map_t;
-
-    typedef int32_t (com::aratelia::tiz::tizrmif_proxy::*pmf_t)
-    (const uint32_t &, const uint32_t &, const std::string &,
-     const std::vector< uint8_t >&, const uint32_t &,
-     const uint32_t &);
+  typedef int32_t (com::aratelia::tiz::tizrmif_proxy::*pmf_t) (
+    const uint32_t &, const uint32_t &, const std::string &,
+    const std::vector< uint8_t > &, const uint32_t &, const uint32_t &);
 
 private:
+  int32_t
+  invokerm (pmf_t a_pmf, const tiz_rm_t * ap_rm, const uint32_t &,
+            const uint32_t &);
 
-    int32_t invokerm(pmf_t a_pmf, const tiz_rm_t * ap_rm, const uint32_t &,
-                     const uint32_t &);
-
-    using com::aratelia::tiz::tizrmif_proxy::acquire;
-    using com::aratelia::tiz::tizrmif_proxy::release;
-    using com::aratelia::tiz::tizrmif_proxy::wait;
-    using com::aratelia::tiz::tizrmif_proxy::cancel_wait;
-    using com::aratelia::tiz::tizrmif_proxy::preemption_conf;
+  using com::aratelia::tiz::tizrmif_proxy::acquire;
+  using com::aratelia::tiz::tizrmif_proxy::cancel_wait;
+  using com::aratelia::tiz::tizrmif_proxy::preemption_conf;
+  using com::aratelia::tiz::tizrmif_proxy::release;
+  using com::aratelia::tiz::tizrmif_proxy::wait;
 
 private:
-
-    clients_map_t clients_;
-
+  clients_map_t clients_;
 };
 
-#endif // TIZRMPROXY_HH
+#endif  // TIZRMPROXY_HH

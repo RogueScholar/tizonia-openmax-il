@@ -30,15 +30,16 @@
 #define TIZSERVANT_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "tizscheduler.h"
 #include "tizapi_decls.h"
 
-typedef struct tiz_srv tiz_srv_t;
-struct tiz_srv
-{
+  typedef struct tiz_srv tiz_srv_t;
+  struct tiz_srv
+  {
     /* Object */
     const tiz_api_t _;
     tiz_pqueue_t * p_pq_;
@@ -47,48 +48,49 @@ struct tiz_srv
     uint32_t watcher_id_;
     OMX_PTR p_appdata_;
     OMX_CALLBACKTYPE * p_cbacks_;
-};
+  };
 
-OMX_ERRORTYPE
-tiz_srv_super_tick (const void * class, const void * ap_obj);
+  OMX_ERRORTYPE
+  tiz_srv_super_tick (const void * class, const void * ap_obj);
 
-OMX_ERRORTYPE
-tiz_srv_super_enqueue (const void * class, const void * ap_obj, OMX_PTR ap_data,
-                       OMX_U32 a_priority);
+  OMX_ERRORTYPE
+  tiz_srv_super_enqueue (const void * class, const void * ap_obj,
+                         OMX_PTR ap_data, OMX_U32 a_priority);
 
-void
-tiz_srv_super_remove_from_queue (const void * class, const void * ap_obj,
-                                 tiz_pq_func_f apf_func, OMX_S32 a_data1,
-                                 OMX_PTR ap_data2);
+  void
+  tiz_srv_super_remove_from_queue (const void * class, const void * ap_obj,
+                                   tiz_pq_func_f apf_func, OMX_S32 a_data1,
+                                   OMX_PTR ap_data2);
 
-OMX_ERRORTYPE
-tiz_srv_super_dispatch_msg (const void * class, const void * ap_obj,
-                            OMX_PTR ap_data);
+  OMX_ERRORTYPE
+  tiz_srv_super_dispatch_msg (const void * class, const void * ap_obj,
+                              OMX_PTR ap_data);
 
-bool
-tiz_srv_super_is_ready (const void * class, const void * ap_obj);
+  bool
+  tiz_srv_super_is_ready (const void * class, const void * ap_obj);
 
-OMX_ERRORTYPE
-tiz_srv_super_allocate_resources (const void * a_class, const void * ap_obj,
-                                  OMX_U32 a_pid);
-
-OMX_ERRORTYPE
-tiz_srv_super_deallocate_resources (const void * a_class, const void * ap_obj);
-
-OMX_ERRORTYPE
-tiz_srv_super_prepare_to_transfer (const void * a_class, const void * ap_obj,
-                                   OMX_U32 a_pid);
-
-OMX_ERRORTYPE
-tiz_srv_super_transfer_and_process (const void * a_class, const void * ap_obj,
+  OMX_ERRORTYPE
+  tiz_srv_super_allocate_resources (const void * a_class, const void * ap_obj,
                                     OMX_U32 a_pid);
 
-OMX_ERRORTYPE
-tiz_srv_super_stop_and_return (const void * a_class, const void * ap_obj);
+  OMX_ERRORTYPE
+  tiz_srv_super_deallocate_resources (const void * a_class,
+                                      const void * ap_obj);
 
-typedef struct tiz_srv_class tiz_srv_class_t;
-struct tiz_srv_class
-{
+  OMX_ERRORTYPE
+  tiz_srv_super_prepare_to_transfer (const void * a_class, const void * ap_obj,
+                                     OMX_U32 a_pid);
+
+  OMX_ERRORTYPE
+  tiz_srv_super_transfer_and_process (const void * a_class, const void * ap_obj,
+                                      OMX_U32 a_pid);
+
+  OMX_ERRORTYPE
+  tiz_srv_super_stop_and_return (const void * a_class, const void * ap_obj);
+
+  typedef struct tiz_srv_class tiz_srv_class_t;
+  struct tiz_srv_class
+  {
     /* Class */
     const tiz_api_class_t _;
     OMX_ERRORTYPE (*set_allocator) (void * ap_obj, tiz_soa_t * p_soa);
@@ -111,14 +113,16 @@ struct tiz_srv_class
                          OMX_U32 a_data1, OMX_U32 a_data2,
                          /*@null@*/ OMX_PTR ap_eventdata);
     void (*issue_err_event) (const void * ap_obj, OMX_ERRORTYPE a_error);
-    void (*issue_err_event_with_data) (const void * ap_obj, OMX_ERRORTYPE a_error, OMX_STRING ap_msg);
+    void (*issue_err_event_with_data) (const void * ap_obj,
+                                       OMX_ERRORTYPE a_error,
+                                       OMX_STRING ap_msg);
     void (*issue_cmd_event) (const void * ap_obj, OMX_COMMANDTYPE a_cmd,
                              OMX_U32 a_pid, OMX_ERRORTYPE a_error);
     void (*issue_trans_event) (const void * ap_obj, OMX_STATETYPE a_state,
                                OMX_ERRORTYPE a_error);
-    void (*issue_buf_callback) (const void * ap_obj, OMX_BUFFERHEADERTYPE * p_hdr,
-                                OMX_U32 pid, OMX_DIRTYPE dir,
-                                OMX_HANDLETYPE ap_tcomp);
+    void (*issue_buf_callback) (const void * ap_obj,
+                                OMX_BUFFERHEADERTYPE * p_hdr, OMX_U32 pid,
+                                OMX_DIRTYPE dir, OMX_HANDLETYPE ap_tcomp);
     OMX_ERRORTYPE (*receive_pluggable_event)
     (void * ap_obj, tiz_event_pluggable_t * ap_event);
 
@@ -128,7 +132,8 @@ struct tiz_srv_class
     OMX_ERRORTYPE (*io_watcher_init)
     (void * ap_obj, tiz_event_io_t ** app_ev_io, int a_fd,
      tiz_event_io_event_t a_event, bool only_once);
-    OMX_ERRORTYPE (*io_watcher_start) (void * ap_obj, tiz_event_io_t * ap_ev_io);
+    OMX_ERRORTYPE (*io_watcher_start)
+    (void * ap_obj, tiz_event_io_t * ap_ev_io);
     OMX_ERRORTYPE (*io_watcher_stop) (void * ap_obj, tiz_event_io_t * ap_ev_io);
     void (*io_watcher_destroy) (void * ap_obj, tiz_event_io_t * ap_ev_io);
 
@@ -154,10 +159,11 @@ struct tiz_srv_class
      int a_events);
     OMX_ERRORTYPE (*io_ready)
     (void * ap_obj, tiz_event_io_t * ap_ev_io, int a_fd, int a_events);
-    OMX_ERRORTYPE (*timer_ready) (void * ap_obj, tiz_event_timer_t * ap_ev_timer);
+    OMX_ERRORTYPE (*timer_ready)
+    (void * ap_obj, tiz_event_timer_t * ap_ev_timer);
     OMX_ERRORTYPE (*stat_ready)
     (void * ap_obj, tiz_event_stat_t * ap_ev_stat, int a_events);
-};
+  };
 
 #ifdef __cplusplus
 }

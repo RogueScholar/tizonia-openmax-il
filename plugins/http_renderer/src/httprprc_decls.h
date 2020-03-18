@@ -31,7 +31,8 @@
 #define HTTPRPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -42,9 +43,9 @@ extern "C" {
 
 #include "httprsrv.h"
 
-typedef struct httpr_prc httpr_prc_t;
-struct httpr_prc
-{
+  typedef struct httpr_prc httpr_prc_t;
+  struct httpr_prc
+  {
     /* Object */
     const tiz_prc_t _;
     OMX_STRING mount_name_;
@@ -55,15 +56,15 @@ struct httpr_prc
     OMX_AUDIO_PARAM_MP3TYPE mp3type_;
     OMX_TIZONIA_HTTPSERVERTYPE server_info_;
     OMX_TIZONIA_ICECASTMOUNTPOINTTYPE mountpoint_;
-};
+  };
 
-typedef struct httpr_prc_class httpr_prc_class_t;
-struct httpr_prc_class
-{
+  typedef struct httpr_prc_class httpr_prc_class_t;
+  struct httpr_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

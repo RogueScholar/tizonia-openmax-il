@@ -30,7 +30,8 @@
 #define ARPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -41,9 +42,9 @@ extern "C" {
 
 #include <tizprc_decls.h>
 
-typedef struct ar_prc ar_prc_t;
-struct ar_prc
-{
+  typedef struct ar_prc ar_prc_t;
+  struct ar_prc
+  {
     /* Object */
     const tiz_prc_t _;
     OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
@@ -69,15 +70,15 @@ struct ar_prc
     long ramp_step_;
     long ramp_step_count_;
     long ramp_volume_;
-};
+  };
 
-typedef struct ar_prc_class ar_prc_class_t;
-struct ar_prc_class
-{
+  typedef struct ar_prc_class ar_prc_class_t;
+  struct ar_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

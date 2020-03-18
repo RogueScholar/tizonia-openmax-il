@@ -29,7 +29,8 @@
 #define SPFYSRCPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -41,9 +42,9 @@ extern "C" {
 #include <tizprc_decls.h>
 #include <tizspotify_c.h>
 
-typedef struct spfysrc_prc spfysrc_prc_t;
-struct spfysrc_prc
-{
+  typedef struct spfysrc_prc spfysrc_prc_t;
+  struct spfysrc_prc
+  {
     /* Object */
     const tiz_prc_t _;
     OMX_BUFFERHEADERTYPE * p_outhdr_;
@@ -69,28 +70,29 @@ struct spfysrc_prc
     OMX_U32 samplerate_;
     bool auto_detect_on_;
     int track_index_; /* Index to the next track */
-    int ntracks_; /* Total number of tracks in the spotify search object */
+    int ntracks_;     /* Total number of tracks in the spotify search object */
     OMX_U8 cache_name_[OMX_MAX_STRINGNAME_SIZE]; /* The cache name */
     sp_session * p_sp_session_;                  /* The global session handle */
     sp_session_config sp_config_;                /* The session configuration */
     sp_session_callbacks sp_cbacks_;             /* The session callbacks */
-    sp_track * p_sp_track_;          /* Handle to the current track */
-    sp_link * p_sp_link_;            /* Handle to the current track link */
-    tiz_spotify_t * p_spfy_web_;     /* Tizonia's Spotify web api object */
-    bool keep_processing_sp_events_; /* callback called from libspotify thread to
+    sp_track * p_sp_track_;      /* Handle to the current track */
+    sp_link * p_sp_link_;        /* Handle to the current track link */
+    tiz_spotify_t * p_spfy_web_; /* Tizonia's Spotify web api object */
+    bool
+      keep_processing_sp_events_; /* callback called from libspotify thread to
                                     * ask us to reiterate the main loop */
-    bool need_url_removed_;          /* Flag to signal when a track needs to be
+    bool need_url_removed_;       /* Flag to signal when a track needs to be
                                     * removed from the playback queue */
-    int next_timeout_;               /* Remove tracks flag */
-};
+    int next_timeout_;            /* Remove tracks flag */
+  };
 
-typedef struct spfysrc_prc_class spfysrc_prc_class_t;
-struct spfysrc_prc_class
-{
+  typedef struct spfysrc_prc_class spfysrc_prc_class_t;
+  struct spfysrc_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

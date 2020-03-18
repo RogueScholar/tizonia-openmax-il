@@ -29,7 +29,8 @@
 #define HTTPSRC_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <curl/curl.h>

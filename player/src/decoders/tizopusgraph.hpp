@@ -34,39 +34,38 @@
 
 namespace tiz
 {
-namespace graph
-{
-class opusdecoder : public decoder
-{
+  namespace graph
+  {
+    class opusdecoder : public decoder
+    {
 
-public:
-    opusdecoder ();
+    public:
+      opusdecoder ();
 
-protected:
-    ops *do_init ();
+    protected:
+      ops *do_init ();
+    };
 
-};
+    class opusdecops : public decops
+    {
+    public:
+      opusdecops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
+                  const omx_comp_role_lst_t &role_lst);
 
-class opusdecops : public decops
-{
-public:
-    opusdecops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-                const omx_comp_role_lst_t &role_lst);
+    public:
+      void do_disable_comp_ports (const int comp_id, const int port_id);
+      void do_probe ();
+      bool is_port_settings_evt_required () const;
+      bool is_disabled_evt_required () const;
+      void do_configure ();
 
-public:
-    void do_disable_comp_ports (const int comp_id, const int port_id);
-    void do_probe ();
-    bool is_port_settings_evt_required () const;
-    bool is_disabled_evt_required () const;
-    void do_configure ();
+    protected:
+      OMX_ERRORTYPE set_opus_settings ();
 
-protected:
-    OMX_ERRORTYPE set_opus_settings ();
-
-protected:
-    bool need_port_settings_changed_evt_;
-};
-}  // namespace graph
+    protected:
+      bool need_port_settings_changed_evt_;
+    };
+  }  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZOPUSGRAPH_HPP

@@ -36,18 +36,18 @@ extern "C"
 #include <OMX_Core.h>
 #include <OMX_Types.h>
 
-#define ARATELIA_FILE_READER_DEFAULT_ROLE       "file_reader.binary"
-#define ARATELIA_FILE_READER_COMPONENT_NAME     "OMX.Aratelia.file_reader.binary"
+#define ARATELIA_FILE_READER_DEFAULT_ROLE "file_reader.binary"
+#define ARATELIA_FILE_READER_COMPONENT_NAME "OMX.Aratelia.file_reader.binary"
 /* With libtizonia, port indexes must start at index 0 */
-#define ARATELIA_FILE_READER_PORT_INDEX         0
+#define ARATELIA_FILE_READER_PORT_INDEX 0
 #define ARATELIA_FILE_READER_PORT_MIN_BUF_COUNT 2
-#define ARATELIA_FILE_READER_PORT_MIN_BUF_SIZE  8192
+#define ARATELIA_FILE_READER_PORT_MIN_BUF_SIZE 8192
 #define ARATELIA_FILE_READER_PORT_NONCONTIGUOUS OMX_FALSE
-#define ARATELIA_FILE_READER_PORT_ALIGNMENT     0
-#define ARATELIA_FILE_READER_PORT_SUPPLIERPREF  OMX_BufferSupplyInput
+#define ARATELIA_FILE_READER_PORT_ALIGNMENT 0
+#define ARATELIA_FILE_READER_PORT_SUPPLIERPREF OMX_BufferSupplyInput
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* FR_H */
+#endif /* FR_H */

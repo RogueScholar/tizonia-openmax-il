@@ -31,28 +31,29 @@
 
 namespace tiz
 {
-namespace control
-{
-enum playback_status_t
-{
-    // A track is currently playing.
-    Playing,
-    // A track is currently paused.
-    Paused,
-    // There is no track currently playing.
-    Stopped
-};
+  namespace control
+  {
+    enum playback_status_t
+    {
+      // A track is currently playing.
+      Playing,
+      // A track is currently paused.
+      Paused,
+      // There is no track currently playing.
+      Stopped
+    };
 
-enum loop_status_t
-{
-    // The playback will stop when there are no more tracks to play.
-    None,
-    // The current track will start again from the begining once it has finished playing
-    Track,
-    // The playback loops through a list of tracks
-    Playlist
-};
-}  // namespace control
+    enum loop_status_t
+    {
+      // The playback will stop when there are no more tracks to play.
+      None,
+      // The current track will start again from the begining once it has
+      // finished playing
+      Track,
+      // The playback loops through a list of tracks
+      Playlist
+    };
+  }  // namespace control
 }  // namespace tiz
 
 #endif  // TIZPLAYBACKSTATUS_HPP

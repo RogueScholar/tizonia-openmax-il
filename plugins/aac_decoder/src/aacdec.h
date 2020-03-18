@@ -29,7 +29,8 @@
 #define AACDEC_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <neaacdec.h>

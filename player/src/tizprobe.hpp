@@ -29,24 +29,24 @@
 #ifndef TIZPROBE_HPP
 #define TIZPROBE_HPP
 
-#include <string>
 #include <boost/shared_ptr.hpp>
+#include <string>
 
 #include <fileref.h>
 #include <tag.h>
 
-#include <OMX_Core.h>
-#include <OMX_Component.h>
 #include <OMX_Audio.h>
-#include <OMX_Video.h>
+#include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <OMX_TizoniaExt.h>
+#include <OMX_Video.h>
 
 namespace tiz
 {
-class probe
-{
+  class probe
+  {
 
-public:
+  public:
     probe (const std::string &uri, const bool quiet = false);
 
     std::string get_uri () const;
@@ -90,7 +90,7 @@ public:
     void dump_aac_and_pcm_info ();
     void dump_stream_metadata ();
 
-private:
+  private:
     void probe_stream ();
     void set_mp2_codec_info (const OMX_U32 samplerate, const OMX_U32 bitrate,
                              const OMX_U32 nchannels, const OMX_U32 bitdepth,
@@ -117,11 +117,11 @@ private:
                                 const OMX_ENDIANTYPE endianness,
                                 const OMX_NUMERICALDATATYPE sign);
     std::string retrieve_meta_data_str (
-        TagLib::String (TagLib::Tag::*TagFunction)() const) const;
+        TagLib::String (TagLib::Tag::*TagFunction) () const) const;
     unsigned int retrieve_meta_data_uint (
-        TagLib::uint (TagLib::Tag::*TagFunction)() const) const;
+        TagLib::uint (TagLib::Tag::*TagFunction) () const) const;
 
-private:
+  private:
     std::string uri_;
     bool quiet_;  // this is to control whether the probe object should dump any
     // format info to the stdout
@@ -141,7 +141,7 @@ private:
     std::string stream_title_;
     std::string stream_genre_;
     bool stream_is_cbr_;
-};
+  };
 }  // namespace tiz
 
 #endif  // TIZPROBE_HPP

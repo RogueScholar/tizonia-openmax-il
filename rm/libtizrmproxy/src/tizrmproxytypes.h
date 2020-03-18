@@ -32,34 +32,34 @@
 #ifdef __cplusplus
 extern "C"
 {
-#endif                          /* __cplusplus */
+#endif /* __cplusplus */
 
 #include <OMX_Types.h>
 
-typedef void *tiz_rm_t;
+  typedef void * tiz_rm_t;
 
-/* Callback function to signal a waiting client when a resource has become
+  /* Callback function to signal a waiting client when a resource has become
  * available */
-typedef void (*tiz_rm_proxy_wait_complete_f) (OMX_U32 rid, OMX_PTR ap_data);
+  typedef void (*tiz_rm_proxy_wait_complete_f) (OMX_U32 rid, OMX_PTR ap_data);
 
-/* Callback function to signal a client when a previously acquired resource
+  /* Callback function to signal a client when a previously acquired resource
  * is being preempted */
-typedef void (*tiz_rm_proxy_preemption_req_f) (OMX_U32 rid, OMX_PTR ap_data);
+  typedef void (*tiz_rm_proxy_preemption_req_f) (OMX_U32 rid, OMX_PTR ap_data);
 
-/* Callback function to signal a client when a previously requested resource
+  /* Callback function to signal a client when a previously requested resource
  * has been preempted */
-typedef void (*tiz_rm_proxy_preemption_complete_f) (OMX_U32 rid,
-        OMX_PTR ap_data);
+  typedef void (*tiz_rm_proxy_preemption_complete_f) (OMX_U32 rid,
+                                                      OMX_PTR ap_data);
 
-typedef struct tiz_rm_proxy_callbacks_t
-{
+  typedef struct tiz_rm_proxy_callbacks_t
+  {
     tiz_rm_proxy_wait_complete_f pf_waitend;
     tiz_rm_proxy_preemption_req_f pf_preempt;
     tiz_rm_proxy_preemption_complete_f pf_preempt_end;
-} tiz_rm_proxy_callbacks_t;
+  } tiz_rm_proxy_callbacks_t;
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          // TIZRMPROXYTYPES_H
+#endif  // TIZRMPROXYTYPES_H

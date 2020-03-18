@@ -29,34 +29,33 @@
 #ifndef TIZCASTMGRCMD_HPP
 #define TIZCASTMGRCMD_HPP
 
-#include <vector>
 #include <boost/any.hpp>
+#include <vector>
 
 #include "tizcastmgrfsm.hpp"
 
 namespace tiz
 {
-namespace cast
-{
-class cmd
-{
+  namespace cast
+  {
+    class cmd
+    {
 
-public:
-    explicit cmd (const std::vector< uint8_t > &uuid,
-                  boost::any any_event);
+    public:
+      explicit cmd (const std::vector< uint8_t > &uuid, boost::any any_event);
 
-public:
-    const std::vector< uint8_t > & uuid () const;
-    const boost::any evt () const;
-    const char *c_str () const;
-    void inject (fsm &) const;
+    public:
+      const std::vector< uint8_t > &uuid () const;
+      const boost::any evt () const;
+      const char *c_str () const;
+      void inject (fsm &) const;
 
-private:
-    const std::vector< uint8_t > uuid_;
-    const boost::any evt_;
-};
+    private:
+      const std::vector< uint8_t > uuid_;
+      const boost::any evt_;
+    };
 
-}  // namespace cast
+  }  // namespace cast
 }  // namespace tiz
 
 #endif  // TIZCASTMGRCMD_HPP

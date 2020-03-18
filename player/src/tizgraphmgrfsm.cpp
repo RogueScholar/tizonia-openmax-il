@@ -33,8 +33,7 @@
 
 namespace graphmgr = tiz::graphmgr;
 
-char const* const graphmgr::pstate(graphmgr::fsm const& p)
+char const* const graphmgr::pstate (graphmgr::fsm const& p)
 {
-    return graphmgr::state_names[p.current_state()[0]];
+  return graphmgr::state_names[p.current_state ()[0]];
 }
-

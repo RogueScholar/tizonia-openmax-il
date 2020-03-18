@@ -33,63 +33,65 @@
 
 #include <mpris_dbus.hpp>
 
-#include "tizmprisprops.hpp"
 #include "tizmpriscbacks.hpp"
+#include "tizmprisprops.hpp"
 
 namespace tiz
 {
-namespace control
-{
+  namespace control
+  {
 
-/**
- *  @class mprisif
- *  @brief The MPRIS interface DBUS adaptor.
- *
- *  The MPRIS manager instantiates this class to process the MPRIS protocol
- *  messages received on the DBUS channel.
- */
-class mprisif : public org::mpris::MediaPlayer2_adaptor,
-    public org::mpris::MediaPlayer2::Player_adaptor,
-    public Tiz::DBus::IntrospectableAdaptor,
-    public Tiz::DBus::PropertiesAdaptor,
-    public Tiz::DBus::ObjectAdaptor
-{
-public:
-    static const char * TIZONIA_MPRIS_OBJECT_PATH;
+    /**
+     *  @class mprisif
+     *  @brief The MPRIS interface DBUS adaptor.
+     *
+     *  The MPRIS manager instantiates this class to process the MPRIS protocol
+     *  messages received on the DBUS channel.
+     */
+    class mprisif : public org::mpris::MediaPlayer2_adaptor,
+                    public org::mpris::MediaPlayer2::Player_adaptor,
+                    public Tiz::DBus::IntrospectableAdaptor,
+                    public Tiz::DBus::PropertiesAdaptor,
+                    public Tiz::DBus::ObjectAdaptor
+    {
+    public:
+      static const char *TIZONIA_MPRIS_OBJECT_PATH;
 
-public:
-    mprisif (Tiz::DBus::Connection &connection,
-             mpris_mediaplayer2_props_t props,
-             mpris_mediaplayer2_player_props_t player_props,
-             mpris_callbacks_t cbacks);
+    public:
+      mprisif (Tiz::DBus::Connection &connection,
+               mpris_mediaplayer2_props_t props,
+               mpris_mediaplayer2_player_props_t player_props,
+               mpris_callbacks_t cbacks);
 
-    void on_set_property
-    (Tiz::DBus::InterfaceAdaptor &interface, const std::string &property, const Tiz::DBus::Variant &value);
+      void on_set_property (Tiz::DBus::InterfaceAdaptor &interface,
+                            const std::string &property,
+                            const Tiz::DBus::Variant &value);
 
-    void UpdateProps (const mpris_mediaplayer2_props_t &props);
-    void UpdatePlayerProps (const mpris_mediaplayer2_player_props_t &props);
+      void UpdateProps (const mpris_mediaplayer2_props_t &props);
+      void UpdatePlayerProps (const mpris_mediaplayer2_player_props_t &props);
 
-    /* Methods exported by the MediaPlayer2_adaptor */
-    void Raise();
-    void Quit();
+      /* Methods exported by the MediaPlayer2_adaptor */
+      void Raise ();
+      void Quit ();
 
-    /* Methods exported by the Player_adaptor */
-    void Next();
-    void Previous();
-    void Pause();
-    void PlayPause();
-    void Stop();
-    void Play();
-    void Seek(const int64_t& Offset);
-    void SetPosition(const ::Tiz::DBus::Path& TrackId, const int64_t& Position);
-    void OpenUri(const std::string& Uri);
+      /* Methods exported by the Player_adaptor */
+      void Next ();
+      void Previous ();
+      void Pause ();
+      void PlayPause ();
+      void Stop ();
+      void Play ();
+      void Seek (const int64_t &Offset);
+      void SetPosition (const ::Tiz::DBus::Path &TrackId,
+                        const int64_t &Position);
+      void OpenUri (const std::string &Uri);
 
-private:
-    mpris_mediaplayer2_props_t props_;
-    mpris_mediaplayer2_player_props_t player_props_;
-    mpris_callbacks_t cbacks_;
-};
-}  // namespace control
+    private:
+      mpris_mediaplayer2_props_t props_;
+      mpris_mediaplayer2_player_props_t player_props_;
+      mpris_callbacks_t cbacks_;
+    };
+  }  // namespace control
 }  // namespace tiz
 
 #endif  // TIZMPRISIF_HPP

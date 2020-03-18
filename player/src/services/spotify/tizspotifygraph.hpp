@@ -29,31 +29,31 @@
 #ifndef TIZSPOTIFYGRAPH_HPP
 #define TIZSPOTIFYGRAPH_HPP
 
-#include <tizgraph.hpp>
 #include "tizspotifygraphfsm.hpp"
+#include <tizgraph.hpp>
 
 namespace tiz
 {
-namespace graph
-{
-// Forward declarations
-class cmd;
-class ops;
+  namespace graph
+  {
+    // Forward declarations
+    class cmd;
+    class ops;
 
-class spotify : public graph
-{
+    class spotify : public graph
+    {
 
-public:
-    spotify ();
+    public:
+      spotify ();
 
-protected:
-    ops *do_init ();
-    bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
+    protected:
+      ops *do_init ();
+      bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
 
-protected:
-    spfsm::fsm fsm_;
-};
-}  // namespace graph
+    protected:
+      spfsm::fsm fsm_;
+    };
+  }  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZSPOTIFYGRAPH_HPP

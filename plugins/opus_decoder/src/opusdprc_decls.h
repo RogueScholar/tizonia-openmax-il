@@ -30,7 +30,8 @@
 #define OPUSDPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -39,9 +40,9 @@ extern "C" {
 
 #include <tizprc_decls.h>
 
-typedef struct opusd_prc opusd_prc_t;
-struct opusd_prc
-{
+  typedef struct opusd_prc opusd_prc_t;
+  struct opusd_prc
+  {
     /* Object */
     const tiz_prc_t _;
     OpusMSDecoder * p_opus_dec_;
@@ -59,15 +60,15 @@ struct opusd_prc
     bool out_port_disabled_;
     bool opus_header_parsed_;
     bool opus_comments_parsed_;
-};
+  };
 
-typedef struct opusd_prc_class opusd_prc_class_t;
-struct opusd_prc_class
-{
+  typedef struct opusd_prc_class opusd_prc_class_t;
+  struct opusd_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

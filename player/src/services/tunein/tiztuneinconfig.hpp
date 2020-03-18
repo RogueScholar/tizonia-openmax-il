@@ -33,54 +33,53 @@
 
 #include <OMX_TizoniaExt.h>
 
-#include "tizgraphtypes.hpp"
 #include "tizgraphconfig.hpp"
+#include "tizgraphtypes.hpp"
 
 namespace tiz
 {
-namespace graph
-{
-class tuneinconfig : public config
-{
+  namespace graph
+  {
+    class tuneinconfig : public config
+    {
 
-public:
-    tuneinconfig (const tizplaylist_ptr_t &playlist, uint32_t buffer_seconds,
-                  const std::string &api_key,
-                  const OMX_TIZONIA_AUDIO_TUNEINPLAYLISTTYPE &playlist_type,
-                  const OMX_TIZONIA_AUDIO_TUNEINSEARCHTYPE &search_type)
+    public:
+      tuneinconfig (const tizplaylist_ptr_t &playlist, uint32_t buffer_seconds,
+                    const std::string &api_key,
+                    const OMX_TIZONIA_AUDIO_TUNEINPLAYLISTTYPE &playlist_type,
+                    const OMX_TIZONIA_AUDIO_TUNEINSEARCHTYPE &search_type)
         : config (playlist, buffer_seconds),
           api_key_ (api_key),
           playlist_type_ (playlist_type),
           search_type_ (search_type)
-    {
-    }
+      {
+      }
 
-    ~tuneinconfig ()
-    {
-    }
+      ~tuneinconfig ()
+      {
+      }
 
-    std::string get_api_key () const
-    {
+      std::string get_api_key () const
+      {
         return api_key_;
-    }
+      }
 
-    OMX_TIZONIA_AUDIO_TUNEINPLAYLISTTYPE get_playlist_type () const
-    {
+      OMX_TIZONIA_AUDIO_TUNEINPLAYLISTTYPE get_playlist_type () const
+      {
         return playlist_type_;
-    }
+      }
 
-    OMX_TIZONIA_AUDIO_TUNEINSEARCHTYPE get_search_type () const
-    {
+      OMX_TIZONIA_AUDIO_TUNEINSEARCHTYPE get_search_type () const
+      {
         return search_type_;
-    }
+      }
 
-protected:
-    const std::string api_key_;
-    const OMX_TIZONIA_AUDIO_TUNEINPLAYLISTTYPE playlist_type_;
-    const OMX_TIZONIA_AUDIO_TUNEINSEARCHTYPE search_type_;
-
-};
-}  // namespace graph
+    protected:
+      const std::string api_key_;
+      const OMX_TIZONIA_AUDIO_TUNEINPLAYLISTTYPE playlist_type_;
+      const OMX_TIZONIA_AUDIO_TUNEINSEARCHTYPE search_type_;
+    };
+  }  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZTUNEINCONFIG_HPP

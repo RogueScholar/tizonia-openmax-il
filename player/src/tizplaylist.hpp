@@ -33,33 +33,35 @@
 
 namespace tiz
 {
-class playlist
-{
+  class playlist
+  {
 
-public:
+  public:
     enum list_direction_t
     {
-        DirUp,
-        DirDown,
-        DirMax
+      DirUp,
+      DirDown,
+      DirMax
     };
 
-public:
-    explicit playlist (const uri_lst_t &uri_list = uri_lst_t (), const bool shuffle = false);
+  public:
+    explicit playlist (const uri_lst_t &uri_list = uri_lst_t (),
+                       const bool shuffle = false);
     playlist (const playlist &playlist);
 
     static bool assemble_play_list (const std::string &base_uri,
                                     const bool shuffle_playlist,
                                     const bool recurse,
                                     const file_extension_lst_t &extension_list,
-                                    uri_lst_t &file_list, std::string &error_msg);
+                                    uri_lst_t &file_list,
+                                    std::string &error_msg);
 
     void skip (const int jump);
     playlist obtain_next_sub_playlist (const list_direction_t up_or_down);
-    const std::string & get_current_uri () const;
+    const std::string &get_current_uri () const;
     uri_lst_t get_sublist (const int from, const int to) const;
     const uri_lst_t &get_uri_list () const;
-    int current_position () const;
+    int current_index () const;
     int size () const;
     bool empty () const;
     bool single_format () const;
@@ -68,38 +70,34 @@ public:
     bool loop_playback () const;
     void set_loop_playback (const bool loop_playback);
     bool shuffle () const;
-    int position () const;
-    void set_position (const int pos);
-    void erase_uri (const int position);
+    void set_index (const int index);
+    void erase_uri (const int index);
     void print_info ();
-    void print_contents () const;
 
-private:
+  private:
     enum single_format_t
     {
-        Unknown,
-        Yes,
-        No
+      Unknown,
+      Yes,
+      No
     };
 
-private:
-
-private:
-
+  private:
+  private:
     void scan_list ();
-    int find_next_sub_list (const int position) const;
+    int find_next_sub_list (const int index) const;
 
     // TODO: Possibly use a shared pointer here to make copy a less expensive
     // operation
     uri_lst_t uri_list_;
-    int current_position_;
+    int current_index_;
     bool loop_playback_;
-    std::vector<size_t> sub_list_positions_;
+    std::vector< size_t > sub_list_indexes_;
     int current_sub_list_;
     bool shuffle_;
     mutable file_extension_lst_t extension_list_;
     mutable single_format_t single_format_;
-};
+  };
 }  // namespace tiz
 
 #endif  // TIZPLAYLIST_HPP

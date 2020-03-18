@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -32,10 +33,10 @@
 #ifdef __cplusplus
 extern "C"
 {
-#endif                          /* __cplusplus */
+#endif /* __cplusplus */
 
-typedef enum tiz_rm_error_t
-{
+  typedef enum tiz_rm_error_t
+  {
     TIZ_RM_SUCCESS = 0,
     TIZ_RM_MISUSE,
     TIZ_RM_OOM,
@@ -54,18 +55,18 @@ typedef enum tiz_rm_error_t
     TIZ_RM_DBUS,
     TIZ_RM_UNKNOWN,
     TIZ_RM_ERROR_MAX
-} tiz_rm_error_t;
+  } tiz_rm_error_t;
 
-typedef enum tiz_rm_resource_id_t
-{
+  typedef enum tiz_rm_resource_id_t
+  {
     TIZ_RM_RESOURCE_DUMMY = 0,
     TIZ_RM_RESOURCE_ALSA_SINK,
     TIZ_RM_RESOURCE_FILESYSTEM,
     TIZ_RM_RESOURCE_MAX
-} tiz_rm_resource_id_t;
+  } tiz_rm_resource_id_t;
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          // TIZRMTYPES_H
+#endif  // TIZRMTYPES_H

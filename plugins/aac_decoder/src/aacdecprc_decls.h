@@ -30,7 +30,8 @@
 #define AACDECPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -42,9 +43,9 @@ extern "C" {
 #include <tizfilterprc.h>
 #include <tizfilterprc_decls.h>
 
-typedef struct aacdec_prc aacdec_prc_t;
-struct aacdec_prc
-{
+  typedef struct aacdec_prc aacdec_prc_t;
+  struct aacdec_prc
+  {
     /* Object */
     const tiz_filter_prc_t _;
     OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
@@ -55,16 +56,16 @@ struct aacdec_prc
     long nbytes_read_;
     bool first_buffer_read_;
     bool second_buffer_read_;
-    tiz_buffer_t *p_store_;
-};
+    tiz_buffer_t * p_store_;
+  };
 
-typedef struct aacdec_prc_class aacdec_prc_class_t;
-struct aacdec_prc_class
-{
+  typedef struct aacdec_prc_class aacdec_prc_class_t;
+  struct aacdec_prc_class
+  {
     /* Class */
     const tiz_filter_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

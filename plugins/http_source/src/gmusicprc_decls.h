@@ -29,7 +29,8 @@
 #define GMUSICPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -41,9 +42,9 @@ extern "C" {
 
 #include <tizplatform.h>
 
-typedef struct gmusic_prc gmusic_prc_t;
-struct gmusic_prc
-{
+  typedef struct gmusic_prc gmusic_prc_t;
+  struct gmusic_prc
+  {
     /* Object */
     const tiz_prc_t _;
     OMX_BUFFERHEADERTYPE * p_outhdr_;
@@ -66,15 +67,15 @@ struct gmusic_prc
     int bitrate_;
     int buffer_bytes_;
     bool connection_closed_;
-};
+  };
 
-typedef struct gmusic_prc_class gmusic_prc_class_t;
-struct gmusic_prc_class
-{
+  typedef struct gmusic_prc_class gmusic_prc_class_t;
+  struct gmusic_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

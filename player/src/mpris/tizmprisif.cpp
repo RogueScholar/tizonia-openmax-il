@@ -47,28 +47,28 @@ namespace control = tiz::control;
 namespace
 {
 
-std::map< std::string, ::Tiz::DBus::Variant > toDbusMetadata (
-    const std::map< std::string, std::string > &meta)
-{
+  std::map< std::string, ::Tiz::DBus::Variant > toDbusMetadata (
+      const std::map< std::string, std::string > &meta)
+  {
     std::map< std::string, Tiz::DBus::Variant > dbus_meta;
-    TIZ_PRINTF_DBG_BLU ("meta items [%u]\n", meta.size());
+    TIZ_PRINTF_DBG_BLU ("meta items [%u]\n", meta.size ());
     typedef std::map< std::string, std::string >::value_type dbus_meta_t;
     BOOST_FOREACH (dbus_meta_t val, meta)
     {
-        Tiz::DBus::Variant va;
-        Tiz::DBus::MessageIter it = va.writer ();
-        std::string key ("mpris:");
-        key.append (val.first);
-        std::string value (control::mprisif::TIZONIA_MPRIS_OBJECT_PATH);
-        value.append ("/1");
-        Tiz::DBus::Path path (value);
-        it << path;
-        TIZ_PRINTF_DBG_BLU ("key [%s] val [%s]\n", key.c_str (), value.c_str ());
-        dbus_meta.insert (std::make_pair (key, Tiz::DBus::Variant (it)));
+      Tiz::DBus::Variant va;
+      Tiz::DBus::MessageIter it = va.writer ();
+      std::string key ("mpris:");
+      key.append (val.first);
+      std::string value (control::mprisif::TIZONIA_MPRIS_OBJECT_PATH);
+      value.append ("/1");
+      Tiz::DBus::Path path (value);
+      it << path;
+      TIZ_PRINTF_DBG_BLU ("key [%s] val [%s]\n", key.c_str (), value.c_str ());
+      dbus_meta.insert (std::make_pair (key, Tiz::DBus::Variant (it)));
     }
     return dbus_meta;
-}
-}
+  }
+}  // namespace
 
 // Object path, a.k.a. node
 const char *control::mprisif::TIZONIA_MPRIS_OBJECT_PATH
@@ -78,121 +78,121 @@ control::mprisif::mprisif (Tiz::DBus::Connection &connection,
                            mpris_mediaplayer2_props_t props,
                            mpris_mediaplayer2_player_props_t player_props,
                            mpris_callbacks_t cbacks)
-    : Tiz::DBus::ObjectAdaptor (connection, TIZONIA_MPRIS_OBJECT_PATH),
-      props_ (props),
-      player_props_ (player_props),
-      cbacks_ (cbacks)
+  : Tiz::DBus::ObjectAdaptor (connection, TIZONIA_MPRIS_OBJECT_PATH),
+    props_ (props),
+    player_props_ (player_props),
+    cbacks_ (cbacks)
 {
-    TIZ_LOG (TIZ_PRIORITY_DEBUG, "Constructing mprisif...");
-    UpdateProps (props_);
-    UpdatePlayerProps (player_props_);
+  TIZ_LOG (TIZ_PRIORITY_DEBUG, "Constructing mprisif...");
+  UpdateProps (props_);
+  UpdatePlayerProps (player_props_);
 }
 
 void control::mprisif::on_set_property (Tiz::DBus::InterfaceAdaptor &interface,
                                         const std::string &property,
                                         const Tiz::DBus::Variant &value)
 {
-    if (property == "Volume")
-    {
-        const double vol = value;
-        TIZ_LOG (TIZ_PRIORITY_TRACE, "Volume changed : %f", vol);
-        cbacks_.volume_ (vol);
-    }
-    else if (property == "Shuffle")
-    {
-        const bool shuffle = value;
-        TIZ_LOG (TIZ_PRIORITY_TRACE, "Shuffle changed : %s",
-                 shuffle ? "YES" : "NO");
-    }
-    else if (property == "LoopStatus")
-    {
-        const std::string loop = value;
-        TIZ_LOG (TIZ_PRIORITY_TRACE, "LoopStatus changed : %s", loop.c_str ());
-    }
+  if (property == "Volume")
+  {
+    const double vol = value;
+    TIZ_LOG (TIZ_PRIORITY_TRACE, "Volume changed : %f", vol);
+    cbacks_.volume_ (vol);
+  }
+  else if (property == "Shuffle")
+  {
+    const bool shuffle = value;
+    TIZ_LOG (TIZ_PRIORITY_TRACE, "Shuffle changed : %s",
+             shuffle ? "YES" : "NO");
+  }
+  else if (property == "LoopStatus")
+  {
+    const std::string loop = value;
+    TIZ_LOG (TIZ_PRIORITY_TRACE, "LoopStatus changed : %s", loop.c_str ());
+  }
 }
 
 void control::mprisif::Raise ()
 {
-    // No-op
+  // No-op
 }
 
 void control::mprisif::Quit ()
 {
-    cbacks_.quit_ ();
+  cbacks_.quit_ ();
 }
 
 void control::mprisif::Next ()
 {
-    cbacks_.next_ ();
+  cbacks_.next_ ();
 }
 
 void control::mprisif::Previous ()
 {
-    cbacks_.previous_ ();
+  cbacks_.previous_ ();
 }
 
 void control::mprisif::Pause ()
 {
-    cbacks_.pause_ ();
+  cbacks_.pause_ ();
 }
 
 void control::mprisif::PlayPause ()
 {
-    cbacks_.pause_ ();
+  cbacks_.pause_ ();
 }
 
 void control::mprisif::Stop ()
 {
-    cbacks_.stop_ ();
+  cbacks_.stop_ ();
 }
 
 void control::mprisif::Play ()
 {
-    cbacks_.play_ ();
+  cbacks_.play_ ();
 }
 
 void control::mprisif::Seek (const int64_t &Offset)
 {
-    // No-op for now
+  // No-op for now
 }
 
 void control::mprisif::SetPosition (const ::Tiz::DBus::Path &TrackId,
                                     const int64_t &Position)
 {
-    // No-op for now
+  // No-op for now
 }
 
 void control::mprisif::OpenUri (const std::string &Uri)
 {
-    // No-op for now
+  // No-op for now
 }
 
 void control::mprisif::UpdateProps (const mpris_mediaplayer2_props_t &props)
 {
-    CanQuit = props.can_quit_;
-    CanRaise = props.can_raise_;
-    HasTrackList = props.has_track_list_;
-    Identity = props.identity_;
-    SupportedUriSchemes = props.uri_schemes_;
-    SupportedMimeTypes = props.mime_types_;
+  CanQuit = props.can_quit_;
+  CanRaise = props.can_raise_;
+  HasTrackList = props.has_track_list_;
+  Identity = props.identity_;
+  SupportedUriSchemes = props.uri_schemes_;
+  SupportedMimeTypes = props.mime_types_;
 }
 
 void control::mprisif::UpdatePlayerProps (
     const mpris_mediaplayer2_player_props_t &props)
 {
-    PlaybackStatus = props.playback_status_;
-    LoopStatus = props.loop_status_;
-    Rate = props.rate_;
-    Shuffle = props.shuffle_;
-    Metadata = toDbusMetadata (props.metadata_);
-    Volume = props.volume_;
-    Position = props.position_;
-    MinimumRate = props.minimum_rate_;
-    MaximumRate = props.maximum_rate_;
-    CanGoNext = props.can_go_next_;
-    CanGoPrevious = props.can_go_previous_;
-    CanPlay = props.can_play_;
-    CanPause = props.can_pause_;
-    CanSeek = props.can_seek_;
-    CanControl = props.can_control_;
+  PlaybackStatus = props.playback_status_;
+  LoopStatus = props.loop_status_;
+  Rate = props.rate_;
+  Shuffle = props.shuffle_;
+  Metadata = toDbusMetadata (props.metadata_);
+  Volume = props.volume_;
+  Position = props.position_;
+  MinimumRate = props.minimum_rate_;
+  MaximumRate = props.maximum_rate_;
+  CanGoNext = props.can_go_next_;
+  CanGoPrevious = props.can_go_previous_;
+  CanPlay = props.can_play_;
+  CanPause = props.can_pause_;
+  CanSeek = props.can_seek_;
+  CanControl = props.can_control_;
 }

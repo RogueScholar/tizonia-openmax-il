@@ -30,7 +30,8 @@
 #define VP8DPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -50,39 +51,39 @@ extern "C" {
 #define CORRUPT_FRAME_THRESHOLD (256 * 1024 * 1024)
 #define FRAME_TOO_SMALL_THRESHOLD (256 * 1024)
 
-typedef enum vp8d_stream_type vp8d_stream_type_t;
-enum vp8d_stream_type
-{
+  typedef enum vp8d_stream_type vp8d_stream_type_t;
+  enum vp8d_stream_type
+  {
     STREAM_RAW,
     STREAM_RAW_WITH_LENGTH_HDR,
     STREAM_IVF,
     STREAM_WEBM,
     STREAM_UNKNOWN,
-};
+  };
 
-typedef struct vp8d_stream_info vp8d_stream_info_t;
-struct vp8d_stream_info
-{
+  typedef struct vp8d_stream_info vp8d_stream_info_t;
+  struct vp8d_stream_info
+  {
     vp8d_stream_type_t type;
     unsigned int fourcc;
     unsigned int width;
     unsigned int height;
     unsigned int fps_den;
     unsigned int fps_num;
-};
+  };
 
-typedef struct vp8d_codec_buffer vp8d_codec_buffer_t;
-struct vp8d_codec_buffer
-{
+  typedef struct vp8d_codec_buffer vp8d_codec_buffer_t;
+  struct vp8d_codec_buffer
+  {
     uint8_t * p_data;
     size_t frame_size;
     size_t filled_len;
     size_t alloc_len;
-};
+  };
 
-typedef struct vp8d_prc vp8d_prc_t;
-struct vp8d_prc
-{
+  typedef struct vp8d_prc vp8d_prc_t;
+  struct vp8d_prc
+  {
     /* Object */
     const tiz_prc_t _;
     vp8d_stream_info_t info_;
@@ -95,15 +96,15 @@ struct vp8d_prc
     bool out_port_disabled_;
     bool first_buf_;
     bool eos_;
-};
+  };
 
-typedef struct vp8d_prc_class vp8d_prc_class_t;
-struct vp8d_prc_class
-{
+  typedef struct vp8d_prc_class vp8d_prc_class_t;
+  struct vp8d_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

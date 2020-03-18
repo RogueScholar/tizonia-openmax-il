@@ -33,46 +33,46 @@
 
 #include <OMX_TizoniaExt.h>
 
-#include "tizgraphtypes.hpp"
 #include "tizgraphconfig.hpp"
+#include "tizgraphtypes.hpp"
 
 namespace tiz
 {
-namespace graph
-{
-class scloudconfig : public config
-{
+  namespace graph
+  {
+    class scloudconfig : public config
+    {
 
-public:
-    scloudconfig (
-        const tizplaylist_ptr_t &playlist, uint32_t buffer_seconds,
-        const std::string &oauth_token,
-        const OMX_TIZONIA_AUDIO_SOUNDCLOUDPLAYLISTTYPE &playlist_type)
+    public:
+      scloudconfig (
+          const tizplaylist_ptr_t &playlist, uint32_t buffer_seconds,
+          const std::string &oauth_token,
+          const OMX_TIZONIA_AUDIO_SOUNDCLOUDPLAYLISTTYPE &playlist_type)
         : config (playlist, buffer_seconds),
           oauth_token_ (oauth_token),
           playlist_type_ (playlist_type)
-    {
-    }
+      {
+      }
 
-    ~scloudconfig ()
-    {
-    }
+      ~scloudconfig ()
+      {
+      }
 
-    std::string get_oauth_token () const
-    {
+      std::string get_oauth_token () const
+      {
         return oauth_token_;
-    }
+      }
 
-    OMX_TIZONIA_AUDIO_SOUNDCLOUDPLAYLISTTYPE get_playlist_type () const
-    {
+      OMX_TIZONIA_AUDIO_SOUNDCLOUDPLAYLISTTYPE get_playlist_type () const
+      {
         return playlist_type_;
-    }
+      }
 
-protected:
-    const std::string oauth_token_;
-    const OMX_TIZONIA_AUDIO_SOUNDCLOUDPLAYLISTTYPE playlist_type_;
-};
-}  // namespace graph
+    protected:
+      const std::string oauth_token_;
+      const OMX_TIZONIA_AUDIO_SOUNDCLOUDPLAYLISTTYPE playlist_type_;
+    };
+  }  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZSCLOUDCONFIG_HPP

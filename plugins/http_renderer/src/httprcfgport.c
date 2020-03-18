@@ -52,25 +52,25 @@
 static void *
 httpr_cfgport_ctor (void * ap_obj, va_list * app)
 {
-    httpr_cfgport_t * p_obj
-        = super_ctor (typeOf (ap_obj, "httprcfgport"), ap_obj, app);
+  httpr_cfgport_t * p_obj
+    = super_ctor (typeOf (ap_obj, "httprcfgport"), ap_obj, app);
 
-    assert (p_obj);
+  assert (p_obj);
 
-    tiz_port_register_index (p_obj, OMX_TizoniaIndexParamHttpServer);
-    p_obj->http_conf_.nSize = sizeof (OMX_TIZONIA_HTTPSERVERTYPE);
-    p_obj->http_conf_.nVersion.nVersion = OMX_VERSION;
-    p_obj->http_conf_.nListeningPort
-        = ARATELIA_HTTP_RENDERER_DEFAULT_HTTP_SERVER_PORT;
-    p_obj->http_conf_.nMaxClients = 5;
+  tiz_port_register_index (p_obj, OMX_TizoniaIndexParamHttpServer);
+  p_obj->http_conf_.nSize = sizeof (OMX_TIZONIA_HTTPSERVERTYPE);
+  p_obj->http_conf_.nVersion.nVersion = OMX_VERSION;
+  p_obj->http_conf_.nListeningPort
+    = ARATELIA_HTTP_RENDERER_DEFAULT_HTTP_SERVER_PORT;
+  p_obj->http_conf_.nMaxClients = 5;
 
-    return p_obj;
+  return p_obj;
 }
 
 static void *
 httpr_cfgport_dtor (void * ap_obj)
 {
-    return super_dtor (typeOf (ap_obj, "httprcfgport"), ap_obj);
+  return super_dtor (typeOf (ap_obj, "httprcfgport"), ap_obj);
 }
 
 /*
@@ -81,59 +81,59 @@ static OMX_ERRORTYPE
 httpr_cfgport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
                             OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
-    const httpr_cfgport_t * p_obj = ap_obj;
-    OMX_ERRORTYPE rc = OMX_ErrorNone;
+  const httpr_cfgport_t * p_obj = ap_obj;
+  OMX_ERRORTYPE rc = OMX_ErrorNone;
 
-    TIZ_TRACE (ap_hdl, "[%s]...", tiz_idx_to_str (a_index));
+  TIZ_TRACE (ap_hdl, "[%s]...", tiz_idx_to_str (a_index));
 
-    assert (p_obj);
+  assert (p_obj);
 
-    if (OMX_TizoniaIndexParamHttpServer == a_index)
+  if (OMX_TizoniaIndexParamHttpServer == a_index)
     {
-        OMX_TIZONIA_HTTPSERVERTYPE * p_http_conf
-            = (OMX_TIZONIA_HTTPSERVERTYPE *) ap_struct;
+      OMX_TIZONIA_HTTPSERVERTYPE * p_http_conf
+        = (OMX_TIZONIA_HTTPSERVERTYPE *) ap_struct;
 
-        *p_http_conf = p_obj->http_conf_;
+      *p_http_conf = p_obj->http_conf_;
     }
-    else
+  else
     {
-        /* Delegate to the base port */
-        rc = super_GetParameter (typeOf (ap_obj, "httprcfgport"), ap_obj, ap_hdl,
-                                 a_index, ap_struct);
+      /* Delegate to the base port */
+      rc = super_GetParameter (typeOf (ap_obj, "httprcfgport"), ap_obj, ap_hdl,
+                               a_index, ap_struct);
     }
 
-    return rc;
+  return rc;
 }
 
 static OMX_ERRORTYPE
 httpr_cfgport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
                             OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
-    httpr_cfgport_t * p_obj = (httpr_cfgport_t *) ap_obj;
-    OMX_ERRORTYPE rc = OMX_ErrorNone;
+  httpr_cfgport_t * p_obj = (httpr_cfgport_t *) ap_obj;
+  OMX_ERRORTYPE rc = OMX_ErrorNone;
 
-    TIZ_TRACE (ap_hdl, "[%s]...", tiz_idx_to_str (a_index));
+  TIZ_TRACE (ap_hdl, "[%s]...", tiz_idx_to_str (a_index));
 
-    assert (p_obj);
+  assert (p_obj);
 
-    if (OMX_TizoniaIndexParamHttpServer == a_index)
+  if (OMX_TizoniaIndexParamHttpServer == a_index)
     {
-        OMX_TIZONIA_HTTPSERVERTYPE * p_http_conf
-            = (OMX_TIZONIA_HTTPSERVERTYPE *) ap_struct;
-        p_obj->http_conf_ = *p_http_conf;
+      OMX_TIZONIA_HTTPSERVERTYPE * p_http_conf
+        = (OMX_TIZONIA_HTTPSERVERTYPE *) ap_struct;
+      p_obj->http_conf_ = *p_http_conf;
 
-        TIZ_TRACE (ap_hdl, "nListeningPort [%d]...",
-                   p_obj->http_conf_.nListeningPort);
-        TIZ_TRACE (ap_hdl, "nMaxClients [%d]...", p_obj->http_conf_.nMaxClients);
+      TIZ_TRACE (ap_hdl, "nListeningPort [%d]...",
+                 p_obj->http_conf_.nListeningPort);
+      TIZ_TRACE (ap_hdl, "nMaxClients [%d]...", p_obj->http_conf_.nMaxClients);
     }
-    else
+  else
     {
-        /* Delegate to the base port */
-        rc = super_SetParameter (typeOf (ap_obj, "httprcfgport"), ap_obj, ap_hdl,
-                                 a_index, ap_struct);
+      /* Delegate to the base port */
+      rc = super_SetParameter (typeOf (ap_obj, "httprcfgport"), ap_obj, ap_hdl,
+                               a_index, ap_struct);
     }
 
-    return rc;
+  return rc;
 }
 
 /*
@@ -143,8 +143,8 @@ httpr_cfgport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
 static void *
 httpr_cfgport_class_ctor (void * ap_obj, va_list * app)
 {
-    /* NOTE: Class methods might be added in the future. None for now. */
-    return super_ctor (typeOf (ap_obj, "httprcfgport_class"), ap_obj, app);
+  /* NOTE: Class methods might be added in the future. None for now. */
+  return super_ctor (typeOf (ap_obj, "httprcfgport_class"), ap_obj, app);
 }
 
 /*
@@ -154,25 +154,25 @@ httpr_cfgport_class_ctor (void * ap_obj, va_list * app)
 void *
 httpr_cfgport_class_init (void * ap_tos, void * ap_hdl)
 {
-    void * tizconfigport = tiz_get_type (ap_hdl, "tizconfigport");
-    void * httprcfgport_class
-        = factory_new (classOf (tizconfigport), "httprcfgport_class",
-                       classOf (tizconfigport), sizeof (httpr_cfgport_class_t),
-                       ap_tos, ap_hdl, ctor, httpr_cfgport_class_ctor, 0);
-    return httprcfgport_class;
+  void * tizconfigport = tiz_get_type (ap_hdl, "tizconfigport");
+  void * httprcfgport_class
+    = factory_new (classOf (tizconfigport), "httprcfgport_class",
+                   classOf (tizconfigport), sizeof (httpr_cfgport_class_t),
+                   ap_tos, ap_hdl, ctor, httpr_cfgport_class_ctor, 0);
+  return httprcfgport_class;
 }
 
 void *
 httpr_cfgport_init (void * ap_tos, void * ap_hdl)
 {
-    void * tizconfigport = tiz_get_type (ap_hdl, "tizconfigport");
-    void * httprcfgport_class = tiz_get_type (ap_hdl, "httprcfgport_class");
-    TIZ_LOG_CLASS (httprcfgport_class);
-    void * httprcfgport = factory_new (
-                              httprcfgport_class, "httprcfgport", tizconfigport, sizeof (httpr_cfgport_t),
-                              ap_tos, ap_hdl, ctor, httpr_cfgport_ctor, dtor, httpr_cfgport_dtor,
-                              tiz_api_GetParameter, httpr_cfgport_GetParameter, tiz_api_SetParameter,
-                              httpr_cfgport_SetParameter, 0);
+  void * tizconfigport = tiz_get_type (ap_hdl, "tizconfigport");
+  void * httprcfgport_class = tiz_get_type (ap_hdl, "httprcfgport_class");
+  TIZ_LOG_CLASS (httprcfgport_class);
+  void * httprcfgport = factory_new (
+    httprcfgport_class, "httprcfgport", tizconfigport, sizeof (httpr_cfgport_t),
+    ap_tos, ap_hdl, ctor, httpr_cfgport_ctor, dtor, httpr_cfgport_dtor,
+    tiz_api_GetParameter, httpr_cfgport_GetParameter, tiz_api_SetParameter,
+    httpr_cfgport_SetParameter, 0);
 
-    return httprcfgport;
+  return httprcfgport;
 }

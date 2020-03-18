@@ -47,247 +47,247 @@
 
 struct tiz_buffer
 {
-    unsigned char * p_store;
-    int alloc_len;
-    int filled_len;
-    int offset;
-    int seek_mode;
+  unsigned char * p_store;
+  int alloc_len;
+  int filled_len;
+  int offset;
+  int seek_mode;
 };
 
 static long
 abs_of (const long v)
 {
-    const int mask = v >> (sizeof (long) * CHAR_BIT - 1);
-    return (v + mask) ^ mask;
+  const int mask = v >> (sizeof (long) * CHAR_BIT - 1);
+  return (v + mask) ^ mask;
 }
 
 static inline void *
 alloc_data_store (tiz_buffer_t * ap_buf, const size_t nbytes)
 {
-    assert (ap_buf);
-    assert (NULL == ap_buf->p_store);
+  assert (ap_buf);
+  assert (NULL == ap_buf->p_store);
 
-    if (nbytes > 0)
+  if (nbytes > 0)
     {
-        ap_buf->p_store = tiz_mem_calloc (1, nbytes);
-        if (ap_buf->p_store)
+      ap_buf->p_store = tiz_mem_calloc (1, nbytes);
+      if (ap_buf->p_store)
         {
-            ap_buf->alloc_len = nbytes;
-            ap_buf->filled_len = 0;
-            ap_buf->offset = 0;
-            ap_buf->seek_mode = TIZ_BUFFER_NON_SEEKABLE;
+          ap_buf->alloc_len = nbytes;
+          ap_buf->filled_len = 0;
+          ap_buf->offset = 0;
+          ap_buf->seek_mode = TIZ_BUFFER_NON_SEEKABLE;
         }
     }
-    return ap_buf->p_store;
+  return ap_buf->p_store;
 }
 
 static inline void
 dealloc_data_store (
-    /*@special@ */ tiz_buffer_t * ap_buf)
+  /*@special@ */ tiz_buffer_t * ap_buf)
 /*@releases ap_buf->p_store@ */
 /*@ensures isnull ap_buf->p_store@ */
 {
-    if (ap_buf)
+  if (ap_buf)
     {
-        tiz_mem_free (ap_buf->p_store);
-        ap_buf->p_store = NULL;
-        ap_buf->alloc_len = 0;
-        ap_buf->filled_len = 0;
-        ap_buf->offset = 0;
-        ap_buf->seek_mode = TIZ_BUFFER_NON_SEEKABLE;
+      tiz_mem_free (ap_buf->p_store);
+      ap_buf->p_store = NULL;
+      ap_buf->alloc_len = 0;
+      ap_buf->filled_len = 0;
+      ap_buf->offset = 0;
+      ap_buf->seek_mode = TIZ_BUFFER_NON_SEEKABLE;
     }
 }
 
 OMX_ERRORTYPE
 tiz_buffer_init (/*@null@ */ tiz_buffer_ptr_t * app_buf, const size_t a_nbytes)
 {
-    OMX_ERRORTYPE rc = OMX_ErrorInsufficientResources;
-    tiz_buffer_t * p_buf = NULL;
-    void * p_store = NULL;
+  OMX_ERRORTYPE rc = OMX_ErrorInsufficientResources;
+  tiz_buffer_t * p_buf = NULL;
+  void * p_store = NULL;
 
-    assert (app_buf);
+  assert (app_buf);
 
-    if (!(p_buf = tiz_mem_calloc (1, sizeof (tiz_buffer_t))))
+  if (!(p_buf = tiz_mem_calloc (1, sizeof (tiz_buffer_t))))
     {
-        goto end;
+      goto end;
     }
 
-    if (!(p_store = alloc_data_store (p_buf, a_nbytes)))
+  if (!(p_store = alloc_data_store (p_buf, a_nbytes)))
     {
-        goto end;
+      goto end;
     }
 
-    /* All allocations succeeded */
-    rc = OMX_ErrorNone;
+  /* All allocations succeeded */
+  rc = OMX_ErrorNone;
 
 end:
 
-    if (OMX_ErrorNone != rc && p_buf)
+  if (OMX_ErrorNone != rc && p_buf)
     {
-        dealloc_data_store (p_buf);
-        p_store = NULL;
-        tiz_mem_free (p_buf);
-        p_buf = NULL;
+      dealloc_data_store (p_buf);
+      p_store = NULL;
+      tiz_mem_free (p_buf);
+      p_buf = NULL;
     }
 
-    *app_buf = p_buf;
+  *app_buf = p_buf;
 
-    return rc;
+  return rc;
 }
 
 void
 tiz_buffer_destroy (tiz_buffer_t * ap_buf)
 {
-    if (ap_buf)
+  if (ap_buf)
     {
-        dealloc_data_store (ap_buf);
-        tiz_mem_free (ap_buf);
+      dealloc_data_store (ap_buf);
+      tiz_mem_free (ap_buf);
     }
 }
 
 int
 tiz_buffer_seek_mode (tiz_buffer_t * ap_buf, const int a_seek_mode)
 {
-    int old_val = -1;
-    if (a_seek_mode == TIZ_BUFFER_SEEKABLE
-            || a_seek_mode == TIZ_BUFFER_NON_SEEKABLE)
+  int old_val = -1;
+  if (a_seek_mode == TIZ_BUFFER_SEEKABLE
+      || a_seek_mode == TIZ_BUFFER_NON_SEEKABLE)
     {
-        assert (ap_buf);
-        old_val = ap_buf->seek_mode;
-        ap_buf->seek_mode = a_seek_mode;
+      assert (ap_buf);
+      old_val = ap_buf->seek_mode;
+      ap_buf->seek_mode = a_seek_mode;
     }
-    return old_val;
+  return old_val;
 }
 
 int
 tiz_buffer_push (tiz_buffer_t * ap_buf, const void * ap_data,
                  const size_t a_nbytes)
 {
-    OMX_U32 nbytes_to_copy = 0;
+  OMX_U32 nbytes_to_copy = 0;
 
-    assert (ap_buf);
-    assert (ap_buf->alloc_len >= (ap_buf->offset + ap_buf->filled_len));
+  assert (ap_buf);
+  assert (ap_buf->alloc_len >= (ap_buf->offset + ap_buf->filled_len));
 
-    if (ap_data && a_nbytes > 0)
+  if (ap_data && a_nbytes > 0)
     {
-        size_t avail = 0;
+      size_t avail = 0;
 
-        if (ap_buf->seek_mode == TIZ_BUFFER_NON_SEEKABLE
-                && ap_buf->offset > 0)
+      if (ap_buf->seek_mode == TIZ_BUFFER_NON_SEEKABLE && ap_buf->offset > 0)
         {
-            memmove (ap_buf->p_store, (ap_buf->p_store + ap_buf->offset),
-                     ap_buf->filled_len);
-            ap_buf->offset = 0;
+          memmove (ap_buf->p_store, (ap_buf->p_store + ap_buf->offset),
+                   ap_buf->filled_len);
+          ap_buf->offset = 0;
         }
 
-        avail = ap_buf->alloc_len - (ap_buf->offset + ap_buf->filled_len);
+      avail = ap_buf->alloc_len - (ap_buf->offset + ap_buf->filled_len);
 
-        if (a_nbytes > avail)
+      if (a_nbytes > avail)
         {
-            /* need to re-alloc */
-            OMX_U8 * p_new_store = NULL;
-            size_t need = ap_buf->alloc_len * 2;
-            p_new_store = tiz_mem_realloc (ap_buf->p_store, need);
-            if (p_new_store)
+          /* need to re-alloc */
+          OMX_U8 * p_new_store = NULL;
+          size_t need = ap_buf->alloc_len * 2;
+          p_new_store = tiz_mem_realloc (ap_buf->p_store, need);
+          if (p_new_store)
             {
-                ap_buf->p_store = p_new_store;
-                ap_buf->alloc_len = need;
-                avail = ap_buf->alloc_len - (ap_buf->offset + ap_buf->filled_len);
+              ap_buf->p_store = p_new_store;
+              ap_buf->alloc_len = need;
+              avail = ap_buf->alloc_len - (ap_buf->offset + ap_buf->filled_len);
             }
         }
-        nbytes_to_copy = MIN (avail, a_nbytes);
-        memcpy (ap_buf->p_store + ap_buf->offset + ap_buf->filled_len, ap_data, nbytes_to_copy);
-        ap_buf->filled_len += nbytes_to_copy;
+      nbytes_to_copy = MIN (avail, a_nbytes);
+      memcpy (ap_buf->p_store + ap_buf->offset + ap_buf->filled_len, ap_data,
+              nbytes_to_copy);
+      ap_buf->filled_len += nbytes_to_copy;
     }
-    return nbytes_to_copy;
+  return nbytes_to_copy;
 }
 
 int
 tiz_buffer_available (const tiz_buffer_t * ap_buf)
 {
-    assert (ap_buf);
-    assert (ap_buf->alloc_len >= (ap_buf->offset + ap_buf->filled_len));
-    return ap_buf->filled_len;
+  assert (ap_buf);
+  assert (ap_buf->alloc_len >= (ap_buf->offset + ap_buf->filled_len));
+  return ap_buf->filled_len;
 }
 
 int
 tiz_buffer_offset (const tiz_buffer_t * ap_buf)
 {
-    assert (ap_buf);
-    assert (ap_buf->alloc_len >= (ap_buf->offset + ap_buf->filled_len));
-    return ap_buf->offset;
+  assert (ap_buf);
+  assert (ap_buf->alloc_len >= (ap_buf->offset + ap_buf->filled_len));
+  return ap_buf->offset;
 }
 
 void *
 tiz_buffer_get (const tiz_buffer_t * ap_buf)
 {
-    assert (ap_buf);
-    assert (ap_buf->alloc_len >= (ap_buf->offset + ap_buf->filled_len));
-    return (ap_buf->p_store + ap_buf->offset);
+  assert (ap_buf);
+  assert (ap_buf->alloc_len >= (ap_buf->offset + ap_buf->filled_len));
+  return (ap_buf->p_store + ap_buf->offset);
 }
 
 int
 tiz_buffer_advance (tiz_buffer_t * ap_buf, const int nbytes)
 {
-    int min_nbytes = 0;
-    assert (ap_buf);
-    if (nbytes > 0)
+  int min_nbytes = 0;
+  assert (ap_buf);
+  if (nbytes > 0)
     {
-        min_nbytes = MIN (nbytes, tiz_buffer_available (ap_buf));
-        ap_buf->offset += min_nbytes;
-        ap_buf->filled_len -= min_nbytes;
+      min_nbytes = MIN (nbytes, tiz_buffer_available (ap_buf));
+      ap_buf->offset += min_nbytes;
+      ap_buf->filled_len -= min_nbytes;
     }
-    return min_nbytes;
+  return min_nbytes;
 }
 
 int
 tiz_buffer_seek (tiz_buffer_t * ap_buf, const long offset, const int whence)
 {
-    int rc = -1;
-    assert (ap_buf);
-    assert (ap_buf->alloc_len >= (ap_buf->offset + ap_buf->filled_len));
+  int rc = -1;
+  assert (ap_buf);
+  assert (ap_buf->alloc_len >= (ap_buf->offset + ap_buf->filled_len));
 
-    int total = ap_buf->offset + ap_buf->filled_len;
-    if (whence == TIZ_BUFFER_SEEK_SET)
+  int total = ap_buf->offset + ap_buf->filled_len;
+  if (whence == TIZ_BUFFER_SEEK_SET)
     {
-        ap_buf->offset = MIN (offset, total);
-        rc = 0;
+      ap_buf->offset = MIN (offset, total);
+      rc = 0;
     }
-    else if (whence == TIZ_BUFFER_SEEK_CUR)
+  else if (whence == TIZ_BUFFER_SEEK_CUR)
     {
-        unsigned int r = abs_of (offset);
-        if (offset < 0)
+      unsigned int r = abs_of (offset);
+      if (offset < 0)
         {
-            ap_buf->offset -= MIN (r, ap_buf->offset);
+          ap_buf->offset -= MIN (r, ap_buf->offset);
         }
-        else
+      else
         {
-            ap_buf->offset += MIN (r, ap_buf->filled_len);
+          ap_buf->offset += MIN (r, ap_buf->filled_len);
         }
-        rc = 0;
+      rc = 0;
     }
-    else if (whence == TIZ_BUFFER_SEEK_END && offset < 0)
+  else if (whence == TIZ_BUFFER_SEEK_END && offset < 0)
     {
-        unsigned int r = abs_of (offset);
-        ap_buf->offset = total - MIN (r, total);
-        rc = 0;
+      unsigned int r = abs_of (offset);
+      ap_buf->offset = total - MIN (r, total);
+      rc = 0;
     }
-    if (0 == rc)
+  if (0 == rc)
     {
-        ap_buf->filled_len = total - ap_buf->offset;
+      ap_buf->filled_len = total - ap_buf->offset;
     }
-    assert (total == ap_buf->offset + ap_buf->filled_len);
-    assert (ap_buf->alloc_len >= (ap_buf->offset + ap_buf->filled_len));
+  assert (total == ap_buf->offset + ap_buf->filled_len);
+  assert (ap_buf->alloc_len >= (ap_buf->offset + ap_buf->filled_len));
 
-    return rc;
+  return rc;
 }
 
 void
 tiz_buffer_clear (tiz_buffer_t * ap_buf)
 {
-    if (ap_buf)
+  if (ap_buf)
     {
-        ap_buf->offset = 0;
-        ap_buf->filled_len = 0;
+      ap_buf->offset = 0;
+      ap_buf->filled_len = 0;
     }
 }

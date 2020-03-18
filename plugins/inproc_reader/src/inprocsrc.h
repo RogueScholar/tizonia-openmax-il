@@ -36,20 +36,22 @@ extern "C"
 #include <OMX_Core.h>
 #include <OMX_Types.h>
 
-#define ARATELIA_INPROC_READER_AUDIO_ROLE         "audio_reader.inproc"
-#define ARATELIA_INPROC_READER_VIDEO_ROLE         "video_reader.binary"
-#define ARATELIA_INPROC_READER_IMAGE_ROLE         "image_reader.binary"
-#define ARATELIA_INPROC_READER_OTHER_ROLE         "other_reader.binary"
-#define ARATELIA_INPROC_READER_COMPONENT_NAME     "OMX.Aratelia.inproc_reader.binary"
-#define ARATELIA_INPROC_READER_PORT_INDEX         0 /* With libtizonia, port indexes must start at index 0 */
+#define ARATELIA_INPROC_READER_AUDIO_ROLE "audio_reader.inproc"
+#define ARATELIA_INPROC_READER_VIDEO_ROLE "video_reader.binary"
+#define ARATELIA_INPROC_READER_IMAGE_ROLE "image_reader.binary"
+#define ARATELIA_INPROC_READER_OTHER_ROLE "other_reader.binary"
+#define ARATELIA_INPROC_READER_COMPONENT_NAME \
+  "OMX.Aratelia.inproc_reader.binary"
+#define ARATELIA_INPROC_READER_PORT_INDEX \
+  0 /* With libtizonia, port indexes must start at index 0 */
 #define ARATELIA_INPROC_READER_PORT_MIN_BUF_COUNT 2
-#define ARATELIA_INPROC_READER_PORT_MIN_BUF_SIZE  8192
+#define ARATELIA_INPROC_READER_PORT_MIN_BUF_SIZE 8192
 #define ARATELIA_INPROC_READER_PORT_NONCONTIGUOUS OMX_FALSE
-#define ARATELIA_INPROC_READER_PORT_ALIGNMENT     0
-#define ARATELIA_INPROC_READER_PORT_SUPPLIERPREF  OMX_BufferSupplyInput
+#define ARATELIA_INPROC_READER_PORT_ALIGNMENT 0
+#define ARATELIA_INPROC_READER_PORT_SUPPLIERPREF OMX_BufferSupplyInput
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* INPROCSRC_H */
+#endif /* INPROCSRC_H */

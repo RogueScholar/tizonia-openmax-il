@@ -30,7 +30,8 @@
 #define OGGDMUXPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -38,9 +39,9 @@ extern "C" {
 
 #include <tizprc_decls.h>
 
-typedef struct oggdmux_prc oggdmux_prc_t;
-struct oggdmux_prc
-{
+  typedef struct oggdmux_prc oggdmux_prc_t;
+  struct oggdmux_prc
+  {
     /* Object */
     const tiz_prc_t _;
     FILE * p_file_;
@@ -63,15 +64,15 @@ struct oggdmux_prc
     bool vid_eos_;
     bool aud_port_disabled_;
     bool vid_port_disabled_;
-};
+  };
 
-typedef struct oggdmux_prc_class oggdmux_prc_class_t;
-struct oggdmux_prc_class
-{
+  typedef struct oggdmux_prc_class oggdmux_prc_class_t;
+  struct oggdmux_prc_class
+  {
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

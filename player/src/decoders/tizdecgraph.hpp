@@ -36,37 +36,37 @@
 
 namespace tiz
 {
-namespace graph
-{
-// Forward declarations
-class cmd;
+  namespace graph
+  {
+    // Forward declarations
+    class cmd;
 
-class decoder : public graph
-{
+    class decoder : public graph
+    {
 
-public:
-    explicit decoder (const std::string &graph_name);
-    ~decoder ();
+    public:
+      explicit decoder (const std::string &graph_name);
+      ~decoder ();
 
-protected:
-    bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
+    protected:
+      bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
 
-protected:
-    boost::any fsm_;
-};
+    protected:
+      boost::any fsm_;
+    };
 
-class decops : public ops
-{
-public:
-    decops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-            const omx_comp_role_lst_t &role_lst);
+    class decops : public ops
+    {
+    public:
+      decops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
+              const omx_comp_role_lst_t &role_lst);
 
-public:
-    void do_disable_comp_ports (const int comp_id, const int port_id);
-    bool is_disabled_evt_required () const;
-};
+    public:
+      void do_disable_comp_ports (const int comp_id, const int port_id);
+      bool is_disabled_evt_required () const;
+    };
 
-}  // namespace graph
+  }  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZDECGRAPH_HPP

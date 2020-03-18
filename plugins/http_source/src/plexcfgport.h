@@ -30,13 +30,14 @@
 #define PLEXCFGPORT_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-void *
-plex_cfgport_class_init (void * ap_tos, void * ap_hdl);
-void *
-plex_cfgport_init (void * ap_tos, void * ap_hdl);
+  void *
+  plex_cfgport_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  plex_cfgport_init (void * ap_tos, void * ap_hdl);
 
 #ifdef __cplusplus
 }

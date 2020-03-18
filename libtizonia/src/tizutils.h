@@ -30,7 +30,8 @@
 #define TIZUTILS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_Types.h>
@@ -38,11 +39,11 @@ extern "C" {
 
 #include "tizfsm.h"
 
-/** \addtogroup deprecated
+  /** \addtogroup deprecated
  *  @{
  */
 
-typedef OMX_U32 _tiz_pd_mask;
+  typedef OMX_U32 _tiz_pd_mask;
 
 /* Number of port indexes that can fit in an `tiz_pd_set'.  */
 #define _TIZ_PD_SETSIZE 64
@@ -50,13 +51,13 @@ typedef OMX_U32 _tiz_pd_mask;
 #define _TIZ_PDELT(d) ((d) / _TIZ_NPDBITS)
 #define _TIZ_PDMASK(d) ((_tiz_pd_mask) 1 << ((d) % _TIZ_NPDBITS))
 
-typedef struct tiz_pd_set tiz_pd_set_t;
+  typedef struct tiz_pd_set tiz_pd_set_t;
 
-struct tiz_pd_set
-{
+  struct tiz_pd_set
+  {
     _tiz_pd_mask a_pds_bits[_TIZ_PD_SETSIZE / _TIZ_NPDBITS];
 #define TIZ_PDS_BITS(set) ((set)->a_pds_bits)
-};
+  };
 
 #define TIZ_PD_ZERO(set)                                            \
   do                                                                \
@@ -115,11 +116,11 @@ struct tiz_pd_set
            TIZ_PRIORITY_TRACE, TIZ_CNAME (hdl), TIZ_CBUF (hdl), format, \
            ##args);
 
-void
-tiz_clear_header (OMX_BUFFERHEADERTYPE * ap_hdr);
+  void
+  tiz_clear_header (OMX_BUFFERHEADERTYPE * ap_hdr);
 
-const OMX_STRING
-tiz_fsm_state_to_str (tiz_fsm_state_id_t a_id);
+  const OMX_STRING
+  tiz_fsm_state_to_str (tiz_fsm_state_id_t a_id);
 
 #ifdef __cplusplus
 }

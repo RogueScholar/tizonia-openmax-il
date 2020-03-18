@@ -30,7 +30,8 @@
 #define TIZMACROS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "tizomxutils.h"
@@ -340,7 +341,7 @@ extern "C" {
  */
 #define tiz_ret_val_on_err (expr, val) tiz_check_true_ret_val (expr, val)
 
-/* Avoid unused variable warnings */
+  /* Avoid unused variable warnings */
 
 #ifdef TIZ_UNUSED
 #elif defined(__GNUC__)
@@ -353,7 +354,7 @@ extern "C" {
 #define TIZ_UNUSED(x) x
 #endif
 
-/* Turn off ASAN (Address Sanitazer) */
+  /* Turn off ASAN (Address Sanitazer) */
 
 #if defined(__clang__) || defined(__GNUC__)
 #define ATTRIBUTE_NO_SANITIZE_ADDRESS __attribute__ ((no_sanitize_address))

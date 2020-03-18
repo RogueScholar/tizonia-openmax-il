@@ -35,24 +35,24 @@
 
 namespace tiz
 {
-namespace graphmgr
-{
-class cmd
-{
+  namespace graphmgr
+  {
+    class cmd
+    {
 
-public:
-    explicit cmd (boost::any any_event);
+    public:
+      explicit cmd (boost::any any_event);
 
-public:
-    const boost::any evt () const;
-    const char *c_str () const;
-    void inject (fsm &) const;
+    public:
+      const boost::any evt () const;
+      const char *c_str () const;
+      void inject (fsm &) const;
 
-private:
-    const boost::any evt_;
-};
+    private:
+      const boost::any evt_;
+    };
 
-}  // namespace graphmgr
+  }  // namespace graphmgr
 }  // namespace tiz
 
 #endif  // TIZGRAPHMGRCMD_HPP

@@ -39,50 +39,50 @@
 long
 tiz_pathname_max (const char * file)
 {
-    bool call_fail = false;
-    long path_max = 0;
-    long name_max = 0;
-    long pathname_max = -1;
+  bool call_fail = false;
+  long path_max = 0;
+  long name_max = 0;
+  long pathname_max = -1;
 
-    assert (file);
+  assert (file);
 
-    errno = 0;
-    path_max = pathconf (file, _PC_PATH_MAX);
-    name_max = pathconf (file, _PC_NAME_MAX);
+  errno = 0;
+  path_max = pathconf (file, _PC_PATH_MAX);
+  name_max = pathconf (file, _PC_NAME_MAX);
 
-    if (-1 == path_max)
+  if (-1 == path_max)
     {
-        if (errno == 0)
+      if (errno == 0)
         {
-            /* Call succeeded, the limit is indeterminate */
-            path_max = PATH_MAX;
+          /* Call succeeded, the limit is indeterminate */
+          path_max = PATH_MAX;
         }
-        else
+      else
         {
-            /* Call failed */
-            call_fail = true;
+          /* Call failed */
+          call_fail = true;
         }
     }
 
-    if (-1 == name_max)
+  if (-1 == name_max)
     {
-        if (errno == 0)
+      if (errno == 0)
         {
-            /* Call succeeded, the limit is indeterminate */
-            name_max = NAME_MAX;
+          /* Call succeeded, the limit is indeterminate */
+          name_max = NAME_MAX;
         }
-        else
+      else
         {
-            /* Call failed */
-            call_fail = true;
+          /* Call failed */
+          call_fail = true;
         }
     }
 
-    if (!call_fail)
+  if (!call_fail)
     {
-        pathname_max = path_max + name_max;
+      pathname_max = path_max + name_max;
     }
 
-    assert (call_fail ? -1 == pathname_max : pathname_max > 0);
-    return pathname_max;
+  assert (call_fail ? -1 == pathname_max : pathname_max > 0);
+  return pathname_max;
 }

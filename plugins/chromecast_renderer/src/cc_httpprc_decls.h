@@ -29,7 +29,8 @@
 #define CC_HTTPPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -41,21 +42,21 @@ extern "C" {
 #include "cc_prc_decls.h"
 #include "cc_prc.h"
 
-typedef struct cc_http_prc cc_http_prc_t;
-struct cc_http_prc
-{
+  typedef struct cc_http_prc cc_http_prc_t;
+  struct cc_http_prc
+  {
     /* Object */
     const cc_prc_t _;
     OMX_PARAM_CONTENTURITYPE * p_content_uri_;
-};
+  };
 
-typedef struct cc_http_prc_class cc_http_prc_class_t;
-struct cc_http_prc_class
-{
+  typedef struct cc_http_prc_class cc_http_prc_class_t;
+  struct cc_http_prc_class
+  {
     /* Class */
     const cc_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-};
+  };
 
 #ifdef __cplusplus
 }

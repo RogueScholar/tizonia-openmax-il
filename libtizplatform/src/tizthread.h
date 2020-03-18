@@ -30,10 +30,11 @@
 #define TIZTHREAD_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-/**
+  /**
  * @defgroup tizthread Thread/task management
  *
  * Simple thread/task management wrapper functions.
@@ -46,13 +47,13 @@ extern "C" {
 
 #include "tizsync.h"
 
-/**
+  /**
  * Thread hdl
  * @ingroup tizthread
  */
-typedef OMX_U32 tiz_thread_t;
+  typedef OMX_U32 tiz_thread_t;
 
-/**
+  /**
  * Create a new thread, starting with execution of a_pf_routine getting
  * passed ap_arg.  The new hdl is stored in *ap_thread.
  *
@@ -60,12 +61,12 @@ typedef OMX_U32 tiz_thread_t;
  *
  * @return OMX_ErrorNone if success, OMX_ErrorUndefined otherwise.
  */
-OMX_ERRORTYPE
-tiz_thread_create (tiz_thread_t * ap_thread, size_t a_stack_size,
-                   OMX_U32 a_priority, OMX_PTR (*a_pf_routine) (OMX_PTR),
-                   OMX_PTR ap_arg);
+  OMX_ERRORTYPE
+  tiz_thread_create (tiz_thread_t * ap_thread, size_t a_stack_size,
+                     OMX_U32 a_priority, OMX_PTR (*a_pf_routine) (OMX_PTR),
+                     OMX_PTR ap_arg);
 
-/**
+  /**
  * Make the calling thread wait for the termination of the thread ap_thread.
  * The exit status of the thread is stored in *app_result.
  *
@@ -73,46 +74,46 @@ tiz_thread_create (tiz_thread_t * ap_thread, size_t a_stack_size,
  *
  * @return OMX_ErrorNone if success, OMX_ErrorUndefined otherwise.
  */
-OMX_ERRORTYPE
-tiz_thread_join (tiz_thread_t * ap_thread, void ** app_result);
+  OMX_ERRORTYPE
+  tiz_thread_join (tiz_thread_t * ap_thread, void ** app_result);
 
-/**
+  /**
  * Set the name of a thread.
  *
  * @ingroup tizthread
  *
  * @return 0 if success, -1 otherwise.
  */
-OMX_ERRORTYPE
-tiz_thread_setname (tiz_thread_t * ap_thread, const OMX_STRING a_name);
+  OMX_ERRORTYPE
+  tiz_thread_setname (tiz_thread_t * ap_thread, const OMX_STRING a_name);
 
-/**
+  /**
  * Terminate the calling thread.
  *
  * @ingroup tizthread
  */
-void
-tiz_thread_exit (OMX_PTR a_status);
+  void
+  tiz_thread_exit (OMX_PTR a_status);
 
-/**
+  /**
  * Get the thread id of the calling thread.
  *
  * @ingroup tizthread
  *
  * @return The thread id
  */
-OMX_S32
-tiz_thread_id (void);
+  OMX_S32
+  tiz_thread_id (void);
 
-/**
+  /**
  * Sleep for the specified number of micro seconds.
  *
  * @ingroup tizthread
  *
  * @return 0 if success, -1 otherwise.
  */
-OMX_S32
-tiz_sleep (OMX_U32 a_usec);
+  OMX_S32
+  tiz_sleep (OMX_U32 a_usec);
 
 #ifdef __cplusplus
 }

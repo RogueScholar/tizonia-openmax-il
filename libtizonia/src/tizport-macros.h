@@ -30,7 +30,8 @@
 #define TIZPORT_MACROS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "tizport.h"
@@ -115,7 +116,7 @@ extern "C" {
   ((tiz_port_check_flags (_p, 2, EFlagEnabled, EFlagTunneled)    \
     && !tiz_port_check_flags (_p, 1, EFlagBufferSupplier)        \
     && tiz_port_check_tunneled_port_status (                     \
-         _p, OMX_TIZONIA_PORTSTATUS_AWAITBUFFERSRETURN))         \
+      _p, OMX_TIZONIA_PORTSTATUS_AWAITBUFFERSRETURN))            \
    || (tiz_port_check_flags (_p, 3, EFlagEnabled, EFlagTunneled, \
                              EFlagBufferSupplier)))
 
