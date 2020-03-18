@@ -123,10 +123,10 @@ html_theme = "alabaster"
 
 extra_nav_links = OrderedDict()
 extra_nav_links["Tizonia Website"] = "https://tizonia.org"
-extra_nav_links["Source (GitHub)"] = "https://github.com/tizonia/tizonia-openmax-il"
 extra_nav_links[
-    "Issues (GitHub)"
-] = "https://github.com/tizonia/tizonia-openmax-il/issues"
+    "Source (GitHub)"] = "https://github.com/tizonia/tizonia-openmax-il"
+extra_nav_links[
+    "Issues (GitHub)"] = "https://github.com/tizonia/tizonia-openmax-il/issues"
 extra_nav_links["Binaries (Bintray)"] = "https://bintray.com/tizonia"
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -183,7 +183,12 @@ html_static_path = ["_static"]
 # Custom sidebar templates, maps document names to template names.
 # html_sidebars = {}
 html_sidebars = {
-    "**": ["about.html", "navigation.html", "relations.html", "searchbox.html",]
+    "**": [
+        "about.html",
+        "navigation.html",
+        "relations.html",
+        "searchbox.html",
+    ]
 }
 
 # Additional templates that should be rendered to pages, maps page names to
@@ -219,7 +224,6 @@ html_sidebars = {
 # Output file base name for HTML help builder.
 htmlhelp_basename = "Tizoniadoc"
 
-
 # -- Options for LaTeX output --------------------------------------------------
 
 latex_elements = {
@@ -234,7 +238,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ("index", "Tizonia.tex", u"Tizonia Documentation", u"Juan A. Rubio", "manual"),
+    ("index", "Tizonia.tex", u"Tizonia Documentation", u"Juan A. Rubio",
+     "manual"),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -257,24 +262,20 @@ latex_documents = [
 # If false, no module index is generated.
 # latex_domain_indices = True
 
-
 # -- Options for manual page output --------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (
-        "manual/manual",
-        "tizonia",
-        u"A command-line streaming music client/server for Linux with support for Spotify (Premium), Google Play Music (free and paid tiers), YouTube, SoundCloud, TuneIn Internet Radio, Plex servers and Chromecast devices.",
-        [u"Juan A. Rubio"],
-        1,
-    )
-]
+man_pages = [(
+    "manual/manual",
+    "tizonia",
+    u"A command-line streaming music client/server for Linux with support for Spotify (Premium), Google Play Music (free and paid tiers), YouTube, SoundCloud, TuneIn Internet Radio, Plex servers and Chromecast devices.",
+    [u"Juan A. Rubio"],
+    1,
+)]
 
 # If true, show URL addresses after external links.
 man_show_urls = False
-
 
 # -- Options for Texinfo output ------------------------------------------------
 
@@ -332,16 +333,15 @@ def run_doxygen(app):
             target = os.path.join(cwd, link[1])
             if not os.path.lexists(target):
                 sys.stdout.write(
-                    "Creating symlink : source %s -> target %s \n" % (source, target)
-                )
+                    "Creating symlink : source %s -> target %s \n" %
+                    (source, target))
                 os.symlink(source, target)
 
         read_the_docs_build = os.environ.get("READTHEDOCS", None) == "True"
         if read_the_docs_build:
             sys.stdout.write("Running doxygen in RTD environment\n")
             retcode = subprocess.call(
-                "cd ../doxygen-src && doxygen doxyfile.rtd", shell=True
-            )
+                "cd ../doxygen-src && doxygen doxyfile.rtd", shell=True)
         else:
             sys.stdout.write("Running doxygen in local environment\n")
             retcode = subprocess.call("cd .. && make", shell=True)
