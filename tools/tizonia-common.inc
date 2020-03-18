@@ -24,7 +24,7 @@
 readonly E_BADARGS=85
 readonly E_NOFILE=86
 readonly E_BAD_CLONE=87
-readonly CWD=$(pwd)
+readonly CWD="$PWD"
 
 readonly RED=1
 readonly GRN=2
@@ -146,7 +146,7 @@ readonly TIZ_PROJECTS_ORDERED=( \
 #   None
 ##################################################################
 function pretty_print {
-    echo "$(tput setaf $1)$2$(tput sgr 0)" 1>&2
+    echo "$(tput setaf "$1")$2$(tput sgr 0)" 1>&2
 }
 
 ##################################################################
@@ -163,7 +163,7 @@ function print_banner {
     local msg="$1"
     local color="$2"
     local msg_sz=${#msg}
-    local dashes=$(print_dashes "$msg_sz")
+    local dashes="$(print_dashes "$msg_sz")"
     if [[ "$color" == "" ]]; then
         color="$RED"
     fi
@@ -185,7 +185,7 @@ function print_banner {
 #   None
 ##################################################################
 function print_dashes {
-    local LEN=$1
+    local LEN="$1"
     local CHAR='-'
     while (( $# > 0 ))
     do
@@ -208,7 +208,7 @@ function print_dashes {
     DASHES=""
     for ((i=0; i<LEN; i++))
     do
-        DASHES="${DASHES}${CHAR}"
+        DASHES="$DASHES$CHAR"
     done
     echo "$DASHES"
 }

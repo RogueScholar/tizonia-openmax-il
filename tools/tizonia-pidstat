@@ -28,7 +28,7 @@ PROCNAME=tizonia
 [[ -n "$2" ]] && { PROCNAME=$2; }
 
 function usagexit {
-    echo >&2 "$(basename $0) [cpu|mem] [interval]"
+    echo >&2 "$(basename "$0") [cpu|mem] [interval]"
     exit 1
 }
 
@@ -49,7 +49,7 @@ function main {
 
     interval=10
 
-    pidstat "$interval" "$report" -p $(pidof $PROCNAME)
+    pidstat "$interval" "$report" -p "$(pidof "$PROCNAME")"
 }
 
 main "$@"

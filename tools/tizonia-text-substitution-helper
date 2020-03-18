@@ -35,10 +35,10 @@ declare -ar TIZONIA_PREPARE_RELEASE_DEPS=( \
 function update_configure_ac_files {
     pretty_print "$MAG" "[START] : updating configure.ac files."
     cd "$TIZONIA_REPO_DIR"/plugins/file_reader
-    local NEW_TEXT=$(printf "# Define location of plugin directory\nAS_AC_EXPAND(PLUGINDIR, \${libdir}\/tizonia0-plugins12)\nAC_DEFINE_UNQUOTED(PLUGINDIR, \"\$PLUGINDIR\",\n  [Directory where Tizonia plugins are located])\nAC_MSG_NOTICE([Using \$PLUGINDIR as the components install location])\n# Define plugin directory configure-time variable\nAC_SUBST([plugindir], ['\${libdir}\/tizonia0-plugins12'])\n\n# Checks for header files")
+    local NEW_TEXT="$(printf "# Define location of plugin directory\nAS_AC_EXPAND(PLUGINDIR, \${libdir}\/tizonia0-plugins12)\nAC_DEFINE_UNQUOTED(PLUGINDIR, \"\$PLUGINDIR\",\n  [Directory where Tizonia plugins are located])\nAC_MSG_NOTICE([Using \$PLUGINDIR as the components install location])\n# Define plugin directory configure-time variable\nAC_SUBST([plugindir], ['\${libdir}\/tizonia0-plugins12'])\n\n# Checks for header files")"
     echo "$NEW_TEXT"
     perl -i -p -e "s/\#\sChecks\sfor\sheader\sfiles/$NEW_TEXT/g" \
-        $(find "$TIZONIA_REPO_DIR"/plugins -type f \( -path "./tools/*" -prune \) -o \( -name '*.ac' \) -print)
+        "$(find "$TIZONIA_REPO_DIR"/plugins -type f \( -path "./tools/*" -prune \) -o \( -name '*.ac' \) -print)"
     pretty_print "$BLU" "[DONE] : updating configure.ac files."
 }
 

@@ -18,7 +18,7 @@
 # along with Tizonia.  If not, see <http://www.gnu.org/licenses/>.
 
 SQLITE3=$(which sqlite3)
-BASEDIR=$(pwd)
+BASEDIR=$PWD
 
 COMMANDS=$1
 TIZ_RM_DB_NAME=$2
@@ -29,8 +29,8 @@ bindir=@bindir@
 datadir=@datadir@
 
 if [ -z "$1" ]; then
-    COMMANDS=${BASEDIR}"/tizonia-rm-db-initial.sql3"
-    TIZ_RM_DB_NAME=${BASEDIR}"/tizrm.db"
+    COMMANDS=$BASEDIR"/tizonia-rm-db-initial.sql3"
+    TIZ_RM_DB_NAME=$BASEDIR"/tizrm.db"
 fi
 
 if [ -f "$TIZ_RM_DB_NAME" ]; then
@@ -39,5 +39,5 @@ if [ -f "$TIZ_RM_DB_NAME" ]; then
 fi
 
 echo -e "Populating $TIZ_RM_DB_NAME using $COMMANDS..."
-$SQLITE3 $TIZ_RM_DB_NAME < $COMMANDS
+"$SQLITE3" "$TIZ_RM_DB_NAME" < "$COMMANDS"
 echo -e "Done."

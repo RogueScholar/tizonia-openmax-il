@@ -40,16 +40,16 @@ done
 
 TIZONIA_PID=$(pidof tizonia)
 LOG="/tmp/tizonia-backtrace-$TIZONIA_PID.txt"
-log "Outputting trace to '${LOG}'"
+log "Outputting trace to '$LOG'"
 
 echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
 exec gdb \
     -nh \
     -batch \
-    -p $TIZONIA_PID \
+    -p "$TIZONIA_PID" \
     -ex 'set logging overwrite on' \
-    -ex "set logging file ${LOG}" \
+    -ex "set logging file $LOG" \
     -ex 'set logging on' \
     -ex 'handle SIG33 pass nostop noprint' \
     -ex 'set pagination 0' \

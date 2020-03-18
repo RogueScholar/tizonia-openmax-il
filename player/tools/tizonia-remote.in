@@ -22,14 +22,14 @@
 #############
 # Constants #
 #############
-readonly tizbusname=$(dbus-send --session           \
+readonly tizbusname="$(dbus-send --session           \
                                 --dest=org.freedesktop.DBus \
                                 --type=method_call          \
                                 --print-reply               \
                                 /org/freedesktop/DBus       \
                                 org.freedesktop.DBus.ListNames \
                           | grep tizonia \
-                          | awk -F'"' '{ print $2 }')
+                          | awk -F'"' '{ print $2 }')"
 readonly dbuscmd="dbus-send --print-reply --dest=$tizbusname /com/aratelia/tiz/tizonia"
 readonly mediaifc='org.mpris.MediaPlayer2'
 readonly playerifc='org.mpris.MediaPlayer2.Player'
@@ -67,7 +67,7 @@ readonly cyan=6
 readonly white=7
 
 function pretty_print {
-    echo "$(tput setaf $1)$2$(tput sgr 0)" 1>&2
+    echo "$(tput setaf "$1")$2$(tput sgr 0)" 1>&2
 }
 
 function usage {
@@ -148,7 +148,7 @@ function start_dbus {
     ## test for an existing bus daemon, just to be safe
     if test -z "$DBUS_SESSION_BUS_ADDRESS" ; then
         ## if not found, launch a new one
-        export `dbus-launch --exit-with-session`
+        export "$(dbus-launch --exit-with-session)"
         echo "D-Bus per-session daemon address is: $DBUS_SESSION_BUS_ADDRESS"
         echo "D-Bus per-session daemon PID is    : $DBUS_SESSION_BUS_PID"
     fi

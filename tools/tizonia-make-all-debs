@@ -229,6 +229,6 @@ fi
 
 
 # Now attach to all running screen sessions to inspect each one of them
-for scr in $(screen -list | grep tached | awk '{ print $1 }'); do
+for scr in "$(screen -list | grep tached | awk '{ print $1 }')"; do
     screen -r "$scr"
 done

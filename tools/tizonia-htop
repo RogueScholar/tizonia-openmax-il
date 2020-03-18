@@ -36,4 +36,4 @@ done
 PROCNAME=tizonia
 [[ -n "$1" ]] && { PROCNAME=$1; }
 
-htop $(echo $(pstree -A -p $(pidof "$PROCNAME") | cut -d'(' -f2 | cut -d')' -f1) | sed 's/ /\ -p\ /g' | sed 's/^/-p\ /g')
+htop "$(echo "$(pstree -A -p "$(pidof "$PROCNAME")" | cut -d'(' -f2 | cut -d')' -f1)" | sed 's/ /\ -p\ /g' | sed 's/^/-p\ /g')"
