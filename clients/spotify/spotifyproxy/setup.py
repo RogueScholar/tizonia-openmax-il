@@ -38,19 +38,19 @@ else:
     raise RuntimeError("Could not find version in '%s'" % VERSIONFILE)
 
 setup(
-    name                 = 'tizspotifyproxy',
-    version              = version,
-    author               = 'Juan A. Rubio',
-    author_email         = 'juan.rubio@aratelia.com',
-    url                  = 'https://tizonia.org',
-    py_modules           = ['tizspotifyproxy'],
-    scripts              = [],
-    license              = "Apache License, Version 2.0",
-    description          = 'Tizonia Spotify proxy',
-    install_requires     = [
-#        'pfy >= 0.5.2',
+    name='tizspotifyproxy',
+    version=version,
+    author='Juan A. Rubio',
+    author_email='juan.rubio@aratelia.com',
+    url='https://tizonia.org',
+    py_modules=['tizspotifyproxy'],
+    scripts=[],
+    license="Apache License, Version 2.0",
+    description='Tizonia Spotify proxy',
+    install_requires=[
+        #        'pfy >= 0.5.2',
     ],
-    classifiers          = [
+    classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
@@ -62,7 +62,6 @@ setup(
         'Topic :: Multimedia :: Sound/Audio',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-    zip_safe             = False,
-    include_package_data = True
+    zip_safe=False,
+    include_package_data=True
 )
-
