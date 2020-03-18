@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 # Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 #
@@ -16,11 +15,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-from setuptools import setup, find_packages
 import re
 import sys
 import warnings
+
+from setuptools import find_packages
+from setuptools import setup
 
 if sys.version_info[:3] < (3, 5, 1):
     warnings.warn(

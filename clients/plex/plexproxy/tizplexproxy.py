@@ -13,27 +13,26 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """@package tizplexproxy
 Simple Plex API proxy/wrapper.
 
 Access Plex servers to retrieve audio track URLs and create a playback queue.
 
 """
-
-import sys
-import os
-import logging
-import random
-import unicodedata
-import re
 import configparser
+import imp
+import logging
+import os
+import random
+import re
+import sys
+import unicodedata
+
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 from plexapi.exceptions import NotFound
 from plexapi.myplex import MyPlexAccount
 from plexapi.server import PlexServer
-from fuzzywuzzy import process
-from fuzzywuzzy import fuzz
-import imp
 
 if sys.version[0] == "2":
     imp.reload(sys)

@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-
-from compileall import compile_dir
-from os import environ, path
 import sys
+from compileall import compile_dir
+from os import environ
+from os import path
 
 destdir = environ.get("DESTDIR", "")
 sitelib = sys.argv[1]
