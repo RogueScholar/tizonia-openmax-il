@@ -43,22 +43,22 @@ extern "C" {
 typedef struct sndfiled_prc sndfiled_prc_t;
 struct sndfiled_prc
 {
-  /* Object */
-  const tiz_filter_prc_t _;
-  SNDFILE * p_sf_;
-  SF_INFO sf_info_;
-  SF_VIRTUAL_IO sf_io_;
-  bool decoder_inited_;
-  tiz_buffer_t * p_store_;
-  OMX_U32 store_offset_;
+    /* Object */
+    const tiz_filter_prc_t _;
+    SNDFILE * p_sf_;
+    SF_INFO sf_info_;
+    SF_VIRTUAL_IO sf_io_;
+    bool decoder_inited_;
+    tiz_buffer_t * p_store_;
+    OMX_U32 store_offset_;
 };
 
 typedef struct sndfiled_prc_class sndfiled_prc_class_t;
 struct sndfiled_prc_class
 {
-  /* Class */
-  const tiz_filter_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_filter_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

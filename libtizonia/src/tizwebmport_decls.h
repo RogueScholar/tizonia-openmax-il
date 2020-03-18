@@ -41,16 +41,16 @@ extern "C" {
 typedef struct tiz_webmport tiz_webmport_t;
 struct tiz_webmport
 {
-  /* Object */
-  const tiz_port_t _;
+    /* Object */
+    const tiz_port_t _;
 };
 
 typedef struct tiz_webmport_class tiz_webmport_class_t;
 struct tiz_webmport_class
 {
-  /* Class */
-  const tiz_port_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_port_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

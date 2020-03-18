@@ -41,16 +41,16 @@ extern "C" {
 typedef struct fr_prc fr_prc_t;
 struct fr_prc
 {
-  /* Object */
-  const tiz_filter_prc_t _;
+    /* Object */
+    const tiz_filter_prc_t _;
 };
 
 typedef struct fr_prc_class fr_prc_class_t;
 struct fr_prc_class
 {
-  /* Class */
-  const tiz_filter_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_filter_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

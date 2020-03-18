@@ -43,6 +43,6 @@ namespace control = tiz::control;
 //
 
 control::playback_events::playback_events ()
-  : playback_ (), loop_ (), metadata_ (), volume_ ()
+    : playback_ (), loop_ (), metadata_ (), volume_ ()
 {
 }

@@ -66,143 +66,138 @@ namespace bmf = boost::msm::front;
 
 namespace tiz
 {
-  namespace graph
-  {
-    namespace ccfsm
-    {
-      static char const* const state_names[] = { "inited",
-                                                 "loaded",
-                                                 "awaiting_port_disabled_evt",
-                                                 "config2idle",
-                                                 "idle2exe",
-                                                 "executing",
-                                                 "exe2pause",
-                                                 "pause",
-                                                 "pause2exe",
-                                                 "pause2idle",
-                                                 "exe2idle",
-                                                 "idle2loaded",
-                                                 "AllOk",
-                                                 "unloaded"};
+namespace graph
+{
+namespace ccfsm
+{
+static char const* const state_names[] = { "inited",
+                                           "loaded",
+                                           "awaiting_port_disabled_evt",
+                                           "config2idle",
+                                           "idle2exe",
+                                           "executing",
+                                           "exe2pause",
+                                           "pause",
+                                           "pause2exe",
+                                           "pause2idle",
+                                           "exe2idle",
+                                           "idle2loaded",
+                                           "AllOk",
+                                           "unloaded"
+                                         };
 
-    // Concrete FSM implementation
-    struct fsm_ : public boost::msm::front::state_machine_def<fsm_>
-    {
-      // no need for exception handling
-      typedef int no_exception_thrown;
-      // require deferred events capability
-      // typedef int activate_deferred_events;
+// Concrete FSM implementation
+struct fsm_ : public boost::msm::front::state_machine_def<fsm_>
+{
+    // no need for exception handling
+    typedef int no_exception_thrown;
+    // require deferred events capability
+    // typedef int activate_deferred_events;
 
-      // data members
-      ops ** pp_ops_;
-      bool terminated_;
+    // data members
+    ops ** pp_ops_;
+    bool terminated_;
 
-      fsm_(ops **pp_ops)
+    fsm_(ops **pp_ops)
         :
         pp_ops_(pp_ops),
         terminated_ (false)
-      {
+    {
         assert (pp_ops);
-      }
+    }
 
-      // states
+    // states
 
-      // The initial state of the SM. Must be defined
-      typedef boost::mpl::vector<tg::inited, tg::AllOk> initial_state;
+    // The initial state of the SM. Must be defined
+    typedef boost::mpl::vector<tg::inited, tg::AllOk> initial_state;
 
-      // transition actions
+    // transition actions
 
-      // guard conditions
+    // guard conditions
 
-      // Transition table for the chromecast client graph fsm
-      struct transition_table : boost::mpl::vector<
-        //       Start                          Event                       Next                      Action                        Guard
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
-        bmf::Row < tg::inited                   , tg::load_evt              , tg::loaded              , bmf::ActionSequence_<
-                                                                                                          boost::mpl::vector<
-                                                                                                            tg::do_store_config,
-                                                                                                            tg::do_load,
-                                                                                                            tg::do_configure,
-                                                                                                            tg::do_ack_loaded> >    , bmf::none                    >,
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
-        bmf::Row < tg::loaded                   , tg::execute_evt           , tg::awaiting_port_disabled_evt, tg::do_disable_comp_ports<0,0>, bmf::none            >,
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
-        bmf::Row < tg::awaiting_port_disabled_evt, tg::omx_port_disabled_evt, tg::config2idle         , tg::do_loaded2idle        , tg::is_port_disabling_complete >,
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
-        bmf::Row < tg::config2idle              , tg::omx_trans_evt         , tg::idle2exe            , tg::do_idle2exe             , tg::is_trans_complete        >,
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
-        bmf::Row < tg::idle2exe                 , tg::omx_trans_evt         , tg::executing           , tg::do_ack_execd            , tg::is_trans_complete        >,
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
-        bmf::Row < tg::executing                , tg::omx_err_evt           , tg::exe2idle            , bmf::ActionSequence_<
-                                                                                                          boost::mpl::vector<
-                                                                                                            tg::do_record_fatal_error,
-                                                                                                            tg::do_exe2idle> >                                     >,
-        bmf::Row < tg::executing                , tg::unload_evt            , tg::exe2idle            , tg::do_exe2idle                                            >,
-        bmf::Row < tg::executing                , tg::pause_evt             , tg::exe2pause           , tg::do_exe2pause                                           >,
-        bmf::Row < tg::executing                , tg::volume_step_evt       , bmf::none               , tg::do_volume_step                                         >,
-        bmf::Row < tg::executing                , tg::volume_evt            , bmf::none               , tg::do_volume                                              >,
-        bmf::Row < tg::executing                , tg::mute_evt              , bmf::none               , tg::do_mute                                                >,
-        bmf::Row < tg::executing                , tg::omx_err_evt           , bmf::none               , tg::do_skip                 , tg::is_error<OMX_ErrorStreamCorruptFatal> >,
-        bmf::Row < tg::executing                , tg::omx_err_evt           , bmf::none               , tg::do_skip                 , tg::is_error<OMX_ErrorFormatNotDetected> >,
-        bmf::Row < tg::executing                , tg::prnt_plist_evt        , bmf::none               , tg::do_print_playlist                                      >,
-        bmf::Row < tg::executing                , tg::position_evt          , bmf::none               , bmf::ActionSequence_<
-                                                                                                          boost::mpl::vector<
-                                                                                                            tg::do_store_position,
-                                                                                                            tg::do_skip>
-                                                                                                          >                         , bmf::none                    >,
-        bmf::Row < tg::executing                , tg::skip_evt              , bmf::none               , bmf::ActionSequence_<
-                                                                                                          boost::mpl::vector<
-                                                                                                            tg::do_store_skip,
-                                                                                                            tg::do_skip>
-                                                                                                          >                         , bmf::none                    >,
-        bmf::Row < tg::executing                , tg::omx_eos_evt           , bmf::none               , tg::do_skip                 , tg::is_last_eos              >,
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
-        bmf::Row < tg::exe2pause                , tg::omx_trans_evt         , tg::pause               , tg::do_ack_paused           , tg::is_trans_complete        >,
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
-        bmf::Row < tg::pause                    , tg::execute_evt           , tg::pause2exe           , tg::do_pause2exe                                           >,
-        bmf::Row < tg::pause                    , tg::pause_evt             , tg::pause2exe           , tg::do_pause2exe                                           >,
-        bmf::Row < tg::pause                    , tg::stop_evt              , tg::pause2idle          , bmf::ActionSequence_<
-                                                                                                          boost::mpl::vector<
-                                                                                                            tg::do_record_destination < OMX_StateIdle >,
-                                                                                                            tg::do_pause2idle > >                                  >,
-        bmf::Row < tg::pause                    , tg::unload_evt            , tg::pause2idle          , tg::do_pause2idle                                          >,
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
-        bmf::Row < tg::pause2exe                , tg::omx_trans_evt         , tg::executing           , tg::do_ack_resumed         , tg::is_trans_complete        >,
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
-        bmf::Row < tg::pause2idle               , tg::omx_trans_evt         , tg::idle2loaded         , tg::do_idle2loaded          , tg::is_trans_complete        >,
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
-        bmf::Row < tg::exe2idle                 , tg::omx_err_evt           , bmf::none               , bmf::none                   , tg::is_error<OMX_ErrorStreamCorruptFatal> >,
-        bmf::Row < tg::exe2idle                 , tg::omx_trans_evt         , tg::idle2loaded         , tg::do_idle2loaded          , tg::is_trans_complete        >,
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
-        bmf::Row < tg::idle2loaded              , tg::omx_trans_evt         , tg::unloaded            , tg::do_destroy_graph        , tg::is_trans_complete        >,
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
-        bmf::Row < tg::AllOk                    , tg::omx_index_setting_evt , bmf::none               , tg::do_retrieve_metadata                                   >,
-        bmf::Row < tg::AllOk                    , tg::omx_err_evt           , bmf::none               , bmf::none                   , bmf::euml::Not_<
-                                                                                                                                        tg::is_fatal_error >       >,
-        bmf::Row < tg::AllOk                    , tg::omx_err_evt           , tg::unloaded            , boost::msm::front::ActionSequence_<
-                                                                                                          boost::mpl::vector<
-                                                                                                            tg::do_record_fatal_error,
-                                                                                                            tg::do_error,
-                                                                                                            tg::do_destroy_graph> > , tg::is_fatal_error           >,
-        bmf::Row < tg::AllOk                    , tg::err_evt               , tg::unloaded            , tg::do_error                                               >
-        //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+    // Transition table for the chromecast client graph fsm
+    struct transition_table : boost::mpl::vector<
+    //       Start                          Event                       Next                      Action                        Guard
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+        bmf::Row < tg::inited, tg::load_evt, tg::loaded, bmf::ActionSequence_<
+        boost::mpl::vector<
+        tg::do_store_config,
+        tg::do_load,
+        tg::do_configure,
+        tg::do_ack_loaded> >, bmf::none                    >,
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+        bmf::Row < tg::loaded, tg::execute_evt, tg::awaiting_port_disabled_evt, tg::do_disable_comp_ports<0,0>, bmf::none            >,
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+        bmf::Row < tg::awaiting_port_disabled_evt, tg::omx_port_disabled_evt, tg::config2idle, tg::do_loaded2idle, tg::is_port_disabling_complete >,
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+        bmf::Row < tg::config2idle, tg::omx_trans_evt, tg::idle2exe, tg::do_idle2exe, tg::is_trans_complete        >,
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+        bmf::Row < tg::idle2exe, tg::omx_trans_evt, tg::executing, tg::do_ack_execd, tg::is_trans_complete        >,
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+        bmf::Row < tg::executing, tg::omx_err_evt, tg::exe2idle, bmf::ActionSequence_<
+        boost::mpl::vector<
+        tg::do_record_fatal_error,
+        tg::do_exe2idle> >                                     >,
+        bmf::Row < tg::executing, tg::unload_evt, tg::exe2idle, tg::do_exe2idle                                            >,
+        bmf::Row < tg::executing, tg::pause_evt, tg::exe2pause, tg::do_exe2pause                                           >,
+        bmf::Row < tg::executing, tg::volume_step_evt, bmf::none, tg::do_volume_step                                         >,
+        bmf::Row < tg::executing, tg::volume_evt, bmf::none, tg::do_volume                                              >,
+        bmf::Row < tg::executing, tg::mute_evt, bmf::none, tg::do_mute                                                >,
+        bmf::Row < tg::executing, tg::omx_err_evt, bmf::none, tg::do_skip, tg::is_error<OMX_ErrorStreamCorruptFatal> >,
+        bmf::Row < tg::executing, tg::omx_err_evt, bmf::none, tg::do_skip, tg::is_error<OMX_ErrorFormatNotDetected> >,
+        bmf::Row < tg::executing, tg::skip_evt, bmf::none, bmf::ActionSequence_<
+        boost::mpl::vector<
+        tg::do_store_skip,
+        tg::do_skip>
+        >, bmf::none                    >,
+        bmf::Row < tg::executing, tg::omx_eos_evt, bmf::none, tg::do_skip, tg::is_last_eos              >,
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+        bmf::Row < tg::exe2pause, tg::omx_trans_evt, tg::pause, tg::do_ack_paused, tg::is_trans_complete        >,
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+        bmf::Row < tg::pause, tg::execute_evt, tg::pause2exe, tg::do_pause2exe                                           >,
+        bmf::Row < tg::pause, tg::pause_evt, tg::pause2exe, tg::do_pause2exe                                           >,
+        bmf::Row < tg::pause, tg::stop_evt, tg::pause2idle, bmf::ActionSequence_<
+        boost::mpl::vector<
+        tg::do_record_destination < OMX_StateIdle >,
+        tg::do_pause2idle > >                                  >,
+        bmf::Row < tg::pause, tg::unload_evt, tg::pause2idle, tg::do_pause2idle                                          >,
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+        bmf::Row < tg::pause2exe, tg::omx_trans_evt, tg::executing, tg::do_ack_resumed, tg::is_trans_complete        >,
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+        bmf::Row < tg::pause2idle, tg::omx_trans_evt, tg::idle2loaded, tg::do_idle2loaded, tg::is_trans_complete        >,
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+        bmf::Row < tg::exe2idle, tg::omx_err_evt, bmf::none, bmf::none, tg::is_error<OMX_ErrorStreamCorruptFatal> >,
+        bmf::Row < tg::exe2idle, tg::omx_trans_evt, tg::idle2loaded, tg::do_idle2loaded, tg::is_trans_complete        >,
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+        bmf::Row < tg::idle2loaded, tg::omx_trans_evt, tg::unloaded, tg::do_destroy_graph, tg::is_trans_complete        >,
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
+        bmf::Row < tg::AllOk, tg::omx_index_setting_evt, bmf::none, tg::do_retrieve_metadata                                   >,
+        bmf::Row < tg::AllOk, tg::omx_err_evt, bmf::none, bmf::none, bmf::euml::Not_<
+        tg::is_fatal_error >       >,
+        bmf::Row < tg::AllOk, tg::omx_err_evt, tg::unloaded, boost::msm::front::ActionSequence_<
+        boost::mpl::vector<
+        tg::do_record_fatal_error,
+        tg::do_error,
+        tg::do_destroy_graph> >, tg::is_fatal_error           >,
+        bmf::Row < tg::AllOk, tg::err_evt, tg::unloaded, tg::do_error                                               >
+    //    +--+------------------------------+---------------------------+-------------------------+-----------------------------+------------------------------+
         > {};
 
-      // Replaces the default no-transition response.
-      template <class FSM,class Event>
-      void no_transition(Event const& e, FSM&,int state)
-      {
+    // Replaces the default no-transition response.
+    template <class FSM,class Event>
+    void no_transition(Event const& e, FSM&,int state)
+    {
         TIZ_LOG (TIZ_PRIORITY_ERROR, "no transition from state [%s] on event [%s]",
                  tg::ccfsm::state_names[state], typeid(e).name());
-      }
-    };
-    // typedef boost::msm::back::state_machine<fsm_, boost::msm::back::mpl_graph_fsm_check> fsm;
-    typedef boost::msm::back::state_machine<fsm_> fsm;
+    }
+};
+// typedef boost::msm::back::state_machine<fsm_, boost::msm::back::mpl_graph_fsm_check> fsm;
+typedef boost::msm::back::state_machine<fsm_> fsm;
 
-    char const* const pstate(fsm const& p);
+char const* const pstate(fsm const& p);
 
-    } // namespace ccfsm
-  } // namespace graph
+} // namespace ccfsm
+} // namespace graph
 } // namespace tiz
 
 #endif // TIZCHROMECASTGRAPHFSM_HPP

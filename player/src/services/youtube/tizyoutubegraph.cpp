@@ -73,71 +73,71 @@ namespace youtubefsm = tiz::graph::youtubefsm;
 // youtube
 //
 graph::youtube::youtube ()
-  : graph::graph ("youtubegraph"),
-    fsm_ (new tiz::graph::youtubefsm::fsm (
-        boost::msm::back::states_
-        << tiz::graph::youtubefsm::fsm::auto_detecting_0 (&p_ops_)
-        << tiz::graph::youtubefsm::fsm::auto_detecting_1 (&p_ops_)
-        << tiz::graph::youtubefsm::fsm::updating_graph (&p_ops_)
-        << tiz::graph::youtubefsm::fsm::reconfiguring_tunnel_0 (&p_ops_)
-        << tiz::graph::youtubefsm::fsm::reconfiguring_tunnel_1 (&p_ops_)
-        << tiz::graph::youtubefsm::fsm::reconfiguring_tunnel_2 (&p_ops_)
-        << tiz::graph::youtubefsm::fsm::skipping (&p_ops_),
-        &p_ops_))
+    : graph::graph ("youtubegraph"),
+      fsm_ (new tiz::graph::youtubefsm::fsm (
+                boost::msm::back::states_
+                << tiz::graph::youtubefsm::fsm::auto_detecting_0 (&p_ops_)
+                << tiz::graph::youtubefsm::fsm::auto_detecting_1 (&p_ops_)
+                << tiz::graph::youtubefsm::fsm::updating_graph (&p_ops_)
+                << tiz::graph::youtubefsm::fsm::reconfiguring_tunnel_0 (&p_ops_)
+                << tiz::graph::youtubefsm::fsm::reconfiguring_tunnel_1 (&p_ops_)
+                << tiz::graph::youtubefsm::fsm::reconfiguring_tunnel_2 (&p_ops_)
+                << tiz::graph::youtubefsm::fsm::skipping (&p_ops_),
+                &p_ops_))
 
 {
 }
 
 graph::youtube::~youtube ()
 {
-  delete (boost::any_cast< youtubefsm::fsm * >(fsm_));
+    delete (boost::any_cast< youtubefsm::fsm * >(fsm_));
 }
 
 graph::ops *graph::youtube::do_init ()
 {
-  // The youtube source will be added to the lists later on during
-  // auto_detecting_0.
-  omx_comp_name_lst_t comp_list;
-  omx_comp_role_lst_t role_list;
-  return new youtubeops (this, comp_list, role_list);
+    // The youtube source will be added to the lists later on during
+    // auto_detecting_0.
+    omx_comp_name_lst_t comp_list;
+    omx_comp_role_lst_t role_list;
+    return new youtubeops (this, comp_list, role_list);
 }
 
 bool graph::youtube::dispatch_cmd (const tiz::graph::cmd *p_cmd)
 {
-  assert (p_ops_);
-  assert (p_cmd);
+    assert (p_ops_);
+    assert (p_cmd);
 
-  if (!p_cmd->kill_thread ())
-  {
-    youtubefsm::fsm *p_fsm = boost::any_cast< youtubefsm::fsm * >(fsm_);
-    assert (p_fsm);
-
-    if (p_cmd->evt ().type () == typeid(tiz::graph::load_evt))
+    if (!p_cmd->kill_thread ())
     {
-      // Time to start the FSM
-      TIZ_LOG (TIZ_PRIORITY_NOTICE, "Starting [%s] fsm...",
-               get_graph_name ().c_str ());
-      p_fsm->start ();
+        youtubefsm::fsm *p_fsm = boost::any_cast< youtubefsm::fsm * >(fsm_);
+        assert (p_fsm);
+
+        if (p_cmd->evt ().type () == typeid(tiz::graph::load_evt))
+        {
+            // Time to start the FSM
+            TIZ_LOG (TIZ_PRIORITY_NOTICE, "Starting [%s] fsm...",
+                     get_graph_name ().c_str ());
+            p_fsm->start ();
+        }
+
+        p_cmd->inject< youtubefsm::fsm >(*p_fsm, tiz::graph::youtubefsm::pstate);
+
+        // Check for internal errors produced during the processing of the last
+        // event. If any, inject an "internal" error event. This is fatal and shall
+        // terminate the state machine.
+        if (OMX_ErrorNone != p_ops_->internal_error ())
+        {
+            p_fsm->process_event (tiz::graph::err_evt (
+                                      p_ops_->internal_error (), p_ops_->internal_error_msg ()));
+        }
+
+        if (p_fsm->terminated_)
+        {
+            TIZ_LOG (TIZ_PRIORITY_NOTICE, "[%s] fsm terminated...",
+                     get_graph_name ().c_str ());
+        }
     }
 
-    p_cmd->inject< youtubefsm::fsm >(*p_fsm, tiz::graph::youtubefsm::pstate);
-
-    // Check for internal errors produced during the processing of the last
-    // event. If any, inject an "internal" error event. This is fatal and shall
-    // terminate the state machine.
-    if (OMX_ErrorNone != p_ops_->internal_error ())
-    {
-      p_fsm->process_event (tiz::graph::err_evt (
-          p_ops_->internal_error (), p_ops_->internal_error_msg ()));
-    }
-
-    if (p_fsm->terminated_)
-    {
-      TIZ_LOG (TIZ_PRIORITY_NOTICE, "[%s] fsm terminated...",
-               get_graph_name ().c_str ());
-    }
-  }
-
-  return p_cmd->kill_thread ();
+    return p_cmd->kill_thread ();
 }
 

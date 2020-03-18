@@ -52,110 +52,110 @@
 
 static bool gmusic_credentials_present (void)
 {
-  if (!strcmp (GMUSIC_USER, "xxx"))
+    if (!strcmp (GMUSIC_USER, "xxx"))
     {
-      return false;
+        return false;
     }
-  return true;
+    return true;
 }
 
 START_TEST (test_gmusic_play_artist)
 {
-  tiz_gmusic_t *p_gmusic = NULL;
-  bool unlimited_search = false;
-  int rc
-      = tiz_gmusic_init (&p_gmusic, GMUSIC_USER, GMUSIC_PASS, GMUSIC_DEVICE_ID);
-  ck_assert (0 == rc);
-  ck_assert (p_gmusic);
+    tiz_gmusic_t *p_gmusic = NULL;
+    bool unlimited_search = false;
+    int rc
+        = tiz_gmusic_init (&p_gmusic, GMUSIC_USER, GMUSIC_PASS, GMUSIC_DEVICE_ID);
+    ck_assert (0 == rc);
+    ck_assert (p_gmusic);
 
-  rc = tiz_gmusic_play_artist (p_gmusic, GMUSIC_ARTIST, unlimited_search);
-  ck_assert (0 == rc);
+    rc = tiz_gmusic_play_artist (p_gmusic, GMUSIC_ARTIST, unlimited_search);
+    ck_assert (0 == rc);
 
-  /* while (1) */
-  {
-    /*     char cmd[CMD_LEN]; */
-    const char *next_url = tiz_gmusic_get_next_url (p_gmusic);
-    ck_assert (next_url);
-    fprintf (stderr, "url = %s\n", next_url);
+    /* while (1) */
+    {
+        /*     char cmd[CMD_LEN]; */
+        const char *next_url = tiz_gmusic_get_next_url (p_gmusic);
+        ck_assert (next_url);
+        fprintf (stderr, "url = %s\n", next_url);
 
-    const char *artist = tiz_gmusic_get_current_song_artist (p_gmusic);
-    ck_assert (artist);
-    fprintf (stderr, "artist = %s\n", artist);
+        const char *artist = tiz_gmusic_get_current_song_artist (p_gmusic);
+        ck_assert (artist);
+        fprintf (stderr, "artist = %s\n", artist);
 
-    const char *title = tiz_gmusic_get_current_song_title (p_gmusic);
-    ck_assert (title);
-    fprintf (stderr, "title = %s\n", title);
+        const char *title = tiz_gmusic_get_current_song_title (p_gmusic);
+        ck_assert (title);
+        fprintf (stderr, "title = %s\n", title);
 
-    /*     snprintf (cmd, CMD_LEN, "%s \"%s\"", PLAYER, next_url); */
-    /*     fprintf (stderr, "cmd = %s\n", cmd); */
-    /*     ck_assert (-1 != system (cmd)); */
-  }
+        /*     snprintf (cmd, CMD_LEN, "%s \"%s\"", PLAYER, next_url); */
+        /*     fprintf (stderr, "cmd = %s\n", cmd); */
+        /*     ck_assert (-1 != system (cmd)); */
+    }
 
-  tiz_gmusic_destroy (p_gmusic);
+    tiz_gmusic_destroy (p_gmusic);
 }
 END_TEST
 
 START_TEST (test_gmusic_play_album)
 {
-  tiz_gmusic_t *p_gmusic = NULL;
-  bool unlimited_search = false;
-  int rc
-      = tiz_gmusic_init (&p_gmusic, GMUSIC_USER, GMUSIC_PASS, GMUSIC_DEVICE_ID);
-  ck_assert (0 == rc);
-  ck_assert (p_gmusic);
+    tiz_gmusic_t *p_gmusic = NULL;
+    bool unlimited_search = false;
+    int rc
+        = tiz_gmusic_init (&p_gmusic, GMUSIC_USER, GMUSIC_PASS, GMUSIC_DEVICE_ID);
+    ck_assert (0 == rc);
+    ck_assert (p_gmusic);
 
-  rc = tiz_gmusic_play_album (p_gmusic, GMUSIC_ALBUM, unlimited_search);
-  ck_assert (0 == rc);
+    rc = tiz_gmusic_play_album (p_gmusic, GMUSIC_ALBUM, unlimited_search);
+    ck_assert (0 == rc);
 
-  /* while (1) */
-  {
-    /*     char cmd[CMD_LEN]; */
-    const char *next_url = tiz_gmusic_get_next_url (p_gmusic);
-    ck_assert (next_url);
-    fprintf (stderr, "url = %s\n", next_url);
+    /* while (1) */
+    {
+        /*     char cmd[CMD_LEN]; */
+        const char *next_url = tiz_gmusic_get_next_url (p_gmusic);
+        ck_assert (next_url);
+        fprintf (stderr, "url = %s\n", next_url);
 
-    const char *artist = tiz_gmusic_get_current_song_artist (p_gmusic);
-    ck_assert (artist);
-    fprintf (stderr, "artist = %s\n", artist);
+        const char *artist = tiz_gmusic_get_current_song_artist (p_gmusic);
+        ck_assert (artist);
+        fprintf (stderr, "artist = %s\n", artist);
 
-    const char *title = tiz_gmusic_get_current_song_title (p_gmusic);
-    ck_assert (title);
-    fprintf (stderr, "title = %s\n", title);
-    /*     snprintf (cmd, CMD_LEN, "%s \"%s\"", PLAYER, next_url); */
-    /*     fprintf (stderr, "cmd = %s\n", cmd); */
-    /*     ck_assert (-1 != system (cmd)); */
-  }
+        const char *title = tiz_gmusic_get_current_song_title (p_gmusic);
+        ck_assert (title);
+        fprintf (stderr, "title = %s\n", title);
+        /*     snprintf (cmd, CMD_LEN, "%s \"%s\"", PLAYER, next_url); */
+        /*     fprintf (stderr, "cmd = %s\n", cmd); */
+        /*     ck_assert (-1 != system (cmd)); */
+    }
 
-  tiz_gmusic_destroy (p_gmusic);
+    tiz_gmusic_destroy (p_gmusic);
 }
 END_TEST
 
 Suite *gmusic_suite (void)
 {
-  TCase *tc_gmusic;
-  Suite *s = suite_create ("libtizgmusic");
+    TCase *tc_gmusic;
+    Suite *s = suite_create ("libtizgmusic");
 
-  /* test case */
-  tc_gmusic = tcase_create ("Google Music client lib unit tests");
-  tcase_add_test (tc_gmusic, test_gmusic_play_artist);
-  tcase_add_test (tc_gmusic, test_gmusic_play_album);
-  suite_add_tcase (s, tc_gmusic);
+    /* test case */
+    tc_gmusic = tcase_create ("Google Music client lib unit tests");
+    tcase_add_test (tc_gmusic, test_gmusic_play_artist);
+    tcase_add_test (tc_gmusic, test_gmusic_play_album);
+    suite_add_tcase (s, tc_gmusic);
 
-  return s;
+    return s;
 }
 
 int main (void)
 {
-  int number_failed = 1;
-  if (gmusic_credentials_present ())
+    int number_failed = 1;
+    if (gmusic_credentials_present ())
     {
-      SRunner *sr = srunner_create (gmusic_suite ());
-      srunner_set_log (sr, "-");
-      srunner_run_all (sr, CK_VERBOSE);
-      number_failed = srunner_ntests_failed (sr);
-      srunner_free (sr);
+        SRunner *sr = srunner_create (gmusic_suite ());
+        srunner_set_log (sr, "-");
+        srunner_run_all (sr, CK_VERBOSE);
+        number_failed = srunner_ntests_failed (sr);
+        srunner_free (sr);
     }
-  return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
 /* Local Variables: */

@@ -38,59 +38,58 @@
 
 namespace tiz
 {
-  namespace graph
-  {
-    class chromecastconfig : public config
+namespace graph
+{
+class chromecastconfig : public config
+{
+public:
+    enum service_config_type_t
     {
-    public:
-      enum service_config_type_t
-        {
-         ConfigHttpStreaming,
-         ConfigGoogleMusic,
-         ConfigSoundCloud,
-         ConfigTunein,
-         ConfigYouTube,
-         ConfigPlex,
-         ConfigUnknown,
-         ConfigIheart
-        };
+        ConfigHttpStreaming,
+        ConfigGoogleMusic,
+        ConfigSoundCloud,
+        ConfigTunein,
+        ConfigYouTube,
+        ConfigPlex,
+        ConfigUnknown
+    };
 
-    public:
-      chromecastconfig (const std::string &cc_name_or_ip,
-                        const tizgraphconfig_ptr_t &service_config,
-                        const service_config_type_t service_config_type)
+public:
+    chromecastconfig (const std::string &cc_name_or_ip,
+                      const tizgraphconfig_ptr_t &service_config,
+                      const service_config_type_t service_config_type)
         : config (service_config->get_playlist (), 0),
           name_or_ip_ (cc_name_or_ip),
           service_config_ (service_config),
           service_config_type_(service_config_type)
-      {
-      }
+    {
+    }
 
-      ~chromecastconfig ()
-      {
-      }
+    ~chromecastconfig ()
+    {
+    }
 
-      std::string get_name_or_ip () const
-      {
+    std::string get_name_or_ip () const
+    {
         return name_or_ip_;
-      }
+    }
 
-      tizgraphconfig_ptr_t get_service_config () const
-      {
+    tizgraphconfig_ptr_t get_service_config () const
+    {
         return service_config_;
-      }
+    }
 
-      service_config_type_t get_service_config_type () const
-      {
+    service_config_type_t get_service_config_type () const
+    {
         return service_config_type_;
-      }
+    }
 
-    protected:
-      const std::string name_or_ip_;
-      tizgraphconfig_ptr_t service_config_;
-      service_config_type_t service_config_type_;
-    };
-  }  // namespace graph
+protected:
+    const std::string name_or_ip_;
+    tizgraphconfig_ptr_t service_config_;
+    service_config_type_t service_config_type_;
+};
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZCHROMECASTCONFIG_HPP

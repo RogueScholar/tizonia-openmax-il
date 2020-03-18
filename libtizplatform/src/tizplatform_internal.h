@@ -38,8 +38,8 @@
 typedef struct value value_t;
 struct value
 {
-  char * p_value;
-  value_t * p_next;
+    char * p_value;
+    value_t * p_next;
 };
 
 /**
@@ -51,11 +51,11 @@ struct value
 typedef struct keyval keyval_t;
 struct keyval
 {
-  char * p_key;
-  value_t * p_value_list;
-  value_t * p_value_iter;
-  int valcount;
-  keyval_t * p_next;
+    char * p_key;
+    value_t * p_value_list;
+    value_t * p_value_iter;
+    int valcount;
+    keyval_t * p_next;
 };
 
 /**
@@ -66,8 +66,8 @@ struct keyval
 typedef struct tiz_rcfile tiz_rcfile_t;
 struct tiz_rcfile
 {
-  keyval_t * p_keyvals;
-  int count;
+    keyval_t * p_keyvals;
+    int count;
 };
 
 /**

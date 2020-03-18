@@ -34,34 +34,34 @@
 
 namespace tiz
 {
-  namespace graph
-  {
-    class mpegdecoder : public decoder
-    {
+namespace graph
+{
+class mpegdecoder : public decoder
+{
 
-    public:
-      mpegdecoder ();
+public:
+    mpegdecoder ();
 
-    protected:
-      ops *do_init ();
+protected:
+    ops *do_init ();
 
-    };
+};
 
-    class mpegdecops : public decops
-    {
-    public:
-      mpegdecops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-                 const omx_comp_role_lst_t &role_lst);
+class mpegdecops : public decops
+{
+public:
+    mpegdecops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
+                const omx_comp_role_lst_t &role_lst);
 
-    public:
-      void do_probe ();
-      bool is_port_settings_evt_required () const;
-      void do_configure ();
+public:
+    void do_probe ();
+    bool is_port_settings_evt_required () const;
+    void do_configure ();
 
-    protected:
-      bool need_port_settings_changed_evt_;
-    };
-  }  // namespace graph
+protected:
+    bool need_port_settings_changed_evt_;
+};
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZMPEGGRAPH_HPP

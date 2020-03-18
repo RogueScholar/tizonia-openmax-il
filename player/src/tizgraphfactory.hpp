@@ -39,16 +39,16 @@
 
 namespace tiz
 {
-  namespace graph
-  {
-    class factory : boost::noncopyable
-    {
+namespace graph
+{
+class factory : boost::noncopyable
+{
 
-    public:
-      static tizgraph_ptr_t create_graph (const std::string &uri);
-      static std::string coding_type (const std::string &uri);
-    };
-  }  // namespace graph
+public:
+    static tizgraph_ptr_t create_graph (const std::string &uri);
+    static std::string coding_type (const std::string &uri);
+};
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZGRAPHFACTORY_HPP

@@ -34,26 +34,26 @@
 
 namespace tiz
 {
-  namespace graph
-  {
-    // Forward declarations
-    class cmd;
-    class ops;
+namespace graph
+{
+// Forward declarations
+class cmd;
+class ops;
 
-    class chromecast : public graph
-    {
+class chromecast : public graph
+{
 
-    public:
-      chromecast ();
+public:
+    chromecast ();
 
-    protected:
-      ops *do_init ();
-      bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
+protected:
+    ops *do_init ();
+    bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
 
-    protected:
-      ccfsm::fsm fsm_;
-    };
-  }  // namespace graph
+protected:
+    ccfsm::fsm fsm_;
+};
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZCHROMECASTGRAPH_HPP

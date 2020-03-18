@@ -29,12 +29,12 @@
 START_TEST (test_mem_alloc_and_free)
 {
 
-  int *p_item = NULL;
-  p_item = (int *) tiz_mem_alloc (sizeof (int));
+    int *p_item = NULL;
+    p_item = (int *) tiz_mem_alloc (sizeof (int));
 
-  fail_if (p_item == NULL);
+    fail_if (p_item == NULL);
 
-  tiz_mem_free (p_item);
+    tiz_mem_free (p_item);
 
 }
 END_TEST

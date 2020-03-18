@@ -36,81 +36,75 @@
 class tizplex
 {
 public:
-  /**
-   * Various playback modes that control the playback queue.
-   */
-  enum playback_mode
-  {
-    PlaybackModeNormal,
-    PlaybackModeShuffle,
-    PlaybackModeMax
-  };
+    /**
+     * Various playback modes that control the playback queue.
+     */
+    enum playback_mode
+    {
+        PlaybackModeNormal,
+        PlaybackModeShuffle,
+        PlaybackModeMax
+    };
 
 public:
-  tizplex (const std::string &base_url, const std::string &auth_token,
-           const std::string &music_section);
-  ~tizplex ();
+    tizplex (const std::string &base_url, const std::string &auth_token,
+             const std::string &music_section);
+    ~tizplex ();
 
-  int init ();
-  int start ();
-  void stop ();
-  void deinit ();
+    int init ();
+    int start ();
+    void stop ();
+    void deinit ();
 
-  int play_audio_tracks (const std::string &tracks);
-  int play_audio_artist (const std::string &artist);
-  int play_audio_album (const std::string &album);
-  int play_audio_playlist (const std::string &playlist);
+    int play_audio_tracks (const std::string &tracks);
+    int play_audio_artist (const std::string &artist);
+    int play_audio_album (const std::string &album);
+    int play_audio_playlist (const std::string &playlist);
 
-  void set_playback_mode (const playback_mode mode);
-  void clear_queue ();
-  void print_queue ();
+    void set_playback_mode (const playback_mode mode);
+    void clear_queue ();
+    const char *get_current_audio_track_index ();
+    const char *get_current_queue_length ();
+    const char *get_current_queue_progress ();
 
-  const char *get_current_audio_track_index ();
-  const char *get_current_queue_length ();
-  int get_current_queue_length_as_int ();
-  const char *get_current_queue_progress ();
+    const char *get_next_url (const bool a_remove_current_url);
+    const char *get_prev_url (const bool a_remove_current_url);
 
-  const char *get_url (const int a_position);
-  const char *get_next_url (const bool a_remove_current_url);
-  const char *get_prev_url (const bool a_remove_current_url);
-
-  const char *get_current_audio_track_title ();
-  const char *get_current_audio_track_artist ();
-  const char *get_current_audio_track_album ();
-  const char *get_current_audio_track_year ();
-  const char *get_current_audio_track_file_size ();
-  int get_current_audio_track_file_size_as_int ();
-  const char *get_current_audio_track_duration ();
-  const char *get_current_audio_track_bitrate ();
-  const char *get_current_audio_track_codec ();
-  const char *get_current_audio_track_album_art ();
+    const char *get_current_audio_track_title ();
+    const char *get_current_audio_track_artist ();
+    const char *get_current_audio_track_album ();
+    const char *get_current_audio_track_year ();
+    const char *get_current_audio_track_file_size ();
+    int get_current_audio_track_file_size_as_int ();
+    const char *get_current_audio_track_duration ();
+    const char *get_current_audio_track_bitrate ();
+    const char *get_current_audio_track_codec ();
+    const char *get_current_audio_track_album_art ();
 
 private:
-  void get_current_track ();
-  void get_current_track_queue_index_and_length(int &index, int &length);
+    void get_current_track ();
 
 private:
-  std::string base_url_;
-  std::string auth_token_;
-  std::string music_section_;
-  std::string current_url_;
-  std::string current_track_index_;
-  std::string current_queue_length_;
-  int current_queue_length_as_int_;
-  std::string current_track_title_;
-  std::string current_track_artist_;
-  std::string current_track_album_;
-  std::string current_track_year_;
-  std::string current_track_file_size_;
-  int current_track_file_size_as_int_;
-  std::string current_track_duration_;
-  std::string current_track_bitrate_;
-  std::string current_track_codec_;
-  std::string current_track_album_art_;
-  std::string current_queue_progress_;
-  boost::python::object py_main_;
-  boost::python::object py_global_;
-  boost::python::object py_plex_proxy_;
+    std::string base_url_;
+    std::string auth_token_;
+    std::string music_section_;
+    std::string current_url_;
+    std::string current_track_index_;
+    std::string current_queue_length_;
+    std::string current_track_title_;
+    std::string current_track_artist_;
+    std::string current_track_album_;
+    std::string current_track_year_;
+    std::string current_track_file_size_;
+    int current_track_file_size_as_int_;
+    std::string current_track_duration_;
+    std::string current_track_bitrate_;
+    std::string current_track_codec_;
+    std::string current_track_album_art_;
+    std::string current_queue_progress_;
+    boost::python::object py_main_;
+    boost::python::object py_global_;
+    boost::python::object py_plex_proxy_;
 };
 
 #endif  // TIZPLEX_HPP

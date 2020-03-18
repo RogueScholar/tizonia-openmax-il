@@ -41,18 +41,18 @@ extern "C" {
 typedef struct gmusic_cfgport gmusic_cfgport_t;
 struct gmusic_cfgport
 {
-  /* Object */
-  const tiz_configport_t _;
-  OMX_TIZONIA_AUDIO_PARAM_GMUSICSESSIONTYPE session_;
-  OMX_TIZONIA_AUDIO_PARAM_GMUSICPLAYLISTTYPE playlist_;
+    /* Object */
+    const tiz_configport_t _;
+    OMX_TIZONIA_AUDIO_PARAM_GMUSICSESSIONTYPE session_;
+    OMX_TIZONIA_AUDIO_PARAM_GMUSICPLAYLISTTYPE playlist_;
 };
 
 typedef struct gmusic_cfgport_class gmusic_cfgport_class_t;
 struct gmusic_cfgport_class
 {
-  /* Class */
-  const tiz_configport_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_configport_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

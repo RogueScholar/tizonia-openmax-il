@@ -46,30 +46,30 @@ extern "C" {
 typedef struct mp3d_prc mp3d_prc_t;
 struct mp3d_prc
 {
-  /* Object */
-  const tiz_prc_t _;
-  OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
-  struct mad_stream stream_;
-  struct mad_frame frame_;
-  struct mad_synth synth_;
-  size_t remaining_;
-  mad_timer_t timer_;
-  unsigned long frame_count_;
-  unsigned char in_buff_[INPUT_BUFFER_SIZE + MAD_BUFFER_GUARD];
-  OMX_BUFFERHEADERTYPE * p_inhdr_;
-  OMX_BUFFERHEADERTYPE * p_outhdr_;
-  int next_synth_sample_;
-  bool eos_;
-  bool in_port_disabled_;
-  bool out_port_disabled_;
+    /* Object */
+    const tiz_prc_t _;
+    OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
+    struct mad_stream stream_;
+    struct mad_frame frame_;
+    struct mad_synth synth_;
+    size_t remaining_;
+    mad_timer_t timer_;
+    unsigned long frame_count_;
+    unsigned char in_buff_[INPUT_BUFFER_SIZE + MAD_BUFFER_GUARD];
+    OMX_BUFFERHEADERTYPE * p_inhdr_;
+    OMX_BUFFERHEADERTYPE * p_outhdr_;
+    int next_synth_sample_;
+    bool eos_;
+    bool in_port_disabled_;
+    bool out_port_disabled_;
 };
 
 typedef struct mp3d_prc_class mp3d_prc_class_t;
 struct mp3d_prc_class
 {
-  /* Class */
-  const tiz_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

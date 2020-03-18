@@ -44,22 +44,22 @@ extern "C" {
 typedef struct mp3meta_prc mp3meta_prc_t;
 struct mp3meta_prc
 {
-  /* Object */
-  const tiz_prc_t _;
-  mpg123_handle *p_mpg123_;
-  OMX_BUFFERHEADERTYPE *p_out_hdr_;
-  OMX_PARAM_CONTENTURITYPE *p_uri_param_;
-  OMX_U32 counter_;
-  bool eos_;
-  bool out_port_disabled_;
+    /* Object */
+    const tiz_prc_t _;
+    mpg123_handle *p_mpg123_;
+    OMX_BUFFERHEADERTYPE *p_out_hdr_;
+    OMX_PARAM_CONTENTURITYPE *p_uri_param_;
+    OMX_U32 counter_;
+    bool eos_;
+    bool out_port_disabled_;
 };
 
 typedef struct mp3meta_prc_class mp3meta_prc_class_t;
 struct mp3meta_prc_class
 {
-  /* Class */
-  const tiz_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

@@ -37,7 +37,7 @@ class tizchromecastctx;
 
 struct tiz_chromecast_ctx
 {
-  tizchromecastctx *p_ctx_;
+    tizchromecastctx *p_ctx_;
 };
 
 #ifdef __cplusplus

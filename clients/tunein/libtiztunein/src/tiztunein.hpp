@@ -36,85 +36,82 @@
 class tiztunein
 {
 public:
-  /**
-   * Various playback modes that control the playback queue.
-   */
-  enum playback_mode
+    /**
+     * Various playback modes that control the playback queue.
+     */
+    enum playback_mode
     {
-      PlaybackModeNormal,
-      PlaybackModeShuffle,
-      PlaybackModeMax
+        PlaybackModeNormal,
+        PlaybackModeShuffle,
+        PlaybackModeMax
     };
 
-  /**
-   * Various search modes to filter the contents added to the playback queue.
-   */
-  enum search_mode
-  {
-    SearchModeAll,
-    SearchModeStations,
-    SearchModeShows,
-    SearchModeMax
-  };
+    /**
+     * Various search modes to filter the contents added to the playback queue.
+     */
+    enum search_mode
+    {
+        SearchModeAll,
+        SearchModeStations,
+        SearchModeShows,
+        SearchModeMax
+    };
 
 public:
-  tiztunein ();
-  ~tiztunein ();
+    tiztunein ();
+    ~tiztunein ();
 
-  int init ();
-  int start ();
-  void stop ();
-  void deinit ();
+    int init ();
+    int start ();
+    void stop ();
+    void deinit ();
 
-  int play_radios (const std::string &query, const std::string &keywords1,
-                   const std::string &keywords2, const std::string &keywords3);
-  int play_category (const std::string &category, const std::string &keywords1,
-                     const std::string &keywords2,
-                     const std::string &keywords3);
+    int play_radios (const std::string &query, const std::string &keywords1,
+                     const std::string &keywords2, const std::string &keywords3);
+    int play_category (const std::string &category, const std::string &keywords1,
+                       const std::string &keywords2,
+                       const std::string &keywords3);
 
-  void clear_queue ();
-  void print_queue ();
-  void set_playback_mode (const playback_mode mode);
-  void set_search_mode (const search_mode mode);
+    void clear_queue ();
+    void set_playback_mode (const playback_mode mode);
+    void set_search_mode (const search_mode mode);
 
-  const char *get_current_radio_index ();
-  const char *get_current_queue_length ();
-  int get_current_queue_length_as_int ();
-  const char *get_current_queue_progress ();
-
-  const char *get_url (const int a_position);
-  const char *get_next_url (const bool a_remove_current_url);
-  const char *get_prev_url (const bool a_remove_current_url);
-  const char *get_current_radio_name ();
-  const char *get_current_radio_description ();
-  const char *get_current_radio_reliability ();
-  const char *get_current_radio_type ();
-  const char *get_current_radio_website ();
-  const char *get_current_radio_bitrate ();
-  const char *get_current_radio_format ();
-  const char *get_current_radio_stream_url ();
-  const char *get_current_radio_thumbnail_url ();
+    const char *get_current_radio_index ();
+    const char *get_current_queue_length ();
+    int get_current_queue_length_as_int ();
+    const char *get_current_queue_progress ();
+    const char *get_next_url (const bool a_remove_current_url);
+    const char *get_prev_url (const bool a_remove_current_url);
+    const char *get_current_radio_name ();
+    const char *get_current_radio_description ();
+    const char *get_current_radio_reliability ();
+    const char *get_current_radio_type ();
+    const char *get_current_radio_website ();
+    const char *get_current_radio_bitrate ();
+    const char *get_current_radio_format ();
+    const char *get_current_radio_stream_url ();
+    const char *get_current_radio_thumbnail_url ();
 
 private:
-  void obtain_current_queue_progress();
-  void get_current_radio ();
+    void obtain_current_queue_progress();
+    void get_current_radio ();
 
 private:
-  std::string current_url_;
-  std::string current_radio_index_;
-  std::string current_queue_length_;
-  std::string current_radio_name_;
-  std::string current_radio_description_;
-  std::string current_radio_reliability_;
-  std::string current_radio_type_;
-  std::string current_radio_website_;
-  std::string current_radio_bitrate_;
-  std::string current_radio_format_;
-  std::string current_radio_thumbnail_url_;
-  std::string current_queue_progress_;
-  boost::python::object py_main_;
-  boost::python::object py_global_;
-  boost::python::object py_tunein_proxy_;
+    std::string current_url_;
+    std::string current_radio_index_;
+    std::string current_queue_length_;
+    std::string current_radio_name_;
+    std::string current_radio_description_;
+    std::string current_radio_reliability_;
+    std::string current_radio_type_;
+    std::string current_radio_website_;
+    std::string current_radio_bitrate_;
+    std::string current_radio_format_;
+    std::string current_radio_thumbnail_url_;
+    std::string current_queue_progress_;
+    boost::python::object py_main_;
+    boost::python::object py_global_;
+    boost::python::object py_tunein_proxy_;
 };
 
 #endif  // TIZTUNEIN_HPP

@@ -46,23 +46,23 @@ extern "C" {
 typedef struct oggmuxflt_prc oggmuxflt_prc_t;
 struct oggmuxflt_prc
 {
-  /* Object */
-  const tiz_filter_prc_t _;
-  OGGZ * p_oggz_;
-  long oggz_audio_serialno_;
-  long oggz_video_serialno_;
-  long oggz_audio_granulepos_;
-  long oggz_video_granulepos_;
-  long oggz_audio_packetno_;
-  long oggz_video_packetno_;
+    /* Object */
+    const tiz_filter_prc_t _;
+    OGGZ * p_oggz_;
+    long oggz_audio_serialno_;
+    long oggz_video_serialno_;
+    long oggz_audio_granulepos_;
+    long oggz_video_granulepos_;
+    long oggz_audio_packetno_;
+    long oggz_video_packetno_;
 };
 
 typedef struct oggmuxflt_prc_class oggmuxflt_prc_class_t;
 struct oggmuxflt_prc_class
 {
-  /* Class */
-  const tiz_filter_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_filter_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

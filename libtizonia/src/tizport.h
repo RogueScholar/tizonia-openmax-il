@@ -48,39 +48,39 @@ extern "C" {
 typedef enum tiz_port_flag_ids tiz_port_flag_ids_t;
 enum tiz_port_flag_ids
 {
-  EFlagEnabled = 0,
-  EFlagBeingEnabled,
-  EFlagBeingDisabled,
-  EFlagPopulated,
-  EFlagTunneled,
-  EFlagBufferSupplier,
-  EFlagBufferAllocator,
-  EFlagFlushInProgress,
-  EFlagMax
+    EFlagEnabled = 0,
+    EFlagBeingEnabled,
+    EFlagBeingDisabled,
+    EFlagPopulated,
+    EFlagTunneled,
+    EFlagBufferSupplier,
+    EFlagBufferAllocator,
+    EFlagFlushInProgress,
+    EFlagMax
 };
 
 typedef struct tiz_port_options tiz_port_options_t;
 struct tiz_port_options
 {
-  /* Port domain (audio, video, image, other...) */
-  OMX_PORTDOMAINTYPE domain;
-  /* Input or output port */
-  OMX_DIRTYPE dir;
-  /* Minimum number of buffers required by this port */
-  OMX_U32 min_buf_count;
-  /* Minimum size, in bytes, of buffers used for this port */
-  OMX_U32 min_buf_size;
-  /* Buffers contiguous requirement (true or false) */
-  OMX_BOOL contiguous;
-  /* Buffer aligment requirement */
-  OMX_U32 alignment;
-  /* Port supplier preference used during tunneling */
-  OMX_BUFFERSUPPLIERTYPE buf_supplier;
-  /* Memory allocation and deallocation hooks */
-  tiz_alloc_hooks_t mem_hooks;
-  /* Port index of the port that acts as a master or slave of this port. Use -1
-     * for none. */
-  OMX_U32 mos_port;
+    /* Port domain (audio, video, image, other...) */
+    OMX_PORTDOMAINTYPE domain;
+    /* Input or output port */
+    OMX_DIRTYPE dir;
+    /* Minimum number of buffers required by this port */
+    OMX_U32 min_buf_count;
+    /* Minimum size, in bytes, of buffers used for this port */
+    OMX_U32 min_buf_size;
+    /* Buffers contiguous requirement (true or false) */
+    OMX_BOOL contiguous;
+    /* Buffer aligment requirement */
+    OMX_U32 alignment;
+    /* Port supplier preference used during tunneling */
+    OMX_BUFFERSUPPLIERTYPE buf_supplier;
+    /* Memory allocation and deallocation hooks */
+    tiz_alloc_hooks_t mem_hooks;
+    /* Port index of the port that acts as a master or slave of this port. Use -1
+       * for none. */
+    OMX_U32 mos_port;
 };
 
 void *
@@ -186,7 +186,7 @@ tiz_port_update_tunneled_status (void * ap_obj, OMX_U32 a_port_status);
 
 void
 tiz_port_reset_tunneled_port_status_flag (void * ap_obj,
-                                          OMX_U32 a_port_status_flag);
+        OMX_U32 a_port_status_flag);
 OMX_ERRORTYPE
 tiz_port_SetParameter_internal (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
                                 OMX_INDEXTYPE a_index, OMX_PTR ap_struct);

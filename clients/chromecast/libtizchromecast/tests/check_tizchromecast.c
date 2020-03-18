@@ -55,137 +55,137 @@
 
 void chromecast_new_media_status (void* ap_user_data)
 {
-  printf ("New media status!!!\n");
+    printf ("New media status!!!\n");
 }
 
 START_TEST (test_chromecast)
 {
-  tiz_chromecast_t *p_chromecast = NULL;
-  pid_t pid = getpid();
-  int rc = tiz_chromecast_init (&p_chromecast, CHROMECAST_DEVICE_NAME,
-                                chromecast_new_media_status, NULL);
-  int i = 0;
-  fprintf (stderr, "test_chromecast:init [%d] = %d\n", pid, rc);
-  ck_assert (0 == rc);
-  ck_assert (p_chromecast);
-
-  for (i = 0; i < 1; ++i)
-    {
-      fprintf (stderr, "test_chromecast: sleeping (5) = %ds\n", i);
-      sleep (1);
-    }
-
-  fprintf (stderr, "\n\n\ntest_chromecast:load [%d] = before \n", pid);
-  rc = tiz_chromecast_load_url (p_chromecast, URL, CONTENT_TYPE, TITLE);
-  fprintf (stderr, "test_chromecast:load [%d] = %d \n", pid, rc);
-  ck_assert (0 == rc);
-
-  {
-    for (i = 0; i < 1; ++i)
-      {
-        fprintf (stderr, "test_chromecast: sleeping (10) = %ds\n", i);
-        sleep (1);
-      }
-
-    {
-      fprintf (stderr, "\n\n\ntest_chromecast:pause [%d] = before \n", pid);
-      rc = tiz_chromecast_pause (p_chromecast);
-      fprintf (stderr, "test_chromecast:pause [%d] = %d \n", pid, rc);
-      ck_assert (0 == rc);
-    }
+    tiz_chromecast_t *p_chromecast = NULL;
+    pid_t pid = getpid();
+    int rc = tiz_chromecast_init (&p_chromecast, CHROMECAST_DEVICE_NAME,
+                                  chromecast_new_media_status, NULL);
+    int i = 0;
+    fprintf (stderr, "test_chromecast:init [%d] = %d\n", pid, rc);
+    ck_assert (0 == rc);
+    ck_assert (p_chromecast);
 
     for (i = 0; i < 1; ++i)
-      {
-        fprintf (stderr, "test_chromecast: sleeping (10) = %ds\n", i);
-        sleep (1);
-      }
-
     {
-      rc = tiz_chromecast_play (p_chromecast);
-      fprintf (stderr, "\n\n\ntest_chromecast:play [%d] = before \n", pid);
-      fprintf (stderr, "test_chromecast:play [%d] = %d \n", pid, rc);
-      ck_assert (0 == rc);
-    }
-
-    for (i = 0; i < 1; ++i)
-      {
         fprintf (stderr, "test_chromecast: sleeping (5) = %ds\n", i);
         sleep (1);
-      }
-
-    for (i = 0; i < 2; ++i)
-      {
-        fprintf (stderr, "\n\n\ntest_chromecast:volume_up [%d] = before \n", pid);
-        rc = tiz_chromecast_volume_up (p_chromecast);
-        fprintf (stderr, "test_chromecast:volume_up [%d] = %d \n", pid, rc);
-        ck_assert (0 == rc);
-        sleep (1);
-      }
-
-    for (i = 0; i < 2; ++i)
-      {
-        fprintf (stderr, "\n\n\ntest_chromecast:mute [%d] = before \n", pid);
-        rc = tiz_chromecast_mute (p_chromecast);
-        fprintf (stderr, "test_chromecast:mute [%d] = %d \n", pid, rc);
-        ck_assert (0 == rc);
-        sleep (1);
-        fprintf (stderr, "\n\n\ntest_chromecast:unmute [%d] = before \n", pid);
-        rc = tiz_chromecast_unmute (p_chromecast);
-        fprintf (stderr, "test_chromecast:unmute [%d] = %d \n", pid, rc);
-        sleep (1);
-      }
-
-    for (i = 0; i < 2; ++i)
-      {
-        fprintf (stderr, "\n\n\ntest_chromecast:volume_down [%d] = before \n", pid);
-        rc = tiz_chromecast_volume_down (p_chromecast);
-        fprintf (stderr, "test_chromecast:volume_down [%d] = %d \n", pid, rc);
-        ck_assert (0 == rc);
-        sleep (1);
-      }
-
-    {
-      fprintf (stderr, "\n\n\ntest_chromecast:stop [%d] = before \n", pid);
-      rc = tiz_chromecast_stop (p_chromecast);
-      fprintf (stderr, "test_chromecast:stop [%d] = %d \n", pid, rc);
-      ck_assert (0 == rc);
-    }
-  }
-
-  for (i = 0; i < 1; ++i)
-    {
-      fprintf (stderr, "test_chromecast: sleeping (5) = %ds\n", i);
-      sleep (1);
     }
 
-  fprintf (stderr, "\n\n\ntest_chromecast:destroy [%d] = %d \n", pid, rc);
-  tiz_chromecast_destroy (p_chromecast);
+    fprintf (stderr, "\n\n\ntest_chromecast:load [%d] = before \n", pid);
+    rc = tiz_chromecast_load_url (p_chromecast, URL, CONTENT_TYPE, TITLE);
+    fprintf (stderr, "test_chromecast:load [%d] = %d \n", pid, rc);
+    ck_assert (0 == rc);
+
+    {
+        for (i = 0; i < 1; ++i)
+        {
+            fprintf (stderr, "test_chromecast: sleeping (10) = %ds\n", i);
+            sleep (1);
+        }
+
+        {
+            fprintf (stderr, "\n\n\ntest_chromecast:pause [%d] = before \n", pid);
+            rc = tiz_chromecast_pause (p_chromecast);
+            fprintf (stderr, "test_chromecast:pause [%d] = %d \n", pid, rc);
+            ck_assert (0 == rc);
+        }
+
+        for (i = 0; i < 1; ++i)
+        {
+            fprintf (stderr, "test_chromecast: sleeping (10) = %ds\n", i);
+            sleep (1);
+        }
+
+        {
+            rc = tiz_chromecast_play (p_chromecast);
+            fprintf (stderr, "\n\n\ntest_chromecast:play [%d] = before \n", pid);
+            fprintf (stderr, "test_chromecast:play [%d] = %d \n", pid, rc);
+            ck_assert (0 == rc);
+        }
+
+        for (i = 0; i < 1; ++i)
+        {
+            fprintf (stderr, "test_chromecast: sleeping (5) = %ds\n", i);
+            sleep (1);
+        }
+
+        for (i = 0; i < 2; ++i)
+        {
+            fprintf (stderr, "\n\n\ntest_chromecast:volume_up [%d] = before \n", pid);
+            rc = tiz_chromecast_volume_up (p_chromecast);
+            fprintf (stderr, "test_chromecast:volume_up [%d] = %d \n", pid, rc);
+            ck_assert (0 == rc);
+            sleep (1);
+        }
+
+        for (i = 0; i < 2; ++i)
+        {
+            fprintf (stderr, "\n\n\ntest_chromecast:mute [%d] = before \n", pid);
+            rc = tiz_chromecast_mute (p_chromecast);
+            fprintf (stderr, "test_chromecast:mute [%d] = %d \n", pid, rc);
+            ck_assert (0 == rc);
+            sleep (1);
+            fprintf (stderr, "\n\n\ntest_chromecast:unmute [%d] = before \n", pid);
+            rc = tiz_chromecast_unmute (p_chromecast);
+            fprintf (stderr, "test_chromecast:unmute [%d] = %d \n", pid, rc);
+            sleep (1);
+        }
+
+        for (i = 0; i < 2; ++i)
+        {
+            fprintf (stderr, "\n\n\ntest_chromecast:volume_down [%d] = before \n", pid);
+            rc = tiz_chromecast_volume_down (p_chromecast);
+            fprintf (stderr, "test_chromecast:volume_down [%d] = %d \n", pid, rc);
+            ck_assert (0 == rc);
+            sleep (1);
+        }
+
+        {
+            fprintf (stderr, "\n\n\ntest_chromecast:stop [%d] = before \n", pid);
+            rc = tiz_chromecast_stop (p_chromecast);
+            fprintf (stderr, "test_chromecast:stop [%d] = %d \n", pid, rc);
+            ck_assert (0 == rc);
+        }
+    }
+
+    for (i = 0; i < 1; ++i)
+    {
+        fprintf (stderr, "test_chromecast: sleeping (5) = %ds\n", i);
+        sleep (1);
+    }
+
+    fprintf (stderr, "\n\n\ntest_chromecast:destroy [%d] = %d \n", pid, rc);
+    tiz_chromecast_destroy (p_chromecast);
 }
 END_TEST
 
 Suite *chromecast_suite (void)
 {
-  TCase *tc_chromecast;
-  Suite *s = suite_create ("libtizchromecast");
+    TCase *tc_chromecast;
+    Suite *s = suite_create ("libtizchromecast");
 
-  /* test case */
-  tc_chromecast = tcase_create ("Chromecast client lib unit tests");
-  tcase_set_timeout (tc_chromecast, CHROMECAST_TEST_TIMEOUT);
-  tcase_add_test (tc_chromecast, test_chromecast);
-  suite_add_tcase (s, tc_chromecast);
+    /* test case */
+    tc_chromecast = tcase_create ("Chromecast client lib unit tests");
+    tcase_set_timeout (tc_chromecast, CHROMECAST_TEST_TIMEOUT);
+    tcase_add_test (tc_chromecast, test_chromecast);
+    suite_add_tcase (s, tc_chromecast);
 
-  return s;
+    return s;
 }
 
 int main (void)
 {
-  int number_failed = 1;
-  SRunner *sr = srunner_create (chromecast_suite ());
-  srunner_set_log (sr, "-");
-  srunner_run_all (sr, CK_VERBOSE);
-  number_failed = srunner_ntests_failed (sr);
-  srunner_free (sr);
-  return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    int number_failed = 1;
+    SRunner *sr = srunner_create (chromecast_suite ());
+    srunner_set_log (sr, "-");
+    srunner_run_all (sr, CK_VERBOSE);
+    number_failed = srunner_ntests_failed (sr);
+    srunner_free (sr);
+    return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
 /* Local Variables: */

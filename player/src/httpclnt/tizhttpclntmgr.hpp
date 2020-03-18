@@ -35,50 +35,50 @@
 
 namespace tiz
 {
-  namespace graphmgr
-  {
-    class httpclntmgrops;
-    class graphmgr_capabilities;
+namespace graphmgr
+{
+class httpclntmgrops;
+class graphmgr_capabilities;
 
-    /**
-     *  @class httpclntmgr
-     *  @brief The http client graph manager class.
-     *
-     */
-    class httpclntmgr : public mgr
-    {
-      friend class httpclntmgrops;
+/**
+ *  @class httpclntmgr
+ *  @brief The http client graph manager class.
+ *
+ */
+class httpclntmgr : public mgr
+{
+    friend class httpclntmgrops;
 
-    public:
-      httpclntmgr (tizgraphconfig_ptr_t config);
-      virtual ~httpclntmgr ();
+public:
+    httpclntmgr (tizgraphconfig_ptr_t config);
+    virtual ~httpclntmgr ();
 
-    private:
-      ops *do_init (const tizplaylist_ptr_t &playlist,
-                    const termination_callback_t &termination_cback,
-                    graphmgr_capabilities &graphmgr_caps);
+private:
+    ops *do_init (const tizplaylist_ptr_t &playlist,
+                  const termination_callback_t &termination_cback,
+                  graphmgr_capabilities &graphmgr_caps);
 
-    private:
-      tizgraphconfig_ptr_t config_;
-    };
+private:
+    tizgraphconfig_ptr_t config_;
+};
 
-    typedef boost::shared_ptr< httpclntmgr > httpclntmgr_ptr_t;
+typedef boost::shared_ptr< httpclntmgr > httpclntmgr_ptr_t;
 
-    class httpclntmgrops : public ops
-    {
-    public:
-      httpclntmgrops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
-                      const termination_callback_t &termination_cback);
+class httpclntmgrops : public ops
+{
+public:
+    httpclntmgrops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
+                    const termination_callback_t &termination_cback);
 
-      void do_load ();
-      void do_execute ();
+    void do_load ();
+    void do_execute ();
 
-    private:
-      bool is_fatal_error (const OMX_ERRORTYPE error,
-                           const std::string &msg);
-      tizgraph_ptr_t get_graph (const std::string &uri);
-    };
-  }  // namespace graphmgr
+private:
+    bool is_fatal_error (const OMX_ERRORTYPE error,
+                         const std::string &msg);
+    tizgraph_ptr_t get_graph (const std::string &uri);
+};
+}  // namespace graphmgr
 }  // namespace tiz
 
 #endif  // TIZHTTPCLNTMGR_HPP

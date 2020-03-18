@@ -34,39 +34,39 @@
 
 namespace tiz
 {
-  namespace graph
-  {
-    class oggopusdecoder : public decoder
-    {
+namespace graph
+{
+class oggopusdecoder : public decoder
+{
 
-    public:
-      oggopusdecoder ();
+public:
+    oggopusdecoder ();
 
-    protected:
-      ops *do_init ();
+protected:
+    ops *do_init ();
 
-    };
+};
 
-    class oggopusdecops : public decops
-    {
-    public:
-      oggopusdecops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-                  const omx_comp_role_lst_t &role_lst);
+class oggopusdecops : public decops
+{
+public:
+    oggopusdecops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
+                   const omx_comp_role_lst_t &role_lst);
 
-    public:
-      void do_probe ();
-      bool is_port_settings_evt_required () const;
-      void do_configure ();
-      void get_pcm_codec_info (OMX_AUDIO_PARAM_PCMMODETYPE &pcmtype);
+public:
+    void do_probe ();
+    bool is_port_settings_evt_required () const;
+    void do_configure ();
+    void get_pcm_codec_info (OMX_AUDIO_PARAM_PCMMODETYPE &pcmtype);
 
-    private:
-      // re-implemented from the base class
-      bool probe_stream_hook ();
+private:
+    // re-implemented from the base class
+    bool probe_stream_hook ();
 
-    private:
-      bool need_port_settings_changed_evt_;
-    };
-  }  // namespace graph
+private:
+    bool need_port_settings_changed_evt_;
+};
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZOGGOPUSGRAPH_HPP

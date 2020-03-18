@@ -46,12 +46,12 @@ control::mpris_mediaplayer2_props::mpris_mediaplayer2_props (
     bool can_quit, bool can_raise, bool has_track_list, std::string identity,
     std::vector< std::string > uri_schemes,
     std::vector< std::string > mime_types)
-  : can_quit_ (can_quit),
-    can_raise_ (can_raise),
-    has_track_list_ (has_track_list),
-    identity_ (identity),
-    uri_schemes_ (uri_schemes),
-    mime_types_ (mime_types)
+    : can_quit_ (can_quit),
+      can_raise_ (can_raise),
+      has_track_list_ (has_track_list),
+      identity_ (identity),
+      uri_schemes_ (uri_schemes),
+      mime_types_ (mime_types)
 {
 }
 
@@ -64,20 +64,20 @@ control::mpris_mediaplayer2_player_props::mpris_mediaplayer2_player_props (
     int64_t position, double minimum_rate, double maximum_rate,
     bool can_go_next, bool can_go_previous, bool can_play, bool can_pause,
     bool can_seek, bool can_control)
-  : playback_status_ (playback_status),
-    loop_status_ (loop_status),
-    rate_ (rate),
-    shuffle_ (shuffle),
-    metadata_ (metadata),
-    volume_ (volume),
-    position_ (position),
-    minimum_rate_ (minimum_rate),
-    maximum_rate_ (maximum_rate),
-    can_go_next_ (can_go_next),
-    can_go_previous_ (can_go_previous),
-    can_play_ (can_play),
-    can_pause_ (can_pause),
-    can_seek_ (can_seek),
-    can_control_ (can_control)
+    : playback_status_ (playback_status),
+      loop_status_ (loop_status),
+      rate_ (rate),
+      shuffle_ (shuffle),
+      metadata_ (metadata),
+      volume_ (volume),
+      position_ (position),
+      minimum_rate_ (minimum_rate),
+      maximum_rate_ (maximum_rate),
+      can_go_next_ (can_go_next),
+      can_go_previous_ (can_go_previous),
+      can_play_ (can_play),
+      can_pause_ (can_pause),
+      can_seek_ (can_seek),
+      can_control_ (can_control)
 {
 }

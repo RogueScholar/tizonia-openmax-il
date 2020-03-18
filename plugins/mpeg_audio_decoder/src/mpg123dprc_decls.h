@@ -43,19 +43,19 @@ extern "C" {
 typedef struct mpg123d_prc mpg123d_prc_t;
 struct mpg123d_prc
 {
-  /* Object */
-  const tiz_filter_prc_t _;
-  mpg123_handle *p_mpg123_;
-  bool found_format_;
-  bool need_to_feed_more_;
+    /* Object */
+    const tiz_filter_prc_t _;
+    mpg123_handle *p_mpg123_;
+    bool found_format_;
+    bool need_to_feed_more_;
 };
 
 typedef struct mpg123d_prc_class mpg123d_prc_class_t;
 struct mpg123d_prc_class
 {
-  /* Class */
-  const tiz_filter_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_filter_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

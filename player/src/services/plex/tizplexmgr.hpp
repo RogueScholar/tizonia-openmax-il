@@ -35,50 +35,50 @@
 
 namespace tiz
 {
-  namespace graphmgr
-  {
-    class plexmgrops;
-    class graphmgr_capabilities;
+namespace graphmgr
+{
+class plexmgrops;
+class graphmgr_capabilities;
 
-    /**
-     *  @class plexmgr
-     *  @brief The Plex client graph manager class.
-     *
-     */
-    class plexmgr : public mgr
-    {
-      friend class plexmgrops;
+/**
+ *  @class plexmgr
+ *  @brief The Plex client graph manager class.
+ *
+ */
+class plexmgr : public mgr
+{
+    friend class plexmgrops;
 
-    public:
-      plexmgr (tizgraphconfig_ptr_t config);
-      virtual ~plexmgr ();
+public:
+    plexmgr (tizgraphconfig_ptr_t config);
+    virtual ~plexmgr ();
 
-    private:
-      ops *do_init (const tizplaylist_ptr_t &playlist,
-                    const termination_callback_t &termination_cback,
-                    graphmgr_capabilities &graphmgr_caps);
+private:
+    ops *do_init (const tizplaylist_ptr_t &playlist,
+                  const termination_callback_t &termination_cback,
+                  graphmgr_capabilities &graphmgr_caps);
 
-    private:
-      tizgraphconfig_ptr_t config_;
-    };
+private:
+    tizgraphconfig_ptr_t config_;
+};
 
-    typedef boost::shared_ptr< plexmgr > plexmgr_ptr_t;
+typedef boost::shared_ptr< plexmgr > plexmgr_ptr_t;
 
-    class plexmgrops : public ops
-    {
-    public:
-      plexmgrops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
-                      const termination_callback_t &termination_cback);
+class plexmgrops : public ops
+{
+public:
+    plexmgrops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
+                const termination_callback_t &termination_cback);
 
-      void do_load ();
-      void do_execute ();
+    void do_load ();
+    void do_execute ();
 
-    private:
-      bool is_fatal_error (const OMX_ERRORTYPE error,
-                           const std::string &msg);
-      tizgraph_ptr_t get_graph (const std::string &uri);
-    };
-  }  // namespace graphmgr
+private:
+    bool is_fatal_error (const OMX_ERRORTYPE error,
+                         const std::string &msg);
+    tizgraph_ptr_t get_graph (const std::string &uri);
+};
+}  // namespace graphmgr
 }  // namespace tiz
 
 #endif  // TIZPLEXMGR_HPP

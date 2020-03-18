@@ -34,34 +34,34 @@
 
 namespace tiz
 {
-  namespace graph
-  {
-    class aacdecoder : public decoder
-    {
+namespace graph
+{
+class aacdecoder : public decoder
+{
 
-    public:
-      aacdecoder ();
+public:
+    aacdecoder ();
 
-    protected:
-      ops *do_init ();
+protected:
+    ops *do_init ();
 
-    };
+};
 
-    class aacdecops : public decops
-    {
-    public:
-      aacdecops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-                 const omx_comp_role_lst_t &role_lst);
+class aacdecops : public decops
+{
+public:
+    aacdecops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
+               const omx_comp_role_lst_t &role_lst);
 
-    public:
-      void do_probe ();
-      bool is_port_settings_evt_required () const;
-      void do_configure ();
+public:
+    void do_probe ();
+    bool is_port_settings_evt_required () const;
+    void do_configure ();
 
-    protected:
-      bool need_port_settings_changed_evt_;
-    };
-  }  // namespace graph
+protected:
+    bool need_port_settings_changed_evt_;
+};
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZAACGRAPH_HPP

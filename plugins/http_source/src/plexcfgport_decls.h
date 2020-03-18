@@ -41,18 +41,18 @@ extern "C" {
 typedef struct plex_cfgport plex_cfgport_t;
 struct plex_cfgport
 {
-  /* Object */
-  const tiz_configport_t _;
-  OMX_TIZONIA_AUDIO_PARAM_PLEXSESSIONTYPE session_;
-  OMX_TIZONIA_AUDIO_PARAM_PLEXPLAYLISTTYPE playlist_;
+    /* Object */
+    const tiz_configport_t _;
+    OMX_TIZONIA_AUDIO_PARAM_PLEXSESSIONTYPE session_;
+    OMX_TIZONIA_AUDIO_PARAM_PLEXPLAYLISTTYPE playlist_;
 };
 
 typedef struct plex_cfgport_class plex_cfgport_class_t;
 struct plex_cfgport_class
 {
-  /* Class */
-  const tiz_configport_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_configport_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

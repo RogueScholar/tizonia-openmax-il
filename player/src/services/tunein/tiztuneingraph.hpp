@@ -21,7 +21,7 @@
  * @file   tiztuneingraph.hpp
  * @author Juan A. Rubio <juan.rubio@aratelia.com>
  *
- * @brief  Tunein streaming radio service graph
+ * @brief  Tunein streaming service graph
  *
  *
  */
@@ -29,27 +29,34 @@
 #ifndef TIZTUNEINGRAPH_HPP
 #define TIZTUNEINGRAPH_HPP
 
-#include "tizradiograph.hpp"
-#include "tizgraphops.hpp"
+#include <boost/any.hpp>
+
+#include "tizgraph.hpp"
 
 namespace tiz
 {
-  namespace graph
-  {
-    // Forward declarations
-    class ops;
+namespace graph
+{
+// Forward declarations
+class cmd;
+class ops;
 
-    class tunein : public radiograph
-    {
+class tunein : public graph
+{
 
-    public:
-      explicit tunein ();
+public:
+    explicit tunein ();
+    ~tunein ();
 
-    protected:
-      ops *do_init ();
-    };
+protected:
+    bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
+    ops *do_init ();
 
-  }  // namespace graph
+protected:
+    boost::any fsm_;
+};
+
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZTUNEINGRAPH_HPP

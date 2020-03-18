@@ -34,48 +34,48 @@
 
 namespace tiz
 {
-  namespace graphmgr
-  {
-    class httpservmgrops;
-    class graphmgr_capabilities;
+namespace graphmgr
+{
+class httpservmgrops;
+class graphmgr_capabilities;
 
-    /**
-     *  @class httpservmgr
-     *  @brief The http server graph manager class.
-     *
-     */
-    class httpservmgr : public mgr
-    {
-      friend class httpservmgrops;
+/**
+ *  @class httpservmgr
+ *  @brief The http server graph manager class.
+ *
+ */
+class httpservmgr : public mgr
+{
+    friend class httpservmgrops;
 
-    public:
-      httpservmgr (tizgraphconfig_ptr_t config);
-      virtual ~httpservmgr ();
+public:
+    httpservmgr (tizgraphconfig_ptr_t config);
+    virtual ~httpservmgr ();
 
-    private:
-      ops *do_init (const tizplaylist_ptr_t &playlist,
-                    const termination_callback_t &termination_cback,
-                    graphmgr_capabilities &graphmgr_caps);
+private:
+    ops *do_init (const tizplaylist_ptr_t &playlist,
+                  const termination_callback_t &termination_cback,
+                  graphmgr_capabilities &graphmgr_caps);
 
-    private:
-      tizgraphconfig_ptr_t config_;
-    };
+private:
+    tizgraphconfig_ptr_t config_;
+};
 
-    typedef boost::shared_ptr< httpservmgr > httpservmgr_ptr_t;
+typedef boost::shared_ptr< httpservmgr > httpservmgr_ptr_t;
 
-    class httpservmgrops : public ops
-    {
-    public:
-      httpservmgrops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
-                      const termination_callback_t &termination_cback);
+class httpservmgrops : public ops
+{
+public:
+    httpservmgrops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
+                    const termination_callback_t &termination_cback);
 
-      void do_load ();
-      void do_execute ();
+    void do_load ();
+    void do_execute ();
 
-    private:
-      tizgraph_ptr_t get_graph (const std::string &uri);
-    };
-  }  // namespace graphmgr
+private:
+    tizgraph_ptr_t get_graph (const std::string &uri);
+};
+}  // namespace graphmgr
 }  // namespace tiz
 
 #endif  // TIZHTTPSERVMGR_HPP

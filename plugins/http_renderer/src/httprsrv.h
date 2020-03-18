@@ -39,7 +39,7 @@ extern "C" {
 typedef struct httpr_server httpr_server_t;
 
 typedef void (*httpr_srv_release_buffer_f) (OMX_BUFFERHEADERTYPE * ap_hdr,
-                                            OMX_PTR ap_arg);
+        OMX_PTR ap_arg);
 typedef OMX_BUFFERHEADERTYPE * (*httpr_srv_acquire_buffer_f) (OMX_PTR ap_arg);
 
 OMX_ERRORTYPE
@@ -67,10 +67,10 @@ httpr_srv_set_mp3_settings (httpr_server_t * ap_server, const OMX_U32 a_bitrate,
 
 void
 httpr_srv_set_mountpoint_settings (
-  httpr_server_t * ap_server, OMX_U8 * ap_mount_name, OMX_U8 * ap_station_name,
-  OMX_U8 * ap_station_description, OMX_U8 * ap_station_genre,
-  OMX_U8 * ap_station_url, const OMX_U32 metadata_period,
-  const OMX_U32 burst_size, const OMX_U32 max_clients);
+    httpr_server_t * ap_server, OMX_U8 * ap_mount_name, OMX_U8 * ap_station_name,
+    OMX_U8 * ap_station_description, OMX_U8 * ap_station_genre,
+    OMX_U8 * ap_station_url, const OMX_U32 metadata_period,
+    const OMX_U32 burst_size, const OMX_U32 max_clients);
 
 void
 httpr_srv_set_stream_title (httpr_server_t * ap_server,

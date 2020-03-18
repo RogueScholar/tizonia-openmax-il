@@ -34,36 +34,36 @@
 
 namespace tiz
 {
-  namespace graphmgr
-  {
-    class graphmgr_capabilities;
+namespace graphmgr
+{
+class graphmgr_capabilities;
 
-    /**
-     *  @class decodemgr
-     *  @brief A manager for decoding graphs.
-     *
-     */
-    class decodemgr : public mgr
-    {
-    public:
-      decodemgr ();
-      virtual ~decodemgr ();
+/**
+ *  @class decodemgr
+ *  @brief A manager for decoding graphs.
+ *
+ */
+class decodemgr : public mgr
+{
+public:
+    decodemgr ();
+    virtual ~decodemgr ();
 
-    protected:
-      ops *do_init (const tizplaylist_ptr_t &playlist,
-                    const termination_callback_t &termination_cback,
-                    graphmgr_capabilities &graphmgr_caps);
-    };
+protected:
+    ops *do_init (const tizplaylist_ptr_t &playlist,
+                  const termination_callback_t &termination_cback,
+                  graphmgr_capabilities &graphmgr_caps);
+};
 
-    typedef boost::shared_ptr< decodemgr > decodemgr_ptr_t;
+typedef boost::shared_ptr< decodemgr > decodemgr_ptr_t;
 
-    class decodemgrops : public ops
-    {
-    public:
-      decodemgrops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
-                    const termination_callback_t &termination_cback);
-    };
-  }  // namespace graphmgr
+class decodemgrops : public ops
+{
+public:
+    decodemgrops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
+                  const termination_callback_t &termination_cback);
+};
+}  // namespace graphmgr
 }  // namespace tiz
 
 #endif  // TIZDECGRAPHMGR_HPP

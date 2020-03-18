@@ -34,8 +34,8 @@ extern "C"
 {
 #endif                          /* __cplusplus */
 
-  typedef enum tiz_rm_error_t
-  {
+typedef enum tiz_rm_error_t
+{
     TIZ_RM_SUCCESS = 0,
     TIZ_RM_MISUSE,
     TIZ_RM_OOM,
@@ -54,15 +54,15 @@ extern "C"
     TIZ_RM_DBUS,
     TIZ_RM_UNKNOWN,
     TIZ_RM_ERROR_MAX
-  } tiz_rm_error_t;
+} tiz_rm_error_t;
 
-  typedef enum tiz_rm_resource_id_t
-  {
+typedef enum tiz_rm_resource_id_t
+{
     TIZ_RM_RESOURCE_DUMMY = 0,
     TIZ_RM_RESOURCE_ALSA_SINK,
     TIZ_RM_RESOURCE_FILESYSTEM,
     TIZ_RM_RESOURCE_MAX
-  } tiz_rm_resource_id_t;
+} tiz_rm_resource_id_t;
 
 #ifdef __cplusplus
 }

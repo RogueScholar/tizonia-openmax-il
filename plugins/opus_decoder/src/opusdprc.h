@@ -20,10 +20,10 @@
 /**
  * @file   opusdprc.h
  * @author Juan A. Rubio <juan.rubio@aratelia.com>
- * 
+ *
  * @brief  Tizonia - Opus decoder processor class
- * 
- * 
+ *
+ *
  */
 
 #ifndef OPUSDPRC_H

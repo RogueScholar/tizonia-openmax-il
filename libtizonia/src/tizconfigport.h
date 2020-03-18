@@ -44,7 +44,7 @@ void
 tiz_configport_clear_metadata (void * ap_obj);
 OMX_ERRORTYPE
 tiz_configport_store_metadata (
-  void * ap_obj, const OMX_CONFIG_METADATAITEMTYPE * ap_meta_item);
+    void * ap_obj, const OMX_CONFIG_METADATAITEMTYPE * ap_meta_item);
 
 #ifdef __cplusplus
 }

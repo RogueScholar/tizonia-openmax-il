@@ -34,8 +34,8 @@ extern "C"
 {
 #endif
 
-  void * inprocsrc_prc_class_init (void * ap_tos, void * ap_hdl);
-  void * inprocsrc_prc_init (void * ap_tos, void * ap_hdl);
+void * inprocsrc_prc_class_init (void * ap_tos, void * ap_hdl);
+void * inprocsrc_prc_init (void * ap_tos, void * ap_hdl);
 
 #ifdef __cplusplus
 }

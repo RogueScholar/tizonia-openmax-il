@@ -45,33 +45,33 @@ extern "C" {
 typedef struct oggmuxsnk_prc oggmuxsnk_prc_t;
 struct oggmuxsnk_prc
 {
-  /* Object */
-  const tiz_prc_t _;
-  tiz_buffer_t * p_audio_store_;
-  tiz_buffer_t * p_video_store_;
-  FILE * p_file_;
-  OMX_PARAM_CONTENTURITYPE * p_uri_;
-  OGGZ * p_oggz_;
-  long oggz_audio_serialno_;
-  long oggz_video_serialno_;
-  long oggz_audio_granulepos_;
-  long oggz_video_granulepos_;
-  long oggz_audio_packetno_;
-  long oggz_video_packetno_;
-  bool eos_;
-  bool port_disabled_;
-  bool uri_changed_;
-  tiz_urltrans_t * p_trans_;
-  int bitrate_;
-  int cache_bytes_;
+    /* Object */
+    const tiz_prc_t _;
+    tiz_buffer_t * p_audio_store_;
+    tiz_buffer_t * p_video_store_;
+    FILE * p_file_;
+    OMX_PARAM_CONTENTURITYPE * p_uri_;
+    OGGZ * p_oggz_;
+    long oggz_audio_serialno_;
+    long oggz_video_serialno_;
+    long oggz_audio_granulepos_;
+    long oggz_video_granulepos_;
+    long oggz_audio_packetno_;
+    long oggz_video_packetno_;
+    bool eos_;
+    bool port_disabled_;
+    bool uri_changed_;
+    tiz_urltrans_t * p_trans_;
+    int bitrate_;
+    int cache_bytes_;
 };
 
 typedef struct oggmuxsnk_prc_class oggmuxsnk_prc_class_t;
 struct oggmuxsnk_prc_class
 {
-  /* Class */
-  const tiz_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

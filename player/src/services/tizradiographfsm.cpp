@@ -18,10 +18,10 @@
  */
 
 /**
- * @file   tizradiographfsm.cpp
+ * @file   tiztuneingraphfsm.cpp
  * @author Juan A. Rubio <juan.rubio@aratelia.com>
  *
- * @brief  Generic radio streaming client graph fsm
+ * @brief  Tunein streaming client graph fsm
  *
  */
 
@@ -29,10 +29,10 @@
 #include <config.h>
 #endif
 
-#include "tizradiographfsm.hpp"
+#include "tiztuneingraphfsm.hpp"
 
-char const* const tiz::graph::radiofsm::pstate(tiz::graph::radiofsm::fsm const& p)
+char const* const tiz::graph::tuneinfsm::pstate(tiz::graph::tuneinfsm::fsm const& p)
 {
-  return tiz::graph::radiofsm::state_names[p.current_state()[0]];
+    return tiz::graph::tuneinfsm::state_names[p.current_state()[0]];
 }
 

@@ -46,18 +46,18 @@ extern "C" {
 typedef enum tiz_fsm_state_id tiz_fsm_state_id_t;
 enum tiz_fsm_state_id
 {
-  EStateReserved_0x00000000 = OMX_StateReserved_0x00000000,
-  EStateLoaded = OMX_StateLoaded,
-  EStateIdle = OMX_StateIdle,
-  EStateExecuting = OMX_StateExecuting,
-  EStatePause = OMX_StatePause,
-  EStateWaitForResources = OMX_StateWaitForResources,
-  ESubStateLoadedToIdle,
-  ESubStateIdleToLoaded,
-  ESubStateIdleToExecuting,
-  ESubStateExecutingToIdle,
-  ESubStatePauseToIdle,
-  EStateMax
+    EStateReserved_0x00000000 = OMX_StateReserved_0x00000000,
+    EStateLoaded = OMX_StateLoaded,
+    EStateIdle = OMX_StateIdle,
+    EStateExecuting = OMX_StateExecuting,
+    EStatePause = OMX_StatePause,
+    EStateWaitForResources = OMX_StateWaitForResources,
+    ESubStateLoadedToIdle,
+    ESubStateIdleToLoaded,
+    ESubStateIdleToExecuting,
+    ESubStateExecutingToIdle,
+    ESubStatePauseToIdle,
+    EStateMax
 };
 
 /**

@@ -42,47 +42,47 @@ void tiz_chromecast_ctx_destroy (tiz_chromecast_ctx_ptr_t *app_cc_ctx);
 
 static int chromecast_ctx_alloc_data (tiz_chromecast_ctx_t *ap_cc_ctx)
 {
-  int rc = 0;
-  assert (ap_cc_ctx);
-  try
+    int rc = 0;
+    assert (ap_cc_ctx);
+    try
     {
-      ap_cc_ctx->p_ctx_ = new tizchromecastctx ();
+        ap_cc_ctx->p_ctx_ = new tizchromecastctx ();
     }
-  catch (...)
+    catch (...)
     {
-      rc = 1;
+        rc = 1;
     }
-  return rc;
+    return rc;
 }
 
 extern "C" int tiz_chromecast_ctx_init (tiz_chromecast_ctx_ptr_t *app_cc_ctx)
 {
-  tiz_chromecast_ctx_t *p_cc_ctx = NULL;
-  int rc = 0;
+    tiz_chromecast_ctx_t *p_cc_ctx = NULL;
+    int rc = 0;
 
-  assert (app_cc_ctx);
+    assert (app_cc_ctx);
 
-  if ((p_cc_ctx
-       = (tiz_chromecast_ctx_t *)calloc (1, sizeof (tiz_chromecast_ctx_t))))
+    if ((p_cc_ctx
+            = (tiz_chromecast_ctx_t *)calloc (1, sizeof (tiz_chromecast_ctx_t))))
     {
-      if (chromecast_ctx_alloc_data (p_cc_ctx))
+        if (chromecast_ctx_alloc_data (p_cc_ctx))
         {
-          tiz_chromecast_ctx_destroy (&p_cc_ctx);
+            tiz_chromecast_ctx_destroy (&p_cc_ctx);
         }
     }
 
-  *app_cc_ctx = p_cc_ctx;
+    *app_cc_ctx = p_cc_ctx;
 
-  return rc;
+    return rc;
 }
 
 extern "C" void tiz_chromecast_ctx_destroy (
     tiz_chromecast_ctx_ptr_t *app_cc_ctx)
 {
-  if (app_cc_ctx)
+    if (app_cc_ctx)
     {
-      delete ((*app_cc_ctx)->p_ctx_);
-      free (*app_cc_ctx);
-      *app_cc_ctx = NULL;
+        delete ((*app_cc_ctx)->p_ctx_);
+        free (*app_cc_ctx);
+        *app_cc_ctx = NULL;
     }
 }

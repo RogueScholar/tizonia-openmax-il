@@ -50,35 +50,35 @@ extern "C" {
 typedef struct pulsear_prc pulsear_prc_t;
 struct pulsear_prc
 {
-  /* Object */
-  const tiz_prc_t _;
-  OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
-  OMX_BUFFERHEADERTYPE *p_inhdr_;
-  bool port_disabled_;
-  bool paused_;
-  bool stopped_;
-  struct pa_threaded_mainloop *p_pa_loop_;
-  struct pa_context *p_pa_context_;
-  struct pa_stream *p_pa_stream_;
-  struct pa_cvolume pa_vol_;
-  pa_stream_state_t pa_stream_state_;
-  size_t pa_nbytes_;
-  tiz_event_timer_t *p_ev_timer_;
-  float gain_;
-  long volume_;
-  long pending_volume_;
-  bool ramp_enabled_;
-  long ramp_step_;
-  long ramp_step_count_;
-  long ramp_volume_;
+    /* Object */
+    const tiz_prc_t _;
+    OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
+    OMX_BUFFERHEADERTYPE *p_inhdr_;
+    bool port_disabled_;
+    bool paused_;
+    bool stopped_;
+    struct pa_threaded_mainloop *p_pa_loop_;
+    struct pa_context *p_pa_context_;
+    struct pa_stream *p_pa_stream_;
+    struct pa_cvolume pa_vol_;
+    pa_stream_state_t pa_stream_state_;
+    size_t pa_nbytes_;
+    tiz_event_timer_t *p_ev_timer_;
+    float gain_;
+    long volume_;
+    long pending_volume_;
+    bool ramp_enabled_;
+    long ramp_step_;
+    long ramp_step_count_;
+    long ramp_volume_;
 };
 
 typedef struct pulsear_prc_class pulsear_prc_class_t;
 struct pulsear_prc_class
 {
-  /* Class */
-  const tiz_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

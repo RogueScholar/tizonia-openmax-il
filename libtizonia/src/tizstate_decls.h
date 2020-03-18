@@ -32,9 +32,9 @@ extern "C" {
 typedef struct tiz_state tiz_state_t;
 struct tiz_state
 {
-  const tiz_api_t _;
-  void * p_fsm_;
-  OMX_U32 servants_count_;
+    const tiz_api_t _;
+    void * p_fsm_;
+    OMX_U32 servants_count_;
 };
 
 OMX_ERRORTYPE
@@ -49,26 +49,26 @@ tiz_state_super_trans_complete (const void * a_class, const void * ap_obj,
 typedef struct tiz_state_class tiz_state_class_t;
 struct tiz_state_class
 {
-  /* Class */
-  const tiz_api_class_t _;
-  OMX_ERRORTYPE (*state_set)
-  (const void * p_obj, OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
-   OMX_U32 a_param1, OMX_PTR ap_cmd_data);
-  OMX_ERRORTYPE (*flush)
-  (const void * p_obj, OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
-   OMX_U32 a_param1, OMX_PTR ap_cmd_data);
-  OMX_ERRORTYPE (*disable)
-  (const void * p_obj, OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
-   OMX_U32 a_param1, OMX_PTR ap_cmd_data);
-  OMX_ERRORTYPE (*enable)
-  (const void * p_obj, OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
-   OMX_U32 a_param1, OMX_PTR ap_cmd_data);
-  OMX_ERRORTYPE (*mark)
-  (const void * p_obj, OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
-   OMX_U32 a_param1, OMX_PTR ap_cmd_data);
-  OMX_ERRORTYPE (*trans_complete)
-  (const void * p_obj, OMX_PTR ap_servant, OMX_STATETYPE a_new_state);
-  OMX_ERRORTYPE (*tunneled_ports_status_update) (void * ap_obj);
+    /* Class */
+    const tiz_api_class_t _;
+    OMX_ERRORTYPE (*state_set)
+    (const void * p_obj, OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
+     OMX_U32 a_param1, OMX_PTR ap_cmd_data);
+    OMX_ERRORTYPE (*flush)
+    (const void * p_obj, OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
+     OMX_U32 a_param1, OMX_PTR ap_cmd_data);
+    OMX_ERRORTYPE (*disable)
+    (const void * p_obj, OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
+     OMX_U32 a_param1, OMX_PTR ap_cmd_data);
+    OMX_ERRORTYPE (*enable)
+    (const void * p_obj, OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
+     OMX_U32 a_param1, OMX_PTR ap_cmd_data);
+    OMX_ERRORTYPE (*mark)
+    (const void * p_obj, OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
+     OMX_U32 a_param1, OMX_PTR ap_cmd_data);
+    OMX_ERRORTYPE (*trans_complete)
+    (const void * p_obj, OMX_PTR ap_servant, OMX_STATETYPE a_new_state);
+    OMX_ERRORTYPE (*tunneled_ports_status_update) (void * ap_obj);
 };
 
 /*
@@ -77,13 +77,13 @@ struct tiz_state_class
 typedef struct tiz_loaded tiz_loaded_t;
 struct tiz_loaded
 {
-  const tiz_state_t _;
+    const tiz_state_t _;
 };
 
 typedef struct tiz_loaded_class tiz_loaded_class_t;
 struct tiz_loaded_class
 {
-  const tiz_state_class_t _;
+    const tiz_state_class_t _;
 };
 
 /*
@@ -92,13 +92,13 @@ struct tiz_loaded_class
 typedef struct tiz_loadedtoidle tiz_loadedtoidle_t;
 struct tiz_loadedtoidle
 {
-  const tiz_loaded_t _;
+    const tiz_loaded_t _;
 };
 
 typedef struct tiz_loadedtoidle_class tiz_loadedtoidle_class_t;
 struct tiz_loadedtoidle_class
 {
-  const tiz_loaded_class_t _;
+    const tiz_loaded_class_t _;
 };
 
 /*
@@ -107,13 +107,13 @@ struct tiz_loadedtoidle_class
 typedef struct tiz_waitforresources tiz_waitforresources_t;
 struct tiz_waitforresources
 {
-  const tiz_state_t _;
+    const tiz_state_t _;
 };
 
 typedef struct tiz_waitforresources_class tiz_waitforresources_class_t;
 struct tiz_waitforresources_class
 {
-  const tiz_state_class_t _;
+    const tiz_state_class_t _;
 };
 
 /*
@@ -122,13 +122,13 @@ struct tiz_waitforresources_class
 typedef struct tiz_idle tiz_idle_t;
 struct tiz_idle
 {
-  const tiz_state_t _;
+    const tiz_state_t _;
 };
 
 typedef struct tiz_idle_class tiz_idle_class_t;
 struct tiz_idle_class
 {
-  const tiz_state_class_t _;
+    const tiz_state_class_t _;
 };
 
 /*
@@ -137,13 +137,13 @@ struct tiz_idle_class
 typedef struct tiz_idletoloaded tiz_idletoloaded_t;
 struct tiz_idletoloaded
 {
-  const tiz_idle_t _;
+    const tiz_idle_t _;
 };
 
 typedef struct tiz_idletoloaded_class tiz_idletoloaded_class_t;
 struct tiz_idletoloaded_class
 {
-  const tiz_idle_class_t _;
+    const tiz_idle_class_t _;
 };
 
 /*
@@ -152,13 +152,13 @@ struct tiz_idletoloaded_class
 typedef struct tiz_idletoexecuting tiz_idletoexecuting_t;
 struct tiz_idletoexecuting
 {
-  const tiz_idle_t _;
+    const tiz_idle_t _;
 };
 
 typedef struct tiz_idletoexecuting_class tiz_idletoexecuting_class_t;
 struct tiz_idletoexecuting_class
 {
-  const tiz_idle_class_t _;
+    const tiz_idle_class_t _;
 };
 
 /*
@@ -167,13 +167,13 @@ struct tiz_idletoexecuting_class
 typedef struct tiz_executing tiz_executing_t;
 struct tiz_executing
 {
-  const tiz_state_t _;
+    const tiz_state_t _;
 };
 
 typedef struct tiz_executing_class tiz_executing_class_t;
 struct tiz_executing_class
 {
-  const tiz_state_class_t _;
+    const tiz_state_class_t _;
 };
 
 /*
@@ -182,13 +182,13 @@ struct tiz_executing_class
 typedef struct tiz_executingtoidle tiz_executingtoidle_t;
 struct tiz_executingtoidle
 {
-  const tiz_executing_t _;
+    const tiz_executing_t _;
 };
 
 typedef struct tiz_executingtoidle_class tiz_executingtoidle_class_t;
 struct tiz_executingtoidle_class
 {
-  const tiz_executing_class_t _;
+    const tiz_executing_class_t _;
 };
 
 /*
@@ -197,13 +197,13 @@ struct tiz_executingtoidle_class
 typedef struct tiz_pause tiz_pause_t;
 struct tiz_pause
 {
-  const tiz_state_t _;
+    const tiz_state_t _;
 };
 
 typedef struct tiz_pause_class tiz_pause_class_t;
 struct tiz_pause_class
 {
-  const tiz_state_class_t _;
+    const tiz_state_class_t _;
 };
 
 /*
@@ -212,13 +212,13 @@ struct tiz_pause_class
 typedef struct tiz_pausetoidle tiz_pausetoidle_t;
 struct tiz_pausetoidle
 {
-  const tiz_pause_t _;
+    const tiz_pause_t _;
 };
 
 typedef struct tiz_pausetoidle_class tiz_pausetoidle_class_t;
 struct tiz_pausetoidle_class
 {
-  const tiz_pause_class_t _;
+    const tiz_pause_class_t _;
 };
 
 #ifdef __cplusplus

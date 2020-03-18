@@ -40,10 +40,10 @@ typedef struct tiz_http_parser tiz_http_parser_t;
 typedef struct tiz_http_parser * tiz_http_parser_ptr_t;
 
 typedef enum tiz_http_parser_type {
-  ETIZHttpParserTypeRequest,
-  ETIZHttpParserTypeResponse,
-  ETIZHttpParserTypeBoth,
-  ETIZHttpParserTypeMax,
+    ETIZHttpParserTypeRequest,
+    ETIZHttpParserTypeResponse,
+    ETIZHttpParserTypeBoth,
+    ETIZHttpParserTypeMax,
 } tiz_http_parser_type_t;
 
 OMX_ERRORTYPE

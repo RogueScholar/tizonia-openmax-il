@@ -33,45 +33,45 @@
 
 namespace tiz
 {
-  namespace graph
-  {
-    class graph;
+namespace graph
+{
+class graph;
 
-    class httpservops : public ops
-    {
-    public:
-      httpservops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-                   const omx_comp_role_lst_t &role_lst);
+class httpservops : public ops
+{
+public:
+    httpservops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
+                 const omx_comp_role_lst_t &role_lst);
 
-    public:
-      void do_probe ();
-      void do_exe2pause ();
-      void do_pause2exe ();
-      void do_volume (const int step);
-      void do_mute ();
+public:
+    void do_probe ();
+    void do_exe2pause ();
+    void do_pause2exe ();
+    void do_volume (const int step);
+    void do_mute ();
 
-      void do_configure_server ();
-      void do_configure_station ();
-      void do_configure_stream ();
-      bool is_initial_configuration () const;
-      void do_flag_initial_config_done ();
+    void do_configure_server ();
+    void do_configure_station ();
+    void do_configure_stream ();
+    bool is_initial_configuration () const;
+    void do_flag_initial_config_done ();
 
-    private:
-      OMX_ERRORTYPE configure_server ();
-      OMX_ERRORTYPE configure_station ();
-      OMX_ERRORTYPE configure_stream_metadata ();
-      OMX_ERRORTYPE switch_tunnel (const int tunnel_id,
-          const OMX_COMMANDTYPE to_disabled_or_enabled);
+private:
+    OMX_ERRORTYPE configure_server ();
+    OMX_ERRORTYPE configure_station ();
+    OMX_ERRORTYPE configure_stream_metadata ();
+    OMX_ERRORTYPE switch_tunnel (const int tunnel_id,
+                                 const OMX_COMMANDTYPE to_disabled_or_enabled);
 
-    private:
-      void get_mp3_codec_info (OMX_AUDIO_PARAM_MP3TYPE &mp3type);
-      // re-implemented from the base class
-      bool probe_stream_hook ();
+private:
+    void get_mp3_codec_info (OMX_AUDIO_PARAM_MP3TYPE &mp3type);
+    // re-implemented from the base class
+    bool probe_stream_hook ();
 
-    private:
-      bool is_initial_configuration_;
-    };
-  }  // namespace graph
+private:
+    bool is_initial_configuration_;
+};
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZHTTPSERVOPS_HPP

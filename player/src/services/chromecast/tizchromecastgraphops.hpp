@@ -36,51 +36,50 @@
 
 namespace tiz
 {
-  namespace graph
-  {
-    class graph;
+namespace graph
+{
+class graph;
 
-    class chromecastops : public ops
-    {
-    public:
-      chromecastops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-                 const omx_comp_role_lst_t &role_lst);
+class chromecastops : public ops
+{
+public:
+    chromecastops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
+                   const omx_comp_role_lst_t &role_lst);
 
-    public:
-      void do_load ();
-      void do_configure ();
-      void do_skip ();
-      void do_retrieve_metadata ();
-      OMX_ERRORTYPE dump_metadata_item (const OMX_U32 index,
-                                        const int comp_index,
-                                        const bool use_first_as_heading = true);
-      bool is_fatal_error (const OMX_ERRORTYPE error) const;
+public:
+    void do_load ();
+    void do_configure ();
+    void do_skip ();
+    void do_retrieve_metadata ();
+    OMX_ERRORTYPE dump_metadata_item (const OMX_U32 index,
+                                      const int comp_index,
+                                      const bool use_first_as_heading = true);
+    bool is_fatal_error (const OMX_ERRORTYPE error) const;
 
-    private:
-      void do_configure_chromecast ();
-      void do_configure_http ();
-      void do_configure_gmusic ();
-      void do_configure_scloud ();
-      void do_configure_tunein ();
-      void do_configure_youtube ();
-      void do_configure_plex ();
-      void do_configure_iheart ();
+private:
+    void do_configure_chromecast ();
+    void do_configure_http ();
+    void do_configure_gmusic ();
+    void do_configure_scloud ();
+    void do_configure_tunein ();
+    void do_configure_youtube ();
+    void do_configure_plex ();
 
-      OMX_ERRORTYPE get_encoding_type_from_chromecast_source ();
+    OMX_ERRORTYPE get_encoding_type_from_chromecast_source ();
 
-    private:
-      typedef boost::function< void() > config_service_func_t;
+private:
+    typedef boost::function< void() > config_service_func_t;
 
-    private:
-      // re-implemented from the base class
-      bool probe_stream_hook ();
+private:
+    // re-implemented from the base class
+    bool probe_stream_hook ();
 
-    private:
-      OMX_AUDIO_CODINGTYPE encoding_;
-      config_service_func_t config_service_func_;
-      tizchromecastconfig_ptr_t cc_config_;
-    };
-  }  // namespace graph
+private:
+    OMX_AUDIO_CODINGTYPE encoding_;
+    config_service_func_t config_service_func_;
+    tizchromecastconfig_ptr_t cc_config_;
+};
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZCHROMECASTGRAPHOPS_HPP

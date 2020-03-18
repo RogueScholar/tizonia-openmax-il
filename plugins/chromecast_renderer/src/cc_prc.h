@@ -55,8 +55,8 @@ cc_prc_store_stream_metadata (const void * p_obj);
 
 OMX_ERRORTYPE
 cc_prc_store_stream_metadata_item (const void * p_obj,
-                                 const char * ap_header_name,
-                                 const char * ap_header_info);
+                                   const char * ap_header_name,
+                                   const char * ap_header_info);
 
 OMX_ERRORTYPE
 cc_prc_store_display_title (const void * p_obj, const char * ap_artist,

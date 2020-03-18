@@ -20,10 +20,10 @@
 /**
  * @file   tizvp8port.h
  * @author Juan A. Rubio <juan.rubio@aratelia.com>
- * 
+ *
  * @brief  VP8 port class
- * 
- * 
+ *
+ *
  */
 
 #ifndef TIZVP8PORT_H

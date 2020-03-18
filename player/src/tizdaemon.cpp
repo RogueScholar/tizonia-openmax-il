@@ -41,111 +41,111 @@
 namespace
 {
 
-  const int TIZ_DAEMON_SUCCESS = 0;
-  const int TIZ_DAEMON_FAILURE = -1;
+const int TIZ_DAEMON_SUCCESS = 0;
+const int TIZ_DAEMON_FAILURE = -1;
 
-  /* Maximum file descriptors to close if sysconf(_SC_OPEN_MAX) is
-     indeterminate */
-  const int BD_MAX_CLOSE = 8192;
+/* Maximum file descriptors to close if sysconf(_SC_OPEN_MAX) is
+   indeterminate */
+const int BD_MAX_CLOSE = 8192;
 }
 
 int tiz::daemon::daemonize ()
 {
-  if (getppid () == 1)
-  {
-    // already a daemon
+    if (getppid () == 1)
+    {
+        // already a daemon
+        return TIZ_DAEMON_SUCCESS;
+    }
+
+    // Become background process
+    switch (fork ())
+    {
+    case -1:
+    {
+        return TIZ_DAEMON_FAILURE;
+    }
+    case 0:
+    {
+        break;
+    }
+    default:
+        _exit (EXIT_SUCCESS);
+        break;
+    };
+
+    // Become leader of new session
+    if (setsid () == -1)
+    {
+        return TIZ_DAEMON_FAILURE;
+    }
+
+    // Ensure we are not session leader
+    switch (fork ())
+    {
+    case -1:
+    {
+        return TIZ_DAEMON_FAILURE;
+    }
+    case 0:
+    {
+        break;
+    }
+    default:
+    {
+        _exit (EXIT_SUCCESS);
+        break;
+    }
+    };
+
+    umask (027);
+
+    if (-1 == chdir("/"))
+    {
+        return TIZ_DAEMON_FAILURE;
+    }
+
+    // Close all open files
+    int maxfd = sysconf (_SC_OPEN_MAX);
+    if (1 == -maxfd)
+    {
+        // Limit is indeterminate...
+        maxfd = BD_MAX_CLOSE;
+    }
+
+    int fd;
+    for (fd = 0; fd < maxfd; ++fd)
+    {
+        close (fd);
+    }
+
+    // Reopen standard fd's to /dev/null
+    close (STDIN_FILENO);
+    fd = open ("/dev/null", O_RDWR);
+    if (fd != STDIN_FILENO)
+    {
+        // 'fd' should be 0
+        close (fd);
+        return TIZ_DAEMON_FAILURE;
+    }
+    if (dup2 (STDIN_FILENO, STDOUT_FILENO) != STDOUT_FILENO)
+    {
+        close (fd);
+        return TIZ_DAEMON_FAILURE;
+    }
+
+    if (dup2 (STDIN_FILENO, STDERR_FILENO) != STDERR_FILENO)
+    {
+        close (fd);
+        return TIZ_DAEMON_FAILURE;
+    }
+
+    // Ignore child and terminal signals
+    signal (SIGCHLD, SIG_IGN); /* ignore child */
+    signal (SIGTSTP, SIG_IGN); /* ignore tty signals */
+    signal (SIGTTOU, SIG_IGN);
+    signal (SIGTTIN, SIG_IGN);
+
+    // TODO: signal(SIGHUP,signal_handler); /* catch hangup signal */
+
     return TIZ_DAEMON_SUCCESS;
-  }
-
-  // Become background process
-  switch (fork ())
-  {
-    case -1:
-    {
-      return TIZ_DAEMON_FAILURE;
-    }
-    case 0:
-    {
-      break;
-    }
-    default:
-      _exit (EXIT_SUCCESS);
-      break;
-  };
-
-  // Become leader of new session
-  if (setsid () == -1)
-  {
-    return TIZ_DAEMON_FAILURE;
-  }
-
-  // Ensure we are not session leader
-  switch (fork ())
-  {
-    case -1:
-    {
-      return TIZ_DAEMON_FAILURE;
-    }
-    case 0:
-    {
-      break;
-    }
-    default:
-    {
-      _exit (EXIT_SUCCESS);
-      break;
-    }
-  };
-
-  umask (027);
-
-  if (-1 == chdir("/"))
-  {
-    return TIZ_DAEMON_FAILURE;
-  }
-
-  // Close all open files
-  int maxfd = sysconf (_SC_OPEN_MAX);
-  if (1 == -maxfd)
-  {
-    // Limit is indeterminate...
-    maxfd = BD_MAX_CLOSE;
-  }
-
-  int fd;
-  for (fd = 0; fd < maxfd; ++fd)
-  {
-    close (fd);
-  }
-
-  // Reopen standard fd's to /dev/null
-  close (STDIN_FILENO);
-  fd = open ("/dev/null", O_RDWR);
-  if (fd != STDIN_FILENO)
-  {
-    // 'fd' should be 0
-    close (fd);
-    return TIZ_DAEMON_FAILURE;
-  }
-  if (dup2 (STDIN_FILENO, STDOUT_FILENO) != STDOUT_FILENO)
-  {
-    close (fd);
-    return TIZ_DAEMON_FAILURE;
-  }
-
-  if (dup2 (STDIN_FILENO, STDERR_FILENO) != STDERR_FILENO)
-  {
-    close (fd);
-    return TIZ_DAEMON_FAILURE;
-  }
-
-  // Ignore child and terminal signals
-  signal (SIGCHLD, SIG_IGN); /* ignore child */
-  signal (SIGTSTP, SIG_IGN); /* ignore tty signals */
-  signal (SIGTTOU, SIG_IGN);
-  signal (SIGTTIN, SIG_IGN);
-
-  // TODO: signal(SIGHUP,signal_handler); /* catch hangup signal */
-
-  return TIZ_DAEMON_SUCCESS;
 }

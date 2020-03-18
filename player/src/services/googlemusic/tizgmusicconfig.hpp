@@ -38,18 +38,18 @@
 
 namespace tiz
 {
-  namespace graph
-  {
-    class gmusicconfig : public config
-    {
+namespace graph
+{
+class gmusicconfig : public config
+{
 
-    public:
-      gmusicconfig (const tizplaylist_ptr_t &playlist, uint32_t buffer_seconds,
-                    const std::string &user, const std::string &pass,
-                    const std::string &device_id,
-                    const OMX_TIZONIA_AUDIO_GMUSICPLAYLISTTYPE playlist_type,
-                    const std::string &additional_keywords,
-                    const bool is_unlimited_search = false)
+public:
+    gmusicconfig (const tizplaylist_ptr_t &playlist, uint32_t buffer_seconds,
+                  const std::string &user, const std::string &pass,
+                  const std::string &device_id,
+                  const OMX_TIZONIA_AUDIO_GMUSICPLAYLISTTYPE playlist_type,
+                  const std::string &additional_keywords,
+                  const bool is_unlimited_search = false)
         : config (playlist, buffer_seconds),
           user_ (user),
           pass_ (pass),
@@ -57,52 +57,52 @@ namespace tiz
           playlist_type_ (playlist_type),
           additional_keywords_ (additional_keywords),
           is_unlimited_search_ (is_unlimited_search)
-      {
-      }
+    {
+    }
 
-      ~gmusicconfig ()
-      {
-      }
+    ~gmusicconfig ()
+    {
+    }
 
-      std::string get_user_name () const
-      {
+    std::string get_user_name () const
+    {
         return user_;
-      }
+    }
 
-      std::string get_user_pass () const
-      {
+    std::string get_user_pass () const
+    {
         return pass_;
-      }
+    }
 
-      std::string get_device_id () const
-      {
+    std::string get_device_id () const
+    {
         return device_id_;
-      }
+    }
 
-      OMX_TIZONIA_AUDIO_GMUSICPLAYLISTTYPE get_playlist_type () const
-      {
+    OMX_TIZONIA_AUDIO_GMUSICPLAYLISTTYPE get_playlist_type () const
+    {
         return playlist_type_;
-      }
+    }
 
-      std::string get_additional_keywords () const
-      {
+    std::string get_additional_keywords () const
+    {
         return additional_keywords_;
-      }
+    }
 
-      bool is_unlimited_search () const
-      {
+    bool is_unlimited_search () const
+    {
         return is_unlimited_search_;
-      }
+    }
 
-    protected:
-      const std::string user_;
-      const std::string pass_;
-      const std::string device_id_;
-      const OMX_TIZONIA_AUDIO_GMUSICPLAYLISTTYPE playlist_type_;
-      const std::string additional_keywords_;
-      bool is_unlimited_search_;
-    };
-  }  // namespace graph
+protected:
+    const std::string user_;
+    const std::string pass_;
+    const std::string device_id_;
+    const OMX_TIZONIA_AUDIO_GMUSICPLAYLISTTYPE playlist_type_;
+    const std::string additional_keywords_;
+    bool is_unlimited_search_;
+};
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZGMUSICCONFIG_HPP

@@ -45,25 +45,25 @@ extern "C" {
 typedef struct aacdec_prc aacdec_prc_t;
 struct aacdec_prc
 {
-  /* Object */
-  const tiz_filter_prc_t _;
-  OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
-  NeAACDecHandle p_aac_dec_;
-  NeAACDecFrameInfo aac_info_;
-  unsigned long samplerate_;
-  unsigned char channels_;
-  long nbytes_read_;
-  bool first_buffer_read_;
-  bool second_buffer_read_;
-  tiz_buffer_t *p_store_;
+    /* Object */
+    const tiz_filter_prc_t _;
+    OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
+    NeAACDecHandle p_aac_dec_;
+    NeAACDecFrameInfo aac_info_;
+    unsigned long samplerate_;
+    unsigned char channels_;
+    long nbytes_read_;
+    bool first_buffer_read_;
+    bool second_buffer_read_;
+    tiz_buffer_t *p_store_;
 };
 
 typedef struct aacdec_prc_class aacdec_prc_class_t;
 struct aacdec_prc_class
 {
-  /* Class */
-  const tiz_filter_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_filter_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

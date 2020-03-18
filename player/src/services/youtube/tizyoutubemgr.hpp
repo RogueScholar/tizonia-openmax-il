@@ -35,50 +35,50 @@
 
 namespace tiz
 {
-  namespace graphmgr
-  {
-    class youtubemgrops;
-    class graphmgr_capabilities;
+namespace graphmgr
+{
+class youtubemgrops;
+class graphmgr_capabilities;
 
-    /**
-     *  @class youtubemgr
-     *  @brief The Youtube client graph manager class.
-     *
-     */
-    class youtubemgr : public mgr
-    {
-      friend class youtubemgrops;
+/**
+ *  @class youtubemgr
+ *  @brief The Youtube client graph manager class.
+ *
+ */
+class youtubemgr : public mgr
+{
+    friend class youtubemgrops;
 
-    public:
-      youtubemgr (tizgraphconfig_ptr_t config);
-      virtual ~youtubemgr ();
+public:
+    youtubemgr (tizgraphconfig_ptr_t config);
+    virtual ~youtubemgr ();
 
-    private:
-      ops *do_init (const tizplaylist_ptr_t &playlist,
-                    const termination_callback_t &termination_cback,
-                    graphmgr_capabilities &graphmgr_caps);
+private:
+    ops *do_init (const tizplaylist_ptr_t &playlist,
+                  const termination_callback_t &termination_cback,
+                  graphmgr_capabilities &graphmgr_caps);
 
-    private:
-      tizgraphconfig_ptr_t config_;
-    };
+private:
+    tizgraphconfig_ptr_t config_;
+};
 
-    typedef boost::shared_ptr< youtubemgr > youtubemgr_ptr_t;
+typedef boost::shared_ptr< youtubemgr > youtubemgr_ptr_t;
 
-    class youtubemgrops : public ops
-    {
-    public:
-      youtubemgrops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
-                      const termination_callback_t &termination_cback);
+class youtubemgrops : public ops
+{
+public:
+    youtubemgrops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
+                   const termination_callback_t &termination_cback);
 
-      void do_load ();
-      void do_execute ();
+    void do_load ();
+    void do_execute ();
 
-    private:
-      bool is_fatal_error (const OMX_ERRORTYPE error,
-                           const std::string &msg);
-      tizgraph_ptr_t get_graph (const std::string &uri);
-    };
-  }  // namespace graphmgr
+private:
+    bool is_fatal_error (const OMX_ERRORTYPE error,
+                         const std::string &msg);
+    tizgraph_ptr_t get_graph (const std::string &uri);
+};
+}  // namespace graphmgr
 }  // namespace tiz
 
 #endif  // TIZYOUTUBEMGR_HPP
