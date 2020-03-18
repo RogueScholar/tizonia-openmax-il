@@ -43,10 +43,10 @@
 
 namespace tiz
 {
-  class probe
-  {
+class probe
+{
 
-  public:
+public:
     probe (const std::string &uri, const bool quiet = false);
 
     std::string get_uri () const;
@@ -90,7 +90,7 @@ namespace tiz
     void dump_aac_and_pcm_info ();
     void dump_stream_metadata ();
 
-  private:
+private:
     void probe_stream ();
     void set_mp2_codec_info (const OMX_U32 samplerate, const OMX_U32 bitrate,
                              const OMX_U32 nchannels, const OMX_U32 bitdepth,
@@ -121,7 +121,7 @@ namespace tiz
     unsigned int retrieve_meta_data_uint (
         TagLib::uint (TagLib::Tag::*TagFunction)() const) const;
 
-  private:
+private:
     std::string uri_;
     bool quiet_;  // this is to control whether the probe object should dump any
     // format info to the stdout
@@ -141,7 +141,7 @@ namespace tiz
     std::string stream_title_;
     std::string stream_genre_;
     bool stream_is_cbr_;
-  };
+};
 }  // namespace tiz
 
 #endif  // TIZPROBE_HPP

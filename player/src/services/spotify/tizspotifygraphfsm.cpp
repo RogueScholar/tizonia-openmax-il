@@ -33,6 +33,6 @@
 
 char const* const tiz::graph::spfsm::pstate(tiz::graph::spfsm::fsm const& p)
 {
-  return tiz::graph::spfsm::state_names[p.current_state()[0]];
+    return tiz::graph::spfsm::state_names[p.current_state()[0]];
 }
 

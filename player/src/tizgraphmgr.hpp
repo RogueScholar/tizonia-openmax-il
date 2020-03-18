@@ -42,221 +42,221 @@
 
 namespace tiz
 {
-  namespace graphmgr
-  {
+namespace graphmgr
+{
 
-    // Forward declarations
-    void *thread_func (void *p_arg);
-    class cmd;
-    class graphmgr_capabilities;
+// Forward declarations
+void *thread_func (void *p_arg);
+class cmd;
+class graphmgr_capabilities;
+
+/**
+ *  @class mgr
+ *  @brief The graph manager class.
+ *
+ *  A graph manager instantiates OpenMAX IL graphs according to the media
+ *types
+ *  of the elements found in a play list. The graph manager runs in its own
+ *  thread and will manage the lifetime of the graphs that it creates.
+ */
+class mgr
+{
+
+    friend class ops;
+    friend class tiz::graph::graph;
+    friend void *thread_func (void *);
+
+public:
+    typedef boost::function< void(const OMX_ERRORTYPE error_code, const std::string error_msg) >
+    termination_callback_t;
+
+public:
+    mgr ();
+    virtual ~mgr ();
 
     /**
-     *  @class mgr
-     *  @brief The graph manager class.
+     * Initialise the graph manager thread.
      *
-     *  A graph manager instantiates OpenMAX IL graphs according to the media
-     *types
-     *  of the elements found in a play list. The graph manager runs in its own
-     *  thread and will manage the lifetime of the graphs that it creates.
+     * @pre This method must be called only once, before any call is made to
+     * the other APIs.
+     *
+     * @post The graph manager thread is ready to process requests.
+     *
+     * @return OMX_ErrorNone if initialisation was
+     * successful. OMX_ErrorInsuficientResources otherwise.
      */
-    class mgr
-    {
+    OMX_ERRORTYPE init (const tizplaylist_ptr_t &playlist,
+                        const termination_callback_t &termination_cback);
 
-      friend class ops;
-      friend class tiz::graph::graph;
-      friend void *thread_func (void *);
+    /**
+     * Destroy the manager thread and release all resources.
+     *
+     * @pre stop() has been called on this manager.
+     *
+     * @post Only init() can be called at this point.
+     *
+     * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
+     * success.
+     */
+    void deinit ();
 
-    public:
-      typedef boost::function< void(const OMX_ERRORTYPE error_code, const std::string error_msg) >
-          termination_callback_t;
+    /**
+     * Start processing the play list from the beginning.
+     *
+     * @pre init() has been called on this manager.
+     *
+     * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
+     * success.
+     */
+    OMX_ERRORTYPE start ();
 
-    public:
-      mgr ();
-      virtual ~mgr ();
+    /**
+     * Process the next item in the playlist.
+     *
+     * @pre init() has been called on this manager.
+     *
+     * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
+     * success.
+     */
+    OMX_ERRORTYPE next ();
 
-      /**
-       * Initialise the graph manager thread.
-       *
-       * @pre This method must be called only once, before any call is made to
-       * the other APIs.
-       *
-       * @post The graph manager thread is ready to process requests.
-       *
-       * @return OMX_ErrorNone if initialisation was
-       * successful. OMX_ErrorInsuficientResources otherwise.
-       */
-      OMX_ERRORTYPE init (const tizplaylist_ptr_t &playlist,
-                          const termination_callback_t &termination_cback);
+    /**
+     * Process the previous item in the playlist.
+     *
+     * @pre init() has been called on this manager.
+     *
+     * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
+     * success.
+     */
+    OMX_ERRORTYPE prev ();
 
-      /**
-       * Destroy the manager thread and release all resources.
-       *
-       * @pre stop() has been called on this manager.
-       *
-       * @post Only init() can be called at this point.
-       *
-       * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
-       * success.
-       */
-      void deinit ();
+    /**
+     * NOT IMPLEMENTED YET
+     *
+     * @pre init() has been called on this manager.
+     *
+     * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
+     * success.
+     */
+    OMX_ERRORTYPE fwd ();
 
-      /**
-       * Start processing the play list from the beginning.
-       *
-       * @pre init() has been called on this manager.
-       *
-       * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
-       * success.
-       */
-      OMX_ERRORTYPE start ();
+    /**
+     * NOT IMPLEMENTED YET
+     *
+     * @pre init() has been called on this manager.
+     *
+     * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
+     * success.
+     */
+    OMX_ERRORTYPE rwd ();
 
-      /**
-       * Process the next item in the playlist.
-       *
-       * @pre init() has been called on this manager.
-       *
-       * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
-       * success.
-       */
-      OMX_ERRORTYPE next ();
+    /**
+     * Increments or decrements the volume by steps.
+     *
+     * @pre init() has been called on this manager.
+     *
+     * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
+     * success.
+     */
+    OMX_ERRORTYPE volume_step (const int step);
 
-      /**
-       * Process the previous item in the playlist.
-       *
-       * @pre init() has been called on this manager.
-       *
-       * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
-       * success.
-       */
-      OMX_ERRORTYPE prev ();
+    /**
+     * Changes the volume to the specified value. 1.0 is maximum volume and 0.0 means mute.
+     *
+     * @pre init() has been called on this manager.
+     *
+     * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
+     * success.
+     */
+    OMX_ERRORTYPE volume (const double volume);
 
-      /**
-       * NOT IMPLEMENTED YET
-       *
-       * @pre init() has been called on this manager.
-       *
-       * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
-       * success.
-       */
-      OMX_ERRORTYPE fwd ();
+    /**
+     * Mute/unmute toggle.
+     *
+     * @pre init() has been called on this manager.
+     *
+     * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
+     * success.
+     */
+    OMX_ERRORTYPE mute ();
 
-      /**
-       * NOT IMPLEMENTED YET
-       *
-       * @pre init() has been called on this manager.
-       *
-       * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
-       * success.
-       */
-      OMX_ERRORTYPE rwd ();
+    /**
+     * Pause the processing of the current item in the playlist.
+     *
+     * @pre init() has been called on this manager.
+     *
+     * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
+     * success.
+     */
+    OMX_ERRORTYPE pause ();
 
-      /**
-       * Increments or decrements the volume by steps.
-       *
-       * @pre init() has been called on this manager.
-       *
-       * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
-       * success.
-       */
-      OMX_ERRORTYPE volume_step (const int step);
+    /**
+     * Halt processing of the playlist.
+     *
+     * @pre init() has been called on this manager.
+     *
+     * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
+     * success.
+     */
+    OMX_ERRORTYPE stop ();
 
-      /**
-       * Changes the volume to the specified value. 1.0 is maximum volume and 0.0 means mute.
-       *
-       * @pre init() has been called on this manager.
-       *
-       * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
-       * success.
-       */
-      OMX_ERRORTYPE volume (const double volume);
+    /**
+     * Exit the manager thread.
+     *
+     * @pre init() has been called on this manager.
+     *
+     * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
+     * success.
+     */
+    OMX_ERRORTYPE quit ();
 
-      /**
-       * Mute/unmute toggle.
-       *
-       * @pre init() has been called on this manager.
-       *
-       * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
-       * success.
-       */
-      OMX_ERRORTYPE mute ();
+protected:
+    virtual ops *do_init (const tizplaylist_ptr_t &playlist,
+                          const termination_callback_t &termination_cback,
+                          graphmgr_capabilities &graphmgr_caps) = 0;
 
-      /**
-       * Pause the processing of the current item in the playlist.
-       *
-       * @pre init() has been called on this manager.
-       *
-       * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
-       * success.
-       */
-      OMX_ERRORTYPE pause ();
+protected:
+    OMX_ERRORTYPE graph_loaded ();
+    OMX_ERRORTYPE graph_execd ();
+    OMX_ERRORTYPE graph_stopped ();
+    OMX_ERRORTYPE graph_paused ();
+    OMX_ERRORTYPE graph_resumed ();
+    OMX_ERRORTYPE graph_metadata (const track_metadata_map_t &metadata);
+    OMX_ERRORTYPE graph_volume (const int volume);
+    OMX_ERRORTYPE graph_unloaded ();
+    OMX_ERRORTYPE graph_end_of_play ();
+    OMX_ERRORTYPE graph_error (const OMX_ERRORTYPE error,
+                               const std::string &msg);
 
-      /**
-       * Halt processing of the playlist.
-       *
-       * @pre init() has been called on this manager.
-       *
-       * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
-       * success.
-       */
-      OMX_ERRORTYPE stop ();
+    OMX_ERRORTYPE start_mpris (const graphmgr_capabilities &graphmgr_caps);
+    OMX_ERRORTYPE stop_mpris ();
+    OMX_ERRORTYPE do_update_control_ifcs (const control::playback_status_t status,
+                                          const std::string &current_song = std::string ());
+    OMX_ERRORTYPE do_update_metadata (const track_metadata_map_t &metadata);
+    OMX_ERRORTYPE do_update_volume (const int volume);
 
-      /**
-       * Exit the manager thread.
-       *
-       * @pre init() has been called on this manager.
-       *
-       * @return OMX_ErrorInsuficientResources if OOM. OMX_ErrorNone in case of
-       * success.
-       */
-      OMX_ERRORTYPE quit ();
+protected:
+    ops *p_ops_;
+    fsm fsm_;
+    control::mprismgr_ptr_t mpris_ptr_;
+    control::playback_events_t playback_events_;
 
-    protected:
-      virtual ops *do_init (const tizplaylist_ptr_t &playlist,
-                            const termination_callback_t &termination_cback,
-                            graphmgr_capabilities &graphmgr_caps) = 0;
+private:
+    OMX_ERRORTYPE init_cmd_queue ();
+    void deinit_cmd_queue ();
+    OMX_ERRORTYPE post_cmd (cmd *p_cmd);
+    static bool dispatch_cmd (mgr *p_mgr, const cmd *p_cmd);
 
-    protected:
-      OMX_ERRORTYPE graph_loaded ();
-      OMX_ERRORTYPE graph_execd ();
-      OMX_ERRORTYPE graph_stopped ();
-      OMX_ERRORTYPE graph_paused ();
-      OMX_ERRORTYPE graph_resumed ();
-      OMX_ERRORTYPE graph_metadata (const track_metadata_map_t &metadata);
-      OMX_ERRORTYPE graph_volume (const int volume);
-      OMX_ERRORTYPE graph_unloaded ();
-      OMX_ERRORTYPE graph_end_of_play ();
-      OMX_ERRORTYPE graph_error (const OMX_ERRORTYPE error,
-                                 const std::string &msg);
+private:
+    tiz_thread_t thread_;
+    tiz_mutex_t mutex_;
+    tiz_sem_t sem_;
+    tiz_queue_t *p_queue_;
+};
 
-      OMX_ERRORTYPE start_mpris (const graphmgr_capabilities &graphmgr_caps);
-      OMX_ERRORTYPE stop_mpris ();
-      OMX_ERRORTYPE do_update_control_ifcs (const control::playback_status_t status,
-                                            const std::string &current_song = std::string ());
-      OMX_ERRORTYPE do_update_metadata (const track_metadata_map_t &metadata);
-      OMX_ERRORTYPE do_update_volume (const int volume);
+typedef boost::shared_ptr< mgr > mgr_ptr_t;
 
-    protected:
-      ops *p_ops_;
-      fsm fsm_;
-      control::mprismgr_ptr_t mpris_ptr_;
-      control::playback_events_t playback_events_;
-
-    private:
-      OMX_ERRORTYPE init_cmd_queue ();
-      void deinit_cmd_queue ();
-      OMX_ERRORTYPE post_cmd (cmd *p_cmd);
-      static bool dispatch_cmd (mgr *p_mgr, const cmd *p_cmd);
-
-    private:
-      tiz_thread_t thread_;
-      tiz_mutex_t mutex_;
-      tiz_sem_t sem_;
-      tiz_queue_t *p_queue_;
-    };
-
-    typedef boost::shared_ptr< mgr > mgr_ptr_t;
-
-  }  // namespace graphmgr
+}  // namespace graphmgr
 }  // namespace tiz
 
 #endif  // TIZGRAPHMGR_HPP

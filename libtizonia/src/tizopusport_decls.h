@@ -40,17 +40,17 @@ extern "C" {
 typedef struct tiz_opusport tiz_opusport_t;
 struct tiz_opusport
 {
-  /* Object */
-  const tiz_audioport_t _;
-  OMX_TIZONIA_AUDIO_PARAM_OPUSTYPE opustype_;
+    /* Object */
+    const tiz_audioport_t _;
+    OMX_TIZONIA_AUDIO_PARAM_OPUSTYPE opustype_;
 };
 
 typedef struct tiz_opusport_class tiz_opusport_class_t;
 struct tiz_opusport_class
 {
-  /* Class */
-  const tiz_audioport_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_audioport_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

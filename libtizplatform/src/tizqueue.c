@@ -66,289 +66,289 @@
 typedef struct tiz_queue_item tiz_queue_item_t;
 struct tiz_queue_item
 {
-  OMX_PTR p_data;
-  tiz_queue_item_t * p_next;
+    OMX_PTR p_data;
+    tiz_queue_item_t * p_next;
 };
 
 struct tiz_queue
 {
-  /*@null@ */ tiz_queue_item_t * p_first;
-  /*@null@ */ tiz_queue_item_t * p_last;
-  OMX_S32 capacity;
-  OMX_S32 length;
-  tiz_mutex_t mutex;
-  tiz_cond_t cond_full;
-  tiz_cond_t cond_empty;
+    /*@null@ */ tiz_queue_item_t * p_first;
+    /*@null@ */ tiz_queue_item_t * p_last;
+    OMX_S32 capacity;
+    OMX_S32 length;
+    tiz_mutex_t mutex;
+    tiz_cond_t cond_full;
+    tiz_cond_t cond_empty;
 };
 
 static inline void
 deinit_queue_struct (/*@null@ */ tiz_queue_t * ap_q)
 {
-  /* Clean-up */
-  if (ap_q)
+    /* Clean-up */
+    if (ap_q)
     {
-      (void) tiz_cond_destroy (&(ap_q->cond_empty));
-      (void) tiz_cond_destroy (&(ap_q->cond_full));
-      (void) tiz_mutex_destroy (&(ap_q->mutex));
-      tiz_mem_free (ap_q);
+        (void) tiz_cond_destroy (&(ap_q->cond_empty));
+        (void) tiz_cond_destroy (&(ap_q->cond_full));
+        (void) tiz_mutex_destroy (&(ap_q->mutex));
+        tiz_mem_free (ap_q);
     }
 }
 
 /*@null@*/ static tiz_queue_t *
 init_queue_struct (void)
 {
-  bool init_ok = false;
-  tiz_queue_t * p_q = (tiz_queue_t *) tiz_mem_calloc (1, sizeof (tiz_queue_t));
+    bool init_ok = false;
+    tiz_queue_t * p_q = (tiz_queue_t *) tiz_mem_calloc (1, sizeof (tiz_queue_t));
 
-  TIZ_Q_GOTO_END_ON_NULL (p_q);
-  TIZ_Q_GOTO_END_ON_ERROR (tiz_mutex_init (&(p_q->mutex)));
-  TIZ_Q_GOTO_END_ON_ERROR (tiz_cond_init (&(p_q->cond_full)));
-  TIZ_Q_GOTO_END_ON_ERROR (tiz_cond_init (&(p_q->cond_empty)));
-  p_q->p_first
-    = (tiz_queue_item_t *) tiz_mem_calloc (1, sizeof (tiz_queue_item_t));
-  TIZ_Q_GOTO_END_ON_NULL (p_q->p_first);
+    TIZ_Q_GOTO_END_ON_NULL (p_q);
+    TIZ_Q_GOTO_END_ON_ERROR (tiz_mutex_init (&(p_q->mutex)));
+    TIZ_Q_GOTO_END_ON_ERROR (tiz_cond_init (&(p_q->cond_full)));
+    TIZ_Q_GOTO_END_ON_ERROR (tiz_cond_init (&(p_q->cond_empty)));
+    p_q->p_first
+        = (tiz_queue_item_t *) tiz_mem_calloc (1, sizeof (tiz_queue_item_t));
+    TIZ_Q_GOTO_END_ON_NULL (p_q->p_first);
 
-  /* All OK */
-  init_ok = true;
+    /* All OK */
+    init_ok = true;
 
 end:
 
-  if (!init_ok)
+    if (!init_ok)
     {
-      deinit_queue_struct (p_q);
-      p_q = NULL;
+        deinit_queue_struct (p_q);
+        p_q = NULL;
     }
 
-  return p_q;
+    return p_q;
 }
 
 OMX_ERRORTYPE
 tiz_queue_init (tiz_queue_ptr_t * app_q, OMX_S32 a_capacity)
 {
-  OMX_ERRORTYPE rc = OMX_ErrorNone;
-  tiz_queue_item_t * p_new_item = NULL;
-  tiz_queue_item_t * p_cur_item = NULL;
-  tiz_queue_t * p_q = NULL;
+    OMX_ERRORTYPE rc = OMX_ErrorNone;
+    tiz_queue_item_t * p_new_item = NULL;
+    tiz_queue_item_t * p_cur_item = NULL;
+    tiz_queue_t * p_q = NULL;
 
-  assert (app_q);
+    assert (app_q);
 
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "queue capacity [%d]", a_capacity);
+    TIZ_LOG (TIZ_PRIORITY_TRACE, "queue capacity [%d]", a_capacity);
 
-  assert (a_capacity > 0);
+    assert (a_capacity > 0);
 
-  if ((p_q = init_queue_struct ()))
+    if ((p_q = init_queue_struct ()))
     {
-      int i = 0;
-      p_q->capacity = a_capacity;
-      p_q->length = 0;
+        int i = 0;
+        p_q->capacity = a_capacity;
+        p_q->length = 0;
 
-      p_cur_item = p_q->p_last = p_q->p_first;
-      assert (p_cur_item);
+        p_cur_item = p_q->p_last = p_q->p_first;
+        assert (p_cur_item);
 
-      for (i = 0; i < (a_capacity - 1); ++i)
+        for (i = 0; i < (a_capacity - 1); ++i)
         {
-          if ((p_new_item = (tiz_queue_item_t *) tiz_mem_calloc (
-                 1, sizeof (tiz_queue_item_t))))
+            if ((p_new_item = (tiz_queue_item_t *) tiz_mem_calloc (
+                                  1, sizeof (tiz_queue_item_t))))
             {
-              p_cur_item->p_next = p_new_item;
-              p_cur_item = p_new_item;
+                p_cur_item->p_next = p_new_item;
+                p_cur_item = p_new_item;
             }
-          else
+            else
             {
-              TIZ_LOG (TIZ_PRIORITY_ERROR,
-                       "[OMX_ErrorInsufficientResources]: "
-                       "Could not instantiate queue items.");
-              rc = OMX_ErrorInsufficientResources;
+                TIZ_LOG (TIZ_PRIORITY_ERROR,
+                         "[OMX_ErrorInsufficientResources]: "
+                         "Could not instantiate queue items.");
+                rc = OMX_ErrorInsufficientResources;
 
-              /* Clean-up */
-              while (p_q->p_first)
+                /* Clean-up */
+                while (p_q->p_first)
                 {
-                  p_cur_item = p_q->p_first->p_next;
-                  tiz_mem_free ((OMX_PTR) p_q->p_first);
-                  p_q->p_first = p_cur_item;
+                    p_cur_item = p_q->p_first->p_next;
+                    tiz_mem_free ((OMX_PTR) p_q->p_first);
+                    p_q->p_first = p_cur_item;
                 }
-              /* end loop  */
-              break;
+                /* end loop  */
+                break;
             }
         } /* for */
 
-      if (OMX_ErrorNone == rc)
+        if (OMX_ErrorNone == rc)
         {
-          p_cur_item->p_next = p_q->p_first;
-          TIZ_LOG (TIZ_PRIORITY_TRACE, "queue created [%p]", p_q);
+            p_cur_item->p_next = p_q->p_first;
+            TIZ_LOG (TIZ_PRIORITY_TRACE, "queue created [%p]", p_q);
         }
     }
-  else
+    else
     {
-      TIZ_LOG (TIZ_PRIORITY_ERROR,
-               "OMX_ErrorInsufficientResources: "
-               "Could not instantiate queue struct.");
-      rc = OMX_ErrorInsufficientResources;
+        TIZ_LOG (TIZ_PRIORITY_ERROR,
+                 "OMX_ErrorInsufficientResources: "
+                 "Could not instantiate queue struct.");
+        rc = OMX_ErrorInsufficientResources;
     }
 
-  if (OMX_ErrorNone == rc)
+    if (OMX_ErrorNone == rc)
     {
-      *app_q = p_q;
+        *app_q = p_q;
     }
-  else
+    else
     {
-      /* Clean-up */
-      deinit_queue_struct (p_q);
-      p_q = NULL;
+        /* Clean-up */
+        deinit_queue_struct (p_q);
+        p_q = NULL;
     }
 
-  return rc;
+    return rc;
 }
 
 void
 tiz_queue_destroy (/*@null@ */ tiz_queue_t * p_q)
 {
-  if (p_q)
+    if (p_q)
     {
-      tiz_queue_item_t * p_cur_item = 0;
-      int i = 0;
+        tiz_queue_item_t * p_cur_item = 0;
+        int i = 0;
 
-      for (i = 0; p_q->p_first && i < (p_q->capacity - 1); ++i)
+        for (i = 0; p_q->p_first && i < (p_q->capacity - 1); ++i)
         {
-          p_cur_item = p_q->p_first->p_next;
-          tiz_mem_free (p_q->p_first);
-          p_q->p_first = p_cur_item;
+            p_cur_item = p_q->p_first->p_next;
+            tiz_mem_free (p_q->p_first);
+            p_q->p_first = p_cur_item;
         }
 
-      deinit_queue_struct (p_q);
+        deinit_queue_struct (p_q);
     }
 }
 
 OMX_ERRORTYPE
 tiz_queue_send (tiz_queue_t * p_q, OMX_PTR ap_data)
 {
-  OMX_ERRORTYPE rc = OMX_ErrorNone;
+    OMX_ERRORTYPE rc = OMX_ErrorNone;
 
-  assert (p_q);
+    assert (p_q);
 
-  tiz_check_omx_ret_oom (tiz_mutex_lock (&(p_q->mutex)));
+    tiz_check_omx_ret_oom (tiz_mutex_lock (&(p_q->mutex)));
 
-  assert (p_q->p_last);
-  assert (NULL == (p_q->p_last->p_data));
-  assert (p_q->length <= p_q->capacity);
+    assert (p_q->p_last);
+    assert (NULL == (p_q->p_last->p_data));
+    assert (p_q->length <= p_q->capacity);
 
-  while (p_q->length == p_q->capacity)
+    while (p_q->length == p_q->capacity)
     {
-      rc = tiz_cond_wait (&(p_q->cond_full), &(p_q->mutex));
+        rc = tiz_cond_wait (&(p_q->cond_full), &(p_q->mutex));
     }
 
-  if (OMX_ErrorNone == rc)
+    if (OMX_ErrorNone == rc)
     {
-      p_q->p_last->p_data = ap_data;
-      p_q->p_last = p_q->p_last->p_next;
-      p_q->length++;
+        p_q->p_last->p_data = ap_data;
+        p_q->p_last = p_q->p_last->p_next;
+        p_q->length++;
     }
 
-  tiz_check_omx_ret_oom (tiz_mutex_unlock (&(p_q->mutex)));
-  tiz_check_omx_ret_oom (tiz_cond_broadcast (&(p_q->cond_empty)));
+    tiz_check_omx_ret_oom (tiz_mutex_unlock (&(p_q->mutex)));
+    tiz_check_omx_ret_oom (tiz_cond_broadcast (&(p_q->cond_empty)));
 
-  return rc;
+    return rc;
 }
 
 OMX_ERRORTYPE
 tiz_queue_receive (tiz_queue_t * p_q, OMX_PTR * app_data)
 {
-  OMX_ERRORTYPE rc = OMX_ErrorNone;
+    OMX_ERRORTYPE rc = OMX_ErrorNone;
 
-  assert (p_q);
-  assert (app_data);
+    assert (p_q);
+    assert (app_data);
 
-  tiz_check_omx_ret_oom (tiz_mutex_lock (&(p_q->mutex)));
+    tiz_check_omx_ret_oom (tiz_mutex_lock (&(p_q->mutex)));
 
-  assert (!(p_q->length < 0));
+    assert (!(p_q->length < 0));
 
-  while (p_q->length == 0)
+    while (p_q->length == 0)
     {
-      rc = tiz_cond_wait (&(p_q->cond_empty), &(p_q->mutex));
+        rc = tiz_cond_wait (&(p_q->cond_empty), &(p_q->mutex));
     }
 
-  if (OMX_ErrorNone == rc)
+    if (OMX_ErrorNone == rc)
     {
-      assert (p_q->p_first);
-      assert (p_q->p_first->p_data);
-      *app_data = p_q->p_first->p_data;
-      p_q->p_first->p_data = 0;
-      p_q->p_first = p_q->p_first->p_next;
-      p_q->length--;
+        assert (p_q->p_first);
+        assert (p_q->p_first->p_data);
+        *app_data = p_q->p_first->p_data;
+        p_q->p_first->p_data = 0;
+        p_q->p_first = p_q->p_first->p_next;
+        p_q->length--;
     }
 
-  tiz_check_omx_ret_oom (tiz_mutex_unlock (&(p_q->mutex)));
-  tiz_check_omx_ret_oom (tiz_cond_broadcast (&(p_q->cond_full)));
+    tiz_check_omx_ret_oom (tiz_mutex_unlock (&(p_q->mutex)));
+    tiz_check_omx_ret_oom (tiz_cond_broadcast (&(p_q->cond_full)));
 
-  return rc;
+    return rc;
 }
 
 OMX_ERRORTYPE
 tiz_queue_timed_receive (tiz_queue_t * p_q, OMX_PTR * app_data,
                          OMX_U32 a_millis)
 {
-  OMX_ERRORTYPE rc = OMX_ErrorNone;
+    OMX_ERRORTYPE rc = OMX_ErrorNone;
 
-  assert (p_q);
-  assert (app_data);
+    assert (p_q);
+    assert (app_data);
 
-  tiz_check_omx_ret_oom (tiz_mutex_lock (&(p_q->mutex)));
+    tiz_check_omx_ret_oom (tiz_mutex_lock (&(p_q->mutex)));
 
-  assert (!(p_q->length < 0));
+    assert (!(p_q->length < 0));
 
-  while (p_q->length == 0)
+    while (p_q->length == 0)
     {
-      rc = tiz_cond_timedwait (&(p_q->cond_empty), &(p_q->mutex), a_millis);
-      if (OMX_ErrorTimeout == rc)
+        rc = tiz_cond_timedwait (&(p_q->cond_empty), &(p_q->mutex), a_millis);
+        if (OMX_ErrorTimeout == rc)
         {
-          break;
+            break;
         }
     }
 
-  if (OMX_ErrorNone == rc || (OMX_ErrorTimeout == rc && p_q->length > 0))
+    if (OMX_ErrorNone == rc || (OMX_ErrorTimeout == rc && p_q->length > 0))
     {
-      assert (p_q->p_first);
-      assert (p_q->p_first->p_data);
-      *app_data = p_q->p_first->p_data;
-      p_q->p_first->p_data = 0;
-      p_q->p_first = p_q->p_first->p_next;
-      p_q->length--;
+        assert (p_q->p_first);
+        assert (p_q->p_first->p_data);
+        *app_data = p_q->p_first->p_data;
+        p_q->p_first->p_data = 0;
+        p_q->p_first = p_q->p_first->p_next;
+        p_q->length--;
     }
 
-  tiz_check_omx_ret_oom (tiz_mutex_unlock (&(p_q->mutex)));
-  tiz_check_omx_ret_oom (tiz_cond_broadcast (&(p_q->cond_full)));
+    tiz_check_omx_ret_oom (tiz_mutex_unlock (&(p_q->mutex)));
+    tiz_check_omx_ret_oom (tiz_cond_broadcast (&(p_q->cond_full)));
 
-  return rc;
+    return rc;
 }
 
 OMX_S32
 tiz_queue_capacity (tiz_queue_t * p_q)
 {
-  OMX_S32 capacity = 0;
+    OMX_S32 capacity = 0;
 
-  assert (p_q);
+    assert (p_q);
 
-  tiz_check_omx_ret_oom (tiz_mutex_lock (&(p_q->mutex)));
+    tiz_check_omx_ret_oom (tiz_mutex_lock (&(p_q->mutex)));
 
-  capacity = p_q->capacity;
+    capacity = p_q->capacity;
 
-  tiz_check_omx_ret_oom (tiz_mutex_unlock (&(p_q->mutex)));
+    tiz_check_omx_ret_oom (tiz_mutex_unlock (&(p_q->mutex)));
 
-  return capacity;
+    return capacity;
 }
 
 OMX_S32
 tiz_queue_length (tiz_queue_t * p_q)
 {
-  OMX_S32 length = 0;
+    OMX_S32 length = 0;
 
-  assert (p_q);
+    assert (p_q);
 
-  tiz_check_omx_ret_oom (tiz_mutex_lock (&(p_q->mutex)));
+    tiz_check_omx_ret_oom (tiz_mutex_lock (&(p_q->mutex)));
 
-  length = p_q->length;
+    length = p_q->length;
 
-  tiz_check_omx_ret_oom (tiz_mutex_unlock (&(p_q->mutex)));
+    tiz_check_omx_ret_oom (tiz_mutex_unlock (&(p_q->mutex)));
 
-  return length;
+    return length;
 }

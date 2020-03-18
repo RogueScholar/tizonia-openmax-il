@@ -37,9 +37,9 @@ typedef struct tiz_cast tiz_cast_t;
 typedef /*@null@ */ tiz_cast_t * tiz_cast_ptr_t;
 
 typedef enum tiz_cast_client_cast_status {
-  ETizCcCastStatusUnknown,
-  ETizCcCastStatusReadyToCast,
-  ETizCcCastStatusNowCasting
+    ETizCcCastStatusUnknown,
+    ETizCcCastStatusReadyToCast,
+    ETizCcCastStatusNowCasting
 } tiz_cast_client_cast_status_t;
 
 /**
@@ -47,14 +47,14 @@ typedef enum tiz_cast_client_cast_status {
  * changed.
  */
 typedef void (*tiz_cast_client_cast_status_cb_f) (
-  void * ap_user_data, tiz_cast_client_cast_status_t a_status, int a_volume);
+    void * ap_user_data, tiz_cast_client_cast_status_t a_status, int a_volume);
 
 typedef enum tiz_cast_client_media_status {
-  ETizCcMediaStatusUnknown,
-  ETizCcMediaStatusIdle,
-  ETizCcMediaStatusBuffering,
-  ETizCcMediaStatusPaused,
-  ETizCcMediaStatusPlaying
+    ETizCcMediaStatusUnknown,
+    ETizCcMediaStatusIdle,
+    ETizCcMediaStatusBuffering,
+    ETizCcMediaStatusPaused,
+    ETizCcMediaStatusPlaying
 } tiz_cast_client_media_status_t;
 
 /**
@@ -62,25 +62,25 @@ typedef enum tiz_cast_client_media_status {
  * changed.
  */
 typedef void (*tiz_cast_client_media_status_cb_f) (
-  void * ap_user_data, tiz_cast_client_media_status_t a_status, int a_volume);
+    void * ap_user_data, tiz_cast_client_media_status_t a_status, int a_volume);
 
 typedef enum tiz_cast_client_error_status {
-  ETizCcErrorStatusNoError = 0,
-  ETizCcErrorStatusConnectionError = -1
+    ETizCcErrorStatusNoError = 0,
+    ETizCcErrorStatusConnectionError = -1
 } tiz_cast_client_error_status_t;
 
 /**
  * Callback function to deliver error information.
  */
 typedef void (*tiz_cast_client_error_status_cb_f) (
-  void * ap_user_data, tiz_cast_client_error_status_t a_error,
-  const char * ap_error_msg);
+    void * ap_user_data, tiz_cast_client_error_status_t a_error,
+    const char * ap_error_msg);
 
 typedef struct tiz_cast_client_callbacks
 {
-  tiz_cast_client_cast_status_cb_f pf_cast_status;
-  tiz_cast_client_media_status_cb_f pf_media_status;
-  tiz_cast_client_error_status_cb_f pf_error_status;
+    tiz_cast_client_cast_status_cb_f pf_cast_status;
+    tiz_cast_client_media_status_cb_f pf_media_status;
+    tiz_cast_client_error_status_cb_f pf_error_status;
 } tiz_cast_client_callbacks_t;
 
 #ifdef __cplusplus

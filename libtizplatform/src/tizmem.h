@@ -44,7 +44,7 @@ tiz_mem_free (/*@only@*/ /*@out@*/ /*@null@*/ OMX_PTR addr);
 /*@only@*/ /*@null@*/ /*@out@*/
 OMX_PTR
 tiz_mem_realloc (/*@only@*/ /*@out@*/ /*@null@*/
-                 OMX_PTR ptr, size_t size);
+    OMX_PTR ptr, size_t size);
 /*@only@*/ /*@null@*/ /*@out@*/
 OMX_PTR
 tiz_mem_calloc (size_t nmemb, size_t size);

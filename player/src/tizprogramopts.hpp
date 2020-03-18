@@ -41,12 +41,12 @@
 
 namespace tiz
 {
-  class programopts
-  {
+class programopts
+{
     typedef boost::function< OMX_ERRORTYPE () > option_handler_t;
     typedef std::map< std::string, option_handler_t > option_handlers_map_t;
 
-  public:
+public:
     programopts (int argc, char *argv[]);
 
     int consume ();
@@ -113,7 +113,7 @@ namespace tiz
     OMX_TIZONIA_AUDIO_PLEXPLAYLISTTYPE plex_playlist_type ();
     uint32_t plex_buffer_seconds() const;
 
-  private:
+private:
     void print_usage_feature (
         boost::program_options::options_description &desc) const;
     void print_usage_keyboard () const;
@@ -169,7 +169,7 @@ namespace tiz
 
     void register_consume_function (const consume_mem_fn_t cf);
 
-  private:
+private:
     int argc_;
     char **argv_;
     option_handlers_map_t option_handlers_map_;
@@ -190,7 +190,7 @@ namespace tiz
     boost::program_options::options_description input_;
     boost::program_options::positional_options_description positional_;
 
-  private:
+private:
     std::string help_option_;
     bool recurse_;
     bool shuffle_;
@@ -318,6 +318,6 @@ namespace tiz
     std::vector< std::string > all_plex_client_options_;
     std::vector< std::string > all_input_uri_options_;
     std::vector< std::string > all_given_options_;
-  };
+};
 }
 #endif  // TIZPROGRAMOPTS_HPP

@@ -38,17 +38,17 @@ extern "C" {
 typedef struct tiz_demuxerport tiz_demuxerport_t;
 struct tiz_demuxerport
 {
-  /* Object */
-  const tiz_port_t _;
-  void * p_port_;
+    /* Object */
+    const tiz_port_t _;
+    void * p_port_;
 };
 
 typedef struct tiz_demuxerport_class tiz_demuxerport_class_t;
 struct tiz_demuxerport_class
 {
-  /* Class */
-  const tiz_port_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_port_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

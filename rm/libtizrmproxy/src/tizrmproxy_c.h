@@ -68,10 +68,10 @@ tiz_rm_error_t tiz_rm_proxy_wait (const tiz_rm_t *ap_rm, OMX_U32 rid,
                                   OMX_U32 quantity);
 
 tiz_rm_error_t tiz_rm_proxy_cancel_wait (const tiz_rm_t *ap_rm, OMX_U32 rid,
-                                         OMX_U32 quantity);
+        OMX_U32 quantity);
 
 tiz_rm_error_t tiz_rm_proxy_preemption_conf (const tiz_rm_t *ap_rm, OMX_U32 rid,
-                                             OMX_U32 quantity);
+        OMX_U32 quantity);
 
 #ifdef __cplusplus
 }

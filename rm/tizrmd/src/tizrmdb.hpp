@@ -40,66 +40,66 @@ class tizrmdb
 {
 
 public:
-  explicit tizrmdb (char const *ap_dbname = 0);
-  ~tizrmdb ();
+    explicit tizrmdb (char const *ap_dbname = 0);
+    ~tizrmdb ();
 
-  tiz_rm_error_t connect ();
-  tiz_rm_error_t disconnect ();
+    tiz_rm_error_t connect ();
+    tiz_rm_error_t disconnect ();
 
-  tiz_rm_error_t acquire_resource (const unsigned int &rid,
-                                  const unsigned int &quantity,
-                                  const std::string &cname,
-                                  const std::vector< unsigned char > &uuid,
-                                  const unsigned int &grpid,
-                                  const unsigned int &pri);
+    tiz_rm_error_t acquire_resource (const unsigned int &rid,
+                                     const unsigned int &quantity,
+                                     const std::string &cname,
+                                     const std::vector< unsigned char > &uuid,
+                                     const unsigned int &grpid,
+                                     const unsigned int &pri);
 
-  tiz_rm_error_t release_resource (const unsigned int &rid,
-                                  const unsigned int &quantity,
-                                  const std::string &cname,
-                                  const std::vector< unsigned char > &uuid,
-                                  const unsigned int &grpid,
-                                  const unsigned int &pri);
+    tiz_rm_error_t release_resource (const unsigned int &rid,
+                                     const unsigned int &quantity,
+                                     const std::string &cname,
+                                     const std::vector< unsigned char > &uuid,
+                                     const unsigned int &grpid,
+                                     const unsigned int &pri);
 
-  tiz_rm_error_t release_all (const std::string &cname,
-                             const std::vector< unsigned char > &uuid);
+    tiz_rm_error_t release_all (const std::string &cname,
+                                const std::vector< unsigned char > &uuid);
 
-  tiz_rm_error_t find_owners (const unsigned int &rid, const unsigned int &pri,
-                             tiz_rm_owners_list_t &owners) const;
+    tiz_rm_error_t find_owners (const unsigned int &rid, const unsigned int &pri,
+                                tiz_rm_owners_list_t &owners) const;
 
-  bool resource_available (const unsigned int &rid,
-                           const unsigned int &quantity) const;
+    bool resource_available (const unsigned int &rid,
+                             const unsigned int &quantity) const;
 
-  bool resource_acquired (const std::vector< unsigned char > &uuid,
-                          const unsigned int &rid,
-                          const unsigned int &quantity) const;
+    bool resource_acquired (const std::vector< unsigned char > &uuid,
+                            const unsigned int &rid,
+                            const unsigned int &quantity) const;
 
-  bool resource_provisioned (const unsigned int &rid) const;
+    bool resource_provisioned (const unsigned int &rid) const;
 
-  bool comp_provisioned (const std::string &cname) const;
+    bool comp_provisioned (const std::string &cname) const;
 
-  bool comp_provisioned_with_resid (const std::string &cname,
-                                    const unsigned int &rid) const;
-
-private:
-  // Disallow copy constructor
-  tizrmdb(const tizrmdb&);
-  // Disallow assignment operator
-  tizrmdb& operator=(tizrmdb const&);
-  int open (char const *ap_dbname);
-  int close ();
-  int reset_alloc_table ();
-
-  int run_query (char const *ap_sql);
-  int run_query (char const *ap_sql) const;
-
-  void print_query_result () const;
-  std::string sqlite_error_str (int error) const;
+    bool comp_provisioned_with_resid (const std::string &cname,
+                                      const unsigned int &rid) const;
 
 private:
-  sqlite3 *pdb_;
-  std::string dbname_;
-  mutable std::vector< std::string > vcol_head_;
-  mutable std::vector< std::string > vdata_;
+    // Disallow copy constructor
+    tizrmdb(const tizrmdb&);
+    // Disallow assignment operator
+    tizrmdb& operator=(tizrmdb const&);
+    int open (char const *ap_dbname);
+    int close ();
+    int reset_alloc_table ();
+
+    int run_query (char const *ap_sql);
+    int run_query (char const *ap_sql) const;
+
+    void print_query_result () const;
+    std::string sqlite_error_str (int error) const;
+
+private:
+    sqlite3 *pdb_;
+    std::string dbname_;
+    mutable std::vector< std::string > vcol_head_;
+    mutable std::vector< std::string > vdata_;
 };
 
 #endif  // TIZRMDB_HPP

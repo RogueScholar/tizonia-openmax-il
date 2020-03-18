@@ -34,14 +34,14 @@ extern "C" {
 #endif
 
 typedef enum tiz_chromecast_error {
-  ETizCcErrorNoError = 0,
-  ETizCcErrorConnectionError = -1
+    ETizCcErrorNoError = 0,
+    ETizCcErrorConnectionError = -1
 } tiz_chromecast_error_t;
 
 typedef enum tiz_chromecast_cast_status {
-  ETizCcCastStatusUnknown,
-  ETizCcCastStatusReadyToCast,
-  ETizCcCastStatusNowCasting
+    ETizCcCastStatusUnknown,
+    ETizCcCastStatusReadyToCast,
+    ETizCcCastStatusNowCasting
 } tiz_chromecast_cast_status_t;
 
 /**
@@ -55,11 +55,11 @@ typedef void (*tiz_chromecast_cast_status_cb_f) (
     void *ap_user_data, tiz_chromecast_cast_status_t a_status, int a_volume);
 
 typedef enum tiz_chromecast_media_status {
-  ETizCcMediaStatusUnknown,
-  ETizCcMediaStatusIdle,
-  ETizCcMediaStatusBuffering,
-  ETizCcMediaStatusPaused,
-  ETizCcMediaStatusPlaying
+    ETizCcMediaStatusUnknown,
+    ETizCcMediaStatusIdle,
+    ETizCcMediaStatusBuffering,
+    ETizCcMediaStatusPaused,
+    ETizCcMediaStatusPlaying
 } tiz_chromecast_media_status_t;
 
 /**
@@ -74,8 +74,8 @@ typedef void (*tiz_chromecast_media_status_cb_f) (
 
 typedef struct tiz_chromecast_callbacks
 {
-  tiz_chromecast_cast_status_cb_f pf_cast_status;
-  tiz_chromecast_media_status_cb_f pf_media_status;
+    tiz_chromecast_cast_status_cb_f pf_cast_status;
+    tiz_chromecast_media_status_cb_f pf_media_status;
 } tiz_chromecast_callbacks_t;
 
 #ifdef __cplusplus

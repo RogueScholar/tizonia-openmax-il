@@ -35,6 +35,6 @@ namespace cast = tiz::cast;
 
 char const* const cast::pstate(cast::fsm const& p)
 {
-  return cast::state_names[p.current_state()[0]];
+    return cast::state_names[p.current_state()[0]];
 }
 

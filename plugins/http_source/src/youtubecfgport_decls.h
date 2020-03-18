@@ -41,18 +41,18 @@ extern "C" {
 typedef struct youtube_cfgport youtube_cfgport_t;
 struct youtube_cfgport
 {
-  /* Object */
-  const tiz_configport_t _;
-  OMX_TIZONIA_AUDIO_PARAM_YOUTUBESESSIONTYPE session_;
-  OMX_TIZONIA_AUDIO_PARAM_YOUTUBEPLAYLISTTYPE playlist_;
+    /* Object */
+    const tiz_configport_t _;
+    OMX_TIZONIA_AUDIO_PARAM_YOUTUBESESSIONTYPE session_;
+    OMX_TIZONIA_AUDIO_PARAM_YOUTUBEPLAYLISTTYPE playlist_;
 };
 
 typedef struct youtube_cfgport_class youtube_cfgport_class_t;
 struct youtube_cfgport_class
 {
-  /* Class */
-  const tiz_configport_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_configport_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

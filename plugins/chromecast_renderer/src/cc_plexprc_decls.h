@@ -48,20 +48,20 @@ extern "C" {
 typedef struct cc_plex_prc cc_plex_prc_t;
 struct cc_plex_prc
 {
-  /* Object */
-  const cc_prc_t _;
-  OMX_TIZONIA_AUDIO_PARAM_PLEXSESSIONTYPE sc_session_;
-  OMX_TIZONIA_AUDIO_PARAM_PLEXPLAYLISTTYPE sc_playlist_;
-  tiz_plex_t * p_plex_;
-  bool remove_current_url_;
+    /* Object */
+    const cc_prc_t _;
+    OMX_TIZONIA_AUDIO_PARAM_PLEXSESSIONTYPE sc_session_;
+    OMX_TIZONIA_AUDIO_PARAM_PLEXPLAYLISTTYPE sc_playlist_;
+    tiz_plex_t * p_plex_;
+    bool remove_current_url_;
 };
 
 typedef struct cc_plex_prc_class cc_plex_prc_class_t;
 struct cc_plex_prc_class
 {
-  /* Class */
-  const cc_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const cc_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

@@ -39,21 +39,21 @@ extern "C"
 
 #include <tizprc_decls.h>
 
-  typedef struct inprocsrc_prc inprocsrc_prc_t;
-  struct inprocsrc_prc
-  {
+typedef struct inprocsrc_prc inprocsrc_prc_t;
+struct inprocsrc_prc
+{
     /* Object */
     const tiz_prc_t _;
     bool eos_;
-  };
+};
 
-  typedef struct inprocsrc_prc_class inprocsrc_prc_class_t;
-  struct inprocsrc_prc_class
-  {
+typedef struct inprocsrc_prc_class inprocsrc_prc_class_t;
+struct inprocsrc_prc_class
+{
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-  };
+};
 
 #ifdef __cplusplus
 }

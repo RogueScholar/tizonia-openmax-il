@@ -56,9 +56,9 @@ typedef /*@null@ */ tiz_youtube_t *tiz_youtube_ptr_t;
  * @ingroup libtizyoutube
  */
 typedef enum tiz_youtube_playback_mode {
-  ETIZYoutubePlaybackModeNormal,
-  ETIZYoutubePlaybackModeShuffle,
-  ETIZYoutubePlaybackModeMax
+    ETIZYoutubePlaybackModeNormal,
+    ETIZYoutubePlaybackModeShuffle,
+    ETIZYoutubePlaybackModeMax
 } tiz_youtube_playback_mode_t;
 
 /**
@@ -72,7 +72,7 @@ typedef enum tiz_youtube_playback_mode {
  * @return 0 on success.
  */
 int tiz_youtube_init (/*@null@ */ tiz_youtube_ptr_t *app_youtube,
-                      const char *ap_api_key);
+                                  const char *ap_api_key);
 
 /**
  * Clear the playback queue.
@@ -218,7 +218,7 @@ int tiz_youtube_play_audio_mix_search (tiz_youtube_t *ap_youtube,
  * @return 0 on success
  */
 int tiz_youtube_play_audio_channel_uploads (tiz_youtube_t *ap_youtube,
-                                            const char *ap_channel);
+        const char *ap_channel);
 
 /**
  * Retrieve all video uploads from a YouTube channel and add all the
@@ -236,7 +236,7 @@ int tiz_youtube_play_audio_channel_uploads (tiz_youtube_t *ap_youtube,
  * @return 0 on success
  */
 int tiz_youtube_play_audio_channel_playlist (tiz_youtube_t *ap_youtube,
-                                            const char *ap_channel_and_playlist);
+        const char *ap_channel_and_playlist);
 
 /**
  * Retrieve the next stream url

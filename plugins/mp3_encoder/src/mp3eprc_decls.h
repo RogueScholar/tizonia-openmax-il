@@ -20,10 +20,10 @@
 /**
  * @file   mp3eprc_decls.h
  * @author Juan A. Rubio <juan.rubio@aratelia.com>
- * 
+ *
  * @brief  Tizonia - Mp3 Encoder processor class decls
- * 
- * 
+ *
+ *
  */
 
 #ifndef MP3EPRC_DECLS_H
@@ -47,24 +47,24 @@ extern "C" {
 typedef struct mp3e_prc mp3e_prc_t;
 struct mp3e_prc
 {
-  /* Object */
-  const tiz_prc_t _;
-  OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
-  OMX_AUDIO_PARAM_MP3TYPE mp3type_;
-  lame_t lame_;
-  int frame_size_;
-  OMX_BUFFERHEADERTYPE * p_inhdr_;
-  OMX_BUFFERHEADERTYPE * p_outhdr_;
-  bool eos_;
-  bool lame_flushed_;
+    /* Object */
+    const tiz_prc_t _;
+    OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
+    OMX_AUDIO_PARAM_MP3TYPE mp3type_;
+    lame_t lame_;
+    int frame_size_;
+    OMX_BUFFERHEADERTYPE * p_inhdr_;
+    OMX_BUFFERHEADERTYPE * p_outhdr_;
+    bool eos_;
+    bool lame_flushed_;
 };
 
 typedef struct mp3e_prc_class mp3e_prc_class_t;
 struct mp3e_prc_class
 {
-  /* Class */
-  const tiz_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

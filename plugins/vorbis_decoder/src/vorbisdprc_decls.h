@@ -42,23 +42,23 @@ extern "C" {
 typedef struct vorbisd_prc vorbisd_prc_t;
 struct vorbisd_prc
 {
-  /* Object */
-  const tiz_filter_prc_t _;
-  FishSound * p_fsnd_;
-  FishSoundInfo fsinfo_;
-  OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
-  bool started_;
-  OMX_U8 * p_store_;
-  OMX_U32 store_size_;
-  OMX_U32 store_offset_;
+    /* Object */
+    const tiz_filter_prc_t _;
+    FishSound * p_fsnd_;
+    FishSoundInfo fsinfo_;
+    OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
+    bool started_;
+    OMX_U8 * p_store_;
+    OMX_U32 store_size_;
+    OMX_U32 store_offset_;
 };
 
 typedef struct vorbisd_prc_class vorbisd_prc_class_t;
 struct vorbisd_prc_class
 {
-  /* Class */
-  const tiz_filter_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_filter_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

@@ -41,16 +41,16 @@ extern "C" {
 typedef struct tiz_oggport tiz_oggport_t;
 struct tiz_oggport
 {
-  /* Object */
-  const tiz_port_t _;
+    /* Object */
+    const tiz_port_t _;
 };
 
 typedef struct tiz_oggport_class tiz_oggport_class_t;
 struct tiz_oggport_class
 {
-  /* Class */
-  const tiz_port_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_port_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

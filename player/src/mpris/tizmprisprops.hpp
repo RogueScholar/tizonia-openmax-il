@@ -42,66 +42,66 @@
 
 namespace tiz
 {
-  namespace control
-  {
-    typedef class mpris_mediaplayer2_props mpris_mediaplayer2_props_t;
-    class mpris_mediaplayer2_props
-    {
-    public:
-      mpris_mediaplayer2_props (bool can_quit, bool can_raise,
-                                bool has_track_list, std::string identity,
-                                std::vector< std::string > uri_schemes,
-                                std::vector< std::string > mime_types);
-    public:
-      bool can_quit_;
-      bool can_raise_;
-      bool has_track_list_;
-      std::string identity_;
-      std::vector< std::string > uri_schemes_;
-      std::vector< std::string > mime_types_;
-    };
+namespace control
+{
+typedef class mpris_mediaplayer2_props mpris_mediaplayer2_props_t;
+class mpris_mediaplayer2_props
+{
+public:
+    mpris_mediaplayer2_props (bool can_quit, bool can_raise,
+                              bool has_track_list, std::string identity,
+                              std::vector< std::string > uri_schemes,
+                              std::vector< std::string > mime_types);
+public:
+    bool can_quit_;
+    bool can_raise_;
+    bool has_track_list_;
+    std::string identity_;
+    std::vector< std::string > uri_schemes_;
+    std::vector< std::string > mime_types_;
+};
 
-    typedef boost::shared_ptr< mpris_mediaplayer2_props_t >
-        mpris_mediaplayer2_props_ptr_t;
-    typedef boost::scoped_ptr< mpris_mediaplayer2_props_t >
-        mpris_mediaplayer2_props_scoped_ptr_t;
+typedef boost::shared_ptr< mpris_mediaplayer2_props_t >
+mpris_mediaplayer2_props_ptr_t;
+typedef boost::scoped_ptr< mpris_mediaplayer2_props_t >
+mpris_mediaplayer2_props_scoped_ptr_t;
 
-    typedef class mpris_mediaplayer2_player_props
-        mpris_mediaplayer2_player_props_t;
-    class mpris_mediaplayer2_player_props
-    {
-    public:
-      mpris_mediaplayer2_player_props (
-          std::string playback_status, std::string loop_status, double rate,
-          bool shuffle, const track_metadata_map_t &metadata,
-          double volume, int64_t position, double minimum_rate,
-          double maximum_rate, bool can_go_next, bool can_go_previous,
-          bool can_play, bool can_pause, bool can_seek, bool can_control);
+typedef class mpris_mediaplayer2_player_props
+    mpris_mediaplayer2_player_props_t;
+class mpris_mediaplayer2_player_props
+{
+public:
+    mpris_mediaplayer2_player_props (
+        std::string playback_status, std::string loop_status, double rate,
+        bool shuffle, const track_metadata_map_t &metadata,
+        double volume, int64_t position, double minimum_rate,
+        double maximum_rate, bool can_go_next, bool can_go_previous,
+        bool can_play, bool can_pause, bool can_seek, bool can_control);
 
-    public:
-      std::string playback_status_;
-      std::string loop_status_;
-      double rate_;
-      bool shuffle_;
-      track_metadata_map_t metadata_;
-      double volume_;
-      int64_t position_;
-      double minimum_rate_;
-      double maximum_rate_;
-      bool can_go_next_;
-      bool can_go_previous_;
-      bool can_play_;
-      bool can_pause_;
-      bool can_seek_;
-      bool can_control_;
-    };
+public:
+    std::string playback_status_;
+    std::string loop_status_;
+    double rate_;
+    bool shuffle_;
+    track_metadata_map_t metadata_;
+    double volume_;
+    int64_t position_;
+    double minimum_rate_;
+    double maximum_rate_;
+    bool can_go_next_;
+    bool can_go_previous_;
+    bool can_play_;
+    bool can_pause_;
+    bool can_seek_;
+    bool can_control_;
+};
 
-    typedef boost::shared_ptr< mpris_mediaplayer2_player_props_t >
-        mpris_mediaplayer2_player_props_ptr_t;
-    typedef boost::scoped_ptr< mpris_mediaplayer2_player_props_t >
-        mpris_mediaplayer2_player_props_scoped_ptr_t;
+typedef boost::shared_ptr< mpris_mediaplayer2_player_props_t >
+mpris_mediaplayer2_player_props_ptr_t;
+typedef boost::scoped_ptr< mpris_mediaplayer2_player_props_t >
+mpris_mediaplayer2_player_props_scoped_ptr_t;
 
-  }  // namespace control
+}  // namespace control
 }  // namespace tiz
 
 #endif  // TIZMPRISPROPS_HPP

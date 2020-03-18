@@ -45,35 +45,35 @@ extern "C" {
 typedef struct cc_prc cc_prc_t;
 struct cc_prc
 {
-  /* Object */
-  const tiz_prc_t _;
-  OMX_TIZONIA_PARAM_CHROMECASTSESSIONTYPE cc_session_;
-  OMX_TIZONIA_PLAYLISTSKIPTYPE pl_skip_;
-  OMX_PARAM_CONTENTURITYPE * p_uri_param_;
-  OMX_BUFFERHEADERTYPE * p_inhdr_;
-  tiz_cast_t * p_cc_;
-  tiz_cast_client_cast_status_t cc_cast_status_;
-  tiz_cast_client_media_status_t cc_media_status_;
-  char * p_cc_display_title_;
-  char * p_cc_err_msg_;
-  bool uri_changed_;
-  long volume_;
+    /* Object */
+    const tiz_prc_t _;
+    OMX_TIZONIA_PARAM_CHROMECASTSESSIONTYPE cc_session_;
+    OMX_TIZONIA_PLAYLISTSKIPTYPE pl_skip_;
+    OMX_PARAM_CONTENTURITYPE * p_uri_param_;
+    OMX_BUFFERHEADERTYPE * p_inhdr_;
+    tiz_cast_t * p_cc_;
+    tiz_cast_client_cast_status_t cc_cast_status_;
+    tiz_cast_client_media_status_t cc_media_status_;
+    char * p_cc_display_title_;
+    char * p_cc_err_msg_;
+    bool uri_changed_;
+    long volume_;
 };
 
 typedef struct cc_prc_class cc_prc_class_t;
 struct cc_prc_class
 {
-  /* Class */
-  const tiz_prc_class_t _;
-  const char * (*get_next_url) (const void * p_obj);
-  const char * (*get_prev_url) (const void * p_obj);
-  const char * (*get_current_stream_album_art_url) (const void * p_obj);
-  OMX_ERRORTYPE (*store_stream_metadata) (const void * p_obj);
-  OMX_ERRORTYPE (*store_stream_metadata_item)
-  (const void * p_obj, const char * ap_header_name,
-   const char * ap_header_info);
-  OMX_ERRORTYPE (*store_display_title)
-  (const void * p_obj, const char * ap_artist, const char * ap_title);
+    /* Class */
+    const tiz_prc_class_t _;
+    const char * (*get_next_url) (const void * p_obj);
+    const char * (*get_prev_url) (const void * p_obj);
+    const char * (*get_current_stream_album_art_url) (const void * p_obj);
+    OMX_ERRORTYPE (*store_stream_metadata) (const void * p_obj);
+    OMX_ERRORTYPE (*store_stream_metadata_item)
+    (const void * p_obj, const char * ap_header_name,
+     const char * ap_header_info);
+    OMX_ERRORTYPE (*store_display_title)
+    (const void * p_obj, const char * ap_artist, const char * ap_title);
 };
 
 #ifdef __cplusplus

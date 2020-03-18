@@ -40,7 +40,7 @@ extern "C" {
    */
 
 typedef OMX_ERRORTYPE (*tiz_krn_msg_dispatch_state_set_f) (tiz_krn_t * ap_krn,
-                                                           bool * ap_done);
+        bool * ap_done);
 /* Forward declarations */
 static OMX_ERRORTYPE
 dispatch_idle_to_loaded (tiz_krn_t * ap_krn, bool * ap_done);
@@ -66,37 +66,43 @@ dispatch_false (tiz_krn_t * ap_krn, bool * ap_done);
  * is indexed by the OMX_STATETYPE indices.
  */
 static const tiz_krn_msg_dispatch_state_set_f
-  tiz_krn_state_set_dispatch_tbl[][OMX_StateWaitForResources + 1]
-  = {
+tiz_krn_state_set_dispatch_tbl[][OMX_StateWaitForResources + 1]
+= {
     /* From reserved */
     /* reserved , OMX_StateLoaded , OMX_StateIdle , OMX_StateExecuting , OMX_StatePause , OMX_StateWaitForResources */
-    {dispatch_false, dispatch_false, dispatch_false, dispatch_false,
-     dispatch_false, dispatch_false},
+    {   dispatch_false, dispatch_false, dispatch_false, dispatch_false,
+        dispatch_false, dispatch_false
+    },
 
     /* From Loaded */
     /* reserved , OMX_StateLoaded , OMX_StateIdle , OMX_StateExecuting , OMX_StatePause , OMX_StateWaitForResources */
-    {dispatch_false, dispatch_false, dispatch_loaded_to_idle, dispatch_false,
-     dispatch_false, dispatch_true},
+    {   dispatch_false, dispatch_false, dispatch_loaded_to_idle, dispatch_false,
+        dispatch_false, dispatch_true
+    },
 
     /* From Idle */
     /* reserved , OMX_StateLoaded , OMX_StateIdle , OMX_StateExecuting , OMX_StatePause , OMX_StateWaitForResources */
-    {dispatch_false, dispatch_idle_to_loaded, dispatch_false,
-     dispatch_idle_to_exe, dispatch_exe_or_idle_to_pause, dispatch_false},
+    {   dispatch_false, dispatch_idle_to_loaded, dispatch_false,
+        dispatch_idle_to_exe, dispatch_exe_or_idle_to_pause, dispatch_false
+    },
 
     /* From Exe */
     /* reserved , OMX_StateLoaded , OMX_StateIdle , OMX_StateExecuting , OMX_StatePause , OMX_StateWaitForResources */
-    {dispatch_false, dispatch_false, dispatch_exe_or_pause_to_idle,
-     dispatch_exe_to_exe, dispatch_exe_or_idle_to_pause, dispatch_false},
+    {   dispatch_false, dispatch_false, dispatch_exe_or_pause_to_idle,
+        dispatch_exe_to_exe, dispatch_exe_or_idle_to_pause, dispatch_false
+    },
 
     /* From Pause */
     /* reserved , OMX_StateLoaded , OMX_StateIdle , OMX_StateExecuting , OMX_StatePause , OMX_StateWaitForResources */
-    {dispatch_false, dispatch_false, dispatch_exe_or_pause_to_idle,
-     dispatch_pause_to_exe, dispatch_false, dispatch_false},
+    {   dispatch_false, dispatch_false, dispatch_exe_or_pause_to_idle,
+        dispatch_pause_to_exe, dispatch_false, dispatch_false
+    },
 
     /* From WaitForResources */
     /* reserved , OMX_StateLoaded , OMX_StateIdle , OMX_StateExecuting , OMX_StatePause , OMX_StateWaitForResources */
-    {dispatch_false, dispatch_true, dispatch_false, dispatch_false,
-     dispatch_false, dispatch_false},
+    {   dispatch_false, dispatch_true, dispatch_false, dispatch_false,
+        dispatch_false, dispatch_false
+    },
 };
 
 #ifdef __cplusplus

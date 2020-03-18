@@ -165,12 +165,12 @@ extern "C" {
 
 #endif
 
-  void
-  tiz_printf (const char * ap_color, const char * ap_file, int a_line,
-              const char * ap_func, const char * ap_format, ...);
+void
+tiz_printf (const char * ap_color, const char * ap_file, int a_line,
+            const char * ap_func, const char * ap_format, ...);
 
-  void
-  tiz_printf_c (int a_kc, const char * ap_format, ...);
+void
+tiz_printf_c (int a_kc, const char * ap_format, ...);
 
 #ifdef __cplusplus
 }

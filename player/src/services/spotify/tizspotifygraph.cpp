@@ -55,58 +55,58 @@ namespace graph = tiz::graph;
 // spotify
 //
 graph::spotify::spotify ()
-  : graph::graph ("spotifygraph"),
-    fsm_ (boost::msm::back::states_
-          << tiz::graph::spfsm::fsm::auto_detecting (&p_ops_)
-          << tiz::graph::spfsm::fsm::updating_graph (&p_ops_)
-          << tiz::graph::spfsm::fsm::reconfiguring_graph (&p_ops_)
-          << tiz::graph::spfsm::fsm::skipping (&p_ops_),
-          &p_ops_)
+    : graph::graph ("spotifygraph"),
+      fsm_ (boost::msm::back::states_
+            << tiz::graph::spfsm::fsm::auto_detecting (&p_ops_)
+            << tiz::graph::spfsm::fsm::updating_graph (&p_ops_)
+            << tiz::graph::spfsm::fsm::reconfiguring_graph (&p_ops_)
+            << tiz::graph::spfsm::fsm::skipping (&p_ops_),
+            &p_ops_)
 {
 }
 
 graph::ops *graph::spotify::do_init ()
 {
-  omx_comp_name_lst_t comp_list;
-  comp_list.push_back ("OMX.Aratelia.audio_source.spotify.pcm");
+    omx_comp_name_lst_t comp_list;
+    comp_list.push_back ("OMX.Aratelia.audio_source.spotify.pcm");
 
-  omx_comp_role_lst_t role_list;
-  role_list.push_back (OMX_ROLE_AUDIO_SOURCE_PCM_SPOTIFY);
+    omx_comp_role_lst_t role_list;
+    role_list.push_back (OMX_ROLE_AUDIO_SOURCE_PCM_SPOTIFY);
 
-  return new spotifyops (this, comp_list, role_list);
+    return new spotifyops (this, comp_list, role_list);
 }
 
 bool graph::spotify::dispatch_cmd (const tiz::graph::cmd *p_cmd)
 {
-  assert (p_cmd);
+    assert (p_cmd);
 
-  if (!p_cmd->kill_thread ())
-  {
-    if (p_cmd->evt ().type () == typeid(tiz::graph::load_evt))
+    if (!p_cmd->kill_thread ())
     {
-      // Time to start the FSM
-      TIZ_LOG (TIZ_PRIORITY_NOTICE, "Starting [%s] fsm...",
-               get_graph_name ().c_str ());
-      fsm_.start ();
+        if (p_cmd->evt ().type () == typeid(tiz::graph::load_evt))
+        {
+            // Time to start the FSM
+            TIZ_LOG (TIZ_PRIORITY_NOTICE, "Starting [%s] fsm...",
+                     get_graph_name ().c_str ());
+            fsm_.start ();
+        }
+
+        p_cmd->inject< spfsm::fsm >(fsm_, tiz::graph::spfsm::pstate);
+
+        // Check for internal errors produced during the processing of the last
+        // event. If any, inject an "internal" error event. This is fatal and shall
+        // terminate the state machine.
+        if (OMX_ErrorNone != p_ops_->internal_error ())
+        {
+            fsm_.process_event (tiz::graph::err_evt (p_ops_->internal_error (),
+                                p_ops_->internal_error_msg ()));
+        }
+
+        if (fsm_.terminated_)
+        {
+            TIZ_LOG (TIZ_PRIORITY_NOTICE, "[%s] fsm terminated...",
+                     get_graph_name ().c_str ());
+        }
     }
 
-    p_cmd->inject< spfsm::fsm >(fsm_, tiz::graph::spfsm::pstate);
-
-    // Check for internal errors produced during the processing of the last
-    // event. If any, inject an "internal" error event. This is fatal and shall
-    // terminate the state machine.
-    if (OMX_ErrorNone != p_ops_->internal_error ())
-    {
-      fsm_.process_event (tiz::graph::err_evt (p_ops_->internal_error (),
-                                               p_ops_->internal_error_msg ()));
-    }
-
-    if (fsm_.terminated_)
-    {
-      TIZ_LOG (TIZ_PRIORITY_NOTICE, "[%s] fsm terminated...",
-               get_graph_name ().c_str ());
-    }
-  }
-
-  return p_cmd->kill_thread ();
+    return p_cmd->kill_thread ();
 }

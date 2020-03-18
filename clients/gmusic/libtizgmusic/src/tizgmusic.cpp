@@ -67,13 +67,13 @@ namespace bp = boost::python;
 
 namespace
 {
-  int check_deps ()
-  {
+int check_deps ()
+{
     int rc = 1;
     Py_Initialize ();
 
     try
-      {
+    {
         // Import the Google Play Music proxy module
         bp::object py_main = bp::import ("__main__");
 
@@ -82,58 +82,58 @@ namespace
 
         // Check the existence of the 'gmusicapi' module
         bp::object ignored = exec (
-            "import importlib\n"
-            "spec = importlib.util.find_spec('gmusicapi')\n"
-            "if not spec:\n raise ValueError\n",
-            py_global);
+                                 "import importlib\n"
+                                 "spec = importlib.util.find_spec('gmusicapi')\n"
+                                 "if not spec:\n raise ValueError\n",
+                                 py_global);
 
         // Check the existence of the 'fuzzywuzzy' module
         bp::object ignored2 = exec (
-            "import importlib\n"
-            "spec = importlib.util.find_spec('fuzzywuzzy')\n"
-            "if not spec:\n raise ValueError\n",
-            py_global);
+                                  "import importlib\n"
+                                  "spec = importlib.util.find_spec('fuzzywuzzy')\n"
+                                  "if not spec:\n raise ValueError\n",
+                                  py_global);
 
         rc = 0;
-      }
+    }
     catch (bp::error_already_set &e)
-      {
+    {
         PyErr_PrintEx (0);
         std::cerr << std::string (
-            "\nPython modules 'gmusicapi' or 'fuzzywuzzy' not found."
-            "\nPlease make sure these are installed correctly.\n");
-      }
+                      "\nPython modules 'gmusicapi' or 'fuzzywuzzy' not found."
+                      "\nPlease make sure these are installed correctly.\n");
+    }
     catch (...)
-      {
+    {
         std::cerr << std::string ("Unknown exception caught");
-      }
+    }
     return rc;
-  }
+}
 
-  void init_gmusic (boost::python::object &py_main,
-                    boost::python::object &py_global)
-  {
+void init_gmusic (boost::python::object &py_main,
+                  boost::python::object &py_global)
+{
     // Import the Google Play Music proxy module
     py_main = bp::import ("tizgmusicproxy");
 
     // Retrieve the main module's namespace
     py_global = py_main.attr ("__dict__");
-  }
+}
 
-  void start_gmusic (boost::python::object &py_global,
-                     boost::python::object &py_gm_proxy,
-                     const std::string &user, const std::string &pass,
-                     const std::string &device_id)
-  {
+void start_gmusic (boost::python::object &py_global,
+                   boost::python::object &py_gm_proxy,
+                   const std::string &user, const std::string &pass,
+                   const std::string &device_id)
+{
     bp::object pygmusicproxy = py_global["tizgmusicproxy"];
     py_gm_proxy
-      = pygmusicproxy (user.c_str (), pass.c_str (), device_id.c_str ());
-  }
+        = pygmusicproxy (user.c_str (), pass.c_str (), device_id.c_str ());
+}
 }
 
 tizgmusic::tizgmusic (const std::string &user, const std::string &pass,
                       const std::string &device_id)
-  : user_ (user), pass_ (pass), device_id_ (device_id)
+    : user_ (user), pass_ (pass), device_id_ (device_id)
 {
 }
 
@@ -143,326 +143,326 @@ tizgmusic::~tizgmusic ()
 
 int tizgmusic::init ()
 {
-  int rc = 0;
-  if (0 == (rc = check_deps ()))
+    int rc = 0;
+    if (0 == (rc = check_deps ()))
     {
-      try_catch_wrapper (init_gmusic (py_main_, py_global_));
+        try_catch_wrapper (init_gmusic (py_main_, py_global_));
     }
-  return rc;
+    return rc;
 }
 
 int tizgmusic::start ()
 {
-  int rc = 0;
-  try_catch_wrapper (start_gmusic (py_global_, py_gm_proxy_, user_, pass_,
-                                   device_id_));
-  return rc;
+    int rc = 0;
+    try_catch_wrapper (start_gmusic (py_global_, py_gm_proxy_, user_, pass_,
+                                     device_id_));
+    return rc;
 }
 
 void tizgmusic::stop ()
 {
-  int rc = 0;
-  try_catch_wrapper (py_gm_proxy_.attr ("logout")());
-  (void)rc;
+    int rc = 0;
+    try_catch_wrapper (py_gm_proxy_.attr ("logout")());
+    (void)rc;
 }
 
 void tizgmusic::deinit ()
 {
-  // boost::python doesn't support Py_Finalize() yet!
+    // boost::python doesn't support Py_Finalize() yet!
 }
 
 int tizgmusic::play_library ()
 {
-  int rc = 0;
-  try_catch_wrapper (py_gm_proxy_.attr ("enqueue_library")());
-  return rc;
+    int rc = 0;
+    try_catch_wrapper (py_gm_proxy_.attr ("enqueue_library")());
+    return rc;
 }
 
 int tizgmusic::play_tracks (const std::string &tracks, const bool a_unlimited_search)
 {
-  int rc = 0;
-  if (a_unlimited_search)
+    int rc = 0;
+    if (a_unlimited_search)
     {
-      try_catch_wrapper (
-          py_gm_proxy_.attr ("enqueue_tracks_unlimited")(bp::object (tracks)));
+        try_catch_wrapper (
+            py_gm_proxy_.attr ("enqueue_tracks_unlimited")(bp::object (tracks)));
     }
-  else
+    else
     {
-      try_catch_wrapper (
-          py_gm_proxy_.attr ("enqueue_tracks")(bp::object (tracks)));
+        try_catch_wrapper (
+            py_gm_proxy_.attr ("enqueue_tracks")(bp::object (tracks)));
     }
-  return rc;
+    return rc;
 }
 
 int tizgmusic::play_album (const std::string &album, const bool a_unlimited_search)
 {
-  int rc = 0;
-  if (a_unlimited_search)
+    int rc = 0;
+    if (a_unlimited_search)
     {
-      try_catch_wrapper (
-          py_gm_proxy_.attr ("enqueue_album_unlimited")(bp::object (album)));
+        try_catch_wrapper (
+            py_gm_proxy_.attr ("enqueue_album_unlimited")(bp::object (album)));
     }
-  else
+    else
     {
-      try_catch_wrapper (
-          py_gm_proxy_.attr ("enqueue_album")(bp::object (album)));
+        try_catch_wrapper (
+            py_gm_proxy_.attr ("enqueue_album")(bp::object (album)));
     }
-  return rc;
+    return rc;
 }
 
 int tizgmusic::play_artist (const std::string &artist, const bool a_unlimited_search)
 {
-  int rc = 0;
-  if (a_unlimited_search)
+    int rc = 0;
+    if (a_unlimited_search)
     {
-      try_catch_wrapper (py_gm_proxy_.attr ("enqueue_artist_unlimited")(bp::object (artist)));
+        try_catch_wrapper (py_gm_proxy_.attr ("enqueue_artist_unlimited")(bp::object (artist)));
     }
-  else
+    else
     {
-      try_catch_wrapper (py_gm_proxy_.attr ("enqueue_artist")(bp::object (artist)));
+        try_catch_wrapper (py_gm_proxy_.attr ("enqueue_artist")(bp::object (artist)));
     }
-  return rc;
+    return rc;
 }
 
 int tizgmusic::play_playlist (const std::string &playlist, const bool a_unlimited_search)
 {
-  int rc = 0;
-  if (a_unlimited_search)
+    int rc = 0;
+    if (a_unlimited_search)
     {
-      try_catch_wrapper (py_gm_proxy_.attr ("enqueue_playlist_unlimited")(bp::object (playlist)));
+        try_catch_wrapper (py_gm_proxy_.attr ("enqueue_playlist_unlimited")(bp::object (playlist)));
     }
-  else
+    else
     {
-      try_catch_wrapper (py_gm_proxy_.attr ("enqueue_playlist")(bp::object (playlist)));
+        try_catch_wrapper (py_gm_proxy_.attr ("enqueue_playlist")(bp::object (playlist)));
     }
-  return rc;
+    return rc;
 }
 
 int tizgmusic::play_free_station (const std::string &station)
 {
-  int rc = 0;
-  try_catch_wrapper (py_gm_proxy_.attr ("enqueue_station")(bp::object (station)));
-  return rc;
+    int rc = 0;
+    try_catch_wrapper (py_gm_proxy_.attr ("enqueue_station")(bp::object (station)));
+    return rc;
 }
 
 int tizgmusic::play_station (const std::string &station)
 {
-  int rc = 0;
-  try_catch_wrapper (py_gm_proxy_.attr ("enqueue_station_unlimited")(bp::object (station)));
-  return rc;
+    int rc = 0;
+    try_catch_wrapper (py_gm_proxy_.attr ("enqueue_station_unlimited")(bp::object (station)));
+    return rc;
 }
 
 int tizgmusic::play_genre (const std::string &genre)
 {
-  int rc = 0;
-  try_catch_wrapper (py_gm_proxy_.attr ("enqueue_genre_unlimited")(bp::object (genre)));
-  return rc;
+    int rc = 0;
+    try_catch_wrapper (py_gm_proxy_.attr ("enqueue_genre_unlimited")(bp::object (genre)));
+    return rc;
 }
 
 int tizgmusic::play_situation (const std::string &situation,
                                const std::string &additional_keywords)
 {
-  int rc = 0;
-  try_catch_wrapper (py_gm_proxy_.attr ("enqueue_situation_unlimited") (
-      bp::object (situation), bp::object (additional_keywords)));
-  return rc;
+    int rc = 0;
+    try_catch_wrapper (py_gm_proxy_.attr ("enqueue_situation_unlimited") (
+                           bp::object (situation), bp::object (additional_keywords)));
+    return rc;
 }
 
 int tizgmusic::play_podcast (const std::string &podcast)
 {
-  int rc = 0;
-  try_catch_wrapper (py_gm_proxy_.attr ("enqueue_podcast")(bp::object (podcast)));
-  return rc;
+    int rc = 0;
+    try_catch_wrapper (py_gm_proxy_.attr ("enqueue_podcast")(bp::object (podcast)));
+    return rc;
 }
 
 int tizgmusic::play_promoted_tracks ()
 {
-  int rc = 0;
-  try_catch_wrapper (py_gm_proxy_.attr ("enqueue_promoted_tracks_unlimited")());
-  return rc;
+    int rc = 0;
+    try_catch_wrapper (py_gm_proxy_.attr ("enqueue_promoted_tracks_unlimited")());
+    return rc;
 }
 
 const char *tizgmusic::get_next_url ()
 {
-  current_url_.clear ();
-  try
+    current_url_.clear ();
+    try
     {
-      current_url_
-          = bp::extract< std::string >(py_gm_proxy_.attr ("next_url")());
-      get_current_song ();
+        current_url_
+            = bp::extract< std::string >(py_gm_proxy_.attr ("next_url")());
+        get_current_song ();
     }
-  catch (bp::error_already_set &e)
+    catch (bp::error_already_set &e)
     {
-      PyErr_PrintEx (0);
+        PyErr_PrintEx (0);
     }
-  catch (...)
+    catch (...)
     {
     }
-  return current_url_.empty () ? NULL : current_url_.c_str ();
+    return current_url_.empty () ? NULL : current_url_.c_str ();
 }
 
 const char *tizgmusic::get_prev_url ()
 {
-  current_url_.clear ();
-  try
+    current_url_.clear ();
+    try
     {
-      current_url_
-          = bp::extract< std::string > (py_gm_proxy_.attr ("prev_url") ());
-      get_current_song ();
+        current_url_
+            = bp::extract< std::string > (py_gm_proxy_.attr ("prev_url") ());
+        get_current_song ();
     }
-  catch (bp::error_already_set &e)
+    catch (bp::error_already_set &e)
     {
-      PyErr_PrintEx (0);
+        PyErr_PrintEx (0);
     }
-  catch (...)
+    catch (...)
     {
     }
-  return current_url_.empty () ? NULL : current_url_.c_str ();
+    return current_url_.empty () ? NULL : current_url_.c_str ();
 }
 
 const char *tizgmusic::get_current_song_artist ()
 {
-  return current_artist_.empty () ? NULL : current_artist_.c_str ();
+    return current_artist_.empty () ? NULL : current_artist_.c_str ();
 }
 
 const char *tizgmusic::get_current_song_title ()
 {
-  return current_title_.empty () ? NULL : current_title_.c_str ();
+    return current_title_.empty () ? NULL : current_title_.c_str ();
 }
 
 const char *tizgmusic::get_current_song_album ()
 {
-  return current_album_.empty () ? NULL : current_album_.c_str ();
+    return current_album_.empty () ? NULL : current_album_.c_str ();
 }
 
 const char *tizgmusic::get_current_song_duration ()
 {
-  return current_duration_.empty () ? NULL : current_duration_.c_str ();
+    return current_duration_.empty () ? NULL : current_duration_.c_str ();
 }
 
 const char *tizgmusic::get_current_song_track_number ()
 {
-  return current_track_num_.empty () ? NULL : current_track_num_.c_str ();
+    return current_track_num_.empty () ? NULL : current_track_num_.c_str ();
 }
 
 const char *tizgmusic::get_current_song_tracks_in_album ()
 {
-  return current_song_tracks_total_.empty ()
-             ? NULL
-             : current_song_tracks_total_.c_str ();
+    return current_song_tracks_total_.empty ()
+           ? NULL
+           : current_song_tracks_total_.c_str ();
 }
 
 const char *tizgmusic::get_current_song_year ()
 {
-  return current_song_year_.empty () ? NULL : current_song_year_.c_str ();
+    return current_song_year_.empty () ? NULL : current_song_year_.c_str ();
 }
 
 const char *tizgmusic::get_current_song_genre ()
 {
-  return current_song_genre_.empty () ? NULL : current_song_genre_.c_str ();
+    return current_song_genre_.empty () ? NULL : current_song_genre_.c_str ();
 }
 
 const char *tizgmusic::get_current_song_album_art ()
 {
-  return current_song_album_art_.empty () ? NULL : current_song_album_art_.c_str ();
+    return current_song_album_art_.empty () ? NULL : current_song_album_art_.c_str ();
 }
 
 void tizgmusic::clear_queue ()
 {
-  int rc = 0;
-  try_catch_wrapper (py_gm_proxy_.attr ("clear_queue")());
-  (void)rc;
+    int rc = 0;
+    try_catch_wrapper (py_gm_proxy_.attr ("clear_queue")());
+    (void)rc;
 }
 
 void tizgmusic::set_playback_mode (const playback_mode mode)
 {
-  int rc = 0;
-  switch(mode)
+    int rc = 0;
+    switch(mode)
     {
     case PlaybackModeNormal:
-      {
+    {
         try_catch_wrapper (py_gm_proxy_.attr ("set_play_mode")("NORMAL"));
-      }
-      break;
+    }
+    break;
     case PlaybackModeShuffle:
-      {
+    {
         try_catch_wrapper (py_gm_proxy_.attr ("set_play_mode")("SHUFFLE"));
-      }
-      break;
+    }
+    break;
     default:
-      {
+    {
         assert (0);
-      }
-      break;
+    }
+    break;
     };
-  (void)rc;
+    (void)rc;
 }
 
 void tizgmusic::get_current_song ()
 {
-  current_artist_.clear ();
-  current_title_.clear ();
-  current_song_genre_.clear ();
-  current_song_album_art_.clear ();
+    current_artist_.clear ();
+    current_title_.clear ();
+    current_song_genre_.clear ();
+    current_song_album_art_.clear ();
 
-  const bp::tuple &info1 = bp::extract< bp::tuple >(
-      py_gm_proxy_.attr ("current_song_title_and_artist")());
-  current_artist_ = bp::extract< std::string >(info1[0]);
-  current_title_ = bp::extract< std::string >(info1[1]);
+    const bp::tuple &info1 = bp::extract< bp::tuple >(
+                                 py_gm_proxy_.attr ("current_song_title_and_artist")());
+    current_artist_ = bp::extract< std::string >(info1[0]);
+    current_title_ = bp::extract< std::string >(info1[1]);
 
-  const bp::tuple &info2 = bp::extract< bp::tuple >(
-      py_gm_proxy_.attr ("current_song_album_and_duration")());
-  current_album_ = bp::extract< std::string >(info2[0]);
-  int duration = bp::extract< int >(info2[1]);
+    const bp::tuple &info2 = bp::extract< bp::tuple >(
+                                 py_gm_proxy_.attr ("current_song_album_and_duration")());
+    current_album_ = bp::extract< std::string >(info2[0]);
+    int duration = bp::extract< int >(info2[1]);
 
-  int seconds = 0;
-  current_duration_.clear ();
-  if (duration)
+    int seconds = 0;
+    current_duration_.clear ();
+    if (duration)
     {
-      duration /= 1000;
-      seconds = duration % 60;
-      int minutes = (duration - seconds) / 60;
-      int hours = 0;
-      if (minutes >= 60)
+        duration /= 1000;
+        seconds = duration % 60;
+        int minutes = (duration - seconds) / 60;
+        int hours = 0;
+        if (minutes >= 60)
         {
-          int total_minutes = minutes;
-          minutes = total_minutes % 60;
-          hours = (total_minutes - minutes) / 60;
+            int total_minutes = minutes;
+            minutes = total_minutes % 60;
+            hours = (total_minutes - minutes) / 60;
         }
 
-      if (hours > 0)
+        if (hours > 0)
         {
-          current_duration_.append (boost::lexical_cast< std::string >(hours));
-          current_duration_.append ("h:");
+            current_duration_.append (boost::lexical_cast< std::string >(hours));
+            current_duration_.append ("h:");
         }
 
-      if (minutes > 0)
+        if (minutes > 0)
         {
-          current_duration_.append (
-              boost::lexical_cast< std::string >(minutes));
-          current_duration_.append ("m:");
+            current_duration_.append (
+                boost::lexical_cast< std::string >(minutes));
+            current_duration_.append ("m:");
         }
     }
 
-  char seconds_str[6];
-  sprintf (seconds_str, "%02i", seconds);
-  current_duration_.append (seconds_str);
-  current_duration_.append ("s");
+    char seconds_str[6];
+    sprintf (seconds_str, "%02i", seconds);
+    current_duration_.append (seconds_str);
+    current_duration_.append ("s");
 
-  const bp::tuple &info3 = bp::extract< bp::tuple >(
-      py_gm_proxy_.attr ("current_track_and_album_total")());
-  const int track_num = bp::extract< int >(info3[0]);
-  const int total_tracks = bp::extract< int >(info3[1]);
+    const bp::tuple &info3 = bp::extract< bp::tuple >(
+                                 py_gm_proxy_.attr ("current_track_and_album_total")());
+    const int track_num = bp::extract< int >(info3[0]);
+    const int total_tracks = bp::extract< int >(info3[1]);
 
-  current_track_num_.assign (boost::lexical_cast< std::string >(track_num));
-  current_song_tracks_total_.assign (boost::lexical_cast< std::string >(total_tracks));
+    current_track_num_.assign (boost::lexical_cast< std::string >(track_num));
+    current_song_tracks_total_.assign (boost::lexical_cast< std::string >(total_tracks));
 
-  current_song_year_ = bp::extract< std::string >(
-      py_gm_proxy_.attr ("current_song_year")());
+    current_song_year_ = bp::extract< std::string >(
+                             py_gm_proxy_.attr ("current_song_year")());
 
-  current_song_genre_ = bp::extract< std::string >(
-      py_gm_proxy_.attr ("current_song_genre")());
+    current_song_genre_ = bp::extract< std::string >(
+                              py_gm_proxy_.attr ("current_song_genre")());
 
-  current_song_album_art_ = bp::extract< std::string >(
-      py_gm_proxy_.attr ("current_song_album_art")());
+    current_song_album_art_ = bp::extract< std::string >(
+                                  py_gm_proxy_.attr ("current_song_album_art")());
 }

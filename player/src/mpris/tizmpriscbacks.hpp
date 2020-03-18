@@ -39,23 +39,23 @@
 
 namespace tiz
 {
-  namespace control
-  {
-    class mpris_callbacks
-    {
-    public:
-      typedef boost::function< OMX_ERRORTYPE() > cback_func_t;
-      typedef boost::function< OMX_ERRORTYPE(double) > cback_vol_func_t;
+namespace control
+{
+class mpris_callbacks
+{
+public:
+    typedef boost::function< OMX_ERRORTYPE() > cback_func_t;
+    typedef boost::function< OMX_ERRORTYPE(double) > cback_vol_func_t;
 
-    public:
-      mpris_callbacks (cback_func_t play,
-                       cback_func_t next,
-                       cback_func_t previous,
-                       cback_func_t pause,
-                       cback_func_t playpause,
-                       cback_func_t stop,
-                       cback_func_t quit,
-                       cback_vol_func_t volume)
+public:
+    mpris_callbacks (cback_func_t play,
+                     cback_func_t next,
+                     cback_func_t previous,
+                     cback_func_t pause,
+                     cback_func_t playpause,
+                     cback_func_t stop,
+                     cback_func_t quit,
+                     cback_vol_func_t volume)
         :
         play_ (play),
         next_ (next),
@@ -65,22 +65,22 @@ namespace tiz
         stop_ (stop),
         quit_ (quit),
         volume_ (volume)
-      {}
+    {}
 
-    public:
-      cback_func_t play_;
-      cback_func_t next_;
-      cback_func_t previous_;
-      cback_func_t pause_;
-      cback_func_t playpause_;
-      cback_func_t stop_;
-      cback_func_t quit_;
-      cback_vol_func_t volume_;
-    };
+public:
+    cback_func_t play_;
+    cback_func_t next_;
+    cback_func_t previous_;
+    cback_func_t pause_;
+    cback_func_t playpause_;
+    cback_func_t stop_;
+    cback_func_t quit_;
+    cback_vol_func_t volume_;
+};
 
-    typedef class mpris_callbacks mpris_callbacks_t;
-    typedef boost::shared_ptr< mpris_callbacks_t > mpris_callbacks_ptr_t;
-  }  // namespace control
+typedef class mpris_callbacks mpris_callbacks_t;
+typedef boost::shared_ptr< mpris_callbacks_t > mpris_callbacks_ptr_t;
+}  // namespace control
 }  // namespace tiz
 
 #endif  // TIZMPRISCBACKS_HPP

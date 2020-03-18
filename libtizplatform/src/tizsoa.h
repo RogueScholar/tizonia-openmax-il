@@ -62,12 +62,12 @@ tiz_soa_free (tiz_soa_t * p_soa, void * ap_addr);
 typedef struct tiz_soa_info tiz_soa_info_t;
 struct tiz_soa_info
 {
-  /* Total number of chunks allocated */
-  int32_t chunks;
-  /* Total number of slices currently in use across all chunks */
-  int32_t objects;
-  /* Number of slices currently in use in each chunk class */
-  int32_t slices[TIZ_SOA_NUM_CHUNK_CLASSES];
+    /* Total number of chunks allocated */
+    int32_t chunks;
+    /* Total number of slices currently in use across all chunks */
+    int32_t objects;
+    /* Number of slices currently in use in each chunk class */
+    int32_t slices[TIZ_SOA_NUM_CHUNK_CLASSES];
 };
 
 void

@@ -39,16 +39,16 @@ extern "C" {
 typedef struct tiz_demuxercfgport tiz_demuxercfgport_t;
 struct tiz_demuxercfgport
 {
-  /* Object */
-  const tiz_uricfgport_t _;
+    /* Object */
+    const tiz_uricfgport_t _;
 };
 
 typedef struct tiz_demuxercfgport_class tiz_demuxercfgport_class_t;
 struct tiz_demuxercfgport_class
 {
-  /* Class */
-  const tiz_uricfgport_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_uricfgport_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

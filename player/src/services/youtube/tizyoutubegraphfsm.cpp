@@ -33,6 +33,6 @@
 
 char const* const tiz::graph::youtubefsm::pstate(tiz::graph::youtubefsm::fsm const& p)
 {
-  return tiz::graph::youtubefsm::state_names[p.current_state()[0]];
+    return tiz::graph::youtubefsm::state_names[p.current_state()[0]];
 }
 

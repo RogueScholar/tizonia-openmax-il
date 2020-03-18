@@ -41,18 +41,18 @@ extern "C" {
 typedef struct cc_tunein_cfgport cc_tunein_cfgport_t;
 struct cc_tunein_cfgport
 {
-  /* Object */
-  const cc_cfgport_t _;
-  OMX_TIZONIA_AUDIO_PARAM_TUNEINSESSIONTYPE session_;
-  OMX_TIZONIA_AUDIO_PARAM_TUNEINPLAYLISTTYPE playlist_;
+    /* Object */
+    const cc_cfgport_t _;
+    OMX_TIZONIA_AUDIO_PARAM_TUNEINSESSIONTYPE session_;
+    OMX_TIZONIA_AUDIO_PARAM_TUNEINPLAYLISTTYPE playlist_;
 };
 
 typedef struct cc_tunein_cfgport_class cc_tunein_cfgport_class_t;
 struct cc_tunein_cfgport_class
 {
-  /* Class */
-  const cc_cfgport_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const cc_cfgport_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

@@ -57,11 +57,11 @@ graph::plex::plex () : tiz::graph::servicegraph ("plexgraph")
 
 graph::ops *graph::plex::do_init ()
 {
-  omx_comp_name_lst_t comp_list;
-  comp_list.push_back ("OMX.Aratelia.audio_source.http");
+    omx_comp_name_lst_t comp_list;
+    comp_list.push_back ("OMX.Aratelia.audio_source.http");
 
-  omx_comp_role_lst_t role_list;
-  role_list.push_back ("audio_source.http.plex");
+    omx_comp_role_lst_t role_list;
+    role_list.push_back ("audio_source.http.plex");
 
-  return new plexops (this, comp_list, role_list);
+    return new plexops (this, comp_list, role_list);
 }

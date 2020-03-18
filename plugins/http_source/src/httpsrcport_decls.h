@@ -42,20 +42,20 @@ extern "C" {
 typedef struct httpsrc_port httpsrc_port_t;
 struct httpsrc_port
 {
-  /* Object */
-  const tiz_audioport_t _;
-  OMX_TIZONIA_STREAMINGBUFFERTYPE buffertype_;
-  OMX_AUDIO_PARAM_MP3TYPE mp3type_;
-  OMX_AUDIO_PARAM_AACPROFILETYPE aactype_;
-  OMX_TIZONIA_AUDIO_PARAM_OPUSTYPE opustype_;
+    /* Object */
+    const tiz_audioport_t _;
+    OMX_TIZONIA_STREAMINGBUFFERTYPE buffertype_;
+    OMX_AUDIO_PARAM_MP3TYPE mp3type_;
+    OMX_AUDIO_PARAM_AACPROFILETYPE aactype_;
+    OMX_TIZONIA_AUDIO_PARAM_OPUSTYPE opustype_;
 };
 
 typedef struct httpsrc_port_class httpsrc_port_class_t;
 struct httpsrc_port_class
 {
-  /* Class */
-  const tiz_audioport_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_audioport_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

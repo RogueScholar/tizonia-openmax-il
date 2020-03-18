@@ -37,11 +37,11 @@
 
 namespace
 {
-  template < typename T >
-  bool is_type (const boost::any& operand)
-  {
+template < typename T >
+bool is_type (const boost::any& operand)
+{
     return operand.type () == typeid(T);
-  }
+}
 }
 
 namespace graphmgr = tiz::graphmgr;
@@ -52,16 +52,16 @@ graphmgr::cmd::cmd (boost::any any_event) : evt_ (any_event)
 
 const boost::any graphmgr::cmd::evt () const
 {
-  return evt_;
+    return evt_;
 }
 
 /*@observer@*/ const char* graphmgr::cmd::c_str () const
 {
-  if (is_type< start_evt >(evt_))
-  {
-    return "start_evt";
-  }
-  return "Unknown Graph Manager command";
+    if (is_type< start_evt >(evt_))
+    {
+        return "start_evt";
+    }
+    return "Unknown Graph Manager command";
 }
 
 void graphmgr::cmd::inject (fsm& machine) const
@@ -77,30 +77,30 @@ void graphmgr::cmd::inject (fsm& machine) const
     machine.process_event (boost::any_cast< the_evt >(evt_)); \
   }
 
-  INJECT_EVENT (start_evt)
-  else INJECT_EVENT (next_evt)
-    else INJECT_EVENT (prev_evt)
-      else INJECT_EVENT (fwd_evt)
-        else INJECT_EVENT (rwd_evt)
-          else INJECT_EVENT (vol_up_evt)
-            else INJECT_EVENT (vol_down_evt)
-              else INJECT_EVENT (vol_evt)
-                else INJECT_EVENT (mute_evt)
-                  else INJECT_EVENT (pause_evt)
-                    else INJECT_EVENT (stop_evt)
-                      else INJECT_EVENT (quit_evt)
-                        else INJECT_EVENT (graph_eop_evt)
-                          else INJECT_EVENT (err_evt)
-                            else INJECT_EVENT (graph_loaded_evt)
-                              else INJECT_EVENT (graph_execd_evt)
-                                else INJECT_EVENT (graph_stopped_evt)
-                                  else INJECT_EVENT (graph_paused_evt)
-                                    else INJECT_EVENT (graph_resumed_evt)
-                                      else INJECT_EVENT (graph_metadata_evt)
-                                        else INJECT_EVENT (graph_volume_evt)
-                                          else INJECT_EVENT (graph_unlded_evt)
-                                            else
-                                              {
-                                                assert (0);
-                                              }
+    INJECT_EVENT (start_evt)
+    else INJECT_EVENT (next_evt)
+        else INJECT_EVENT (prev_evt)
+            else INJECT_EVENT (fwd_evt)
+                else INJECT_EVENT (rwd_evt)
+                    else INJECT_EVENT (vol_up_evt)
+                        else INJECT_EVENT (vol_down_evt)
+                            else INJECT_EVENT (vol_evt)
+                                else INJECT_EVENT (mute_evt)
+                                    else INJECT_EVENT (pause_evt)
+                                        else INJECT_EVENT (stop_evt)
+                                            else INJECT_EVENT (quit_evt)
+                                                else INJECT_EVENT (graph_eop_evt)
+                                                    else INJECT_EVENT (err_evt)
+                                                        else INJECT_EVENT (graph_loaded_evt)
+                                                            else INJECT_EVENT (graph_execd_evt)
+                                                                else INJECT_EVENT (graph_stopped_evt)
+                                                                    else INJECT_EVENT (graph_paused_evt)
+                                                                        else INJECT_EVENT (graph_resumed_evt)
+                                                                            else INJECT_EVENT (graph_metadata_evt)
+                                                                                else INJECT_EVENT (graph_volume_evt)
+                                                                                    else INJECT_EVENT (graph_unlded_evt)
+                                                                                        else
+                                                                                        {
+                                                                                            assert (0);
+                                                                                        }
 }

@@ -39,23 +39,23 @@ extern "C" {
 typedef struct tiz_avcport tiz_avcport_t;
 struct tiz_avcport
 {
-  /* Object */
-  const tiz_videoport_t _;
-  OMX_VIDEO_PARAM_AVCTYPE avctype_;
-  OMX_VIDEO_PARAM_PROFILELEVELTYPE pltype_;
-  tiz_vector_t * p_levels_;
-  OMX_VIDEO_PARAM_BITRATETYPE pbrtype_;
-  OMX_VIDEO_CONFIG_BITRATETYPE cbrtype_;
-  OMX_CONFIG_FRAMERATETYPE frtype_;
-  OMX_VIDEO_PARAM_QUANTIZATIONTYPE pqtype_;
+    /* Object */
+    const tiz_videoport_t _;
+    OMX_VIDEO_PARAM_AVCTYPE avctype_;
+    OMX_VIDEO_PARAM_PROFILELEVELTYPE pltype_;
+    tiz_vector_t * p_levels_;
+    OMX_VIDEO_PARAM_BITRATETYPE pbrtype_;
+    OMX_VIDEO_CONFIG_BITRATETYPE cbrtype_;
+    OMX_CONFIG_FRAMERATETYPE frtype_;
+    OMX_VIDEO_PARAM_QUANTIZATIONTYPE pqtype_;
 };
 
 typedef struct tiz_avcport_class tiz_avcport_class_t;
 struct tiz_avcport_class
 {
-  /* Class */
-  const tiz_videoport_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_videoport_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

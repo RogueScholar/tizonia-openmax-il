@@ -37,38 +37,38 @@
 
 namespace tiz
 {
-  namespace graph
-  {
+namespace graph
+{
 
-    class config
-    {
+class config
+{
 
-    public:
-      explicit config (const tizplaylist_ptr_t &playlist, const uint32_t buffer_seconds)
+public:
+    explicit config (const tizplaylist_ptr_t &playlist, const uint32_t buffer_seconds)
         : playlist_ (playlist), buffer_seconds_ (buffer_seconds)
-      {
-      }
+    {
+    }
 
-      virtual ~config ()
-      {
-      }
+    virtual ~config ()
+    {
+    }
 
-      tizplaylist_ptr_t get_playlist () const
-      {
+    tizplaylist_ptr_t get_playlist () const
+    {
         return playlist_;
-      }
+    }
 
-      uint32_t get_buffer_seconds () const
-      {
+    uint32_t get_buffer_seconds () const
+    {
         return buffer_seconds_;
-      }
+    }
 
-    protected:
-      tizplaylist_ptr_t playlist_;
-      uint32_t buffer_seconds_;
-    };
+protected:
+    tizplaylist_ptr_t playlist_;
+    uint32_t buffer_seconds_;
+};
 
-  }  // namespace graph
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZGRAPHCONFIG_HPP

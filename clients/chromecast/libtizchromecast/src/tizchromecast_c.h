@@ -84,7 +84,7 @@ tiz_chromecast_error_t tiz_chromecast_init (
  * @return ETizCcErrorNoError on success.
  */
 tiz_chromecast_error_t tiz_chromecast_poll (tiz_chromecast_t *ap_chromecast,
-                                            int a_poll_time_ms);
+        int a_poll_time_ms);
 
 /**
  * Load a new audio stream URL on the Chromecast device's default media
@@ -105,10 +105,10 @@ tiz_chromecast_error_t tiz_chromecast_poll (tiz_chromecast_t *ap_chromecast,
  * @return ETizCcErrorNoError on success
  */
 tiz_chromecast_error_t tiz_chromecast_load_url (tiz_chromecast_t *ap_chromecast,
-                                                const char *ap_url,
-                                                const char *ap_content_type,
-                                                const char *ap_title,
-                                                const char *ap_album_art);
+        const char *ap_url,
+        const char *ap_content_type,
+        const char *ap_title,
+        const char *ap_album_art);
 
 /**
  * Resume media playback.
@@ -156,7 +156,7 @@ tiz_chromecast_error_t tiz_chromecast_pause (tiz_chromecast_t *ap_chromecast);
  * @return ETizCcErrorNoError on success
  */
 tiz_chromecast_error_t tiz_chromecast_volume (tiz_chromecast_t *ap_chromecast,
-                                              int a_volume);
+        int a_volume);
 
 /**
  * Increase playback volumen.

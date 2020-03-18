@@ -36,31 +36,31 @@
 
 namespace tiz
 {
-  namespace graphmgr
-  {
-    class graphmgr_capabilities
-    {
-    public:
-      bool can_quit_;
-      bool can_raise_;
-      bool has_track_list_;
-      std::string identity_;
-      std::vector< std::string > uri_schemes_;
-      std::vector< std::string > mime_types_;
-      double minimum_rate_;
-      double maximum_rate_;
-      bool can_go_next_;
-      bool can_go_previous_;
-      bool can_play_;
-      bool can_pause_;
-      bool can_seek_;
-      bool can_control_;
-    };
+namespace graphmgr
+{
+class graphmgr_capabilities
+{
+public:
+    bool can_quit_;
+    bool can_raise_;
+    bool has_track_list_;
+    std::string identity_;
+    std::vector< std::string > uri_schemes_;
+    std::vector< std::string > mime_types_;
+    double minimum_rate_;
+    double maximum_rate_;
+    bool can_go_next_;
+    bool can_go_previous_;
+    bool can_play_;
+    bool can_pause_;
+    bool can_seek_;
+    bool can_control_;
+};
 
-    typedef class graphmgr_capabilities graphmgr_capabilities_t;
-    typedef boost::shared_ptr< graphmgr_capabilities > graphmgr_capabilities_ptr_t;
+typedef class graphmgr_capabilities graphmgr_capabilities_t;
+typedef boost::shared_ptr< graphmgr_capabilities > graphmgr_capabilities_ptr_t;
 
-  }  // namespace graphmgr
+}  // namespace graphmgr
 }  // namespace tiz
 
 #endif  // TIZGRAPHMGRCAPS_HPP

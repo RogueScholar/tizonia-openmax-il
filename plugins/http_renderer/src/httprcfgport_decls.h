@@ -41,17 +41,17 @@ extern "C" {
 typedef struct httpr_cfgport httpr_cfgport_t;
 struct httpr_cfgport
 {
-  /* Object */
-  const tiz_configport_t _;
-  OMX_TIZONIA_HTTPSERVERTYPE http_conf_;
+    /* Object */
+    const tiz_configport_t _;
+    OMX_TIZONIA_HTTPSERVERTYPE http_conf_;
 };
 
 typedef struct httpr_cfgport_class httpr_cfgport_class_t;
 struct httpr_cfgport_class
 {
-  /* Class */
-  const tiz_configport_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_configport_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

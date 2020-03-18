@@ -56,9 +56,9 @@ typedef /*@null@ */ tiz_plex_t *tiz_plex_ptr_t;
  * @ingroup libtizplex
  */
 typedef enum tiz_plex_playback_mode {
-  ETIZPlexPlaybackModeNormal,
-  ETIZPlexPlaybackModeShuffle,
-  ETIZPlexPlaybackModeMax
+    ETIZPlexPlaybackModeNormal,
+    ETIZPlexPlaybackModeShuffle,
+    ETIZPlexPlaybackModeMax
 } tiz_plex_playback_mode_t;
 
 /**
@@ -75,8 +75,8 @@ typedef enum tiz_plex_playback_mode {
  * @return 0 on success.
  */
 int tiz_plex_init (/*@null@ */ tiz_plex_ptr_t *app_plex,
-                   const char *ap_base_url, const char *ap_auth_token,
-                   const char *ap_music_section);
+                               const char *ap_base_url, const char *ap_auth_token,
+                               const char *ap_music_section);
 
 /**
  * Clear the playback queue.

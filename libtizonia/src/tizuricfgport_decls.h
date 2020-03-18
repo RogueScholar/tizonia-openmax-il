@@ -38,17 +38,17 @@ extern "C" {
 typedef struct tiz_uricfgport tiz_uricfgport_t;
 struct tiz_uricfgport
 {
-  /* Object */
-  const tiz_configport_t _;
-  OMX_STRING p_uri_;
+    /* Object */
+    const tiz_configport_t _;
+    OMX_STRING p_uri_;
 };
 
 typedef struct tiz_uricfgport_class tiz_uricfgport_class_t;
 struct tiz_uricfgport_class
 {
-  /* Class */
-  const tiz_configport_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_configport_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

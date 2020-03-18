@@ -41,18 +41,18 @@ extern "C" {
 typedef struct httpr_mp3port httpr_mp3port_t;
 struct httpr_mp3port
 {
-  /* Object */
-  const tiz_mp3port_t _;
-  OMX_TIZONIA_ICECASTMOUNTPOINTTYPE mountpoint_;
-  OMX_STRING p_stream_title_;
+    /* Object */
+    const tiz_mp3port_t _;
+    OMX_TIZONIA_ICECASTMOUNTPOINTTYPE mountpoint_;
+    OMX_STRING p_stream_title_;
 };
 
 typedef struct httpr_mp3port_class httpr_mp3port_class_t;
 struct httpr_mp3port_class
 {
-  /* Class */
-  const tiz_mp3port_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_mp3port_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

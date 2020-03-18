@@ -57,11 +57,11 @@ graph::scloud::scloud () : tiz::graph::servicegraph ("scloudgraph")
 
 graph::ops *graph::scloud::do_init ()
 {
-  omx_comp_name_lst_t comp_list;
-  comp_list.push_back ("OMX.Aratelia.audio_source.http");
+    omx_comp_name_lst_t comp_list;
+    comp_list.push_back ("OMX.Aratelia.audio_source.http");
 
-  omx_comp_role_lst_t role_list;
-  role_list.push_back ("audio_source.http.scloud");
+    omx_comp_role_lst_t role_list;
+    role_list.push_back ("audio_source.http.scloud");
 
-  return new scloudops (this, comp_list, role_list);
+    return new scloudops (this, comp_list, role_list);
 }

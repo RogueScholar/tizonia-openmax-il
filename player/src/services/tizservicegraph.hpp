@@ -35,27 +35,27 @@
 
 namespace tiz
 {
-  namespace graph
-  {
-    // Forward declarations
-    class cmd;
-    class ops;
+namespace graph
+{
+// Forward declarations
+class cmd;
+class ops;
 
-    class servicegraph : public graph
-    {
+class servicegraph : public graph
+{
 
-    public:
-      explicit servicegraph (const std::string &graph_name);
-      ~servicegraph ();
+public:
+    explicit servicegraph (const std::string &graph_name);
+    ~servicegraph ();
 
-    protected:
-      bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
+protected:
+    bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
 
-    protected:
-      boost::any fsm_;
-    };
+protected:
+    boost::any fsm_;
+};
 
-  }  // namespace graph
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZSERVICEGRAPH_HPP

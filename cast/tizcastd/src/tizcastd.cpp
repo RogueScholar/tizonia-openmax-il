@@ -62,46 +62,46 @@ static const char *TIZ_CAST_DAEMON_NAME = "com.aratelia.tiz.tizcastd";
 static const char *TIZ_CAST_DAEMON_PATH = "/com/aratelia/tiz/tizcastd";
 
 tizcastd::tizcastd (Tiz::DBus::Connection &a_connection)
-  : Tiz::DBus::ObjectAdaptor (a_connection, TIZ_CAST_DAEMON_PATH),
-    p_worker_ (NULL)
+    : Tiz::DBus::ObjectAdaptor (a_connection, TIZ_CAST_DAEMON_PATH),
+      p_worker_ (NULL)
 {
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "Constructing tizcastd...");
-  p_worker_ = new tiz::cast::worker (
-      boost::bind (&tizcastd::cast_status_forwarder, this, _1, _2, _3),
-      boost::bind (&tizcastd::media_status_forwarder, this, _1, _2, _3),
-      boost::bind (&tizcastd::error_status_forwarder, this, _1, _2, _3));
-  assert (p_worker_);
-  p_worker_->init ();
+    TIZ_LOG (TIZ_PRIORITY_TRACE, "Constructing tizcastd...");
+    p_worker_ = new tiz::cast::worker (
+        boost::bind (&tizcastd::cast_status_forwarder, this, _1, _2, _3),
+        boost::bind (&tizcastd::media_status_forwarder, this, _1, _2, _3),
+        boost::bind (&tizcastd::error_status_forwarder, this, _1, _2, _3));
+    assert (p_worker_);
+    p_worker_->init ();
 }
 
 tizcastd::~tizcastd ()
 {
-  if (p_worker_)
-  {
-    p_worker_->deinit ();
-    delete p_worker_;
-    p_worker_ = NULL;
-  }
+    if (p_worker_)
+    {
+        p_worker_->deinit ();
+        delete p_worker_;
+        p_worker_ = NULL;
+    }
 }
 
 int32_t tizcastd::connect (const std::vector< uint8_t > &uuid,
                            const std::string &name_or_ip)
 {
-  if (p_worker_)
-  {
-    p_worker_->connect (uuid, name_or_ip);
-  }
-  return TIZ_CAST_SUCCESS;
+    if (p_worker_)
+    {
+        p_worker_->connect (uuid, name_or_ip);
+    }
+    return TIZ_CAST_SUCCESS;
 }
 
 int32_t tizcastd::disconnect (const std::vector< uint8_t > &uuid)
 {
-  TIZ_LOG (TIZ_PRIORITY_NOTICE, "disconnect");
-  if (p_worker_)
-  {
-    p_worker_->disconnect (uuid);
-  }
-  return TIZ_CAST_SUCCESS;
+    TIZ_LOG (TIZ_PRIORITY_NOTICE, "disconnect");
+    if (p_worker_)
+    {
+        p_worker_->disconnect (uuid);
+    }
+    return TIZ_CAST_SUCCESS;
 }
 
 int32_t tizcastd::load_url (const std::vector< uint8_t > &uuid,
@@ -110,134 +110,134 @@ int32_t tizcastd::load_url (const std::vector< uint8_t > &uuid,
                             const std::string &title,
                             const std::string &album_art)
 {
-  TIZ_LOG (TIZ_PRIORITY_NOTICE, "load_url");
-  if (p_worker_)
-  {
-    p_worker_->load_url (uuid, url, mime_type, title, album_art);
-  }
-  return TIZ_CAST_SUCCESS;
+    TIZ_LOG (TIZ_PRIORITY_NOTICE, "load_url");
+    if (p_worker_)
+    {
+        p_worker_->load_url (uuid, url, mime_type, title, album_art);
+    }
+    return TIZ_CAST_SUCCESS;
 }
 
 int32_t tizcastd::play (const std::vector< uint8_t > &uuid)
 {
-  TIZ_LOG (TIZ_PRIORITY_NOTICE, "play");
-  if (p_worker_)
-  {
-    p_worker_->play (uuid);
-  }
-  return TIZ_CAST_SUCCESS;
+    TIZ_LOG (TIZ_PRIORITY_NOTICE, "play");
+    if (p_worker_)
+    {
+        p_worker_->play (uuid);
+    }
+    return TIZ_CAST_SUCCESS;
 }
 
 int32_t tizcastd::stop (const std::vector< uint8_t > &uuid)
 {
-  TIZ_LOG (TIZ_PRIORITY_NOTICE, "stop");
-  if (p_worker_)
-  {
-    p_worker_->stop (uuid);
-  }
-  return TIZ_CAST_SUCCESS;
+    TIZ_LOG (TIZ_PRIORITY_NOTICE, "stop");
+    if (p_worker_)
+    {
+        p_worker_->stop (uuid);
+    }
+    return TIZ_CAST_SUCCESS;
 }
 
 int32_t tizcastd::pause (const std::vector< uint8_t > &uuid)
 {
-  if (p_worker_)
-  {
-    p_worker_->pause (uuid);
-  }
-  return TIZ_CAST_SUCCESS;
+    if (p_worker_)
+    {
+        p_worker_->pause (uuid);
+    }
+    return TIZ_CAST_SUCCESS;
 }
 
 int32_t tizcastd::volume_set (const std::vector< uint8_t > &uuid,
                               const int32_t &volume)
 {
-  if (p_worker_)
-  {
-    p_worker_->volume_set (uuid, volume);
-  }
-  return TIZ_CAST_SUCCESS;
+    if (p_worker_)
+    {
+        p_worker_->volume_set (uuid, volume);
+    }
+    return TIZ_CAST_SUCCESS;
 }
 
 int32_t tizcastd::volume_up (const std::vector< uint8_t > &uuid)
 {
-  if (p_worker_)
-  {
-    p_worker_->volume_up (uuid);
-  }
-  return TIZ_CAST_SUCCESS;
+    if (p_worker_)
+    {
+        p_worker_->volume_up (uuid);
+    }
+    return TIZ_CAST_SUCCESS;
 }
 
 int32_t tizcastd::volume_down (const std::vector< uint8_t > &uuid)
 {
-  if (p_worker_)
-  {
-    p_worker_->volume_down (uuid);
-  }
-  return TIZ_CAST_SUCCESS;
+    if (p_worker_)
+    {
+        p_worker_->volume_down (uuid);
+    }
+    return TIZ_CAST_SUCCESS;
 }
 
 int32_t tizcastd::mute (const std::vector< uint8_t > &uuid)
 {
-  if (p_worker_)
-  {
-    p_worker_->mute (uuid);
-  }
-  return TIZ_CAST_SUCCESS;
+    if (p_worker_)
+    {
+        p_worker_->mute (uuid);
+    }
+    return TIZ_CAST_SUCCESS;
 }
 
 int32_t tizcastd::unmute (const std::vector< uint8_t > &uuid)
 {
-  if (p_worker_)
-  {
-    p_worker_->unmute (uuid);
-  }
-  return TIZ_CAST_SUCCESS;
+    if (p_worker_)
+    {
+        p_worker_->unmute (uuid);
+    }
+    return TIZ_CAST_SUCCESS;
 }
 
 void tizcastd::cast_status_forwarder (const uuid_t &uuid,
                                       const uint32_t &status,
                                       const int32_t &volume)
 {
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "forwarding from manager");
-  cast_status (uuid, status, volume);
+    TIZ_LOG (TIZ_PRIORITY_TRACE, "forwarding from manager");
+    cast_status (uuid, status, volume);
 }
 
 void tizcastd::media_status_forwarder (const uuid_t &uuid,
                                        const uint32_t &status,
                                        const int32_t &volume)
 {
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "media status from manager");
-  media_status (uuid, status, volume);
+    TIZ_LOG (TIZ_PRIORITY_TRACE, "media status from manager");
+    media_status (uuid, status, volume);
 }
 
 void tizcastd::error_status_forwarder (const uuid_t &uuid,
                                        const uint32_t &status,
                                        const std::string &error_str)
 {
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "error signal from manager");
-  error_status (uuid, status, error_str);
+    TIZ_LOG (TIZ_PRIORITY_TRACE, "error signal from manager");
+    error_status (uuid, status, error_str);
 }
 
 static void tizcastd_sig_hdlr (int sig)
 {
-  dispatcher.leave ();
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "Tizonia Chromecast daemon exiting...");
+    dispatcher.leave ();
+    TIZ_LOG (TIZ_PRIORITY_TRACE, "Tizonia Chromecast daemon exiting...");
 }
 
 int main ()
 {
-  signal (SIGTERM, tizcastd_sig_hdlr);
-  signal (SIGINT, tizcastd_sig_hdlr);
+    signal (SIGTERM, tizcastd_sig_hdlr);
+    signal (SIGINT, tizcastd_sig_hdlr);
 
-  tiz_log_init ();
+    tiz_log_init ();
 
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "Tizonia Chromecast daemon starting...");
+    TIZ_LOG (TIZ_PRIORITY_TRACE, "Tizonia Chromecast daemon starting...");
 
-  Tiz::DBus::default_dispatcher = &dispatcher;
-  Tiz::DBus::Connection conn = Tiz::DBus::Connection::SessionBus ();
-  conn.request_name (TIZ_CAST_DAEMON_NAME);
-  tizcastd server (conn);
-  dispatcher.enter ();
+    Tiz::DBus::default_dispatcher = &dispatcher;
+    Tiz::DBus::Connection conn = Tiz::DBus::Connection::SessionBus ();
+    conn.request_name (TIZ_CAST_DAEMON_NAME);
+    tizcastd server (conn);
+    dispatcher.enter ();
 
-  tiz_log_deinit ();
-  return 0;
+    tiz_log_deinit ();
+    return 0;
 }

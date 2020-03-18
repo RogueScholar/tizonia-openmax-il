@@ -20,10 +20,10 @@
 /**
  * @file   mp3eprc.h
  * @author Juan A. Rubio <juan.rubio@aratelia.com>
- * 
+ *
  * @brief  Tizonia - Mp3 Encoder processor class
- * 
- * 
+ *
+ *
  */
 
 #ifndef MP3EPRC_H

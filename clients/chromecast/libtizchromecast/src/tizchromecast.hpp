@@ -38,29 +38,29 @@
 // ----------------------------------------------------------------------------
 namespace boost
 {
-  namespace python
-  {
-    namespace detail
-    {
-      // ----------------------------------------------------------------------------
-      // get_signature overloads must be declared before including
-      // boost/python.hpp.  The declaration must be visible at the
-      // point of definition of various Boost.Python templates during
-      // the first phase of two phase lookup.  Boost.Python invokes the
-      // get_signature function via qualified-id, thus ADL is disabled.
-      // ----------------------------------------------------------------------------
-      /// @brief Get the signature of a boost::function.
-      template < typename Signature >
-      inline typename boost::function_types::components< Signature >::type
-          get_signature (boost::function< Signature > &, void * = 0)
-      {
-        return typename boost::function_types::components< Signature >::type ();
-      }
-      // ----------------------------------------------------------------------------
-    }
-  }
+namespace python
+{
+namespace detail
+{
+// ----------------------------------------------------------------------------
+// get_signature overloads must be declared before including
+// boost/python.hpp.  The declaration must be visible at the
+// point of definition of various Boost.Python templates during
+// the first phase of two phase lookup.  Boost.Python invokes the
+// get_signature function via qualified-id, thus ADL is disabled.
+// ----------------------------------------------------------------------------
+/// @brief Get the signature of a boost::function.
+template < typename Signature >
+inline typename boost::function_types::components< Signature >::type
+get_signature (boost::function< Signature > &, void * = 0)
+{
+    return typename boost::function_types::components< Signature >::type ();
+}
+// ----------------------------------------------------------------------------
+}
+}
 }  // namespace boost::python::detail
-   // ============================================================================
+// ============================================================================
 
 #include <boost/python.hpp>
 
@@ -73,42 +73,42 @@ class tizchromecastctx;
 class tizchromecast
 {
 public:
-  tizchromecast (const tizchromecastctx &cc_ctx, const std::string &name_or_ip,
-                 const tiz_chromecast_callbacks_t *ap_cbacks,
-                 void *ap_user_data);
-  ~tizchromecast ();
+    tizchromecast (const tizchromecastctx &cc_ctx, const std::string &name_or_ip,
+                   const tiz_chromecast_callbacks_t *ap_cbacks,
+                   void *ap_user_data);
+    ~tizchromecast ();
 
-  tiz_chromecast_error_t init ();
-  tiz_chromecast_error_t start ();
-  void stop ();
-  void deinit ();
+    tiz_chromecast_error_t init ();
+    tiz_chromecast_error_t start ();
+    void stop ();
+    void deinit ();
 
-  tiz_chromecast_error_t poll_socket (int a_poll_time_ms);
+    tiz_chromecast_error_t poll_socket (int a_poll_time_ms);
 
-  tiz_chromecast_error_t media_load (const std::string &url,
-                                     const std::string &content_type,
-                                     const std::string &title,
-                                     const std::string &album_art);
-  tiz_chromecast_error_t media_play ();
-  tiz_chromecast_error_t media_stop ();
-  tiz_chromecast_error_t media_pause ();
-  tiz_chromecast_error_t media_volume (int volume);
-  tiz_chromecast_error_t media_volume_up ();
-  tiz_chromecast_error_t media_volume_down ();
-  tiz_chromecast_error_t media_mute ();
-  tiz_chromecast_error_t media_unmute ();
+    tiz_chromecast_error_t media_load (const std::string &url,
+                                       const std::string &content_type,
+                                       const std::string &title,
+                                       const std::string &album_art);
+    tiz_chromecast_error_t media_play ();
+    tiz_chromecast_error_t media_stop ();
+    tiz_chromecast_error_t media_pause ();
+    tiz_chromecast_error_t media_volume (int volume);
+    tiz_chromecast_error_t media_volume_up ();
+    tiz_chromecast_error_t media_volume_down ();
+    tiz_chromecast_error_t media_mute ();
+    tiz_chromecast_error_t media_unmute ();
 
-  void new_cast_status (const std::string &, const float &);
-  void new_media_status (const std::string &, const int &);
+    void new_cast_status (const std::string &, const float &);
+    void new_media_status (const std::string &, const int &);
 
 private:
-  const tizchromecastctx &cc_ctx_;
-  std::string name_or_ip_;
-  std::string url_;
-  std::string content_type_;
-  std::string title_;
-  tiz_chromecast_callbacks_t cbacks_;
-  void *p_user_data_;
+    const tizchromecastctx &cc_ctx_;
+    std::string name_or_ip_;
+    std::string url_;
+    std::string content_type_;
+    std::string title_;
+    tiz_chromecast_callbacks_t cbacks_;
+    void *p_user_data_;
 };
 
 #endif  // TIZCHROMECAST_HPP

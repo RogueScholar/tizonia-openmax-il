@@ -54,7 +54,7 @@ typedef struct tiz_pd_set tiz_pd_set_t;
 
 struct tiz_pd_set
 {
-  _tiz_pd_mask a_pds_bits[_TIZ_PD_SETSIZE / _TIZ_NPDBITS];
+    _tiz_pd_mask a_pds_bits[_TIZ_PD_SETSIZE / _TIZ_NPDBITS];
 #define TIZ_PDS_BITS(set) ((set)->a_pds_bits)
 };
 

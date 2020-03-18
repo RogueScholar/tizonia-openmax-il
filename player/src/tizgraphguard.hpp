@@ -46,328 +46,328 @@
 
 namespace tiz
 {
-  namespace graph
-  {
+namespace graph
+{
 
-    // guard conditions
-    struct is_port_disabling_complete
+// guard conditions
+struct is_port_disabling_complete
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
+                    TargetState& target)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
-                      TargetState& target)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          rc = (*(fsm.pp_ops_))
-                   ->is_port_disabling_complete (evt.handle_, evt.port_);
+            rc = (*(fsm.pp_ops_))
+                 ->is_port_disabling_complete (evt.handle_, evt.port_);
         }
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    struct is_port_enabling_complete
+struct is_port_enabling_complete
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
+                    TargetState& target)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
-                      TargetState& target)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          rc = (*(fsm.pp_ops_))
-                   ->is_port_enabling_complete (evt.handle_, evt.port_);
+            rc = (*(fsm.pp_ops_))
+                 ->is_port_enabling_complete (evt.handle_, evt.port_);
         }
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    struct is_disabled_evt_required
+struct is_disabled_evt_required
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
+                    TargetState& target)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
-                      TargetState& target)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          rc = (*(fsm.pp_ops_))->is_disabled_evt_required ();
+            rc = (*(fsm.pp_ops_))->is_disabled_evt_required ();
         }
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    struct is_port_settings_evt_required
+struct is_port_settings_evt_required
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
+                    TargetState& target)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
-                      TargetState& target)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          rc = (*(fsm.pp_ops_))->is_port_settings_evt_required ();
+            rc = (*(fsm.pp_ops_))->is_port_settings_evt_required ();
         }
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    struct last_op_succeeded
+struct last_op_succeeded
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
+                    TargetState& target)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
-                      TargetState& target)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          rc = (*(fsm.pp_ops_))->last_op_succeeded ();
+            rc = (*(fsm.pp_ops_))->last_op_succeeded ();
         }
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    struct is_trans_complete
+struct is_trans_complete
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
+                    TargetState& target)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
-                      TargetState& target)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          if ((*(fsm.pp_ops_))->is_trans_complete (evt.handle_, evt.state_))
-          {
-            TIZ_LOG (TIZ_PRIORITY_NOTICE,
-                     "evt.state_ [%s] target state [%s]...",
-                     tiz_state_to_str (evt.state_),
-                     tiz_state_to_str (source.target_omx_state ()));
-            assert (evt.state_ == source.target_omx_state ());
-            rc = true;
-          }
+            if ((*(fsm.pp_ops_))->is_trans_complete (evt.handle_, evt.state_))
+            {
+                TIZ_LOG (TIZ_PRIORITY_NOTICE,
+                         "evt.state_ [%s] target state [%s]...",
+                         tiz_state_to_str (evt.state_),
+                         tiz_state_to_str (source.target_omx_state ()));
+                assert (evt.state_ == source.target_omx_state ());
+                rc = true;
+            }
         }
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    template<int handle_id, OMX_STATETYPE state_id>
-    struct is_component_state
+template<int handle_id, OMX_STATETYPE state_id>
+struct is_component_state
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
+                    TargetState& target)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
-                      TargetState& target)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          rc = (*(fsm.pp_ops_))->is_component_state (handle_id, state_id);
+            rc = (*(fsm.pp_ops_))->is_component_state (handle_id, state_id);
         }
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    template<OMX_STATETYPE state_id>
-    struct is_destination_state
+template<OMX_STATETYPE state_id>
+struct is_destination_state
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
+                    TargetState& target)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState& source,
-                      TargetState& target)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          rc = (*(fsm.pp_ops_))->is_destination_state (state_id);
+            rc = (*(fsm.pp_ops_))->is_destination_state (state_id);
         }
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    struct is_last_eos
+struct is_last_eos
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          rc = (*(fsm.pp_ops_))->is_last_component (evt.handle_);
+            rc = (*(fsm.pp_ops_))->is_last_component (evt.handle_);
         }
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    struct is_first_eos
+struct is_first_eos
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          rc = (*(fsm.pp_ops_))->is_first_component (evt.handle_);
+            rc = (*(fsm.pp_ops_))->is_first_component (evt.handle_);
         }
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    struct is_internal_error
+struct is_internal_error
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          // If the last operation didn't succeed, that will be fatal.
-          rc = !(*(fsm.pp_ops_))->last_op_succeeded ();
-        }
-
-        G_GUARD_LOG (rc);
-        return rc;
-      }
-    };
-
-    struct is_fatal_error
-    {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
-      {
-        bool rc = false;
-        if (fsm.pp_ops_ && *(fsm.pp_ops_))
-        {
-          rc = (*(fsm.pp_ops_))->is_fatal_error (evt.error_);
+            // If the last operation didn't succeed, that will be fatal.
+            rc = !(*(fsm.pp_ops_))->last_op_succeeded ();
         }
 
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    struct is_end_of_play
+struct is_fatal_error
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          rc = (*(fsm.pp_ops_))->is_end_of_play ();
+            rc = (*(fsm.pp_ops_))->is_fatal_error (evt.error_);
+        }
+
+        G_GUARD_LOG (rc);
+        return rc;
+    }
+};
+
+struct is_end_of_play
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+    {
+        bool rc = false;
+        if (fsm.pp_ops_ && *(fsm.pp_ops_))
+        {
+            rc = (*(fsm.pp_ops_))->is_end_of_play ();
         }
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    struct is_probing_result_ok
+struct is_probing_result_ok
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
-          {
+        {
             rc = (*(fsm.pp_ops_))->is_probing_result_ok ();
-          }
+        }
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    template<int tunnel_id>
-    struct is_tunnel_altered
+template<int tunnel_id>
+struct is_tunnel_altered
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
-          {
+        {
             rc = (*(fsm.pp_ops_))->is_tunnel_altered (tunnel_id, evt.handle_, evt.port_, evt.index_);
-          }
-
-        G_GUARD_LOG (rc);
-        return rc;
-      }
-    };
-
-    template<OMX_INDEXTYPE param_or_config_idx>
-    struct is_setting_changed
-    {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
-      {
-        bool rc = false;
-        if (fsm.pp_ops_ && *(fsm.pp_ops_))
-        {
-          rc = (param_or_config_idx == evt.index_);
         }
 
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    template<OMX_ERRORTYPE error_id>
-    struct is_error
+template<OMX_INDEXTYPE param_or_config_idx>
+struct is_setting_changed
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          rc = (error_id == evt.error_);
+            rc = (param_or_config_idx == evt.index_);
         }
 
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    template<int expected_tunnel_id, int tunnel_id>
-    struct is_tunnel_id
+template<OMX_ERRORTYPE error_id>
+struct is_error
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          rc = (expected_tunnel_id == tunnel_id);
+            rc = (error_id == evt.error_);
         }
 
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
-    struct is_skip_allowed
+template<int expected_tunnel_id, int tunnel_id>
+struct is_tunnel_id
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
     {
-      template < class EVT, class FSM, class SourceState, class TargetState >
-      bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
-      {
         bool rc = false;
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
-          rc = (*(fsm.pp_ops_))->is_skip_allowed ();
+            rc = (expected_tunnel_id == tunnel_id);
+        }
+
+        G_GUARD_LOG (rc);
+        return rc;
+    }
+};
+
+struct is_skip_allowed
+{
+    template < class EVT, class FSM, class SourceState, class TargetState >
+    bool operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+    {
+        bool rc = false;
+        if (fsm.pp_ops_ && *(fsm.pp_ops_))
+        {
+            rc = (*(fsm.pp_ops_))->is_skip_allowed ();
         }
         G_GUARD_LOG (rc);
         return rc;
-      }
-    };
+    }
+};
 
 
-  }  // namespace graph
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZGRAPHGUARD_HPP

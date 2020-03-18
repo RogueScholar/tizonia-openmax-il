@@ -57,9 +57,9 @@ typedef /*@null@ */ tiz_scloud_t *tiz_scloud_ptr_t;
  */
 typedef enum tiz_scloud_playback_mode
 {
-  ETIZScloudPlaybackModeNormal,
-  ETIZScloudPlaybackModeShuffle,
-  ETIZScloudPlaybackModeMax
+    ETIZScloudPlaybackModeNormal,
+    ETIZScloudPlaybackModeShuffle,
+    ETIZScloudPlaybackModeMax
 } tiz_scloud_playback_mode_t;
 
 /**
@@ -74,7 +74,7 @@ typedef enum tiz_scloud_playback_mode
  * @return 0 on success.
  */
 int tiz_scloud_init (/*@null@ */ tiz_scloud_ptr_t *app_scloud,
-                     const char *ap_oauth_token);
+                                 const char *ap_oauth_token);
 
 /**
  * Clear the playback queue.

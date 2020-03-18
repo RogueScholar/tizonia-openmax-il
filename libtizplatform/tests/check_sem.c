@@ -29,13 +29,13 @@
 START_TEST (test_sem_init_and_destroy)
 {
 
-  OMX_ERRORTYPE error = OMX_ErrorNone;
-  tiz_sem_t sem;
-  error = tiz_sem_init (&sem, 1);
+    OMX_ERRORTYPE error = OMX_ErrorNone;
+    tiz_sem_t sem;
+    error = tiz_sem_init (&sem, 1);
 
-  fail_if (error != OMX_ErrorNone);
+    fail_if (error != OMX_ErrorNone);
 
-  tiz_sem_destroy (&sem);
+    tiz_sem_destroy (&sem);
 
 }
 END_TEST
@@ -43,45 +43,45 @@ END_TEST
 START_TEST (test_sem_post_and_wait)
 {
 
-  OMX_ERRORTYPE error = OMX_ErrorNone;
-  tiz_sem_t sem;
-  error = tiz_sem_init (&sem, 1);
+    OMX_ERRORTYPE error = OMX_ErrorNone;
+    tiz_sem_t sem;
+    error = tiz_sem_init (&sem, 1);
 
-  fail_if (error != OMX_ErrorNone);
+    fail_if (error != OMX_ErrorNone);
 
-  tiz_sem_post (&sem);
-  tiz_sem_wait (&sem);
+    tiz_sem_post (&sem);
+    tiz_sem_wait (&sem);
 
-  tiz_sem_destroy (&sem);
+    tiz_sem_destroy (&sem);
 
 }
 END_TEST
 
 START_TEST (test_sem_init_null)
 {
-  OMX_ERRORTYPE error = tiz_sem_init (0, 0);
-  (void)error;
+    OMX_ERRORTYPE error = tiz_sem_init (0, 0);
+    (void)error;
 }
 END_TEST
 
 START_TEST (test_sem_destroy_null)
 {
-  OMX_ERRORTYPE error = tiz_sem_destroy (0);
-  fail_if (OMX_ErrorNone != error);
+    OMX_ERRORTYPE error = tiz_sem_destroy (0);
+    fail_if (OMX_ErrorNone != error);
 }
 END_TEST
 
 START_TEST (test_sem_wait_null)
 {
-  OMX_ERRORTYPE error = tiz_sem_wait (0);
-  (void)error;
+    OMX_ERRORTYPE error = tiz_sem_wait (0);
+    (void)error;
 }
 END_TEST
 
 START_TEST (test_sem_post_null)
 {
-  OMX_ERRORTYPE error = tiz_sem_post (0);
-  (void)error;
+    OMX_ERRORTYPE error = tiz_sem_post (0);
+    (void)error;
 }
 END_TEST
 

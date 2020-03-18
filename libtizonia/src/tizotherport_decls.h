@@ -38,18 +38,18 @@ extern "C" {
 typedef struct tiz_otherport tiz_otherport_t;
 struct tiz_otherport
 {
-  /* Object */
-  const tiz_port_t _;
-  OMX_OTHER_PARAM_PORTFORMATTYPE port_format_;
-  tiz_vector_t * p_formats_;
+    /* Object */
+    const tiz_port_t _;
+    OMX_OTHER_PARAM_PORTFORMATTYPE port_format_;
+    tiz_vector_t * p_formats_;
 };
 
 typedef struct tiz_otherport_class tiz_otherport_class_t;
 struct tiz_otherport_class
 {
-  /* Class */
-  const tiz_port_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_port_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

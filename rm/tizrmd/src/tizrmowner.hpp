@@ -36,38 +36,38 @@
 class tizrmowner
 {
 public:
-  tizrmowner (const std::string &cname,
-              const std::vector< unsigned char > &uuid,
-              const unsigned int &grpid, const unsigned int &pri,
-              const unsigned int &rid, const unsigned int &quantity)
-    : cname_ (cname),
-      uuid_ (uuid),
-      grpid_ (grpid),
-      pri_ (pri),
-      rid_ (rid),
-      quantity_ (quantity)
-  {
-  }
+    tizrmowner (const std::string &cname,
+                const std::vector< unsigned char > &uuid,
+                const unsigned int &grpid, const unsigned int &pri,
+                const unsigned int &rid, const unsigned int &quantity)
+        : cname_ (cname),
+          uuid_ (uuid),
+          grpid_ (grpid),
+          pri_ (pri),
+          rid_ (rid),
+          quantity_ (quantity)
+    {
+    }
 
-  bool operator==(const tizrmowner &rhs) const
-  {
-    return (cname_ == rhs.cname_ && uuid_ == rhs.uuid_ && grpid_ == rhs.grpid_
-            && pri_ == rhs.pri_ && rid_ == rhs.rid_
-            && quantity_ == rhs.quantity_);
-  }
+    bool operator==(const tizrmowner &rhs) const
+    {
+        return (cname_ == rhs.cname_ && uuid_ == rhs.uuid_ && grpid_ == rhs.grpid_
+                && pri_ == rhs.pri_ && rid_ == rhs.rid_
+                && quantity_ == rhs.quantity_);
+    }
 
-  bool operator<(const tizrmowner &rhs) const
-  {
-    return (pri_ < rhs.pri_);
-  }
+    bool operator<(const tizrmowner &rhs) const
+    {
+        return (pri_ < rhs.pri_);
+    }
 
 public:
-  std::string cname_;
-  std::vector< unsigned char > uuid_;
-  unsigned int grpid_;
-  unsigned int pri_;
-  unsigned int rid_;
-  unsigned int quantity_;
+    std::string cname_;
+    std::vector< unsigned char > uuid_;
+    unsigned int grpid_;
+    unsigned int pri_;
+    unsigned int rid_;
+    unsigned int quantity_;
 };
 
 typedef std::list< tizrmowner > tiz_rm_owners_list_t;

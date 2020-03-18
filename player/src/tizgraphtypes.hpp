@@ -52,22 +52,22 @@ typedef std::map< std::string, std::string > track_metadata_map_t;
 
 namespace tiz
 {
-  class probe;
-  class playlist;
-  namespace graph
-  {
-    class graph;
-    class config;
-    class httpservconfig;
-    class spotifyconfig;
-    class gmusicconfig;
-    class scloudconfig;
-    class tuneinconfig;
-    class youtubeconfig;
-    class plexconfig;
-    class chromecastconfig;
-    struct omx_event_info;
-  }
+class probe;
+class playlist;
+namespace graph
+{
+class graph;
+class config;
+class httpservconfig;
+class spotifyconfig;
+class gmusicconfig;
+class scloudconfig;
+class tuneinconfig;
+class youtubeconfig;
+class plexconfig;
+class chromecastconfig;
+struct omx_event_info;
+}
 }
 typedef boost::shared_ptr< tiz::probe > tizprobe_ptr_t;
 typedef std::vector< tiz::graph::omx_event_info > omx_event_info_lst_t;

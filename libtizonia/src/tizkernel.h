@@ -50,18 +50,18 @@ extern "C" {
 typedef enum tiz_krn_population_status tiz_krn_population_status_t;
 enum tiz_krn_population_status
 {
-  ETIZKrnFullyPopulated,
-  ETIZKrnUnpopulated,
-  ETIZKrnFullyUnpopulated,
+    ETIZKrnFullyPopulated,
+    ETIZKrnUnpopulated,
+    ETIZKrnFullyUnpopulated,
 };
 
 typedef enum tiz_krn_restriction tiz_krn_restriction_t;
 enum tiz_krn_restriction
 {
-  ETIZKrnMayInitiateAllocPhase,
-  ETIZKrnMayExchangeBuffers,
-  ETIZKrnMayInitiateExeToIdle,
-  ETIZKrnMayMax,
+    ETIZKrnMayInitiateAllocPhase,
+    ETIZKrnMayExchangeBuffers,
+    ETIZKrnMayInitiateExeToIdle,
+    ETIZKrnMayMax,
 };
 
 /**

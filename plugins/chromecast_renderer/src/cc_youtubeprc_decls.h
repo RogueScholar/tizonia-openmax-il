@@ -46,20 +46,20 @@ extern "C" {
 typedef struct cc_youtube_prc cc_youtube_prc_t;
 struct cc_youtube_prc
 {
-  /* Object */
-  const cc_prc_t _;
-  OMX_TIZONIA_AUDIO_PARAM_YOUTUBESESSIONTYPE yt_session_;
-  OMX_TIZONIA_AUDIO_PARAM_YOUTUBEPLAYLISTTYPE yt_playlist_;
-  tiz_youtube_t * p_yt_;
-  bool remove_current_url_;
+    /* Object */
+    const cc_prc_t _;
+    OMX_TIZONIA_AUDIO_PARAM_YOUTUBESESSIONTYPE yt_session_;
+    OMX_TIZONIA_AUDIO_PARAM_YOUTUBEPLAYLISTTYPE yt_playlist_;
+    tiz_youtube_t * p_yt_;
+    bool remove_current_url_;
 };
 
 typedef struct cc_youtube_prc_class cc_youtube_prc_class_t;
 struct cc_youtube_prc_class
 {
-  /* Class */
-  const cc_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const cc_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

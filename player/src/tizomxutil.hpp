@@ -36,10 +36,10 @@
 
 namespace tiz
 {
-  class omxutil
-  {
+class omxutil
+{
 
-  public:
+public:
     static void init ();
     static void deinit ();
     static OMX_ERRORTYPE list_comps (std::vector< std::string >& components);
@@ -47,7 +47,7 @@ namespace tiz
                                         std::vector< std::string >& roles);
     static OMX_ERRORTYPE comps_of_role (const std::string &role,
                                         std::vector< std::string >& components);
-  };
+};
 }  // namespace tiz
 
 #endif  // TIZOMXUTIL_HPP

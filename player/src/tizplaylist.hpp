@@ -33,18 +33,18 @@
 
 namespace tiz
 {
-  class playlist
-  {
+class playlist
+{
 
-  public:
+public:
     enum list_direction_t
-      {
+    {
         DirUp,
         DirDown,
         DirMax
-      };
+    };
 
-  public:
+public:
     explicit playlist (const uri_lst_t &uri_list = uri_lst_t (), const bool shuffle = false);
     playlist (const playlist &playlist);
 
@@ -72,17 +72,17 @@ namespace tiz
     void erase_uri (const int index);
     void print_info ();
 
-  private:
+private:
     enum single_format_t
-      {
+    {
         Unknown,
         Yes,
         No
-      };
+    };
 
-  private:
+private:
 
-  private:
+private:
 
     void scan_list ();
     int find_next_sub_list (const int index) const;
@@ -97,7 +97,7 @@ namespace tiz
     bool shuffle_;
     mutable file_extension_lst_t extension_list_;
     mutable single_format_t single_format_;
-  };
+};
 }  // namespace tiz
 
 #endif  // TIZPLAYLIST_HPP

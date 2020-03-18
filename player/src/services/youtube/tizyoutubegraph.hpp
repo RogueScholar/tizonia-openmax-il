@@ -35,28 +35,28 @@
 
 namespace tiz
 {
-  namespace graph
-  {
-    // Forward declarations
-    class cmd;
-    class ops;
+namespace graph
+{
+// Forward declarations
+class cmd;
+class ops;
 
-    class youtube : public graph
-    {
+class youtube : public graph
+{
 
-    public:
-      explicit youtube ();
-      ~youtube ();
+public:
+    explicit youtube ();
+    ~youtube ();
 
-    protected:
-      bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
-      ops *do_init ();
+protected:
+    bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
+    ops *do_init ();
 
-    protected:
-      boost::any fsm_;
-    };
+protected:
+    boost::any fsm_;
+};
 
-  }  // namespace graph
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZYOUTUBEGRAPH_HPP

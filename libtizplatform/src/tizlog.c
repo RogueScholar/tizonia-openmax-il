@@ -50,103 +50,103 @@
 typedef struct user_locinfo user_locinfo_t;
 struct user_locinfo
 {
-  int pid;
-  int tid;
-  const char * cname;
-  char * cbuf;
+    int pid;
+    int tid;
+    const char * cname;
+    char * cbuf;
 };
 
 static const char *
 log_layout_format (const log4c_layout_t * a_layout,
                    const log4c_logging_event_t * a_event)
 {
-  static char buffer[4096];
-  user_locinfo_t * uloc = NULL;
-  (void) a_layout;
+    static char buffer[4096];
+    user_locinfo_t * uloc = NULL;
+    (void) a_layout;
 
-  assert (a_event);
-  assert (a_event->evt_loc);
+    assert (a_event);
+    assert (a_event->evt_loc);
 
-  if (a_event->evt_loc->loc_data)
+    if (a_event->evt_loc->loc_data)
     {
-      struct tm tm;
-      gmtime_r (&a_event->evt_timestamp.tv_sec, &tm);
-      uloc = (user_locinfo_t *) a_event->evt_loc->loc_data;
+        struct tm tm;
+        gmtime_r (&a_event->evt_timestamp.tv_sec, &tm);
+        uloc = (user_locinfo_t *) a_event->evt_loc->loc_data;
 
-      if (NULL == uloc->cname)
+        if (NULL == uloc->cname)
         {
-          snprintf (buffer, sizeof (buffer),
-                    "%02d-%02d-%04d %02d:%02d:%02d.%03ld - "
-                    "[PID:%i][TID:%i] [%s] [%s] [%s:%s:%i] --- %s\n",
-                    tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour,
-                    tm.tm_min, tm.tm_sec, a_event->evt_timestamp.tv_usec / 1000,
-                    uloc->pid, uloc->tid,
-                    log4c_priority_to_string (a_event->evt_priority),
-                    a_event->evt_category, a_event->evt_loc->loc_file,
-                    a_event->evt_loc->loc_function, a_event->evt_loc->loc_line,
-                    a_event->evt_msg);
+            snprintf (buffer, sizeof (buffer),
+                      "%02d-%02d-%04d %02d:%02d:%02d.%03ld - "
+                      "[PID:%i][TID:%i] [%s] [%s] [%s:%s:%i] --- %s\n",
+                      tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour,
+                      tm.tm_min, tm.tm_sec, a_event->evt_timestamp.tv_usec / 1000,
+                      uloc->pid, uloc->tid,
+                      log4c_priority_to_string (a_event->evt_priority),
+                      a_event->evt_category, a_event->evt_loc->loc_file,
+                      a_event->evt_loc->loc_function, a_event->evt_loc->loc_line,
+                      a_event->evt_msg);
         }
-      else
+        else
         {
-          /* TODO: 4096 - this value needs be learnt at project configuration
-           * time */
-          snprintf (uloc->cbuf, 4096,
-                    "%02d-%02d-%04d %02d:%02d:%02d.%03ld - "
-                    "[PID:%i][TID:%i] [%s] [%s] [%s:%s:%i] --- %s\n",
-                    tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour,
-                    tm.tm_min, tm.tm_sec, a_event->evt_timestamp.tv_usec / 1000,
-                    uloc->pid, uloc->tid,
-                    log4c_priority_to_string (a_event->evt_priority),
-                    uloc->cname, a_event->evt_loc->loc_file,
-                    a_event->evt_loc->loc_function, a_event->evt_loc->loc_line,
-                    a_event->evt_msg);
+            /* TODO: 4096 - this value needs be learnt at project configuration
+             * time */
+            snprintf (uloc->cbuf, 4096,
+                      "%02d-%02d-%04d %02d:%02d:%02d.%03ld - "
+                      "[PID:%i][TID:%i] [%s] [%s] [%s:%s:%i] --- %s\n",
+                      tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour,
+                      tm.tm_min, tm.tm_sec, a_event->evt_timestamp.tv_usec / 1000,
+                      uloc->pid, uloc->tid,
+                      log4c_priority_to_string (a_event->evt_priority),
+                      uloc->cname, a_event->evt_loc->loc_file,
+                      a_event->evt_loc->loc_function, a_event->evt_loc->loc_line,
+                      a_event->evt_msg);
 
-          return uloc->cbuf;
+            return uloc->cbuf;
         }
     }
-  else
+    else
     {
-      sprintf (buffer, "[%s] [%s] [%s:%s:%i] --- %s\n",
-               log4c_priority_to_string (a_event->evt_priority),
-               a_event->evt_category, a_event->evt_loc->loc_file,
-               a_event->evt_loc->loc_function, a_event->evt_loc->loc_line,
-               a_event->evt_msg);
+        sprintf (buffer, "[%s] [%s] [%s:%s:%i] --- %s\n",
+                 log4c_priority_to_string (a_event->evt_priority),
+                 a_event->evt_category, a_event->evt_loc->loc_file,
+                 a_event->evt_loc->loc_function, a_event->evt_loc->loc_line,
+                 a_event->evt_msg);
     }
 
-  return buffer;
+    return buffer;
 }
 
 const log4c_layout_type_t tizonia_log_layout = {
-  "tiz_layout", log_layout_format,
+    "tiz_layout", log_layout_format,
 };
 
 static const log4c_layout_type_t * const layout_types[] = {&tizonia_log_layout};
 
 static int nlayout_types
-  = (int) (sizeof (layout_types) / sizeof (layout_types[0]));
+    = (int) (sizeof (layout_types) / sizeof (layout_types[0]));
 
 static int
 log_formatters_init (void)
 {
-  int rc = 0;
-  int i = 0;
+    int rc = 0;
+    int i = 0;
 
-  for (i = 0; i < nlayout_types; i++)
+    for (i = 0; i < nlayout_types; i++)
     {
-      log4c_layout_type_set (layout_types[i]);
+        log4c_layout_type_set (layout_types[i]);
     }
 
-  return rc;
+    return rc;
 }
 
 int
 tiz_log_init (void)
 {
 #ifndef WITHOUT_LOG4C
-  log_formatters_init ();
-  return log4c_init ();
+    log_formatters_init ();
+    return log4c_init ();
 #else
-  return 0;
+    return 0;
 #endif
 }
 
@@ -154,52 +154,52 @@ void
 tiz_log_set_unique_rolling_file (const char * ap_logdir,
                                  const char * ap_file_prefix)
 {
-  assert (ap_logdir);
-  assert (ap_file_prefix);
+    assert (ap_logdir);
+    assert (ap_file_prefix);
 
-  if (NULL == ap_logdir || NULL == ap_file_prefix)
+    if (NULL == ap_logdir || NULL == ap_file_prefix)
     {
-      return;
+        return;
     }
 
-  {
-    log4c_appender_t * app = log4c_appender_get ("tizlogfile");
+    {
+        log4c_appender_t * app = log4c_appender_get ("tizlogfile");
 
-    if (app)
-      {
-        rollingfile_udata_t * rfup = log4c_appender_get_udata (app);
-        if (rfup)
-          {
-            char buffer[128];
-            pid_t pid = getpid ();
-            rollingfile_udata_set_logdir (rfup, (char *) ap_logdir);
-            snprintf (buffer, 128, "%s.%i.%s", ap_file_prefix, pid, "log");
-            rollingfile_udata_set_files_prefix (rfup, buffer);
+        if (app)
+        {
+            rollingfile_udata_t * rfup = log4c_appender_get_udata (app);
+            if (rfup)
+            {
+                char buffer[128];
+                pid_t pid = getpid ();
+                rollingfile_udata_set_logdir (rfup, (char *) ap_logdir);
+                snprintf (buffer, 128, "%s.%i.%s", ap_file_prefix, pid, "log");
+                rollingfile_udata_set_files_prefix (rfup, buffer);
 
-            /* recover a rollingpolicy instance with this name */
-            log4c_rollingpolicy_t * rollingpolicyp
-              = log4c_rollingpolicy_get ("tizrolling");
-            if (rollingpolicyp)
-              {
-                /* connect that policy to this rollingfile appender conf */
-                rollingfile_udata_set_policy (rfup, rollingpolicyp);
-                log4c_appender_set_udata (app, rfup);
+                /* recover a rollingpolicy instance with this name */
+                log4c_rollingpolicy_t * rollingpolicyp
+                    = log4c_rollingpolicy_get ("tizrolling");
+                if (rollingpolicyp)
+                {
+                    /* connect that policy to this rollingfile appender conf */
+                    rollingfile_udata_set_policy (rfup, rollingpolicyp);
+                    log4c_appender_set_udata (app, rfup);
 
-                /* allow the policy to initialize itself */
-                log4c_rollingpolicy_init (rollingpolicyp, rfup);
-              }
-          }
-      }
-  }
+                    /* allow the policy to initialize itself */
+                    log4c_rollingpolicy_init (rollingpolicyp, rfup);
+                }
+            }
+        }
+    }
 }
 
 int
 tiz_log_deinit (void)
 {
 #ifndef WITHOUT_LOG4C
-  return log4c_fini ();
+    return log4c_fini ();
 #else
-  return 0;
+    return 0;
 #endif
 }
 
@@ -209,38 +209,38 @@ tiz_log (const char * ap_file, int a_line, const char * ap_func,
          char * ap_cbuf, const char * ap_format, ...)
 {
 #ifndef WITHOUT_LOG4C
-  log4c_location_info_t locinfo;
-  user_locinfo_t user_locinfo;
+    log4c_location_info_t locinfo;
+    user_locinfo_t user_locinfo;
 
-  const log4c_category_t * p_category = log4c_category_get (ap_cat_name);
-  if (log4c_category_is_priority_enabled (p_category, a_priority))
+    const log4c_category_t * p_category = log4c_category_get (ap_cat_name);
+    if (log4c_category_is_priority_enabled (p_category, a_priority))
     {
-      /* TODO: 4096 - this value should be obtained at config time */
-      char * buffer = alloca (4096);
-      user_locinfo.pid = getpid ();
-      user_locinfo.tid = syscall (SYS_gettid);
-      user_locinfo.cname = ap_cname;
-      user_locinfo.cbuf = ap_cbuf;
-      locinfo.loc_file = ap_file;
-      locinfo.loc_line = a_line;
-      locinfo.loc_function = ap_func;
-      /*          locinfo.loc_data = NULL; */
-      locinfo.loc_data = &user_locinfo;
+        /* TODO: 4096 - this value should be obtained at config time */
+        char * buffer = alloca (4096);
+        user_locinfo.pid = getpid ();
+        user_locinfo.tid = syscall (SYS_gettid);
+        user_locinfo.cname = ap_cname;
+        user_locinfo.cbuf = ap_cbuf;
+        locinfo.loc_file = ap_file;
+        locinfo.loc_line = a_line;
+        locinfo.loc_function = ap_func;
+        /*          locinfo.loc_data = NULL; */
+        locinfo.loc_data = &user_locinfo;
 
-      va_list va;
-      va_start (va, ap_format);
-      vsprintf (buffer, ap_format, va);
-      va_end (va);
-      log4c_category_log_locinfo (p_category, &locinfo, a_priority, "%s",
-                                  buffer);
+        va_list va;
+        va_start (va, ap_format);
+        vsprintf (buffer, ap_format, va);
+        va_end (va);
+        log4c_category_log_locinfo (p_category, &locinfo, a_priority, "%s",
+                                    buffer);
     }
 #else
 
-  va_list va;
-  va_start (va, ap_format);
-  vprintf (ap_format, va);
-  va_end (va);
-  printf ("\n");
+    va_list va;
+    va_start (va, ap_format);
+    vprintf (ap_format, va);
+    va_end (va);
+    printf ("\n");
 
 #endif
 }

@@ -41,18 +41,18 @@ extern "C" {
 typedef struct spfysrc_cfgport spfysrc_cfgport_t;
 struct spfysrc_cfgport
 {
-  /* Object */
-  const tiz_configport_t _;
-  OMX_TIZONIA_AUDIO_PARAM_SPOTIFYSESSIONTYPE spotifysession_;
-  OMX_TIZONIA_AUDIO_PARAM_SPOTIFYPLAYLISTTYPE playlist_;
+    /* Object */
+    const tiz_configport_t _;
+    OMX_TIZONIA_AUDIO_PARAM_SPOTIFYSESSIONTYPE spotifysession_;
+    OMX_TIZONIA_AUDIO_PARAM_SPOTIFYPLAYLISTTYPE playlist_;
 };
 
 typedef struct spfysrc_cfgport_class spfysrc_cfgport_class_t;
 struct spfysrc_cfgport_class
 {
-  /* Class */
-  const tiz_configport_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_configport_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

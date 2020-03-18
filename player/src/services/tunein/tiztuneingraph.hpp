@@ -35,28 +35,28 @@
 
 namespace tiz
 {
-  namespace graph
-  {
-    // Forward declarations
-    class cmd;
-    class ops;
+namespace graph
+{
+// Forward declarations
+class cmd;
+class ops;
 
-    class tunein : public graph
-    {
+class tunein : public graph
+{
 
-    public:
-      explicit tunein ();
-      ~tunein ();
+public:
+    explicit tunein ();
+    ~tunein ();
 
-    protected:
-      bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
-      ops *do_init ();
+protected:
+    bool dispatch_cmd (const tiz::graph::cmd *p_cmd);
+    ops *do_init ();
 
-    protected:
-      boost::any fsm_;
-    };
+protected:
+    boost::any fsm_;
+};
 
-  }  // namespace graph
+}  // namespace graph
 }  // namespace tiz
 
 #endif  // TIZTUNEINGRAPH_HPP

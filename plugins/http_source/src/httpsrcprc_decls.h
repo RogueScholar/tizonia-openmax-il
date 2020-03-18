@@ -43,29 +43,29 @@ extern "C" {
 typedef struct httpsrc_prc httpsrc_prc_t;
 struct httpsrc_prc
 {
-  /* Object */
-  const tiz_prc_t _;
-  OMX_BUFFERHEADERTYPE * p_outhdr_;
-  OMX_PARAM_CONTENTURITYPE * p_uri_param_;
-  tiz_urltrans_t * p_trans_;
-  bool eos_;
-  bool port_disabled_;
-  OMX_S32 audio_coding_type_;
-  OMX_U32 num_channels_;
-  OMX_U32 samplerate_;
-  bool auto_detect_on_;
-  int bitrate_;
-  int buffer_bytes_;
-  bool connection_closed_;
-  bool first_buffer_delivered_;
+    /* Object */
+    const tiz_prc_t _;
+    OMX_BUFFERHEADERTYPE * p_outhdr_;
+    OMX_PARAM_CONTENTURITYPE * p_uri_param_;
+    tiz_urltrans_t * p_trans_;
+    bool eos_;
+    bool port_disabled_;
+    OMX_S32 audio_coding_type_;
+    OMX_U32 num_channels_;
+    OMX_U32 samplerate_;
+    bool auto_detect_on_;
+    int bitrate_;
+    int buffer_bytes_;
+    bool connection_closed_;
+    bool first_buffer_delivered_;
 };
 
 typedef struct httpsrc_prc_class httpsrc_prc_class_t;
 struct httpsrc_prc_class
 {
-  /* Class */
-  const tiz_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
+    /* Class */
+    const tiz_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
 };
 
 #ifdef __cplusplus

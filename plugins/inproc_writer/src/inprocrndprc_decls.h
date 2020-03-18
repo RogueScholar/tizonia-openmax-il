@@ -42,9 +42,9 @@ extern "C"
 
 #include <tizprc_decls.h>
 
-  typedef struct inprocrnd_prc inprocrnd_prc_t;
-  struct inprocrnd_prc
-  {
+typedef struct inprocrnd_prc inprocrnd_prc_t;
+struct inprocrnd_prc
+{
     /* Object */
     const tiz_prc_t _;
     OMX_BUFFERHEADERTYPE *p_inhdr_;
@@ -55,15 +55,15 @@ extern "C"
     void * p_zmq_sock_;
     int zmq_fd_;
     bool eos_;
-  };
+};
 
-  typedef struct inprocrnd_prc_class inprocrnd_prc_class_t;
-  struct inprocrnd_prc_class
-  {
+typedef struct inprocrnd_prc_class inprocrnd_prc_class_t;
+struct inprocrnd_prc_class
+{
     /* Class */
     const tiz_prc_class_t _;
     /* NOTE: Class methods might be added in the future */
-  };
+};
 
 #ifdef __cplusplus
 }
