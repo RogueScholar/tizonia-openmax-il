@@ -38,7 +38,7 @@ for instructions on how to disable certain parts of the software.
 
 > NOTE: Also make sure you have some time in your hands. Building Tizonia may
 > take at least 20 minutes on a fast SSD-based system. You may want to look at
-> [Speeding up (re-)compilation usingccache](#speeding-up-re-compilation-using-ccache)
+> [Speeding up (re-)compilation using ccache](#speeding-up-re-compilation-using-ccache)
 > if you are planning to build the Tizonia tree multiple times.
 
 ### Dependencies
