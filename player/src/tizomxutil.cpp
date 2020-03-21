@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -34,8 +34,8 @@
 #define TIZ_LOG_CATEGORY_NAME "tiz.play.omxutil"
 #endif
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string>
 
 #include "tizplatform.h"
@@ -90,7 +90,7 @@ tiz::omxutil::roles_of_comp (const std::string &comp,
   do
   {
     error = OMX_RoleOfComponentEnum (
-        (OMX_STRING)role, const_cast< OMX_STRING >(comp.c_str ()), index++);
+        (OMX_STRING)role, const_cast< OMX_STRING > (comp.c_str ()), index++);
     if (OMX_ErrorNone == error)
     {
       roles.push_back (std::string (role));
@@ -111,7 +111,7 @@ tiz::omxutil::comps_of_role (const std::string &role,
   do
   {
     error = OMX_ComponentOfRoleEnum ((OMX_STRING)comp_name,
-                                     const_cast< OMX_STRING >(role.c_str ()),
+                                     const_cast< OMX_STRING > (role.c_str ()),
                                      index++);
     if (OMX_ErrorNone == error)
     {

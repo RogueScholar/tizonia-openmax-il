@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -119,7 +119,8 @@ void graph::vorbisdecops::do_configure ()
   G_OPS_BAIL_IF_ERROR (
       tiz::graph::util::set_pcm_mode (
           handles_[2], 0,
-          boost::bind (&tiz::graph::vorbisdecops::get_pcm_codec_info, this, _1)),
+          boost::bind (&tiz::graph::vorbisdecops::get_pcm_codec_info, this,
+                       _1)),
       "Unable to set OMX_IndexParamAudioPcm");
 }
 

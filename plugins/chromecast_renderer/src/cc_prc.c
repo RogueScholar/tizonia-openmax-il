@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -148,16 +148,6 @@ cast_status_handler (OMX_PTR ap_prc, tiz_event_pluggable_t * ap_event)
   /* Clear previous metatada items */
   (void) tiz_krn_clear_metadata (tiz_get_krn (handleOf (p_prc)));
 
-  if (ETizCcCastStatusNowCasting == p_prc->cc_cast_status_
-      && ETizCcCastStatusReadyToCast == status)
-    {
-      need_song_metadata_update = true;
-      /* End of stream, skip to next track */
-      (void) obtain_next_url (p_prc, 1);
-      /* Load the new URL */
-      (void) load_next_url (p_prc);
-    }
-
   if ((p_prc->cc_cast_status_ != status) || (volume != p_prc->volume_))
     {
       need_chromecast_metadata_update = true;
@@ -194,6 +184,7 @@ media_status_handler (OMX_PTR ap_prc, tiz_event_pluggable_t * ap_event)
   cc_prc_t * p_prc = ap_prc;
   cc_status_event_data_t * p_event_data = NULL;
   tiz_cast_client_media_status_t status = ETizCcMediaStatusUnknown;
+  bool need_skip_song = false;
 
   assert (p_prc);
   assert (ap_event);
@@ -201,8 +192,21 @@ media_status_handler (OMX_PTR ap_prc, tiz_event_pluggable_t * ap_event)
 
   p_event_data = ap_event->p_data;
   status = (tiz_cast_client_media_status_t) p_event_data->status;
-  TIZ_DEBUG (handleOf (p_prc), "status [%s]",
+  TIZ_DEBUG (handleOf (p_prc), "current status [%s]",
+             tiz_cast_client_media_status_str (p_prc->cc_media_status_));
+  TIZ_DEBUG (handleOf (p_prc), "new status [%s]",
              tiz_cast_client_media_status_str (status));
+
+  if (ETizCcMediaStatusPlaying == p_prc->cc_media_status_
+      && ETizCcMediaStatusIdle == status
+      && ETizCcCastStatusReadyToCast == p_prc->cc_cast_status_)
+    {
+      need_skip_song = true;
+      TIZ_PRINTF_DBG_RED (
+        "----SKIPPRING___ MEDIA STATUS %s -> %s\n",
+        tiz_cast_client_media_status_str (p_prc->cc_media_status_),
+        tiz_cast_client_media_status_str (status));
+    }
 
   if (p_prc->cc_media_status_ != status)
     {
@@ -211,6 +215,14 @@ media_status_handler (OMX_PTR ap_prc, tiz_event_pluggable_t * ap_event)
       (void) tiz_krn_clear_metadata (tiz_get_krn (handleOf (p_prc)));
       store_chromecast_metadata (p_prc);
       deliver_stored_metadata (p_prc);
+    }
+
+  if (need_skip_song)
+    {
+      /* End of stream, skip to next track */
+      (void) obtain_next_url (p_prc, 1);
+      /* Load the new URL */
+      (void) load_next_url (p_prc);
     }
 
   tiz_mem_free (ap_event->p_data);
@@ -396,12 +408,12 @@ store_chromecast_metadata (cc_prc_t * ap_prc)
 
   /* Artist and song title */
   {
-    char cast_name_or_ip[OMX_MAX_STRINGNAME_SIZE];
+    char cast_name_or_ip[OMX_MAX_STRINGNAME_SIZE + 3];
     char status_line[OMX_MAX_STRINGNAME_SIZE];
-    snprintf (cast_name_or_ip, OMX_MAX_STRINGNAME_SIZE, "  %s",
+    snprintf (cast_name_or_ip, OMX_MAX_STRINGNAME_SIZE + 3, "  %s",
               (char *) ap_prc->cc_session_.cNameOrIpAddr);
-    snprintf (status_line, OMX_MAX_STRINGNAME_SIZE,
-              "(%s) (Media:%s) (Vol:%ld)",
+    cast_name_or_ip[OMX_MAX_STRINGNAME_SIZE - 1] = '\0';
+    snprintf (status_line, OMX_MAX_STRINGNAME_SIZE, "(%s) (Media:%s) (Vol:%ld)",
               tiz_cast_client_cast_status_str (ap_prc->cc_cast_status_),
               tiz_cast_client_media_status_str (ap_prc->cc_media_status_),
               ap_prc->volume_);
@@ -512,8 +524,7 @@ static OMX_ERRORTYPE
 prc_deallocate_resources (void * ap_prc)
 {
   cc_prc_t * p_prc = ap_prc;
-  TIZ_TRACE (handleOf (p_prc), "p_prc->p_cc_  : [%p]",
-             p_prc->p_cc_);
+  TIZ_TRACE (handleOf (p_prc), "p_prc->p_cc_  : [%p]", p_prc->p_cc_);
   assert (p_prc);
   delete_uri (p_prc);
   tiz_cast_client_destroy (p_prc->p_cc_);
@@ -748,8 +759,9 @@ cc_prc_store_stream_metadata (const void * ap_obj)
 }
 
 static OMX_ERRORTYPE
-prc_store_stream_metadata_item (const void * ap_obj, const char * ap_header_name,
-                              const char * ap_header_info)
+prc_store_stream_metadata_item (const void * ap_obj,
+                                const char * ap_header_name,
+                                const char * ap_header_info)
 {
   cc_prc_t * p_prc = (cc_prc_t *) ap_obj;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
@@ -799,13 +811,13 @@ prc_store_stream_metadata_item (const void * ap_obj, const char * ap_header_name
 
 OMX_ERRORTYPE
 cc_prc_store_stream_metadata_item (const void * ap_obj,
-                                 const char * ap_header_name,
-                                 const char * ap_header_info)
+                                   const char * ap_header_name,
+                                   const char * ap_header_info)
 {
   const cc_prc_class_t * class = classOf (ap_obj);
   assert (class->store_stream_metadata_item);
   return class->store_stream_metadata_item (ap_obj, ap_header_name,
-                                          ap_header_info);
+                                            ap_header_info);
 }
 
 static OMX_ERRORTYPE
@@ -948,7 +960,8 @@ cc_prc_init (void * ap_tos, void * ap_hdl)
      /* TIZ_CLASS_COMMENT: */
      cc_prc_get_prev_url, prc_get_prev_url,
      /* TIZ_CLASS_COMMENT: */
-     cc_prc_get_current_stream_album_art_url, prc_get_current_stream_album_art_url,
+     cc_prc_get_current_stream_album_art_url,
+     prc_get_current_stream_album_art_url,
      /* TIZ_CLASS_COMMENT: */
      cc_prc_store_stream_metadata, prc_store_stream_metadata,
      /* TIZ_CLASS_COMMENT: */

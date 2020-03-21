@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -39,14 +39,16 @@
 #define CHECK_IO_SERV_PORT 9877
 #define CHECK_IO_MAXLINE 4096
 #define CHECK_IO_MSG "Hello there!"
-#define CHECK_IO_ECHO_CMD "/bin/bash -c \"echo -n \"Hello\\ there!\" > /dev/udp/127.0.0.1/9877\""
+#define CHECK_IO_ECHO_CMD \
+  "/bin/bash -c \"echo -n \"Hello\\ there!\" > /dev/udp/127.0.0.1/9877\""
 
 #define CHECK_TIMER_PERIOD 1.5
 
 #define CHECK_STAT_FILE "/tmp/check_event.txt"
 #define CHECK_STAT_RM_CMD "/bin/bash -c \"rm -f /tmp/check_event.txt\""
 #define CHECK_STAT_TOUCH_CMD "/bin/bash -c \"touch /tmp/check_event.txt\""
-#define CHECK_STAT_ECHO_CMD "/bin/bash -c \"echo \"Hello\" > /tmp/check_event.txt\""
+#define CHECK_STAT_ECHO_CMD \
+  "/bin/bash -c \"echo \"Hello\" > /tmp/check_event.txt\""
 
 static bool g_io_cback_received = false;
 static int g_timeout_count = 5;
@@ -55,12 +57,12 @@ static bool g_timer_restarted = false;
 static bool g_file_status_changed = false;
 
 static void
-check_event_io_cback (OMX_HANDLETYPE p_hdl, tiz_event_io_t * ap_ev_io, void *ap_arg1,
-                      const uint32_t a_id, int fd, int events)
+check_event_io_cback (OMX_HANDLETYPE p_hdl, tiz_event_io_t * ap_ev_io,
+                      void * ap_arg1, const uint32_t a_id, int fd, int events)
 {
   OMX_ERRORTYPE error = OMX_ErrorNone;
   int rcvfromrc;
-  char msg [CHECK_IO_MAXLINE];
+  char msg[CHECK_IO_MAXLINE];
   struct sockaddr_in cliaddr;
   socklen_t len = sizeof (cliaddr);
 
@@ -72,20 +74,20 @@ check_event_io_cback (OMX_HANDLETYPE p_hdl, tiz_event_io_t * ap_ev_io, void *ap_
   error = tiz_event_io_stop (ap_ev_io);
   fail_if (OMX_ErrorNone != error);
 
-  rcvfromrc = recvfrom (fd, msg, CHECK_IO_MAXLINE, 0, (struct sockaddr *) &cliaddr,
-                        &len);
+  rcvfromrc = recvfrom (fd, msg, CHECK_IO_MAXLINE, 0,
+                        (struct sockaddr *) &cliaddr, &len);
   fail_if (rcvfromrc < 0);
 
-  msg [rcvfromrc] = '\0';
+  msg[rcvfromrc] = '\0';
   TIZ_LOG (TIZ_PRIORITY_TRACE, "received : [%s]", msg);
 
-  fail_if (strncmp(msg, CHECK_IO_MSG, strlen (msg) != 0));
+  fail_if (strncmp (msg, CHECK_IO_MSG, strlen (msg) != 0));
 
   g_io_cback_received = true;
 }
 
 static int
-start_udp_server()
+start_udp_server ()
 {
   int sockfd, bindrc, fcntlrc, flags;
   struct sockaddr_in servaddr;
@@ -93,34 +95,34 @@ start_udp_server()
   sockfd = socket (AF_INET, SOCK_DGRAM, 0);
   fail_if (sockfd < 0);
 
-  bzero (&servaddr, sizeof(servaddr));
-  servaddr.sin_family      = AF_INET;
+  bzero (&servaddr, sizeof (servaddr));
+  servaddr.sin_family = AF_INET;
   servaddr.sin_addr.s_addr = htonl (INADDR_ANY);
-  servaddr.sin_port        = htons (CHECK_IO_SERV_PORT);
+  servaddr.sin_port = htons (CHECK_IO_SERV_PORT);
 
-  bindrc = bind (sockfd, (const struct sockaddr *) &servaddr,
-                 sizeof(servaddr));
+  bindrc
+    = bind (sockfd, (const struct sockaddr *) &servaddr, sizeof (servaddr));
   fail_if (bindrc < 0);
 
-  flags = fcntl(sockfd, F_GETFL, 0);
+  flags = fcntl (sockfd, F_GETFL, 0);
   fail_if (flags < 0);
 
   flags |= O_NONBLOCK;
-  fcntlrc = fcntl(sockfd, F_SETFL, flags);
+  fcntlrc = fcntl (sockfd, F_SETFL, flags);
   fail_if (fcntlrc < 0);
 
   return sockfd;
 }
 
 static void
-stop_udp_server(int sockfd)
+stop_udp_server (int sockfd)
 {
-  close(sockfd);
+  close (sockfd);
 }
 
 static void
 check_event_timer_cback (OMX_HANDLETYPE p_hdl, tiz_event_timer_t * ap_ev_timer,
-                         void *ap_arg, const uint32_t a_id)
+                         void * ap_arg, const uint32_t a_id)
 {
   OMX_ERRORTYPE error = OMX_ErrorNone;
 
@@ -152,7 +154,7 @@ check_event_timer_cback (OMX_HANDLETYPE p_hdl, tiz_event_timer_t * ap_ev_timer,
 
 static void
 check_event_stat_cback (OMX_HANDLETYPE p_hdl, tiz_event_stat_t * ap_ev_stat,
-                        void *ap_arg1, const uint32_t a_id, int events)
+                        void * ap_arg1, const uint32_t a_id, int events)
 {
   OMX_ERRORTYPE error = OMX_ErrorNone;
 
@@ -187,14 +189,14 @@ START_TEST (test_event_io)
   OMX_ERRORTYPE error = OMX_ErrorNone;
   tiz_event_io_t * p_ev_io = NULL;
   int fd = 0;
-  char cmd [128];
+  char cmd[128];
   OMX_HANDLETYPE p_hdl = NULL;
   uint32_t id = 1;
 
   error = tiz_event_loop_init ();
   fail_if (error != OMX_ErrorNone);
 
-  fd = start_udp_server();
+  fd = start_udp_server ();
 
   error = tiz_event_io_init (&p_ev_io, p_hdl, check_event_io_cback, NULL);
   fail_if (error != OMX_ErrorNone);
@@ -206,7 +208,7 @@ START_TEST (test_event_io)
   error = tiz_event_io_start (p_ev_io, id);
   fail_if (error != OMX_ErrorNone);
 
-  snprintf(cmd, strlen (CHECK_IO_ECHO_CMD) + 1, "%s", CHECK_IO_ECHO_CMD);
+  snprintf (cmd, strlen (CHECK_IO_ECHO_CMD) + 1, "%s", CHECK_IO_ECHO_CMD);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "cmd = [%s]", cmd);
 
   fail_if (-1 == system (cmd));
@@ -218,7 +220,7 @@ START_TEST (test_event_io)
 
   tiz_event_io_destroy (p_ev_io);
 
-  stop_udp_server(fd);
+  stop_udp_server (fd);
 
   tiz_event_loop_destroy ();
 }
@@ -229,16 +231,16 @@ START_TEST (test_event_timer)
   OMX_ERRORTYPE error = OMX_ErrorNone;
   tiz_event_timer_t * p_ev_timer = NULL;
   time_t t1, t2;
-  int sleep_len = (double)(CHECK_TIMER_PERIOD * g_timeout_count) +
-    (double)(CHECK_TIMER_PERIOD * g_restart_count) + 1;
+  int sleep_len = (double) (CHECK_TIMER_PERIOD * g_timeout_count)
+                  + (double) (CHECK_TIMER_PERIOD * g_restart_count) + 1;
   int sleep_count = sleep_len;
   OMX_HANDLETYPE p_hdl = NULL;
 
   error = tiz_event_loop_init ();
   fail_if (error != OMX_ErrorNone);
 
-  error = tiz_event_timer_init (&p_ev_timer, p_hdl, check_event_timer_cback,
-                                NULL);
+  error
+    = tiz_event_timer_init (&p_ev_timer, p_hdl, check_event_timer_cback, NULL);
   fail_if (error != OMX_ErrorNone);
 
   tiz_event_timer_set (p_ev_timer, 1., CHECK_TIMER_PERIOD);
@@ -246,7 +248,8 @@ START_TEST (test_event_timer)
   error = tiz_event_timer_start (p_ev_timer, 0);
   fail_if (error != OMX_ErrorNone);
 
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "started timer watcher - sleep_len [%d]", sleep_len);
+  TIZ_LOG (TIZ_PRIORITY_TRACE, "started timer watcher - sleep_len [%d]",
+           sleep_len);
 
   t1 = time (NULL);
   while (--sleep_count > 0)
@@ -259,9 +262,10 @@ START_TEST (test_event_timer)
             {
               /* haven't waited enough */
               sleep_count = sleep_len - (t2 - t1) + 1;
-              TIZ_LOG (TIZ_PRIORITY_TRACE, "woken up too early - new sleep_count [%d]",
+              TIZ_LOG (TIZ_PRIORITY_TRACE,
+                       "woken up too early - new sleep_count [%d]",
                        sleep_count);
-              }
+            }
         }
     }
 
@@ -279,7 +283,7 @@ START_TEST (test_event_stat)
 {
   OMX_ERRORTYPE error = OMX_ErrorNone;
   tiz_event_stat_t * p_ev_stat = NULL;
-  char cmd [128];
+  char cmd[128];
   int sleep_count = 5;
   OMX_HANDLETYPE p_hdl = NULL;
   int echo_cmd_pid = 0;
@@ -309,7 +313,6 @@ START_TEST (test_event_stat)
   snprintf (cmd, strlen (CHECK_STAT_ECHO_CMD) + 1, "%s", CHECK_STAT_ECHO_CMD);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "cmd = [%s]", cmd);
 
-
   /* Fork here to run the echo command on another process */
   echo_cmd_pid = fork ();
   fail_if (echo_cmd_pid == -1);
@@ -326,18 +329,16 @@ START_TEST (test_event_stat)
             }
         }
       while (--sleep_count != 0);
-      
+
       fail_if (true != g_file_status_changed);
       tiz_event_stat_destroy (p_ev_stat);
       tiz_event_loop_destroy ();
-
     }
   else
     {
       TIZ_LOG (TIZ_PRIORITY_TRACE, "Running echo command");
       fail_if (-1 == system (cmd));
     }
-
 }
 END_TEST
 

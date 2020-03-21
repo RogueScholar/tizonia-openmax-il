@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -129,7 +130,7 @@ namespace
     py_plex_proxy = pyplexproxy (base_url.c_str (), auth_token.c_str (),
                                  music_section.c_str ());
   }
-}
+}  // namespace
 
 tizplex::tizplex (const std::string &base_url, const std::string &auth_token,
                   const std::string &music_section)

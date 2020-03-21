@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -279,7 +279,7 @@ retrieve_alsa_pcm_format_and_num_channels (ar_prc_t * ap_prc,
                              : SND_PCM_FORMAT_S24_BE;
     }
   /* NOTE: this is to allow float pcm streams coming from the the vorbis or
-     opusfile decoders */
+       opusfile decoders */
   else if (ap_prc->pcmmode_.nBitPerSample == 32)
     {
       *ap_snd_pcm_format = ap_prc->pcmmode_.eEndian == OMX_EndianLittle
@@ -607,7 +607,7 @@ set_initial_component_volume (ar_prc_t * ap_prc)
   if (ARATELIA_AUDIO_RENDERER_DEFAULT_VOLUME_VALUE != ap_prc->volume_)
     {
       /* We want to do this only once, the first time that the component is
-         move to Executing */
+           move to Executing */
       return OMX_ErrorNone;
     }
 
@@ -888,7 +888,7 @@ render_buffer (ar_prc_t * ap_prc, OMX_BUFFERHEADERTYPE * ap_hdr)
       else if (err < 0)
         {
           /* This should handle -EINTR (interrupted system call), -EPIPE
-           * (overrun or underrun) and -ESTRPIPE (stream is suspended) */
+             * (overrun or underrun) and -ESTRPIPE (stream is suspended) */
           err = snd_pcm_recover (ap_prc->p_pcm_, (int) err, 0);
           if (err < 0)
             {
@@ -956,7 +956,7 @@ buffer_emptied (ar_prc_t * ap_prc)
     {
       TIZ_TRACE (handleOf (ap_prc), "Received EOS");
       /* Record the fact that EOS shown up. We'll signal it to the client on a
-         timer event */
+           timer event */
       ap_prc->nflags_ = ap_prc->p_inhdr_->nFlags;
       tiz_check_omx (start_eos_timer (ap_prc));
     }
@@ -1138,11 +1138,11 @@ ar_prc_prepare_to_transfer (void * ap_prc, OMX_U32 TIZ_UNUSED (a_pid))
       bail_on_snd_pcm_error (snd_pcm_prepare (p_prc->p_pcm_));
 
       /* Internally store the initial volume, so that the internal OMX volume
-         struct reflects the current value of ALSA's master volume. */
+           struct reflects the current value of ALSA's master volume. */
       if (OMX_ErrorNone != set_initial_component_volume (p_prc))
         {
           /* Volume control might not be supported by the current alsa device,
-             not a big deal, simply log a message. */
+               not a big deal, simply log a message. */
           TIZ_NOTICE (handleOf (p_prc), "Could not set the component's volume");
         }
     }
@@ -1387,7 +1387,7 @@ ar_prc_config_change (void * ap_prc, OMX_U32 a_pid, OMX_INDEXTYPE a_config_idx)
                    >= ARATELIA_AUDIO_RENDERER_MIN_VOLUME_VALUE)
             {
               /* TODO: Volume should be done by adjusting the gain, not ALSA's
-               * master volume! */
+                 * master volume! */
               set_volume (p_prc, volume.sVolume.nValue);
             }
         }
@@ -1399,7 +1399,7 @@ ar_prc_config_change (void * ap_prc, OMX_U32 a_pid, OMX_INDEXTYPE a_config_idx)
                                             handleOf (p_prc),
                                             OMX_IndexConfigAudioMute, &mute));
           /* TODO: Volume should be done by adjusting the gain, not ALSA's
-           * master volume! */
+             * master volume! */
           TIZ_TRACE (handleOf (p_prc),
                      "[OMX_IndexConfigAudioMute] : bMute = [%s]",
                      (mute.bMute == OMX_FALSE ? "FALSE" : "TRUE"));

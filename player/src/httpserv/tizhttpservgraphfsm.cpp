@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -38,8 +38,7 @@
 
 namespace hsfsm = tiz::graph::hsfsm;
 
-char const* const hsfsm::pstate(hsfsm::fsm const& p)
+char const* const hsfsm::pstate (hsfsm::fsm const& p)
 {
-  return hsfsm::state_names[p.current_state()[0]];
+  return hsfsm::state_names[p.current_state ()[0]];
 }
-

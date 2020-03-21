@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -39,5 +39,3 @@ tizrmd_LDADD = \
 	@TIZPLATFORM_LIBS@ \
 	@TIZDBUSCPLUSPLUS_LIBS@ \
 	@SQLITE3_LDFLAGS@
-
-

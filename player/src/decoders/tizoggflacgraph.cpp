@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -32,16 +32,16 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <OMX_TizoniaExt.h>
 #include <tizplatform.h>
 
-#include "tizgraphutil.hpp"
-#include "tizgraphconfig.hpp"
 #include "tizgraphcmd.hpp"
-#include "tizprobe.hpp"
+#include "tizgraphconfig.hpp"
+#include "tizgraphutil.hpp"
 #include "tizoggflacgraph.hpp"
+#include "tizprobe.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -84,7 +84,8 @@ graph::oggflacdecops::oggflacdecops (graph *p_graph,
 {
 }
 
-void graph::oggflacdecops::do_disable_comp_ports (const int comp_id, const int port_id)
+void graph::oggflacdecops::do_disable_comp_ports (const int comp_id,
+                                                  const int port_id)
 {
   OMX_U32 demuxers_video_port = 1;
   G_OPS_BAIL_IF_ERROR (util::disable_port (handles_[0], demuxers_video_port),

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -62,11 +62,11 @@ binaryport_ctor (void * ap_obj, va_list * app)
   assert (ap_obj);
 
   /* Make a copy of the incoming va_list before it gets parsed by the parent
-     class:
-     The expected arguments are:
-     port_opts
+       class:
+       The expected arguments are:
+       port_opts
 
-     */
+       */
   va_copy (app_copy, *app);
 
   /* Now give the original to the base class */
@@ -107,8 +107,8 @@ binaryport_ctor (void * ap_obj, va_list * app)
           OMX_COLOR_FORMATTYPE formats[]
             = {OMX_COLOR_FormatYUV420Planar, OMX_COLOR_FormatMax};
           /* NOTE: No defaults are defined in the standard for the video output
-         * port of the video_reader.binary component. So for the sake of
-         * completeness, simply provide some default values here. */
+        * port of the video_reader.binary component. So for the sake of
+        * completeness, simply provide some default values here. */
           portdef.pNativeRender = NULL;
           portdef.nFrameWidth = 176;
           portdef.nFrameHeight = 144;
@@ -141,8 +141,8 @@ binaryport_ctor (void * ap_obj, va_list * app)
           OMX_COLOR_FORMATTYPE formats[]
             = {OMX_COLOR_FormatYUV420Planar, OMX_COLOR_FormatMax};
           /* NOTE: No defaults are defined in the standard for the image output
-         * port of the image_reader.binary component. So for the sake of
-         * completeness, simply provide some default values here. */
+        * port of the image_reader.binary component. So for the sake of
+        * completeness, simply provide some default values here. */
           portdef.pNativeRender = NULL;
           portdef.nFrameWidth = 176;
           portdef.nFrameHeight = 144;
@@ -231,7 +231,7 @@ binaryport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
             }
         }
       /* NOTE: Fall through if GetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {
@@ -272,7 +272,7 @@ binaryport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
         }
 
       /* NOTE: Fall through if GetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {
@@ -287,7 +287,7 @@ binaryport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
 
 static OMX_ERRORTYPE
 binaryport_set_portdef_format (void * ap_obj,
-                              const OMX_PARAM_PORTDEFINITIONTYPE * ap_pdef)
+                               const OMX_PARAM_PORTDEFINITIONTYPE * ap_pdef)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
   tiz_binaryport_t * p_obj = ap_obj;

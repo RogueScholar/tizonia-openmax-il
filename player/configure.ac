@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -16,7 +16,7 @@
 # along with Tizonia.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_PREREQ([2.68])
-AC_INIT([tizonia-player], [0.19.0], [juan.rubio@aratelia.com])
+AC_INIT([tizonia-player], [0.21.0], [juan.rubio@aratelia.com])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE([foreign color-tests silent-rules subdir-objects -Wextra -Werror])
 AC_CONFIG_SRCDIR([config.h.in])
@@ -42,6 +42,7 @@ AX_BOOST_PROGRAM_OPTIONS
 AX_BOOST_SYSTEM
 AX_BOOST_FILESYSTEM
 AX_BOOST_THREAD
+AX_BOOST_CHRONO
 
 PKG_CHECK_MODULES([TAGLIB], [taglib >= 1.7.0])
 PKG_CHECK_MODULES([LIBMEDIAINFO], [libmediainfo >= 0.7.65])
@@ -149,6 +150,7 @@ AM_CONDITIONAL(WITH_LIBSPOTIFY, test "x$with_libspotify" = xyes)
 AC_CONFIG_FILES([Makefile
                 tools/Makefile
                 dbus/Makefile
+                man/Makefile
                 src/Makefile])
 
 if test "$with_libspotify" = yes; then

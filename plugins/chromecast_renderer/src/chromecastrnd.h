@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -29,7 +29,8 @@
 #define CHROMECASTSRC_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <curl/curl.h>
@@ -40,7 +41,7 @@ extern "C" {
 #define ARATELIA_CHROMECAST_RENDERER_DEFAULT_ROLE "audio_renderer.chromecast"
 #define ARATELIA_GMUSIC_SOURCE_DEFAULT_ROLE "audio_renderer.chromecast.gmusic"
 #define ARATELIA_SCLOUD_SOURCE_DEFAULT_ROLE "audio_renderer.chromecast.scloud"
-/* #define ARATELIA_DIRBLE_SOURCE_DEFAULT_ROLE "audio_renderer.chromecast.dirble" */
+#define ARATELIA_TUNEIN_SOURCE_DEFAULT_ROLE "audio_renderer.chromecast.tunein"
 #define ARATELIA_YOUTUBE_SOURCE_DEFAULT_ROLE "audio_renderer.chromecast.youtube"
 #define ARATELIA_PLEX_SOURCE_DEFAULT_ROLE "audio_renderer.chromecast.plex"
 #define ARATELIA_CHROMECAST_RENDERER_COMPONENT_NAME \

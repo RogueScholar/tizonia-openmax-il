@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -336,8 +336,9 @@ pulseaudio_context_state_cback (struct pa_context * ap_context,
 {
   pulsear_prc_t * p_prc = ap_userdata;
   assert (p_prc);
-  TIZ_TRACE (handleOf (p_prc), "[%s]", pulseaudio_context_state_to_str (
-                                         pa_context_get_state (ap_context)));
+  TIZ_TRACE (
+    handleOf (p_prc), "[%s]",
+    pulseaudio_context_state_to_str (pa_context_get_state (ap_context)));
 
   switch (pa_context_get_state (ap_context))
     {
@@ -437,7 +438,7 @@ pulseaudio_stream_write_cback_handler (OMX_PTR ap_prc,
   assert (ap_event->p_data);
   p_prc->pa_nbytes_ += *((size_t *) ap_event->p_data);
   /* We only render the available data if the component's current state
-     allows it */
+       allows it */
   if (ready_to_process (p_prc))
     {
       (void) render_pcm_data (p_prc);
@@ -593,9 +594,10 @@ init_pulseaudio_sample_spec (pulsear_prc_t * ap_prc, pa_sample_spec * ap_spec)
 
   /* Retrieve pcm params from the input port */
   TIZ_INIT_OMX_PORT_STRUCT (ap_prc->pcmmode_, ARATELIA_PCM_RENDERER_PORT_INDEX);
-  if (OMX_ErrorNone != (omx_rc = tiz_api_GetParameter (
-                          tiz_get_krn (handleOf (ap_prc)), handleOf (ap_prc),
-                          OMX_IndexParamAudioPcm, &ap_prc->pcmmode_)))
+  if (OMX_ErrorNone
+      != (omx_rc = tiz_api_GetParameter (
+            tiz_get_krn (handleOf (ap_prc)), handleOf (ap_prc),
+            OMX_IndexParamAudioPcm, &ap_prc->pcmmode_)))
     {
       TIZ_ERROR (handleOf (ap_prc), "[%s]", tiz_err_to_str (omx_rc));
     }
@@ -943,7 +945,8 @@ set_volume (pulsear_prc_t * ap_prc, const long a_volume)
       TIZ_DEBUG (handleOf (ap_prc), "ap_prc->volume_ = %ld", ap_prc->volume_);
       if (OMX_ErrorNone != set_component_volume (ap_prc))
         {
-          TIZ_NOTICE (handleOf (ap_prc), "Could not set the component's volume");
+          TIZ_NOTICE (handleOf (ap_prc),
+                      "Could not set the component's volume");
         }
     }
 }
@@ -1051,6 +1054,7 @@ pulsear_prc_ctor (void * ap_prc, va_list * app)
   p_prc->ramp_step_ = 0;
   p_prc->ramp_step_count_ = ARATELIA_PCM_RENDERER_DEFAULT_RAMP_STEP_COUNT;
   p_prc->ramp_volume_ = 0;
+  (void) set_component_volume (p_prc);
   return p_prc;
 }
 
@@ -1072,7 +1076,7 @@ pulsear_prc_allocate_resources (void * ap_prc, OMX_U32 a_pid)
   OMX_ERRORTYPE rc = OMX_ErrorNone;
   assert (p_prc);
   /* If the timer event has already been initialised, we assume the whole
-     component has already been initialised. */
+       component has already been initialised. */
   if (!(p_prc->p_ev_timer_))
     {
       set_volume (ap_prc, p_prc->volume_);
@@ -1300,7 +1304,8 @@ pulsear_prc_config_change (void * ap_obj, OMX_U32 a_pid,
           tiz_check_omx (
             tiz_api_GetConfig (tiz_get_krn (handleOf (p_prc)), handleOf (p_prc),
                                OMX_IndexConfigAudioVolume, &volume));
-          TIZ_DEBUG (handleOf (p_prc),
+          TIZ_DEBUG (
+            handleOf (p_prc),
             "[OMX_IndexConfigAudioVolume] : volume.sVolume.nValue = %ld\n",
             volume.sVolume.nValue);
           if (volume.sVolume.nValue <= ARATELIA_PCM_RENDERER_MAX_VOLUME_VALUE

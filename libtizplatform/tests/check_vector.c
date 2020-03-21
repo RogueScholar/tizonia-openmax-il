@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -48,7 +48,7 @@
 START_TEST (test_vector_init_and_destroy)
 {
   OMX_ERRORTYPE error = OMX_ErrorNone;
-  tiz_vector_t *p_vector;
+  tiz_vector_t * p_vector;
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "test_vector_init_and_destroy");
 
@@ -64,12 +64,13 @@ START_TEST (test_vector_push_and_pop_length_front_back_ints)
 {
   OMX_U32 i;
   OMX_ERRORTYPE error = OMX_ErrorNone;
-  int *p_item = NULL;
-  tiz_vector_t *p_vector = NULL;
+  int * p_item = NULL;
+  tiz_vector_t * p_vector = NULL;
 
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "test_vector_push_and_pop_length_front_back_ints");
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "test_vector_push_and_pop_length_front_back_ints");
 
-  error = tiz_vector_init (&p_vector, sizeof(int));
+  error = tiz_vector_init (&p_vector, sizeof (int));
   fail_if (error != OMX_ErrorNone);
 
   for (i = 0; i < 10; i++)
@@ -86,7 +87,7 @@ START_TEST (test_vector_push_and_pop_length_front_back_ints)
     }
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "vector length %d",
-             tiz_vector_length (p_vector));
+           tiz_vector_length (p_vector));
   fail_if (10 != tiz_vector_length (p_vector));
 
   for (i = 0; i < 10; i++)
@@ -109,12 +110,13 @@ START_TEST (test_vector_push_and_pop_length_front_back_pointers)
 {
   OMX_U32 i;
   OMX_ERRORTYPE error = OMX_ErrorNone;
-  int *p_item = NULL;
-  tiz_vector_t *p_vector = NULL;
+  int * p_item = NULL;
+  tiz_vector_t * p_vector = NULL;
 
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "test_vector_push_and_pop_length_front_back_pointers");
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "test_vector_push_and_pop_length_front_back_pointers");
 
-  error = tiz_vector_init (&p_vector, sizeof(int*));
+  error = tiz_vector_init (&p_vector, sizeof (int *));
   fail_if (error != OMX_ErrorNone);
 
   for (i = 0; i < 10; i++)
@@ -131,7 +133,7 @@ START_TEST (test_vector_push_and_pop_length_front_back_pointers)
     }
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "vector length %d",
-             tiz_vector_length (p_vector));
+           tiz_vector_length (p_vector));
   fail_if (10 != tiz_vector_length (p_vector));
 
   for (i = 0; i < 10; i++)
@@ -142,7 +144,7 @@ START_TEST (test_vector_push_and_pop_length_front_back_pointers)
       fail_if (*p_item != 10 - i - 1);
 
       tiz_vector_pop_back (p_vector);
-      tiz_mem_free(p_item);
+      tiz_mem_free (p_item);
     }
 
   fail_if (0 != tiz_vector_length (p_vector));
@@ -154,14 +156,14 @@ START_TEST (test_vector_push_back_vector)
 {
   OMX_U32 i = 0;
   OMX_ERRORTYPE error = OMX_ErrorNone;
-  int *p_item = NULL;
-  tiz_vector_t *p_vector = NULL;
-  tiz_vector_t *p_vector2 = NULL;
+  int * p_item = NULL;
+  tiz_vector_t * p_vector = NULL;
+  tiz_vector_t * p_vector2 = NULL;
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "test_vector_push_back_vector");
 
-  error = tiz_vector_init (&p_vector, sizeof(int*));
-  error = tiz_vector_init (&p_vector2, sizeof(tiz_vector_t*));
+  error = tiz_vector_init (&p_vector, sizeof (int *));
+  error = tiz_vector_init (&p_vector2, sizeof (tiz_vector_t *));
 
   fail_if (error != OMX_ErrorNone);
 
@@ -179,29 +181,28 @@ START_TEST (test_vector_push_back_vector)
     }
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "vector length %d",
-             tiz_vector_length (p_vector));
+           tiz_vector_length (p_vector));
   fail_if (10 != tiz_vector_length (p_vector));
-
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "pushing vector [%p] [%p]", p_vector, &p_vector);
 
   tiz_vector_push_back (p_vector2, &p_vector);
   p_vector = *(tiz_vector_t **) tiz_vector_back (p_vector2);
 
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "received vector [%p] [%p] [%p]",
-           p_vector, &p_vector, *(tiz_vector_t **) p_vector);
+  TIZ_LOG (TIZ_PRIORITY_TRACE, "received vector [%p] [%p] [%p]", p_vector,
+           &p_vector, *(tiz_vector_t **) p_vector);
 
   for (i = 0; i < 10; i++)
     {
       fail_if (10 - i != tiz_vector_length (p_vector));
 
-      p_item = * (int **) tiz_vector_back (p_vector);
+      p_item = *(int **) tiz_vector_back (p_vector);
       fail_if (*p_item != 10 - i - 1);
 
       TIZ_LOG (TIZ_PRIORITY_TRACE, "received int [%d]", *p_item);
 
       tiz_vector_pop_back (p_vector);
-      tiz_mem_free(p_item);
+      tiz_mem_free (p_item);
     }
 
   fail_if (0 != tiz_vector_length (p_vector));
@@ -209,4 +210,3 @@ START_TEST (test_vector_push_back_vector)
   tiz_vector_destroy (p_vector);
 }
 END_TEST
-

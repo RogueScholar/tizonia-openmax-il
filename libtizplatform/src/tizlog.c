@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -89,7 +89,7 @@ log_layout_format (const log4c_layout_t * a_layout,
       else
         {
           /* TODO: 4096 - this value needs be learnt at project configuration
-           * time */
+             * time */
           snprintf (uloc->cbuf, 4096,
                     "%02d-%02d-%04d %02d:%02d:%02d.%03ld - "
                     "[PID:%i][TID:%i] [%s] [%s] [%s:%s:%i] --- %s\n",
@@ -117,7 +117,8 @@ log_layout_format (const log4c_layout_t * a_layout,
 }
 
 const log4c_layout_type_t tizonia_log_layout = {
-  "tiz_layout", log_layout_format,
+  "tiz_layout",
+  log_layout_format,
 };
 
 static const log4c_layout_type_t * const layout_types[] = {&tizonia_log_layout};

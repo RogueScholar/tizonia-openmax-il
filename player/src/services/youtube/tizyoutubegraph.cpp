@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -28,25 +28,31 @@
 
 //                                                             +---------------+
 //                                                             |               |
-//                                                      +------>  opus_decoder +---------+
-//                                +----------------+    |      |               |         |
-//                                |                |    |      +---------------+         |
-//                         +------>  webm_demuxer  +----+                                |
-//                         |      |                |    |      +---------------+         |
-//                         |      +----------------+    |      |               |         |
-//                         |                            +------> vorbis_decoder+---------+
-// +-----------------+     |                                   |               |         |         +----------------+
-// |                 |     |                                   +---------------+         |         |                |
-// |   http_source   +-----+                                                             +--------->  pcm_renderer  |
-// |                 |     |                                   +---------------+         |         |                |
-// +-----------------+     |                                   |               |         |         +----------------+
-//                         |                            +------>  aac_decoder  +---------+
-//                         |      +----------------+    |      |               |         |
-//                         |      |                |    |      +---------------+         |
-//                         +------>   mp4_demuxer  +----+                                |
-//                                |                |    |      +---------------+         |
-//                                +----------------+    |      |               |         |
-//                                                      +------>  mp3_decoder  +---------+
+//                                                      +------>  opus_decoder
+//                                                      +---------+
+//                                +----------------+    |      |               |
+//                                | |                |    | +---------------+ |
+//                         +------>  webm_demuxer  +----+ | |      | |    |
+//                         +---------------+         | |      +----------------+
+//                         |      |               |         | | +------>
+//                         vorbis_decoder+---------+
+// +-----------------+     |                                   |               |
+// |         +----------------+ |                 |     | +---------------+ | |
+// | |   http_source   +-----+ +--------->  pcm_renderer  | |                 |
+// |                                   +---------------+         |         | |
+// +-----------------+     |                                   |               |
+// |         +----------------+
+//                         |                            +------>  aac_decoder
+//                         +---------+ |      +----------------+    |      | | |
+//                         |      |                |    |      +---------------+
+//                         |
+//                         +------>   mp4_demuxer  +----+ |
+//                                |                |    |      +---------------+
+//                                |
+//                                +----------------+    |      |               |
+//                                |
+//                                                      +------>  mp3_decoder
+//                                                      +---------+
 //                                                             |               |
 //                                                             +---------------+
 
@@ -57,9 +63,9 @@
 #include "tizgraphcmd.hpp"
 #include "tizgraphops.hpp"
 
+#include "tizyoutubegraph.hpp"
 #include "tizyoutubegraphfsm.hpp"
 #include "tizyoutubegraphops.hpp"
-#include "tizyoutubegraph.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -76,13 +82,13 @@ graph::youtube::youtube ()
   : graph::graph ("youtubegraph"),
     fsm_ (new tiz::graph::youtubefsm::fsm (
         boost::msm::back::states_
-        << tiz::graph::youtubefsm::fsm::auto_detecting_0 (&p_ops_)
-        << tiz::graph::youtubefsm::fsm::auto_detecting_1 (&p_ops_)
-        << tiz::graph::youtubefsm::fsm::updating_graph (&p_ops_)
-        << tiz::graph::youtubefsm::fsm::reconfiguring_tunnel_0 (&p_ops_)
-        << tiz::graph::youtubefsm::fsm::reconfiguring_tunnel_1 (&p_ops_)
-        << tiz::graph::youtubefsm::fsm::reconfiguring_tunnel_2 (&p_ops_)
-        << tiz::graph::youtubefsm::fsm::skipping (&p_ops_),
+            << tiz::graph::youtubefsm::fsm::auto_detecting_0 (&p_ops_)
+            << tiz::graph::youtubefsm::fsm::auto_detecting_1 (&p_ops_)
+            << tiz::graph::youtubefsm::fsm::updating_graph (&p_ops_)
+            << tiz::graph::youtubefsm::fsm::reconfiguring_tunnel_0 (&p_ops_)
+            << tiz::graph::youtubefsm::fsm::reconfiguring_tunnel_1 (&p_ops_)
+            << tiz::graph::youtubefsm::fsm::reconfiguring_tunnel_2 (&p_ops_)
+            << tiz::graph::youtubefsm::fsm::skipping (&p_ops_),
         &p_ops_))
 
 {
@@ -90,7 +96,7 @@ graph::youtube::youtube ()
 
 graph::youtube::~youtube ()
 {
-  delete (boost::any_cast< youtubefsm::fsm * >(fsm_));
+  delete (boost::any_cast< youtubefsm::fsm * > (fsm_));
 }
 
 graph::ops *graph::youtube::do_init ()
@@ -109,10 +115,10 @@ bool graph::youtube::dispatch_cmd (const tiz::graph::cmd *p_cmd)
 
   if (!p_cmd->kill_thread ())
   {
-    youtubefsm::fsm *p_fsm = boost::any_cast< youtubefsm::fsm * >(fsm_);
+    youtubefsm::fsm *p_fsm = boost::any_cast< youtubefsm::fsm * > (fsm_);
     assert (p_fsm);
 
-    if (p_cmd->evt ().type () == typeid(tiz::graph::load_evt))
+    if (p_cmd->evt ().type () == typeid (tiz::graph::load_evt))
     {
       // Time to start the FSM
       TIZ_LOG (TIZ_PRIORITY_NOTICE, "Starting [%s] fsm...",
@@ -120,7 +126,7 @@ bool graph::youtube::dispatch_cmd (const tiz::graph::cmd *p_cmd)
       p_fsm->start ();
     }
 
-    p_cmd->inject< youtubefsm::fsm >(*p_fsm, tiz::graph::youtubefsm::pstate);
+    p_cmd->inject< youtubefsm::fsm > (*p_fsm, tiz::graph::youtubefsm::pstate);
 
     // Check for internal errors produced during the processing of the last
     // event. If any, inject an "internal" error event. This is fatal and shall
@@ -140,4 +146,3 @@ bool graph::youtube::dispatch_cmd (const tiz::graph::cmd *p_cmd)
 
   return p_cmd->kill_thread ();
 }
-

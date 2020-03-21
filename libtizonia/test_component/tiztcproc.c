@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -49,14 +49,14 @@
  */
 
 static void *
-tcprc_ctor (void *ap_obj, va_list * app)
+tcprc_ctor (void * ap_obj, va_list * app)
 {
-  tiz_tcprc_t *p_obj = super_ctor (typeOf (ap_obj, "tiztcprc"), ap_obj, app);
+  tiz_tcprc_t * p_obj = super_ctor (typeOf (ap_obj, "tiztcprc"), ap_obj, app);
   return p_obj;
 }
 
 static void *
-tcprc_dtor (void *ap_obj)
+tcprc_dtor (void * ap_obj)
 {
   return super_dtor (typeOf (ap_obj, "tiztcprc"), ap_obj);
 }
@@ -72,31 +72,31 @@ tiztc_proc_render_buffer (OMX_BUFFERHEADERTYPE * p_hdr)
  */
 
 static OMX_ERRORTYPE
-tcprc_allocate_resources (void *ap_obj, OMX_U32 a_pid)
+tcprc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-tcprc_deallocate_resources (void *ap_obj)
+tcprc_deallocate_resources (void * ap_obj)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-tcprc_prepare_to_transfer (void *ap_obj, OMX_U32 a_pid)
+tcprc_prepare_to_transfer (void * ap_obj, OMX_U32 a_pid)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-tcprc_transfer_and_process (void *ap_obj, OMX_U32 a_pid)
+tcprc_transfer_and_process (void * ap_obj, OMX_U32 a_pid)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-tcprc_stop_and_return (void *ap_obj)
+tcprc_stop_and_return (void * ap_obj)
 {
   return OMX_ErrorNone;
 }
@@ -106,10 +106,10 @@ tcprc_stop_and_return (void *ap_obj)
  */
 
 static OMX_ERRORTYPE
-tcprc_buffers_ready (const void *ap_obj)
+tcprc_buffers_ready (const void * ap_obj)
 {
-  void *p_krn = tiz_get_krn (handleOf (ap_obj));
-  OMX_BUFFERHEADERTYPE *p_hdr = NULL;
+  void * p_krn = tiz_get_krn (handleOf (ap_obj));
+  OMX_BUFFERHEADERTYPE * p_hdr = NULL;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
   rc = tiz_krn_claim_buffer (p_krn, 0, 0, &p_hdr);
@@ -121,10 +121,10 @@ tcprc_buffers_ready (const void *ap_obj)
       tiz_check_omx (tiztc_proc_render_buffer (p_hdr));
       if ((p_hdr->nFlags & OMX_BUFFERFLAG_EOS) != 0)
         {
-          tiz_srv_issue_event ((OMX_PTR)ap_obj, OMX_EventBufferFlag, 0,
+          tiz_srv_issue_event ((OMX_PTR) ap_obj, OMX_EventBufferFlag, 0,
                                p_hdr->nFlags, NULL);
         }
-      (void)tiz_krn_release_buffer (p_krn, 0, p_hdr);
+      (void) tiz_krn_release_buffer (p_krn, 0, p_hdr);
     }
 
   return OMX_ErrorNone;
@@ -135,7 +135,7 @@ tcprc_buffers_ready (const void *ap_obj)
  */
 
 static void *
-tcprc_class_ctor (void *ap_obj, va_list * app)
+tcprc_class_ctor (void * ap_obj, va_list * app)
 {
   /* NOTE: Class methods might be added in the future. None for now. */
   return super_ctor (typeOf (ap_obj, "tiztcprc_class"), ap_obj, app);
@@ -149,12 +149,9 @@ void *
 tiz_tcprc_class_init (void * ap_tos, void * ap_hdl)
 {
   void * tizprc = tiz_get_type (ap_hdl, "tizprc");
-  void * tiztcprc_class = factory_new (classOf (tizprc),
-                                         "tiztcprc_class",
-                                         classOf (tizprc),
-                                         sizeof (tiz_tcprc_class_t),
-                                         ap_tos, ap_hdl,
-                                         ctor, tcprc_class_ctor, 0);
+  void * tiztcprc_class = factory_new (
+    classOf (tizprc), "tiztcprc_class", classOf (tizprc),
+    sizeof (tiz_tcprc_class_t), ap_tos, ap_hdl, ctor, tcprc_class_ctor, 0);
   return tiztcprc_class;
 }
 
@@ -164,21 +161,14 @@ tiz_tcprc_init (void * ap_tos, void * ap_hdl)
   void * tizprc = tiz_get_type (ap_hdl, "tizprc");
   void * tiztcprc_class = tiz_get_type (ap_hdl, "tiztcprc_class");
   TIZ_LOG_CLASS (tiztcprc_class);
-  void * tiztcprc =
-    factory_new
-    (tiztcprc_class,
-     "tiztcprc",
-     tizprc,
-     sizeof (tiz_tcprc_t),
-     ap_tos, ap_hdl,
-     ctor, tcprc_ctor,
-     dtor, tcprc_dtor,
-     tiz_prc_buffers_ready, tcprc_buffers_ready,
-     tiz_srv_allocate_resources, tcprc_allocate_resources,
-     tiz_srv_deallocate_resources, tcprc_deallocate_resources,
-     tiz_srv_prepare_to_transfer, tcprc_prepare_to_transfer,
-     tiz_srv_transfer_and_process, tcprc_transfer_and_process,
-     tiz_srv_stop_and_return, tcprc_stop_and_return, 0);
+  void * tiztcprc = factory_new (
+    tiztcprc_class, "tiztcprc", tizprc, sizeof (tiz_tcprc_t), ap_tos, ap_hdl,
+    ctor, tcprc_ctor, dtor, tcprc_dtor, tiz_prc_buffers_ready,
+    tcprc_buffers_ready, tiz_srv_allocate_resources, tcprc_allocate_resources,
+    tiz_srv_deallocate_resources, tcprc_deallocate_resources,
+    tiz_srv_prepare_to_transfer, tcprc_prepare_to_transfer,
+    tiz_srv_transfer_and_process, tcprc_transfer_and_process,
+    tiz_srv_stop_and_return, tcprc_stop_and_return, 0);
 
   return tiztcprc;
 }

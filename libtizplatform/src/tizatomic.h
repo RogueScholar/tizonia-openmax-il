@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,10 +30,11 @@
 #define TIZATOMIC_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-/**
+  /**
  * @defgroup tizatomic Atomic operations
  *
  * Atomic operations. This module is work-in-progress.
@@ -44,40 +45,40 @@ extern "C" {
 #include <OMX_Core.h>
 #include <OMX_Types.h>
 
-/**
+  /**
  * Atomic variable opaque handle.
  * @ingroup tizatomic
  */
-typedef struct tiz_atomic_var tiz_atomic_var_t;
-typedef /*@null@ */ tiz_atomic_var_t * tiz_atomic_var_ptr_t;
+  typedef struct tiz_atomic_var tiz_atomic_var_t;
+  typedef /*@null@ */ tiz_atomic_var_t * tiz_atomic_var_ptr_t;
 
-/**
+  /**
  * Create a new atomic binary variable.
  *
  * @ingroup tizatomic
  * @param app_atomic_var An atomic variable opaque handle to be initialised.
  * @return OMX_ErrorNone if success, OMX_ErrorUndefined otherwise.
  */
-OMX_ERRORTYPE
-tiz_atomic_var_init (tiz_atomic_var_ptr_t * app_atomic_var);
+  OMX_ERRORTYPE
+  tiz_atomic_var_init (tiz_atomic_var_ptr_t * app_atomic_var);
 
-/**
+  /**
  * Atomic test and set.
  *
  * @ingroup tizatomic
  * @param app_atomic_var An atomic variable opaque handle.
  * @return OMX_ErrorNone if success, OMX_ErrorUndefined otherwise.
  */
-OMX_ERRORTYPE
-tiz_atomic_var_test_and_set (tiz_atomic_var_t * ap_atomic_var);
+  OMX_ERRORTYPE
+  tiz_atomic_var_test_and_set (tiz_atomic_var_t * ap_atomic_var);
 
-/**
+  /**
  * Destroy the atomic binary variable.
  * @param app_atomic_var An atomic variable opaque handle.
  * @ingroup tizatomic
  */
-void
-tiz_atomic_var_destroy (tiz_atomic_var_t * ap_atomic_var);
+  void
+  tiz_atomic_var_destroy (tiz_atomic_var_t * ap_atomic_var);
 
 #ifdef __cplusplus
 }

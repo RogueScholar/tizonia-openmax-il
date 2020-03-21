@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -29,8 +29,8 @@
 #ifndef TIZSPOTIFYGRAPH_HPP
 #define TIZSPOTIFYGRAPH_HPP
 
-#include <tizgraph.hpp>
 #include "tizspotifygraphfsm.hpp"
+#include <tizgraph.hpp>
 
 namespace tiz
 {

@@ -6,33 +6,29 @@
 Tizonia documentation
 =====================
 
-The Tizonia Project - Copyright (C) 2019 Juan A. Rubio
+The Tizonia Project - Copyright (C) 2020 Juan A. Rubio and contributors
 
 Overview
 ========
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    overview/README
-   overview/PROJECT
    overview/CONTRIBUTING
-   overview/ISSUE_TEMPLATE
-   overview/BUILDING
-   overview/CODE_OF_CONDUCT
    overview/CHANGELOG
    overview/COPYING.LESSER
 
-Usage
-=====
+User Guide
+==========
 
 .. toctree::
    :maxdepth: 2
 
-   usage/usage
+   manual/manual
 
-Development
-===========
+Developer Guide
+===============
 
 .. toctree::
    :maxdepth: 2

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,10 +30,11 @@
 #define TIZRC_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-/**
+  /**
  * @defgroup tizrcfile Configuration file parsing utilities
  * @ingroup libtizplatform
  */
@@ -43,7 +44,7 @@ extern "C" {
 
 #define TIZ_RCFILE_PLUGINS_DATA_SECTION "plugins"
 
-/**
+  /**
  * Returns a value string from a give section using the value's key
  *
  * @ingroup tizrcfile
@@ -56,10 +57,10 @@ extern "C" {
  * @return A newly allocated string or NULL if the specified key cannot be
  *found.
  */
-const char *
-tiz_rcfile_get_value (const char * section, const char * key);
+  const char *
+  tiz_rcfile_get_value (const char * section, const char * key);
 
-/**
+  /**
  * Returns a value string from a give section using the value's key
  *
  * @ingroup tizrcfile
@@ -74,11 +75,11 @@ tiz_rcfile_get_value (const char * section, const char * key);
  * @return An array of NULL-terminated strings or NULL if the specified key
  *cannot be found. The array should be freed by the caller.
  */
-char **
-tiz_rcfile_get_value_list (const char * section, const char * key,
-                           unsigned long * length);
+  char **
+  tiz_rcfile_get_value_list (const char * section, const char * key,
+                             unsigned long * length);
 
-/**
+  /**
  * Returns an integer less than, equal to, or greater than zero if the
  * section-key-value triad provided is respectively, not found, found and
  * matching, or found and no matching.
@@ -96,11 +97,11 @@ tiz_rcfile_get_value_list (const char * section, const char * key,
  * (section and key found, value matched), or greater than zero (section and
  * key found, value unmatched).
  */
-int
-tiz_rcfile_compare_value (const char * section, const char * key,
-                          const char * value);
+  int
+  tiz_rcfile_compare_value (const char * section, const char * key,
+                            const char * value);
 
-/**
+  /**
  * Returns 0 if the status of the configuration file is such that a tizonia
  * configuration file has been found at one of the expected locations and the
  * file can be opened and read by the current user.
@@ -109,8 +110,8 @@ tiz_rcfile_compare_value (const char * section, const char * key,
  *
  * @return On success, zero is returned. On error, -1 is returned.
  */
-int
-tiz_rcfile_status (void);
+  int
+  tiz_rcfile_status (void);
 
 #ifdef __cplusplus
 }

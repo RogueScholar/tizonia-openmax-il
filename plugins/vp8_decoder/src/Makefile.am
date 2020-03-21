@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -34,8 +34,7 @@ libtizvp8d_la_SOURCES = \
 libtizvp8d_la_CFLAGS = \
 	@TIZILHEADERS_CFLAGS@ \
 	@TIZPLATFORM_CFLAGS@ \
-	@TIZONIA_CFLAGS@ \
-	-I/usr/include/vpx
+	@TIZONIA_CFLAGS@
 
 libtizvp8d_la_LDFLAGS = -version-info @SHARED_VERSION_INFO@ @SHLIB_VERSION_ARG@
 

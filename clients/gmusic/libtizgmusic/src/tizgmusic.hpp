@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -40,11 +41,11 @@ public:
    * Various playback modes that control the playback queue.
    */
   enum playback_mode
-    {
-      PlaybackModeNormal,
-      PlaybackModeShuffle,
-      PlaybackModeMax
-    };
+  {
+    PlaybackModeNormal,
+    PlaybackModeShuffle,
+    PlaybackModeMax
+  };
 
 public:
   tizgmusic (const std::string &user, const std::string &pass,
@@ -60,7 +61,8 @@ public:
   int play_tracks (const std::string &tracks, const bool a_unlimited_search);
   int play_album (const std::string &album, const bool a_unlimited_search);
   int play_artist (const std::string &artist, const bool a_unlimited_search);
-  int play_playlist (const std::string &playlist, const bool a_unlimited_search);
+  int play_playlist (const std::string &playlist,
+                     const bool a_unlimited_search);
   int play_free_station (const std::string &station);
   int play_station (const std::string &station);
   int play_genre (const std::string &genre);
@@ -72,17 +74,17 @@ public:
   void clear_queue ();
   void set_playback_mode (const playback_mode mode);
 
-  const char * get_next_url ();
-  const char * get_prev_url ();
-  const char * get_current_song_artist ();
-  const char * get_current_song_title ();
-  const char * get_current_song_album ();
-  const char * get_current_song_duration ();
-  const char * get_current_song_track_number ();
-  const char * get_current_song_tracks_in_album ();
-  const char * get_current_song_year ();
-  const char * get_current_song_genre ();
-  const char * get_current_song_album_art ();
+  const char *get_next_url ();
+  const char *get_prev_url ();
+  const char *get_current_song_artist ();
+  const char *get_current_song_title ();
+  const char *get_current_song_album ();
+  const char *get_current_song_duration ();
+  const char *get_current_song_track_number ();
+  const char *get_current_song_tracks_in_album ();
+  const char *get_current_song_year ();
+  const char *get_current_song_genre ();
+  const char *get_current_song_album_art ();
 
 private:
   void get_current_song ();

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,18 +30,18 @@
 #include <config.h>
 #endif
 
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include <stdio.h>
-#include <check.h>
 #include <assert.h>
+#include <check.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "tizsoundcloud_c.h"
 
 #define SOUNDCLOUD_TEST_TIMEOUT 2500
-#define SOUNDCLOUD_USERNAME     "xxx"
-#define SOUNDCLOUD_PASS         "xxx"
+#define SOUNDCLOUD_USERNAME "xxx"
+#define SOUNDCLOUD_PASS "xxx"
 
 #define SOUNDCLOUD_USER "TWIT"
 #define SOUNDCLOUD_PLAYLIST "metal"
@@ -61,16 +61,17 @@ static bool soundcloud_credentials_present (void)
 START_TEST (test_scloud_play_stream)
 {
   tiz_scloud_t *p_soundcloud = NULL;
-  int rc = tiz_scloud_init (&p_soundcloud, SOUNDCLOUD_USERNAME, SOUNDCLOUD_PASS);
+  int rc
+      = tiz_scloud_init (&p_soundcloud, SOUNDCLOUD_USERNAME, SOUNDCLOUD_PASS);
   ck_assert (0 == rc);
   ck_assert (p_soundcloud);
 
   rc = tiz_scloud_play_stream (p_soundcloud);
   ck_assert (0 == rc);
 
-/*   while (1) */
+  /*   while (1) */
   {
-/*     char cmd[CMD_LEN]; */
+    /*     char cmd[CMD_LEN]; */
     {
       const char *next_url = tiz_scloud_get_next_url (p_soundcloud);
       ck_assert (next_url);
@@ -103,7 +104,8 @@ START_TEST (test_scloud_play_stream)
     }
 
     {
-      const char *permalink = tiz_scloud_get_current_track_permalink (p_soundcloud);
+      const char *permalink
+          = tiz_scloud_get_current_track_permalink (p_soundcloud);
       ck_assert (permalink);
       fprintf (stderr, "permalink = %s\n", permalink);
     }
@@ -114,9 +116,9 @@ START_TEST (test_scloud_play_stream)
       fprintf (stderr, "license = %s\n", license);
     }
 
-/*     snprintf (cmd, CMD_LEN, "%s \"%s\"", PLAYER, next_url); */
-/*     fprintf (stderr, "cmd = %s\n", cmd); */
-/*     ck_assert (-1 != system (cmd)); */
+    /*     snprintf (cmd, CMD_LEN, "%s \"%s\"", PLAYER, next_url); */
+    /*     fprintf (stderr, "cmd = %s\n", cmd); */
+    /*     ck_assert (-1 != system (cmd)); */
   }
 
   tiz_scloud_destroy (p_soundcloud);
@@ -126,16 +128,17 @@ END_TEST
 START_TEST (test_scloud_play_creator)
 {
   tiz_scloud_t *p_soundcloud = NULL;
-  int rc = tiz_scloud_init (&p_soundcloud, SOUNDCLOUD_USERNAME, SOUNDCLOUD_PASS);
+  int rc
+      = tiz_scloud_init (&p_soundcloud, SOUNDCLOUD_USERNAME, SOUNDCLOUD_PASS);
   ck_assert (0 == rc);
   ck_assert (p_soundcloud);
 
   rc = tiz_scloud_play_creator (p_soundcloud, SOUNDCLOUD_USER);
   ck_assert (0 == rc);
 
-/*   while (1) */
+  /*   while (1) */
   {
-/*     char cmd[CMD_LEN]; */
+    /*     char cmd[CMD_LEN]; */
 
     {
       const char *next_url = tiz_scloud_get_next_url (p_soundcloud);
@@ -169,7 +172,8 @@ START_TEST (test_scloud_play_creator)
     }
 
     {
-      const char *permalink = tiz_scloud_get_current_track_permalink (p_soundcloud);
+      const char *permalink
+          = tiz_scloud_get_current_track_permalink (p_soundcloud);
       ck_assert (permalink);
       fprintf (stderr, "permalink = %s\n", permalink);
     }
@@ -192,7 +196,8 @@ END_TEST
 START_TEST (test_scloud_play_playlist)
 {
   tiz_scloud_t *p_soundcloud = NULL;
-  int rc = tiz_scloud_init (&p_soundcloud, SOUNDCLOUD_USERNAME, SOUNDCLOUD_PASS);
+  int rc
+      = tiz_scloud_init (&p_soundcloud, SOUNDCLOUD_USERNAME, SOUNDCLOUD_PASS);
   ck_assert (0 == rc);
   ck_assert (p_soundcloud);
 
@@ -201,7 +206,7 @@ START_TEST (test_scloud_play_playlist)
 
   /* while (1) */
   {
-/*     char cmd[CMD_LEN]; */
+    /*     char cmd[CMD_LEN]; */
 
     {
       const char *next_url = tiz_scloud_get_next_url (p_soundcloud);
@@ -235,7 +240,8 @@ START_TEST (test_scloud_play_playlist)
     }
 
     {
-      const char *permalink = tiz_scloud_get_current_track_permalink (p_soundcloud);
+      const char *permalink
+          = tiz_scloud_get_current_track_permalink (p_soundcloud);
       ck_assert (permalink);
       fprintf (stderr, "permalink = %s\n", permalink);
     }
@@ -255,8 +261,7 @@ START_TEST (test_scloud_play_playlist)
 }
 END_TEST
 
-Suite *
-soundcloud_suite (void)
+Suite *soundcloud_suite (void)
 {
   TCase *tc_soundcloud;
   Suite *s = suite_create ("libtizsoundcloud");

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -292,8 +292,9 @@ tiz_http_parser_init (tiz_http_parser_ptr_t * app_parser,
   assert (app_parser);
   assert (type < ETIZHttpParserTypeMax);
 
-  if (NULL == (p_hp = (tiz_http_parser_ptr_t) tiz_mem_calloc (
-                 1, sizeof (tiz_http_parser_t))))
+  if (NULL
+      == (p_hp = (tiz_http_parser_ptr_t) tiz_mem_calloc (
+            1, sizeof (tiz_http_parser_t))))
     {
       TIZ_LOG (TIZ_PRIORITY_ERROR, "Error allocating http parser structure.");
       rc = OMX_ErrorInsufficientResources;

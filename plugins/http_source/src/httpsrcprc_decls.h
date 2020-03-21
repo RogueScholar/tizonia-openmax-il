@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -29,7 +29,8 @@
 #define HTTPSRCPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -40,33 +41,33 @@ extern "C" {
 
 #include <tizplatform.h>
 
-typedef struct httpsrc_prc httpsrc_prc_t;
-struct httpsrc_prc
-{
-  /* Object */
-  const tiz_prc_t _;
-  OMX_BUFFERHEADERTYPE * p_outhdr_;
-  OMX_PARAM_CONTENTURITYPE * p_uri_param_;
-  tiz_urltrans_t * p_trans_;
-  bool eos_;
-  bool port_disabled_;
-  OMX_S32 audio_coding_type_;
-  OMX_U32 num_channels_;
-  OMX_U32 samplerate_;
-  bool auto_detect_on_;
-  int bitrate_;
-  int buffer_bytes_;
-  bool connection_closed_;
-  bool first_buffer_delivered_;
-};
+  typedef struct httpsrc_prc httpsrc_prc_t;
+  struct httpsrc_prc
+  {
+    /* Object */
+    const tiz_prc_t _;
+    OMX_BUFFERHEADERTYPE * p_outhdr_;
+    OMX_PARAM_CONTENTURITYPE * p_uri_param_;
+    tiz_urltrans_t * p_trans_;
+    bool eos_;
+    bool port_disabled_;
+    OMX_S32 audio_coding_type_;
+    OMX_U32 num_channels_;
+    OMX_U32 samplerate_;
+    bool auto_detect_on_;
+    int bitrate_;
+    int buffer_bytes_;
+    bool connection_closed_;
+    bool first_buffer_delivered_;
+  };
 
-typedef struct httpsrc_prc_class httpsrc_prc_class_t;
-struct httpsrc_prc_class
-{
-  /* Class */
-  const tiz_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct httpsrc_prc_class httpsrc_prc_class_t;
+  struct httpsrc_prc_class
+  {
+    /* Class */
+    const tiz_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -63,16 +63,16 @@ plex_prc_prepare_to_transfer (void * ap_prc, OMX_U32 a_pid);
 static OMX_ERRORTYPE
 plex_prc_transfer_and_process (void * ap_prc, OMX_U32 a_pid);
 
-#define on_plex_error_ret_omx_oom(expr)                                   \
+#define on_plex_error_ret_omx_oom(expr)                                      \
   do                                                                         \
     {                                                                        \
-      int plex_error = 0;                                                 \
-      if (0 != (plex_error = (expr)))                                     \
+      int plex_error = 0;                                                    \
+      if (0 != (plex_error = (expr)))                                        \
         {                                                                    \
           TIZ_ERROR (handleOf (p_prc),                                       \
                      "[OMX_ErrorInsufficientResources] : error while using " \
-                     "libtizplex [error %d]",                             \
-                     plex_error);                                         \
+                     "libtizplex [error %d]",                                \
+                     plex_error);                                            \
           return OMX_ErrorInsufficientResources;                             \
         }                                                                    \
     }                                                                        \
@@ -107,8 +107,7 @@ obtain_coding_type (plex_prc_t * ap_prc, char * ap_info)
 }
 
 static int
-convert_str_to_int (plex_prc_t * ap_prc, const char * ap_start,
-                    char ** ap_end)
+convert_str_to_int (plex_prc_t * ap_prc, const char * ap_start, char ** ap_end)
 {
   long val = -1;
   assert (ap_prc);
@@ -202,8 +201,9 @@ store_metadata (plex_prc_t * ap_prc, const char * ap_header_name,
       info_len = strnlen (ap_header_info, OMX_MAX_STRINGNAME_SIZE - 1) + 1;
       metadata_len = sizeof (OMX_CONFIG_METADATAITEMTYPE) + info_len;
 
-      if (NULL == (p_meta = (OMX_CONFIG_METADATAITEMTYPE *) tiz_mem_calloc (
-                     1, metadata_len)))
+      if (NULL
+          == (p_meta = (OMX_CONFIG_METADATAITEMTYPE *) tiz_mem_calloc (
+                1, metadata_len)))
         {
           rc = OMX_ErrorInsufficientResources;
         }
@@ -236,8 +236,8 @@ store_metadata (plex_prc_t * ap_prc, const char * ap_header_name,
 }
 
 static void
-obtain_audio_encoding_from_headers (plex_prc_t * ap_prc,
-                                    const char * ap_header, const size_t a_size)
+obtain_audio_encoding_from_headers (plex_prc_t * ap_prc, const char * ap_header,
+                                    const size_t a_size)
 {
   assert (ap_prc);
   assert (ap_header);
@@ -316,8 +316,8 @@ send_port_auto_detect_events (plex_prc_t * ap_prc)
       /* Oops... could not detect the stream format */
 
       /* We can make this 'true' to make sure this url will not get processed
-         again, by removing it from the playback queue. For now, let's try it
-         again in the next occasion... */
+           again, by removing it from the playback queue. For now, let's try it
+           again in the next occasion... */
       ap_prc->remove_current_url_ = false;
 
       /* Get ready to auto-detect another stream */
@@ -353,17 +353,16 @@ update_metadata (plex_prc_t * ap_prc)
 
   /* Playback queue progress */
   tiz_check_omx (store_metadata (
-    ap_prc, "Track #",
-    tiz_plex_get_current_queue_progress (ap_prc->p_plex_)));
+    ap_prc, "Track #", tiz_plex_get_current_queue_progress (ap_prc->p_plex_)));
 
   /* Album */
   tiz_check_omx (store_metadata (
-    ap_prc, "Album",
-    tiz_plex_get_current_audio_track_album (ap_prc->p_plex_)));
+    ap_prc, "Album", tiz_plex_get_current_audio_track_album (ap_prc->p_plex_)));
 
   /* Publication year */
   {
-    const char * p_year = tiz_plex_get_current_audio_track_year (ap_prc->p_plex_);
+    const char * p_year
+      = tiz_plex_get_current_audio_track_year (ap_prc->p_plex_);
     if (p_year && strncmp (p_year, "0", 4) != 0)
       {
         tiz_check_omx (store_metadata (ap_prc, "Published", p_year));
@@ -382,8 +381,7 @@ update_metadata (plex_prc_t * ap_prc)
 
   /* File Format */
   tiz_check_omx (store_metadata (
-    ap_prc, "Codec",
-    tiz_plex_get_current_audio_track_codec (ap_prc->p_plex_)));
+    ap_prc, "Codec", tiz_plex_get_current_audio_track_codec (ap_prc->p_plex_)));
 
   /* Signal that a new set of metadata items is available */
   (void) tiz_srv_issue_event ((OMX_PTR) ap_prc, OMX_EventIndexSettingChanged,
@@ -419,10 +417,10 @@ obtain_next_url (plex_prc_t * ap_prc, int a_skip_value)
 
   {
     const char * p_next_url
-      = a_skip_value > 0 ? tiz_plex_get_next_url (ap_prc->p_plex_,
-                                                    ap_prc->remove_current_url_)
-                         : tiz_plex_get_prev_url (
-                             ap_prc->p_plex_, ap_prc->remove_current_url_);
+      = a_skip_value > 0
+          ? tiz_plex_get_next_url (ap_prc->p_plex_, ap_prc->remove_current_url_)
+          : tiz_plex_get_prev_url (ap_prc->p_plex_,
+                                   ap_prc->remove_current_url_);
     ap_prc->remove_current_url_ = false;
     tiz_check_null_ret_oom (p_next_url);
 
@@ -500,9 +498,9 @@ release_buffer (plex_prc_t * ap_prc)
           ap_prc->p_outhdr_->nOffset = 0;
         }
 
-      tiz_check_omx (tiz_krn_release_buffer (
-        tiz_get_krn (handleOf (ap_prc)), ARATELIA_HTTP_SOURCE_PORT_INDEX,
-        ap_prc->p_outhdr_));
+      tiz_check_omx (tiz_krn_release_buffer (tiz_get_krn (handleOf (ap_prc)),
+                                             ARATELIA_HTTP_SOURCE_PORT_INDEX,
+                                             ap_prc->p_outhdr_));
       ap_prc->p_outhdr_ = NULL;
     }
   return OMX_ErrorNone;
@@ -587,8 +585,8 @@ data_available (OMX_PTR ap_arg, const void * ap_ptr, const size_t a_nbytes)
       pause_needed = true;
 
       /* And now trigger the OMX_EventPortFormatDetected and
-         OMX_EventPortSettingsChanged events or a
-         OMX_ErrorFormatNotDetected event */
+           OMX_EventPortSettingsChanged events or a
+           OMX_ErrorFormatNotDetected event */
       send_port_auto_detect_events (p_prc);
     }
   return pause_needed;
@@ -605,7 +603,7 @@ connection_lost (OMX_PTR ap_arg)
 
   p_prc->connection_closed_ = true;
   /* Return false to indicate that there is no need to start the automatic
-     reconnection procedure */
+       reconnection procedure */
   return false;
 }
 
@@ -623,9 +621,10 @@ prepare_for_port_auto_detection (plex_prc_t * ap_prc)
   ap_prc->auto_detect_on_
     = (OMX_AUDIO_CodingAutoDetect == ap_prc->audio_coding_type_) ? true : false;
 
-  TIZ_TRACE (
-    handleOf (ap_prc), "auto_detect_on_ [%s]...audio_coding_type_ [%s]",
-    ap_prc->auto_detect_on_ ? "true" : "false", tiz_audio_coding_to_str (ap_prc->audio_coding_type_));
+  TIZ_TRACE (handleOf (ap_prc),
+             "auto_detect_on_ [%s]...audio_coding_type_ [%s]",
+             ap_prc->auto_detect_on_ ? "true" : "false",
+             tiz_audio_coding_to_str (ap_prc->audio_coding_type_));
 
   return OMX_ErrorNone;
 }
@@ -649,7 +648,8 @@ retrieve_playlist (plex_prc_t * ap_prc)
 static OMX_ERRORTYPE
 retrieve_buffer_size (plex_prc_t * ap_prc)
 {
-  TIZ_INIT_OMX_PORT_STRUCT (ap_prc->buffer_size_, ARATELIA_HTTP_SOURCE_PORT_INDEX);
+  TIZ_INIT_OMX_PORT_STRUCT (ap_prc->buffer_size_,
+                            ARATELIA_HTTP_SOURCE_PORT_INDEX);
   return tiz_api_GetParameter (
     tiz_get_krn (handleOf (ap_prc)), handleOf (ap_prc),
     OMX_TizoniaIndexParamStreamingBuffer, &(ap_prc->buffer_size_));
@@ -669,7 +669,7 @@ enqueue_playlist_items (plex_prc_t * ap_prc)
 
     tiz_plex_set_playback_mode (
       ap_prc->p_plex_, (shuffle == OMX_TRUE ? ETIZPlexPlaybackModeShuffle
-                                              : ETIZPlexPlaybackModeNormal));
+                                            : ETIZPlexPlaybackModeNormal));
 
     switch (ap_prc->playlist_.ePlaylistType)
       {
@@ -735,7 +735,7 @@ plex_prc_ctor (void * ap_obj, va_list * app)
   p_prc->auto_detect_on_ = false;
   p_prc->bitrate_ = ARATELIA_HTTP_SOURCE_DEFAULT_BIT_RATE_KBITS;
   p_prc->buffer_bytes_ = ((p_prc->bitrate_ * 1000) / 8)
-    * ARATELIA_HTTP_SOURCE_DEFAULT_BUFFER_SECONDS_PLEX;
+                         * ARATELIA_HTTP_SOURCE_DEFAULT_BUFFER_SECONDS_PLEX;
   p_prc->remove_current_url_ = false;
   p_prc->connection_closed_ = false;
   return p_prc;
@@ -763,8 +763,8 @@ plex_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
   tiz_check_omx (retrieve_buffer_size (p_prc));
   if (p_prc->buffer_size_.nCapacity)
     {
-      p_prc->buffer_bytes_ = ((p_prc->bitrate_ * 1000) / 8)
-        * p_prc->buffer_size_.nCapacity;
+      p_prc->buffer_bytes_
+        = ((p_prc->bitrate_ * 1000) / 8) * p_prc->buffer_size_.nCapacity;
     }
 
   on_plex_error_ret_omx_oom (
@@ -787,12 +787,11 @@ plex_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
       = {tiz_srv_timer_watcher_init, tiz_srv_timer_watcher_destroy,
          tiz_srv_timer_watcher_start, tiz_srv_timer_watcher_stop,
          tiz_srv_timer_watcher_restart};
-    rc
-      = tiz_urltrans_init (&(p_prc->p_trans_), p_prc, p_prc->p_uri_param_,
-                           ARATELIA_HTTP_SOURCE_COMPONENT_NAME,
-                           p_prc->buffer_bytes_,
-                           ARATELIA_HTTP_SOURCE_DEFAULT_RECONNECT_TIMEOUT,
-                           buffer_cbacks, info_cbacks, io_cbacks, timer_cbacks);
+    rc = tiz_urltrans_init (
+      &(p_prc->p_trans_), p_prc, p_prc->p_uri_param_,
+      ARATELIA_HTTP_SOURCE_COMPONENT_NAME, p_prc->buffer_bytes_,
+      ARATELIA_HTTP_SOURCE_DEFAULT_RECONNECT_TIMEOUT, buffer_cbacks,
+      info_cbacks, io_cbacks, timer_cbacks);
   }
   return rc;
 }
@@ -861,7 +860,7 @@ plex_prc_buffers_ready (const void * ap_prc)
 
 static OMX_ERRORTYPE
 plex_prc_io_ready (void * ap_prc, tiz_event_io_t * ap_ev_io, int a_fd,
-                     int a_events)
+                   int a_events)
 {
   plex_prc_t * p_prc = ap_prc;
   assert (p_prc);
@@ -870,7 +869,7 @@ plex_prc_io_ready (void * ap_prc, tiz_event_io_t * ap_ev_io, int a_fd,
 
 static OMX_ERRORTYPE
 plex_prc_timer_ready (void * ap_prc, tiz_event_timer_t * ap_ev_timer,
-                        void * ap_arg, const uint32_t a_id)
+                      void * ap_arg, const uint32_t a_id)
 {
   plex_prc_t * p_prc = ap_prc;
   assert (p_prc);
@@ -939,7 +938,7 @@ plex_prc_port_enable (const void * ap_prc, OMX_U32 a_pid)
 
 static OMX_ERRORTYPE
 plex_prc_config_change (void * ap_prc, OMX_U32 TIZ_UNUSED (a_pid),
-                          OMX_INDEXTYPE a_config_idx)
+                        OMX_INDEXTYPE a_config_idx)
 {
   plex_prc_t * p_prc = ap_prc;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
@@ -955,13 +954,13 @@ plex_prc_config_change (void * ap_prc, OMX_U32 TIZ_UNUSED (a_pid),
       p_prc->playlist_skip_.nValue > 0 ? obtain_next_url (p_prc, 1)
                                        : obtain_next_url (p_prc, -1);
       /* Changing the URL has the side effect of halting the current
-         download */
+           download */
       tiz_urltrans_set_uri (p_prc->p_trans_, p_prc->p_uri_param_);
 
       if (p_prc->port_disabled_)
         {
           /* Record that the URI has changed, so that when the port is
-             re-enabled, we restart the transfer */
+               re-enabled, we restart the transfer */
           p_prc->uri_changed_ = true;
         }
 

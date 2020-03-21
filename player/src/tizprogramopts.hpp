@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -93,24 +93,25 @@ namespace tiz
     OMX_TIZONIA_AUDIO_GMUSICPLAYLISTTYPE gmusic_playlist_type ();
     const std::string &gmusic_additional_keywords () const;
     bool gmusic_is_unlimited_search () const;
-    uint32_t gmusic_buffer_seconds() const;
+    uint32_t gmusic_buffer_seconds () const;
     const std::string &scloud_oauth_token () const;
     const std::vector< std::string > &scloud_playlist_container ();
     OMX_TIZONIA_AUDIO_SOUNDCLOUDPLAYLISTTYPE scloud_playlist_type ();
-    uint32_t scloud_buffer_seconds() const;
-//     const std::string &dirble_api_key () const;
-//     const std::vector< std::string > &dirble_playlist_container ();
-//     OMX_TIZONIA_AUDIO_DIRBLEPLAYLISTTYPE dirble_playlist_type ();
-//     uint32_t dirble_buffer_seconds() const;
+    uint32_t scloud_buffer_seconds () const;
+    const std::vector< std::string > &tunein_playlist_container ();
+    OMX_TIZONIA_AUDIO_TUNEINPLAYLISTTYPE tunein_playlist_type ();
+    OMX_TIZONIA_AUDIO_TUNEINSEARCHTYPE tunein_search_type ();
+    uint32_t tunein_buffer_seconds () const;
     const std::vector< std::string > &youtube_playlist_container ();
     OMX_TIZONIA_AUDIO_YOUTUBEPLAYLISTTYPE youtube_playlist_type ();
-    uint32_t youtube_buffer_seconds() const;
+    const std::string &youtube_api_key () const;
+    uint32_t youtube_buffer_seconds () const;
     const std::string &plex_base_url () const;
     const std::string &plex_token () const;
     const std::string &plex_section () const;
     const std::vector< std::string > &plex_playlist_container ();
     OMX_TIZONIA_AUDIO_PLEXPLAYLISTTYPE plex_playlist_type ();
-    uint32_t plex_buffer_seconds() const;
+    uint32_t plex_buffer_seconds () const;
 
   private:
     void print_usage_feature (
@@ -127,7 +128,7 @@ namespace tiz
     void init_spotify_options ();
     void init_gmusic_options ();
     void init_scloud_options ();
-//     void init_dirble_options ();
+    void init_tunein_options ();
     void init_youtube_options ();
     void init_plex_options ();
     void init_input_uri_option ();
@@ -135,7 +136,7 @@ namespace tiz
     uint32_t parse_command_line (int argc, char *argv[]);
 
     typedef int (tiz::programopts::*consume_mem_fn_t) (bool &, std::string &);
-    typedef boost::function< int(bool &, std::string &) > consume_function_t;
+    typedef boost::function< int (bool &, std::string &) > consume_function_t;
 
     int consume_debug_options (bool &done, std::string &msg);
     int consume_global_options (bool &done, std::string &msg);
@@ -145,7 +146,7 @@ namespace tiz
     int consume_spotify_client_options (bool &done, std::string &msg);
     int consume_gmusic_client_options (bool &done, std::string &msg);
     int consume_scloud_client_options (bool &done, std::string &msg);
-//     int consume_dirble_client_options (bool &done, std::string &msg);
+    int consume_tunein_client_options (bool &done, std::string &msg);
     int consume_youtube_client_options (bool &done, std::string &msg);
     int consume_plex_client_options (bool &done, std::string &msg);
     int consume_local_decode_options (bool &done, std::string &msg);
@@ -157,7 +158,7 @@ namespace tiz
     bool validate_spotify_client_options () const;
     bool validate_gmusic_client_options () const;
     bool validate_scloud_client_options () const;
-//     bool validate_dirble_client_options () const;
+    bool validate_tunein_client_options () const;
     bool validate_youtube_client_options () const;
     bool validate_plex_client_options () const;
     bool validate_port_argument (std::string &msg) const;
@@ -181,7 +182,7 @@ namespace tiz
     boost::program_options::options_description spotify_;
     boost::program_options::options_description gmusic_;
     boost::program_options::options_description scloud_;
-//     boost::program_options::options_description dirble_;
+    boost::program_options::options_description tunein_;
     boost::program_options::options_description youtube_;
     boost::program_options::options_description plex_;
     boost::program_options::options_description chromecast_;
@@ -266,14 +267,21 @@ namespace tiz
     std::vector< std::string > scloud_playlist_container_;
     OMX_TIZONIA_AUDIO_SOUNDCLOUDPLAYLISTTYPE scloud_playlist_type_;
     uint32_t scloud_buffer_seconds_;
-//     std::string dirble_api_key_;
-//     std::string dirble_popular_stations_;
-//     std::string dirble_stations_;
-//     std::string dirble_category_;
-//     std::string dirble_country_;
-//     std::vector< std::string > dirble_playlist_container_;
-//     OMX_TIZONIA_AUDIO_DIRBLEPLAYLISTTYPE dirble_playlist_type_;
-//     uint32_t dirble_buffer_seconds_;
+    std::string tunein_search_;
+    std::string tunein_category_;
+    std::string tunein_local_;
+    std::string tunein_music_;
+    std::string tunein_talk_;
+    std::string tunein_sports_;
+    std::string tunein_location_;
+    std::string tunein_podcasts_;
+    std::string tunein_trending_;
+    std::string tunein_search_type_filter_;
+    std::vector< std::string > tunein_keywords_;
+    std::vector< std::string > tunein_playlist_container_;
+    OMX_TIZONIA_AUDIO_TUNEINPLAYLISTTYPE tunein_playlist_type_;
+    OMX_TIZONIA_AUDIO_TUNEINSEARCHTYPE tunein_search_type_;
+    uint32_t tunein_buffer_seconds_;
     std::string youtube_audio_stream_;
     std::string youtube_audio_playlist_;
     std::string youtube_audio_mix_;
@@ -283,6 +291,7 @@ namespace tiz
     std::string youtube_audio_channel_playlist_;
     std::vector< std::string > youtube_playlist_container_;
     OMX_TIZONIA_AUDIO_YOUTUBEPLAYLISTTYPE youtube_playlist_type_;
+    std::string youtube_api_key_;
     uint32_t youtube_buffer_seconds_;
     std::string plex_base_url_;
     std::string plex_token_;
@@ -304,11 +313,11 @@ namespace tiz
     std::vector< std::string > all_spotify_client_options_;
     std::vector< std::string > all_gmusic_client_options_;
     std::vector< std::string > all_scloud_client_options_;
-//     std::vector< std::string > all_dirble_client_options_;
+    std::vector< std::string > all_tunein_client_options_;
     std::vector< std::string > all_youtube_client_options_;
     std::vector< std::string > all_plex_client_options_;
     std::vector< std::string > all_input_uri_options_;
     std::vector< std::string > all_given_options_;
   };
-}
+}  // namespace tiz
 #endif  // TIZPROGRAMOPTS_HPP

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,7 +30,8 @@
 #define TIZFILTERPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_Core.h>
@@ -39,37 +40,37 @@ extern "C" {
 
 #include "tizprc_decls.h"
 
-typedef struct tiz_filter_prc tiz_filter_prc_t;
-struct tiz_filter_prc
-{
-  /* Object */
-  const tiz_prc_t _;
-  tiz_vector_t * p_hdrs_;
-  tiz_vector_t * p_disabled_flags_;
-  tiz_vector_t * p_port_dirs_;
-  bool eos_;
-};
+  typedef struct tiz_filter_prc tiz_filter_prc_t;
+  struct tiz_filter_prc
+  {
+    /* Object */
+    const tiz_prc_t _;
+    tiz_vector_t * p_hdrs_;
+    tiz_vector_t * p_disabled_flags_;
+    tiz_vector_t * p_port_dirs_;
+    bool eos_;
+  };
 
-typedef struct tiz_filter_prc_class tiz_filter_prc_class_t;
-struct tiz_filter_prc_class
-{
-  /* Class */
-  const tiz_prc_class_t _;
-  OMX_BUFFERHEADERTYPE ** (*get_header_ptr) (void * ap_obj,
-                                             const OMX_U32 a_pid);
-  OMX_BUFFERHEADERTYPE * (*get_header) (void * ap_obj, const OMX_U32 a_pid);
-  bool (*headers_available) (const void * ap_obj);
-  bool (*output_headers_available) (const void * ap_obj);
-  OMX_ERRORTYPE (*release_header) (void * ap_obj, const OMX_U32 a_pid);
-  OMX_ERRORTYPE (*release_all_headers) (void * ap_obj);
-  bool * (*get_port_disabled_ptr) (void * ap_obj, const OMX_U32 a_pid);
-  bool (*is_port_disabled) (void * ap_obj, const OMX_U32 a_pid);
-  bool (*is_port_enabled) (void * ap_obj, const OMX_U32 a_pid);
-  bool (*is_eos) (const void * ap_obj);
-  void (*update_eos_flag) (void * ap_obj, const bool flag);
-  void (*update_port_disabled_flag) (void * ap_obj, const OMX_U32 a_pid,
-                                     const bool flag);
-};
+  typedef struct tiz_filter_prc_class tiz_filter_prc_class_t;
+  struct tiz_filter_prc_class
+  {
+    /* Class */
+    const tiz_prc_class_t _;
+    OMX_BUFFERHEADERTYPE ** (*get_header_ptr) (void * ap_obj,
+                                               const OMX_U32 a_pid);
+    OMX_BUFFERHEADERTYPE * (*get_header) (void * ap_obj, const OMX_U32 a_pid);
+    bool (*headers_available) (const void * ap_obj);
+    bool (*output_headers_available) (const void * ap_obj);
+    OMX_ERRORTYPE (*release_header) (void * ap_obj, const OMX_U32 a_pid);
+    OMX_ERRORTYPE (*release_all_headers) (void * ap_obj);
+    bool * (*get_port_disabled_ptr) (void * ap_obj, const OMX_U32 a_pid);
+    bool (*is_port_disabled) (void * ap_obj, const OMX_U32 a_pid);
+    bool (*is_port_enabled) (void * ap_obj, const OMX_U32 a_pid);
+    bool (*is_eos) (const void * ap_obj);
+    void (*update_eos_flag) (void * ap_obj, const bool flag);
+    void (*update_port_disabled_flag) (void * ap_obj, const OMX_U32 a_pid,
+                                       const bool flag);
+  };
 
 #ifdef __cplusplus
 }

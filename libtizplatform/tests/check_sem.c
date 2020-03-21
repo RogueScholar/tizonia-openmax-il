@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -36,7 +36,6 @@ START_TEST (test_sem_init_and_destroy)
   fail_if (error != OMX_ErrorNone);
 
   tiz_sem_destroy (&sem);
-
 }
 END_TEST
 
@@ -53,14 +52,13 @@ START_TEST (test_sem_post_and_wait)
   tiz_sem_wait (&sem);
 
   tiz_sem_destroy (&sem);
-
 }
 END_TEST
 
 START_TEST (test_sem_init_null)
 {
   OMX_ERRORTYPE error = tiz_sem_init (0, 0);
-  (void)error;
+  (void) error;
 }
 END_TEST
 
@@ -74,14 +72,14 @@ END_TEST
 START_TEST (test_sem_wait_null)
 {
   OMX_ERRORTYPE error = tiz_sem_wait (0);
-  (void)error;
+  (void) error;
 }
 END_TEST
 
 START_TEST (test_sem_post_null)
 {
   OMX_ERRORTYPE error = tiz_sem_post (0);
-  (void)error;
+  (void) error;
 }
 END_TEST
 
@@ -91,4 +89,3 @@ END_TEST
 /* indent-tabs-mode: nil */
 /* compile-command: "make check" */
 /* End: */
-

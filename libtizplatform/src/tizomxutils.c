@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -641,10 +641,10 @@ static const tiz_idx_str_t tiz_idx_to_str_tbl[] = {
    (const OMX_STRING) "OMX_TizoniaIndexParamAudioSoundCloudSession"},
   {OMX_TizoniaIndexParamAudioSoundCloudPlaylist,
    (const OMX_STRING) "OMX_TizoniaIndexParamAudioSoundCloudPlaylist"},
-  {OMX_TizoniaIndexParamAudioDirbleSession,
-   (const OMX_STRING) "OMX_TizoniaIndexParamAudioDirbleSession"},
-  {OMX_TizoniaIndexParamAudioDirblePlaylist,
-   (const OMX_STRING) "OMX_TizoniaIndexParamAudioDirblePlaylist"},
+  {OMX_TizoniaIndexParamAudioTuneinSession,
+   (const OMX_STRING) "OMX_TizoniaIndexParamAudioTuneinSession"},
+  {OMX_TizoniaIndexParamAudioTuneinPlaylist,
+   (const OMX_STRING) "OMX_TizoniaIndexParamAudioTuneinPlaylist"},
   {OMX_TizoniaIndexParamAudioYoutubeSession,
    (const OMX_STRING) "OMX_TizoniaIndexParamAudioYoutubeSession"},
   {OMX_TizoniaIndexParamAudioYoutubePlaylist,
@@ -800,7 +800,8 @@ tiz_dir_to_str (OMX_DIRTYPE a_dir)
 /*@observer@*/ OMX_STRING
 tiz_domain_to_str (OMX_PORTDOMAINTYPE a_domain)
 {
-  const size_t count = sizeof (tiz_domain_to_str_tbl) / sizeof (tiz_domain_str_t);
+  const size_t count
+    = sizeof (tiz_domain_to_str_tbl) / sizeof (tiz_domain_str_t);
   size_t i = 0;
 
   for (i = 0; i < count; ++i)

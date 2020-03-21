@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -29,13 +29,12 @@
 START_TEST (test_mem_alloc_and_free)
 {
 
-  int *p_item = NULL;
+  int * p_item = NULL;
   p_item = (int *) tiz_mem_alloc (sizeof (int));
 
   fail_if (p_item == NULL);
 
   tiz_mem_free (p_item);
-
 }
 END_TEST
 

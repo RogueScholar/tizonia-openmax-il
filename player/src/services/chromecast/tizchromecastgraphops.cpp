@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -43,14 +43,14 @@
 
 #include "tizchromecastconfig.hpp"
 #include "tizchromecastgraphops.hpp"
-// #include <tizdirbleconfig.hpp>
 #include <tizgmusicconfig.hpp>
 #include <tizgraph.hpp>
 #include <tizgraphutil.hpp>
+#include <tizplexconfig.hpp>
 #include <tizprobe.hpp>
 #include <tizscloudconfig.hpp>
+#include <tiztuneinconfig.hpp>
 #include <tizyoutubeconfig.hpp>
-#include <tizplexconfig.hpp>
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -65,9 +65,9 @@ typedef tiz::graph::chromecastconfig cc_cfg_t;
 //
 // chromecastops
 //
-graph::chromecastops::chromecastops (graph* p_graph,
-                                     const omx_comp_name_lst_t& comp_lst,
-                                     const omx_comp_role_lst_t& role_lst)
+graph::chromecastops::chromecastops (graph *p_graph,
+                                     const omx_comp_name_lst_t &comp_lst,
+                                     const omx_comp_role_lst_t &role_lst)
   : tiz::graph::ops (p_graph, comp_lst, role_lst),
     encoding_ (OMX_AUDIO_CodingAutoDetect),
     config_service_func_ (),
@@ -109,12 +109,12 @@ void graph::chromecastops::do_load ()
     config_service_func_
         = boost::bind (&tiz::graph::chromecastops::do_configure_scloud, this);
   }
-//   else if (config_type == cc_cfg_t::ConfigDirble)
-//   {
-//     role_lst_.push_back ("audio_renderer.chromecast.dirble");
-//     config_service_func_
-//         = boost::bind (&tiz::graph::chromecastops::do_configure_dirble, this);
-//   }
+  else if (config_type == cc_cfg_t::ConfigTunein)
+  {
+    role_lst_.push_back ("audio_renderer.chromecast.tunein");
+    config_service_func_
+        = boost::bind (&tiz::graph::chromecastops::do_configure_tunein, this);
+  }
   else if (config_type == cc_cfg_t::ConfigYouTube)
   {
     role_lst_.push_back ("audio_renderer.chromecast.youtube");
@@ -157,7 +157,7 @@ void graph::chromecastops::do_skip ()
   {
     assert (!handles_.empty ());
     // This is to provide some separation between tracks infos on the console
-    std::cout <<  std::endl << std::endl;
+    std::cout << std::endl << std::endl;
     G_OPS_BAIL_IF_ERROR (util::apply_playlist_jump (handles_[0], jump_),
                          "Unable to skip in playlist");
     // Reset the jump value, to its default value
@@ -170,8 +170,7 @@ void graph::chromecastops::do_retrieve_metadata ()
   OMX_U32 index = 0;
   const int chromecast_index = 0;
   // Extract metadata from the chromecast source
-  while (OMX_ErrorNone
-      == dump_metadata_item (index++, chromecast_index))
+  while (OMX_ErrorNone == dump_metadata_item (index++, chromecast_index))
   {
   };
 }
@@ -220,15 +219,18 @@ graph::chromecastops::dump_metadata_item (
     {
       if (isspace (p_meta->nKey[0]) && isspace (p_meta->nKey[1]))
       {
-        TIZ_PRINTF_GRN ("   %s : %s\n", p_meta->nKey, p_meta->nValue);
+        printf ("   ");
+        TIZ_PRINTF_C02 ("%s : %s", p_meta->nKey, p_meta->nValue);
       }
       else if (0 == index && use_first_as_heading)
       {
-        TIZ_PRINTF_YEL ("   %s : %s\n", p_meta->nKey, p_meta->nValue);
+        printf ("   ");
+        TIZ_PRINTF_C03 ("%s : %s", p_meta->nKey, p_meta->nValue);
       }
       else
       {
-        TIZ_PRINTF_CYN ("     %s : %s\n", p_meta->nKey, p_meta->nValue);
+        printf ("     ");
+        TIZ_PRINTF_C06 ("%s : %s", p_meta->nKey, p_meta->nValue);
       }
     }
 
@@ -266,8 +268,7 @@ void graph::chromecastops::do_configure_chromecast ()
 void graph::chromecastops::do_configure_http ()
 {
   assert (cc_config_);
-  tizgraphconfig_ptr_t config
-      = cc_config_->get_service_config ();
+  tizgraphconfig_ptr_t config = cc_config_->get_service_config ();
 
   assert (config);
   tizplaylist_ptr_t playlist = config_->get_playlist ();
@@ -320,24 +321,21 @@ void graph::chromecastops::do_configure_scloud ()
       "Unable to set OMX_TizoniaIndexParamAudioSoundCloudPlaylist");
 }
 
-// void graph::chromecastops::do_configure_dirble ()
-// {
-//   assert (cc_config_);
-//   tizdirbleconfig_ptr_t dirble_config
-//       = boost::dynamic_pointer_cast< dirbleconfig > (
-//           cc_config_->get_service_config ());
-//   assert (dirble_config);
+void graph::chromecastops::do_configure_tunein ()
+{
+  assert (cc_config_);
+  tiztuneinconfig_ptr_t tunein_config
+      = boost::dynamic_pointer_cast< tuneinconfig > (
+          cc_config_->get_service_config ());
+  assert (tunein_config);
 
-//   G_OPS_BAIL_IF_ERROR (tiz::graph::util::set_dirble_api_key (
-//                            handles_[0], dirble_config->get_api_key ()),
-//                        "Unable to set OMX_TizoniaIndexParamAudioDirbleSession");
-
-//   G_OPS_BAIL_IF_ERROR (
-//       tiz::graph::util::set_dirble_playlist (
-//           handles_[0], playlist_->get_current_uri (),
-//           dirble_config->get_playlist_type (), playlist_->shuffle ()),
-//       "Unable to set OMX_TizoniaIndexParamAudioDirblePlaylist");
-// }
+  G_OPS_BAIL_IF_ERROR (
+      tiz::graph::util::set_tunein_playlist (
+          handles_[0], playlist_->get_uri_list (),
+          tunein_config->get_playlist_type (),
+          tunein_config->get_search_type (), playlist_->shuffle ()),
+      "Unable to set OMX_TizoniaIndexParamAudioTuneinPlaylist");
+}
 
 void graph::chromecastops::do_configure_youtube ()
 {
@@ -357,9 +355,8 @@ void graph::chromecastops::do_configure_youtube ()
 void graph::chromecastops::do_configure_plex ()
 {
   assert (cc_config_);
-  tizplexconfig_ptr_t plex_config
-      = boost::dynamic_pointer_cast< plexconfig > (
-          cc_config_->get_service_config ());
+  tizplexconfig_ptr_t plex_config = boost::dynamic_pointer_cast< plexconfig > (
+      cc_config_->get_service_config ());
   assert (plex_config);
 
   G_OPS_BAIL_IF_ERROR (

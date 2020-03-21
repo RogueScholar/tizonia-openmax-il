@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -33,8 +33,8 @@
 
 #include <OMX_TizoniaExt.h>
 
-#include "tizgraphtypes.hpp"
 #include "tizgraphconfig.hpp"
+#include "tizgraphtypes.hpp"
 
 namespace tiz
 {

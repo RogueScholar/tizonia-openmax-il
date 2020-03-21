@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -40,11 +41,11 @@ public:
    * Various playback modes that control the playback queue.
    */
   enum playback_mode
-    {
-      PlaybackModeNormal,
-      PlaybackModeShuffle,
-      PlaybackModeMax
-    };
+  {
+    PlaybackModeNormal,
+    PlaybackModeShuffle,
+    PlaybackModeMax
+  };
 
 public:
   tizsoundcloud (const std::string &oauth_token);
@@ -67,16 +68,16 @@ public:
   void clear_queue ();
   void set_playback_mode (const playback_mode mode);
 
-  const char * get_next_url ();
-  const char * get_prev_url ();
-  const char * get_current_track_user ();
-  const char * get_current_track_title ();
-  const char * get_current_track_duration ();
-  const char * get_current_track_year ();
-  const char * get_current_track_permalink ();
-  const char * get_current_track_license ();
-  const char * get_current_track_likes ();
-  const char * get_current_track_user_avatar ();
+  const char *get_next_url ();
+  const char *get_prev_url ();
+  const char *get_current_track_user ();
+  const char *get_current_track_title ();
+  const char *get_current_track_duration ();
+  const char *get_current_track_year ();
+  const char *get_current_track_permalink ();
+  const char *get_current_track_license ();
+  const char *get_current_track_likes ();
+  const char *get_current_track_user_avatar ();
 
 private:
   void get_current_track ();

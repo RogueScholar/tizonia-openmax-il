@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -16,7 +16,7 @@
 # along with Tizonia.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_PREREQ([2.67])
-AC_INIT([tizplatform], [0.19.0], [juan.rubio@aratelia.com])
+AC_INIT([tizplatform], [0.21.0], [juan.rubio@aratelia.com])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE([foreign color-tests silent-rules subdir-objects -Wall])
 AC_CONFIG_SRCDIR([config.h.in])
@@ -43,7 +43,7 @@ AC_CONFIG_MACRO_DIR([m4])
 #     then set AGE to 0.                                                       #
 #                                                                              #
 ################################################################################
-SHARED_VERSION_INFO="0:19:0"
+SHARED_VERSION_INFO="0:21:0"
 SHLIB_VERSION_ARG=""
 
 AC_SUBST(SHLIB_VERSION_ARG)
@@ -73,6 +73,14 @@ PKG_CHECK_MODULES([CHECK], [check >= 0.9.4])
 # NOTE: Look for libcurl 7.18.0. Before this version, there was no explicit
 # support for pausing transfers.
 PKG_CHECK_MODULES([LIBCURL], [libcurl >= 7.18.0])
+
+AC_CHECK_LIB([ev], [ev_loop_new],libev_found="yes",
+                   AC_MSG_WARN([System libev not found; it's Internally embedded for now. Please note that libev will soon be required to build libtizplatform.]))
+if test "${libev_found}" = "yes"; then
+	AC_CHECK_HEADERS([ev.h])
+	AC_DEFINE_UNQUOTED([HAVE_SYSTEM_LIBEV],[1],[libev flag])
+fi
+AM_CONDITIONAL(HAVE_SYSTEM_LIBEV, test "x$libev_found" = xyes)
 
 AC_CHECK_HEADERS([tizonia/OMX_Core.h tizonia/OMX_Component.h],
 	[tizrmd_found_omx_headers=yes; break;])

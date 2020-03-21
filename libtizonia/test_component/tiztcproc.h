@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -34,11 +34,13 @@ extern "C"
 {
 #endif
 
-  void * tiz_tcprc_class_init (void * ap_tos, void * ap_hdl);
-  void * tiz_tcprc_init (void * ap_tos, void * ap_hdl);
+  void *
+  tiz_tcprc_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  tiz_tcprc_init (void * ap_tos, void * ap_hdl);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* TIZTCPROC_H */
+#endif /* TIZTCPROC_H */

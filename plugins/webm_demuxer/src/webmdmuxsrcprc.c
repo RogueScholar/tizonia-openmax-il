@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -366,10 +366,11 @@ buffer_emptied (OMX_PTR ap_arg)
         }
       else
         {
-          if (OMX_ErrorNone == (tiz_krn_claim_buffer (
-                                 tiz_get_krn (handleOf (p_prc)),
-                                 ARATELIA_WEBM_DEMUXER_SOURCE_PORT_0_INDEX, 0,
-                                 &p_prc->p_outhdr_)))
+          if (OMX_ErrorNone
+              == (tiz_krn_claim_buffer (
+                tiz_get_krn (handleOf (p_prc)),
+                ARATELIA_WEBM_DEMUXER_SOURCE_PORT_0_INDEX, 0,
+                &p_prc->p_outhdr_)))
             {
               if (p_prc->p_outhdr_)
                 {
@@ -417,7 +418,7 @@ data_available (OMX_PTR ap_arg, const void * ap_ptr, const size_t a_nbytes)
   /*           /\* Try to identify the actual codec from the ogg stream *\/ */
   /*           p_prc->audio_coding_type_ */
   /*             = identify_ogg_codec (p_prc, (unsigned char *)ap_ptr,
-   * a_nbytes); */
+     * a_nbytes); */
   /*           if (OMX_AUDIO_CodingUnused != p_prc->audio_coding_type_) */
   /*             { */
   /*               set_audio_coding_on_port (p_prc); */
@@ -439,7 +440,7 @@ connection_lost (OMX_PTR ap_arg)
   /*   assert (p_prc); */
   /*   prepare_for_port_auto_detection (p_prc); */
   /* Return true to indicate that the automatic reconnection procedure needs to
-     be started */
+       be started */
   return true;
 }
 

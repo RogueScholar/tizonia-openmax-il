@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -108,7 +108,7 @@ instantiate_audio_input_port (OMX_HANDLETYPE ap_hdl, const OMX_U32 port_id)
 
   /* Instantiate the muxer port as an OPUS audio port */
   /* For now, this is the only audio encoding type supported in this muxer
-     component */
+       component */
 
   opustype.nSize = sizeof (OMX_TIZONIA_AUDIO_PARAM_OPUSTYPE);
   opustype.nVersion.nVersion = OMX_VERSION;
@@ -163,12 +163,12 @@ instantiate_video_input_port (OMX_HANDLETYPE ap_hdl, const OMX_U32 port_id)
   };
 
   /* The muxer port expects to receive raw the same structures as in a normal
-     raw video port when instantiated as a video domain port */
+       raw video port when instantiated as a video domain port */
 
   /* NOTE: No defaults are defined in the standard for the video
-   * output port of the video_reader.muxer component. So for the
-   * sake of completeness, simply provide some default values
-   * here. */
+     * output port of the video_reader.muxer component. So for the
+     * sake of completeness, simply provide some default values
+     * here. */
 
   portdef.pNativeRender = NULL;
   portdef.nFrameWidth = 176;

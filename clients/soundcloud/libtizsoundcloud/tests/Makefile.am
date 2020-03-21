@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -28,4 +28,3 @@ check_tizsoundcloud_CFLAGS = \
 check_tizsoundcloud_LDADD = \
 	$(top_builddir)/src/libtizsoundcloud.la \
 	@CHECK_LIBS@
-

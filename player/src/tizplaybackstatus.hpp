@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -34,24 +34,25 @@ namespace tiz
   namespace control
   {
     enum playback_status_t
-      {
-        // A track is currently playing.
-        Playing,
-        // A track is currently paused.
-        Paused,
-        // There is no track currently playing.
-        Stopped
-      };
+    {
+      // A track is currently playing.
+      Playing,
+      // A track is currently paused.
+      Paused,
+      // There is no track currently playing.
+      Stopped
+    };
 
     enum loop_status_t
-      {
-        // The playback will stop when there are no more tracks to play.
-        None,
-        // The current track will start again from the begining once it has finished playing
-        Track,
-        // The playback loops through a list of tracks
-        Playlist
-      };
+    {
+      // The playback will stop when there are no more tracks to play.
+      None,
+      // The current track will start again from the begining once it has
+      // finished playing
+      Track,
+      // The playback loops through a list of tracks
+      Playlist
+    };
   }  // namespace control
 }  // namespace tiz
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -57,13 +57,12 @@
 #define TC_PORT_ALIGNMENT 0
 #define TC_PORT_SUPPLIERPREF OMX_BufferSupplyInput
 
-static OMX_VERSIONTYPE tc_comp_version = { {1, 0, 0, 0} };
+static OMX_VERSIONTYPE tc_comp_version = {{1, 0, 0, 0}};
 
 static OMX_U8 *
-pcm_port_alloc_hook (OMX_U32 * ap_size,
-                     OMX_PTR * app_port_priv, void *ap_args)
+pcm_port_alloc_hook (OMX_U32 * ap_size, OMX_PTR * app_port_priv, void * ap_args)
 {
-  OMX_U8 *p = NULL;
+  OMX_U8 * p = NULL;
   assert (ap_size);
   p = tiz_mem_alloc (*ap_size * sizeof (OMX_U8));
   TIZ_LOG (TIZ_PRIORITY_TRACE, "Test Component Alloc Hook :size[%u] p=[%p]",
@@ -72,7 +71,7 @@ pcm_port_alloc_hook (OMX_U32 * ap_size,
 }
 
 static void
-pcm_port_free_hook (OMX_PTR ap_buf, OMX_PTR ap_port_priv, void *ap_args)
+pcm_port_free_hook (OMX_PTR ap_buf, OMX_PTR ap_port_priv, void * ap_args)
 {
   TIZ_LOG (TIZ_PRIORITY_TRACE, "Test Component Free Hook : ap_buf[%p]", ap_buf);
   assert (ap_buf);
@@ -80,9 +79,8 @@ pcm_port_free_hook (OMX_PTR ap_buf, OMX_PTR ap_port_priv, void *ap_args)
 }
 
 static OMX_BOOL
-egl_image_validation_hook (const OMX_HANDLETYPE ap_hdl,
-                           OMX_U32 pid, OMX_PTR ap_eglimage,
-                           void *ap_args)
+egl_image_validation_hook (const OMX_HANDLETYPE ap_hdl, OMX_U32 pid,
+                           OMX_PTR ap_eglimage, void * ap_args)
 {
   assert (ap_hdl);
   assert (ap_eglimage);
@@ -98,50 +96,46 @@ instantiate_pcm_port (OMX_HANDLETYPE ap_hdl)
   OMX_AUDIO_PARAM_PCMMODETYPE pcmmode;
   OMX_AUDIO_CONFIG_VOLUMETYPE volume;
   OMX_AUDIO_CONFIG_MUTETYPE mute;
-  OMX_AUDIO_CODINGTYPE encodings[] = {
-    OMX_AUDIO_CodingPCM,
-    OMX_AUDIO_CodingMax
-  };
-  tiz_port_options_t port_opts = {
-    OMX_PortDomainAudio,
-    OMX_DirInput,
-    TC_PORT_MIN_BUF_COUNT,
-    TC_PORT_MIN_BUF_SIZE,
-    TC_PORT_NONCONTIGUOUS,
-    TC_PORT_ALIGNMENT,
-    TC_PORT_SUPPLIERPREF,
-    {0, pcm_port_alloc_hook, pcm_port_free_hook, NULL},
-    -1
-  };
+  OMX_AUDIO_CODINGTYPE encodings[] = {OMX_AUDIO_CodingPCM, OMX_AUDIO_CodingMax};
+  tiz_port_options_t port_opts
+    = {OMX_PortDomainAudio,
+       OMX_DirInput,
+       TC_PORT_MIN_BUF_COUNT,
+       TC_PORT_MIN_BUF_SIZE,
+       TC_PORT_NONCONTIGUOUS,
+       TC_PORT_ALIGNMENT,
+       TC_PORT_SUPPLIERPREF,
+       {0, pcm_port_alloc_hook, pcm_port_free_hook, NULL},
+       -1};
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "Inititializing the test component's pcm port");
 
   /* Instantiate the pcm port */
-  pcmmode.nSize              = sizeof (OMX_AUDIO_PARAM_PCMMODETYPE);
-  pcmmode.nVersion.nVersion  = OMX_VERSION;
-  pcmmode.nPortIndex         = 0;
-  pcmmode.nChannels          = 2;
-  pcmmode.eNumData           = OMX_NumericalDataSigned;
-  pcmmode.eEndian            = OMX_EndianLittle;
-  pcmmode.bInterleaved       = OMX_TRUE;
-  pcmmode.nBitPerSample      = 16;
-  pcmmode.nSamplingRate      = 48000;
-  pcmmode.ePCMMode           = OMX_AUDIO_PCMModeLinear;
+  pcmmode.nSize = sizeof (OMX_AUDIO_PARAM_PCMMODETYPE);
+  pcmmode.nVersion.nVersion = OMX_VERSION;
+  pcmmode.nPortIndex = 0;
+  pcmmode.nChannels = 2;
+  pcmmode.eNumData = OMX_NumericalDataSigned;
+  pcmmode.eEndian = OMX_EndianLittle;
+  pcmmode.bInterleaved = OMX_TRUE;
+  pcmmode.nBitPerSample = 16;
+  pcmmode.nSamplingRate = 48000;
+  pcmmode.ePCMMode = OMX_AUDIO_PCMModeLinear;
   pcmmode.eChannelMapping[0] = OMX_AUDIO_ChannelLF;
   pcmmode.eChannelMapping[1] = OMX_AUDIO_ChannelRF;
 
-  volume.nSize             = sizeof (OMX_AUDIO_CONFIG_VOLUMETYPE);
+  volume.nSize = sizeof (OMX_AUDIO_CONFIG_VOLUMETYPE);
   volume.nVersion.nVersion = OMX_VERSION;
-  volume.nPortIndex        = 0;
-  volume.bLinear           = OMX_FALSE;
-  volume.sVolume.nValue    = 75;
-  volume.sVolume.nMin      = 0;
-  volume.sVolume.nMax      = 100;
+  volume.nPortIndex = 0;
+  volume.bLinear = OMX_FALSE;
+  volume.sVolume.nValue = 75;
+  volume.sVolume.nMin = 0;
+  volume.sVolume.nMax = 100;
 
-  mute.nSize             = sizeof (OMX_AUDIO_CONFIG_MUTETYPE);
+  mute.nSize = sizeof (OMX_AUDIO_CONFIG_MUTETYPE);
   mute.nVersion.nVersion = OMX_VERSION;
-  mute.nPortIndex        = 0;
-  mute.bMute             = OMX_FALSE;
+  mute.nPortIndex = 0;
+  mute.bMute = OMX_FALSE;
 
   return factory_new (tiz_get_type (ap_hdl, "tizpcmport"), &port_opts,
                       &encodings, &pcmmode, &volume, &mute);
@@ -151,7 +145,7 @@ static OMX_PTR
 instantiate_config_port (OMX_HANDLETYPE ap_hdl)
 {
   return factory_new (tiz_get_type (ap_hdl, "tizconfigport"),
-                      NULL,   /* this port does not take options */
+                      NULL, /* this port does not take options */
                       TC_COMPONENT_NAME, tc_comp_version);
 }
 
@@ -165,14 +159,14 @@ OMX_ERRORTYPE
 OMX_ComponentInit (OMX_HANDLETYPE ap_hdl)
 {
   tiz_role_factory_t role_factory1, role_factory2;
-  const tiz_role_factory_t *rf_list[] = { &role_factory1, &role_factory2 };
+  const tiz_role_factory_t * rf_list[] = {&role_factory1, &role_factory2};
   tiz_type_factory_t type_factory;
-  const tiz_type_factory_t *tf_list[] = { &type_factory};
-  const tiz_alloc_hooks_t new_hooks =
-    { 0, pcm_port_alloc_hook, pcm_port_free_hook, NULL };
-  tiz_alloc_hooks_t old_hooks = { 0, NULL, NULL, NULL };
-  const tiz_eglimage_hook_t egl_validation_hook =
-    { 0, egl_image_validation_hook, NULL };
+  const tiz_type_factory_t * tf_list[] = {&type_factory};
+  const tiz_alloc_hooks_t new_hooks
+    = {0, pcm_port_alloc_hook, pcm_port_free_hook, NULL};
+  tiz_alloc_hooks_t old_hooks = {0, NULL, NULL, NULL};
+  const tiz_eglimage_hook_t egl_validation_hook
+    = {0, egl_image_validation_hook, NULL};
 
   strcpy ((OMX_STRING) role_factory1.role, TC_DEFAULT_ROLE1);
   role_factory1.pf_cport = instantiate_config_port;
@@ -191,7 +185,8 @@ OMX_ComponentInit (OMX_HANDLETYPE ap_hdl)
   strcpy ((OMX_STRING) type_factory.object_name, "tiztcprc");
   type_factory.pf_object_init = tiz_tcprc_init;
 
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "OMX_ComponentInit: "
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "OMX_ComponentInit: "
            "Inititializing the test component");
 
   assert (ap_hdl);
@@ -206,12 +201,12 @@ OMX_ComponentInit (OMX_HANDLETYPE ap_hdl)
   tiz_check_omx (tiz_comp_register_roles (ap_hdl, rf_list, 2));
 
   /* Register alloc hooks */
-  tiz_check_omx (tiz_comp_register_alloc_hooks
-                     (ap_hdl, &new_hooks, &old_hooks));
+  tiz_check_omx (
+    tiz_comp_register_alloc_hooks (ap_hdl, &new_hooks, &old_hooks));
 
   /* Register egl image validation hook */
-  tiz_check_omx (tiz_comp_register_eglimage_hook
-                     (ap_hdl, &egl_validation_hook));
+  tiz_check_omx (
+    tiz_comp_register_eglimage_hook (ap_hdl, &egl_validation_hook));
 
   /* Verify that the old hooks have been returned */
   assert (old_hooks.pf_alloc);

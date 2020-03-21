@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -65,7 +65,7 @@ vp8port_ctor (void * ap_obj, va_list * app)
                            OMX_IndexParamVideoProfileLevelQuerySupported);
 
   /* Register additional indexes used when the port is instantiated as an
-   * output port during encoding */
+     * output port during encoding */
   if (OMX_DirOutput == p_base->portdef_.eDir)
     {
       tiz_port_register_index (p_obj, OMX_IndexParamVideoBitrate);
@@ -92,7 +92,7 @@ vp8port_ctor (void * ap_obj, va_list * app)
     }
 
   /* This is based on the defaults defined in the standard for the VP8 decoder
-   * component */
+     * component */
   p_obj->pltype_.nSize = sizeof (OMX_VIDEO_PARAM_PROFILELEVELTYPE);
   p_obj->pltype_.nVersion.nVersion = OMX_VERSION;
   p_obj->pltype_.nPortIndex = p_base->portdef_.nPortIndex;
@@ -107,7 +107,7 @@ vp8port_ctor (void * ap_obj, va_list * app)
       p_obj->pbrtype_ = *p_pbrtype;
 
       /* Init OMX_VIDEO_CONFIG_BITRATETYPE with the same value
-       * provided in OMX_VIDEO_PARAM_BITRATETYPE */
+         * provided in OMX_VIDEO_PARAM_BITRATETYPE */
       p_obj->cbrtype_.nSize = p_pbrtype->nSize;
       p_obj->cbrtype_.nVersion.nVersion = p_pbrtype->nVersion.nVersion;
       p_obj->cbrtype_.nPortIndex = p_base->portdef_.nPortIndex;
@@ -116,7 +116,7 @@ vp8port_ctor (void * ap_obj, va_list * app)
 
   /* Init the OMX_CONFIG_FRAMERATETYPE structure */
   /* This is also based on the defaults defined in the standard for the VP8
-   * decoder component */
+     * decoder component */
   p_obj->frtype_.nSize = sizeof (OMX_CONFIG_FRAMERATETYPE);
   p_obj->frtype_.nVersion.nVersion = OMX_VERSION;
   p_obj->frtype_.nPortIndex = p_base->portdef_.nPortIndex;
@@ -233,7 +233,7 @@ vp8port_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       case OMX_IndexParamVideoVp8:
         {
           /* This is a read-only index when used on an input port and read-write
-         * on an output port. Just ignore when read-only. */
+        * on an output port. Just ignore when read-only. */
           const tiz_port_t * p_base = ap_obj;
           if (OMX_DirOutput == p_base->portdef_.eDir)
             {
@@ -313,7 +313,7 @@ vp8port_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
           if (OMX_DirOutput == p_base->portdef_.eDir)
             {
               /* TODO: What to do with the profile and level values in
-             * OMX_VIDEO_PARAM_VP8TYPE  */
+            * OMX_VIDEO_PARAM_VP8TYPE  */
               p_obj->pltype_ = *p_pltype;
             }
         }
@@ -322,7 +322,7 @@ vp8port_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       case OMX_IndexParamVideoProfileLevelQuerySupported:
         {
           /* This is a read-only index for both input and output ports. Simply
-         * ignore it here.  */
+        * ignore it here.  */
           TIZ_NOTICE (ap_hdl, "Ignoring read-only index [%s] ",
                       tiz_idx_to_str (a_index));
         }

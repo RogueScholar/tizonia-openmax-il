@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,10 +30,11 @@
 #define TIZSCHEDULER_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-/**
+  /**
  * @defgroup libtizonia 'libtizonia' : Tizonia's OpenMAX IL component framework
  *
  * This library implements the base OpenMAX IL component infrastructure, which
@@ -43,7 +44,7 @@ extern "C" {
  * @ingroup Tizonia
  */
 
-/**
+  /**
  * @defgroup tizscheduler 'tizscheduler' : Component event loop, and servant scheduling.
  *
  * Component event loop, OpenMAX IL handler initialisation and servant scheduling.
@@ -76,7 +77,7 @@ extern "C" {
  */
 #define TIZ_COMP_MAX_TYPES 256
 
-/**
+  /**
  * @brief 'Configuration port' factory function prototype.
  *
  * This function instantiates a 'configuration port' object for a specific
@@ -94,9 +95,9 @@ extern "C" {
  * @return A pointer to a newly instantiated 'configuration port' object.
  */
 
-typedef OMX_PTR (*tiz_role_config_port_init_f) (OMX_HANDLETYPE ap_hdl);
+  typedef OMX_PTR (*tiz_role_config_port_init_f) (OMX_HANDLETYPE ap_hdl);
 
-/**
+  /**
  * @brief 'port' factory function prototype.
  *
  * This function instantiates an OpenMAX IL 'port' object for a specific
@@ -107,9 +108,9 @@ typedef OMX_PTR (*tiz_role_config_port_init_f) (OMX_HANDLETYPE ap_hdl);
  * @param ap_hdl The component's OpenMAX IL handle.
  * @return A pointer to a newly instantiated 'port' object.
  */
-typedef OMX_PTR (*tiz_role_port_init_f) (OMX_HANDLETYPE ap_hdl);
+  typedef OMX_PTR (*tiz_role_port_init_f) (OMX_HANDLETYPE ap_hdl);
 
-/**
+  /**
  * @brief 'processor' factory function prototype.
  *
  * This function instantiates an OpenMAX IL 'processor' object for a specific
@@ -120,15 +121,15 @@ typedef OMX_PTR (*tiz_role_port_init_f) (OMX_HANDLETYPE ap_hdl);
  * @param ap_hdl The component's OpenMAX IL handle.
  * @return A pointer to a newly instantiated 'processor' object.
  */
-typedef OMX_PTR (*tiz_role_proc_init_f) (OMX_HANDLETYPE ap_hdl);
+  typedef OMX_PTR (*tiz_role_proc_init_f) (OMX_HANDLETYPE ap_hdl);
 
-/**
+  /**
  * @brief OpenMAX IL role registration factory structure (typedef).
  * @ingroup tizscheduler
  */
-typedef struct tiz_role_factory tiz_role_factory_t;
+  typedef struct tiz_role_factory tiz_role_factory_t;
 
-/**
+  /**
  * @brief OpenMAX IL role registration factory structure.
  *
  * This structure is used to hold the various factory functions and elements
@@ -136,26 +137,26 @@ typedef struct tiz_role_factory tiz_role_factory_t;
  * infrastrucure.
  * @ingroup tizscheduler
  */
-struct tiz_role_factory
-{
-  tiz_role_config_port_init_f pf_cport; /**< 'configuration port'
+  struct tiz_role_factory
+  {
+    tiz_role_config_port_init_f pf_cport; /**< 'configuration port'
                                            factory function */
-  tiz_role_proc_init_f pf_proc;         /**< 'processor' factory function */
-  OMX_U32 nports;                       /**< number of ports in this role */
-  tiz_role_port_init_f pf_port[TIZ_COMP_MAX_PORTS]; /* list of regular 'port'
+    tiz_role_proc_init_f pf_proc;         /**< 'processor' factory function */
+    OMX_U32 nports;                       /**< number of ports in this role */
+    tiz_role_port_init_f pf_port[TIZ_COMP_MAX_PORTS]; /* list of regular 'port'
                                                        factory functions */
-  OMX_U8 role[OMX_MAX_STRINGNAME_SIZE];             /**< the role name */
-};
+    OMX_U8 role[OMX_MAX_STRINGNAME_SIZE];             /**< the role name */
+  };
 
-/**
+  /**
  * @brief 'Pluggable' event structure (typedef).
  * @ingroup tizscheduler
  */
-typedef struct tiz_event_pluggable tiz_event_pluggable_t;
+  typedef struct tiz_event_pluggable tiz_event_pluggable_t;
 
-typedef void (*tiz_event_pluggable_hdlr_f) (OMX_PTR ap_servant,
-                                            tiz_event_pluggable_t * ap_event);
-/**
+  typedef void (*tiz_event_pluggable_hdlr_f) (OMX_PTR ap_servant,
+                                              tiz_event_pluggable_t * ap_event);
+  /**
  * @brief 'Pluggable' event structure.
  *
  * A 'pluggable' event is a user-defined event that gets queued up in the
@@ -172,57 +173,58 @@ typedef void (*tiz_event_pluggable_hdlr_f) (OMX_PTR ap_servant,
  *
  * @ingroup tizscheduler
  */
-struct tiz_event_pluggable
-{
-  OMX_PTR p_servant;                  /**< The servant object that will be processing
+  struct tiz_event_pluggable
+  {
+    OMX_PTR p_servant; /**< The servant object that will be processing
                         the external event. */
-  OMX_PTR p_data;                     /* Tipically, a copy of the data received in
+    OMX_PTR p_data;    /* Tipically, a copy of the data received in
                         the external event. */
-  tiz_event_pluggable_hdlr_f pf_hdlr; /**< The event handler */
-};
+    tiz_event_pluggable_hdlr_f pf_hdlr; /**< The event handler */
+  };
 
-typedef OMX_U8 * (*tiz_alloc_hook_f) (OMX_U32 * ap_size,
-                                      OMX_PTR * app_port_priv, void * ap_args);
+  typedef OMX_U8 * (*tiz_alloc_hook_f) (OMX_U32 * ap_size,
+                                        OMX_PTR * app_port_priv,
+                                        void * ap_args);
 
-typedef void (*tiz_free_hook_f) (OMX_PTR ap_buf,
-                                 OMX_PTR /*@null@*/ ap_port_priv,
-                                 void * ap_args);
+  typedef void (*tiz_free_hook_f) (OMX_PTR ap_buf,
+                                   OMX_PTR /*@null@*/ ap_port_priv,
+                                   void * ap_args);
 
-typedef struct tiz_alloc_hooks tiz_alloc_hooks_t;
-struct tiz_alloc_hooks
-{
-  OMX_U32 pid;
-  /*@null@*/ tiz_alloc_hook_f pf_alloc;
-  /*@null@*/ tiz_free_hook_f pf_free;
-  /*@null@*/ void * p_args;
-};
+  typedef struct tiz_alloc_hooks tiz_alloc_hooks_t;
+  struct tiz_alloc_hooks
+  {
+    OMX_U32 pid;
+    /*@null@*/ tiz_alloc_hook_f pf_alloc;
+    /*@null@*/ tiz_free_hook_f pf_free;
+    /*@null@*/ void * p_args;
+  };
 
-typedef OMX_BOOL (*tiz_eglimage_hook_f) (const OMX_HANDLETYPE ap_hdl,
-                                         OMX_U32 pid, OMX_PTR ap_eglimage,
-                                         void * ap_args);
+  typedef OMX_BOOL (*tiz_eglimage_hook_f) (const OMX_HANDLETYPE ap_hdl,
+                                           OMX_U32 pid, OMX_PTR ap_eglimage,
+                                           void * ap_args);
 
-typedef struct tiz_eglimage_hook tiz_eglimage_hook_t;
-struct tiz_eglimage_hook
-{
-  OMX_U32 pid;
-  /*@null@*/ tiz_eglimage_hook_f pf_egl_validator;
-  /*@null@*/ void * p_args;
-};
+  typedef struct tiz_eglimage_hook tiz_eglimage_hook_t;
+  struct tiz_eglimage_hook
+  {
+    OMX_U32 pid;
+    /*@null@*/ tiz_eglimage_hook_f pf_egl_validator;
+    /*@null@*/ void * p_args;
+  };
 
-typedef void * (*tiz_class_init_f) (void *, void *);
-typedef void * (*tiz_object_init_f) (void *, void *);
-typedef struct tiz_type_factory tiz_type_factory_t;
-struct tiz_type_factory
-{
-  tiz_class_init_f pf_class_init;
-  OMX_U8 class_name[OMX_MAX_STRINGNAME_SIZE];
-  tiz_object_init_f pf_object_init;
-  OMX_U8 object_name[OMX_MAX_STRINGNAME_SIZE];
-};
+  typedef void * (*tiz_class_init_f) (void *, void *);
+  typedef void * (*tiz_object_init_f) (void *, void *);
+  typedef struct tiz_type_factory tiz_type_factory_t;
+  struct tiz_type_factory
+  {
+    tiz_class_init_f pf_class_init;
+    OMX_U8 class_name[OMX_MAX_STRINGNAME_SIZE];
+    tiz_object_init_f pf_object_init;
+    OMX_U8 object_name[OMX_MAX_STRINGNAME_SIZE];
+  };
 
-/* Component creation */
+  /* Component creation */
 
-/**
+  /**
  * @brief Instantiate the OpenMAX IL component infrastructure.
  *
  * When this function returns, the OpenMAX IL component handle is fully
@@ -238,10 +240,10 @@ struct tiz_type_factory
  * @param ap_cname The component name.
  * @return OMX_ErrorNone on success, other OMX_ERRORTYPE on error.
  */
-OMX_ERRORTYPE
-tiz_comp_init (const OMX_HANDLETYPE ap_hdl, const char * ap_cname);
+  OMX_ERRORTYPE
+  tiz_comp_init (const OMX_HANDLETYPE ap_hdl, const char * ap_cname);
 
-/**
+  /**
  * @brief Registration of component roles.
  *
  * At least one factory must be registered for the component to be fully
@@ -257,12 +259,12 @@ tiz_comp_init (const OMX_HANDLETYPE ap_hdl, const char * ap_cname);
  * @param a_nroles The number of factories in the list.
  * @return OMX_ErrorNone on success, other OMX_ERRORTYPE on error.
  */
-OMX_ERRORTYPE
-tiz_comp_register_roles (const OMX_HANDLETYPE ap_hdl,
-                         const tiz_role_factory_t * ap_role_list[],
-                         const OMX_U32 a_nroles);
+  OMX_ERRORTYPE
+  tiz_comp_register_roles (const OMX_HANDLETYPE ap_hdl,
+                           const tiz_role_factory_t * ap_role_list[],
+                           const OMX_U32 a_nroles);
 
-/**
+  /**
  * @brief Registration of component types (a.k.a. classes).
  *
  * Components need to register at least one additional class, a specialised
@@ -277,12 +279,12 @@ tiz_comp_register_roles (const OMX_HANDLETYPE ap_hdl,
  * @param a_ntypes The number of factories in the list.
  * @return OMX_ErrorNone on success, other OMX_ERRORTYPE on error.
  */
-OMX_ERRORTYPE
-tiz_comp_register_types (const OMX_HANDLETYPE ap_hdl,
-                         const tiz_type_factory_t * ap_type_list[],
-                         const OMX_U32 a_ntypes);
+  OMX_ERRORTYPE
+  tiz_comp_register_types (const OMX_HANDLETYPE ap_hdl,
+                           const tiz_type_factory_t * ap_type_list[],
+                           const OMX_U32 a_ntypes);
 
-/**
+  /**
  * Registration of port buffer allocation hooks.
  *
  * @ingroup tizscheduler
@@ -292,12 +294,12 @@ tiz_comp_register_types (const OMX_HANDLETYPE ap_hdl,
  * @param ap_old_hooks The old allocation hooks (the ones replaced).
  * @return OMX_ErrorNone on success, other OMX_ERRORTYPE on error.
  */
-OMX_ERRORTYPE
-tiz_comp_register_alloc_hooks (const OMX_HANDLETYPE ap_hdl,
-                               const tiz_alloc_hooks_t * ap_new_hooks,
-                               tiz_alloc_hooks_t * ap_old_hooks);
+  OMX_ERRORTYPE
+  tiz_comp_register_alloc_hooks (const OMX_HANDLETYPE ap_hdl,
+                                 const tiz_alloc_hooks_t * ap_new_hooks,
+                                 tiz_alloc_hooks_t * ap_old_hooks);
 
-/**
+  /**
  * Registration of the EGL image validation hook.
  *
  * @ingroup tizscheduler
@@ -306,11 +308,11 @@ tiz_comp_register_alloc_hooks (const OMX_HANDLETYPE ap_hdl,
  * @param ap_hook EGL image validation hook info.
  * @return OMX_ErrorNone on success, other OMX_ERRORTYPE on error.
  */
-OMX_ERRORTYPE
-tiz_comp_register_eglimage_hook (const OMX_HANDLETYPE ap_hdl,
-                                 const tiz_eglimage_hook_t * ap_hook);
+  OMX_ERRORTYPE
+  tiz_comp_register_eglimage_hook (const OMX_HANDLETYPE ap_hdl,
+                                   const tiz_eglimage_hook_t * ap_hook);
 
-/**
+  /**
  * Registration of 'per-role' EGL image validation hooks.
  *
  * @ingroup tizscheduler
@@ -320,12 +322,12 @@ tiz_comp_register_eglimage_hook (const OMX_HANDLETYPE ap_hdl,
  * @param ap_hook EGL image validation hook info.
  * @return OMX_ErrorNone on success, other OMX_ERRORTYPE on error.
  */
-OMX_ERRORTYPE
-tiz_comp_register_role_eglimage_hook (const OMX_HANDLETYPE ap_hdl,
-                                      const OMX_U8 *ap_role,
-                                      const tiz_eglimage_hook_t * ap_hook);
+  OMX_ERRORTYPE
+  tiz_comp_register_role_eglimage_hook (const OMX_HANDLETYPE ap_hdl,
+                                        const OMX_U8 * ap_role,
+                                        const tiz_eglimage_hook_t * ap_hook);
 
-/**
+  /**
  * Queueing of 'pluggable' events.
  *
  * A 'pluggable' event is submitted to the component's event queue using this
@@ -338,10 +340,10 @@ tiz_comp_register_role_eglimage_hook (const OMX_HANDLETYPE ap_hdl,
  * @param ap_event The pluggable event.
  * @return OMX_ErrorNone on success, other OMX_ERRORTYPE on error.
  */
-OMX_ERRORTYPE
-tiz_comp_event_pluggable (const OMX_HANDLETYPE ap_hdl,
-                          tiz_event_pluggable_t * ap_event);
-/**
+  OMX_ERRORTYPE
+  tiz_comp_event_pluggable (const OMX_HANDLETYPE ap_hdl,
+                            tiz_event_pluggable_t * ap_event);
+  /**
  * Queueing of 'io' events.
  *
  * An 'io' event is submitted to the component's event queue using this
@@ -358,12 +360,12 @@ tiz_comp_event_pluggable (const OMX_HANDLETYPE ap_hdl,
  * @param a_events
  * @return OMX_ErrorNone on success, other OMX_ERRORTYPE on error.
  */
-void
-tiz_comp_event_io (const OMX_HANDLETYPE ap_hdl, tiz_event_io_t * ap_ev_io,
-                   void * ap_arg, const uint32_t a_id, const int a_fd,
-                   const int a_events);
+  void
+  tiz_comp_event_io (const OMX_HANDLETYPE ap_hdl, tiz_event_io_t * ap_ev_io,
+                     void * ap_arg, const uint32_t a_id, const int a_fd,
+                     const int a_events);
 
-/**
+  /**
  * Queueing of 'timer' events.
  *
  * An 'timer' event is submitted to the component's event queue using this
@@ -378,12 +380,12 @@ tiz_comp_event_io (const OMX_HANDLETYPE ap_hdl, tiz_event_io_t * ap_ev_io,
  * @param a_id
  * @return OMX_ErrorNone on success, other OMX_ERRORTYPE on error.
  */
-void
-tiz_comp_event_timer (const OMX_HANDLETYPE ap_hdl,
-                      tiz_event_timer_t * ap_ev_timer, void * ap_arg,
-                      const uint32_t a_id);
+  void
+  tiz_comp_event_timer (const OMX_HANDLETYPE ap_hdl,
+                        tiz_event_timer_t * ap_ev_timer, void * ap_arg,
+                        const uint32_t a_id);
 
-/**
+  /**
  * Queueing of 'stat' events.
  *
  * An 'stat' event is submitted to the component's event queue using this
@@ -399,65 +401,66 @@ tiz_comp_event_timer (const OMX_HANDLETYPE ap_hdl,
  * @param a_events
  * @return OMX_ErrorNone on success, other OMX_ERRORTYPE on error.
  */
-void
-tiz_comp_event_stat (const OMX_HANDLETYPE ap_hdl, tiz_event_stat_t * ap_ev_stat,
-                     void * ap_arg, const uint32_t a_id, const int a_events);
+  void
+  tiz_comp_event_stat (const OMX_HANDLETYPE ap_hdl,
+                       tiz_event_stat_t * ap_ev_stat, void * ap_arg,
+                       const uint32_t a_id, const int a_events);
 
-/**
+  /**
  * Retrieve the current maximum number of items that could be insterted into the queue.
  * @ingroup tizscheduler
  * @param ap_hdl The OpenMAX IL handle.
  * @return A registered type.
  */
-size_t
-tiz_comp_event_queue_unused_spaces (const OMX_HANDLETYPE ap_hdl);
+  size_t
+  tiz_comp_event_queue_unused_spaces (const OMX_HANDLETYPE ap_hdl);
 
-/* Utility functions */
+  /* Utility functions */
 
-/**
+  /**
  * Retrieve the component's 'fsm' servant object.
  * @ingroup tizscheduler
  * @param ap_hdl The OpenMAX IL handle.
  * @return The fsm servant.
  */
-void *
-tiz_get_fsm (const OMX_HANDLETYPE ap_hdl);
+  void *
+  tiz_get_fsm (const OMX_HANDLETYPE ap_hdl);
 
-/**
+  /**
  * Retrieve the component's 'kernel' servant object.
  * @ingroup tizscheduler
  * @param ap_hdl The OpenMAX IL handle.
  * @return The kernel servant.
  */
-void *
-tiz_get_krn (const OMX_HANDLETYPE ap_hdl);
+  void *
+  tiz_get_krn (const OMX_HANDLETYPE ap_hdl);
 
-/**
+  /**
  * Retrieve the component's 'processor' servant object.
  * @ingroup tizscheduler
  * @param ap_hdl The OpenMAX IL handle.
  * @return The processor servant.
  */
-void *
-tiz_get_prc (const OMX_HANDLETYPE ap_hdl);
+  void *
+  tiz_get_prc (const OMX_HANDLETYPE ap_hdl);
 
-/**
+  /**
  * Retrieve the component's servant 'scheduler' object.
  * @ingroup tizscheduler
  * @param ap_hdl The OpenMAX IL handle.
  * @return The scheduler object.
  */
-void *
-tiz_get_sched (const OMX_HANDLETYPE ap_hdl);
+  void *
+  tiz_get_sched (const OMX_HANDLETYPE ap_hdl);
 
-/**
+  /**
  * Retrieve a component's registered type / class.
  * @ingroup tizscheduler
  * @param ap_hdl The OpenMAX IL handle.
  * @return A registered type.
  */
-void *
-tiz_get_type (const OMX_HANDLETYPE ap_hdl, const char * ap_type_name);
+  void *
+  tiz_get_type (const OMX_HANDLETYPE ap_hdl, const char * ap_type_name);
 
 #ifdef __cplusplus
 }

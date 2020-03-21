@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -61,7 +61,8 @@ graph::youtubeops::youtubeops (graph *p_graph,
   : tiz::graph::ops (p_graph, comp_lst, role_lst),
     encoding_ (OMX_AUDIO_CodingAutoDetect),
     container_ (OMX_AUDIO_CodingAutoDetect),
-    inital_graph_load_ (false)
+    inital_source_load_ (true),
+    inital_renderer_load_ (true)
 {
   TIZ_INIT_OMX_PORT_STRUCT (renderer_pcmtype_, 0);
 }
@@ -133,6 +134,11 @@ void graph::youtubeops::do_configure_comp (const int comp_id)
       tizyoutubeconfig_ptr_t youtube_config
           = boost::dynamic_pointer_cast< youtubeconfig > (config_);
       assert (youtube_config);
+
+      G_OPS_BAIL_IF_ERROR (
+          tiz::graph::util::set_youtube_session (
+              handles_[0], youtube_config->get_api_key ()),
+          "Unable to set OMX_TizoniaIndexParamAudioYoutubeSession");
 
       G_OPS_BAIL_IF_ERROR (
           tiz::graph::util::set_youtube_playlist (
@@ -236,12 +242,14 @@ void graph::youtubeops::do_retrieve_metadata ()
   OMX_GetParameter (handles_[3], OMX_IndexParamAudioPcm, &renderer_pcmtype_);
 
   // Now print renderer metadata
-  TIZ_PRINTF_MAG (
-      "     %ld Ch, %g KHz, %lu:%s:%s \n", renderer_pcmtype_.nChannels,
+  printf ("     ");
+  TIZ_PRINTF_C05 (
+      "%ld Ch, %g KHz, %lu:%s:%s", renderer_pcmtype_.nChannels,
       ((float)renderer_pcmtype_.nSamplingRate) / 1000,
       renderer_pcmtype_.nBitPerSample,
       renderer_pcmtype_.eNumData == OMX_NumericalDataSigned ? "s" : "u",
       renderer_pcmtype_.eEndian == OMX_EndianBig ? "b" : "l");
+  printf ("\n");
 }
 
 void graph::youtubeops::do_load_http_source ()
@@ -280,10 +288,11 @@ void graph::youtubeops::do_load_http_source ()
   comp_lst_.insert (comp_lst_.begin (), comp_list.begin (), comp_list.end ());
   role_lst_.insert (role_lst_.begin (), role_list.begin (), role_list.end ());
 
-  if (inital_graph_load_)
+  if (inital_source_load_)
   {
-    inital_graph_load_ = false;
-    tiz::graph::util::dump_graph_info ("Youtube", "Connecting", "");
+    inital_source_load_ = false;
+    tiz::graph::util::dump_graph_info ("Youtube", "Connecting",
+                                       playlist_->get_current_uri ().c_str ());
   }
 }
 
@@ -380,6 +389,17 @@ void graph::youtubeops::do_load_renderer ()
   // Now add the new components to the base class lists
   comp_lst_.insert (comp_lst_.begin (), comp_list.begin (), comp_list.end ());
   role_lst_.insert (role_lst_.begin (), role_list.begin (), role_list.end ());
+
+  if (inital_renderer_load_)
+  {
+    inital_renderer_load_ = false;
+    // Obtain the current volume
+    OMX_U32 input_port = 0;
+    G_OPS_BAIL_IF_ERROR (
+        util::get_volume_from_audio_port (handles_[handles_.size () - 1],
+                                          input_port, volume_),
+        "Unable to obtain the current volume");
+  }
 }
 
 OMX_ERRORTYPE
@@ -574,20 +594,16 @@ graph::youtubeops::apply_default_config_on_decoder ()
     OMX_U32 channels;
     OMX_U32 sampling_rate;
 
-    tiz_check_omx (
-        tiz::graph::util::
-            get_channels_and_rate_from_audio_port< OMX_AUDIO_PARAM_VORBISTYPE > (
-                handle, port_id, OMX_IndexParamAudioVorbis, channels,
-                sampling_rate));
+    tiz_check_omx (tiz::graph::util::get_channels_and_rate_from_audio_port<
+                   OMX_AUDIO_PARAM_VORBISTYPE > (
+        handle, port_id, OMX_IndexParamAudioVorbis, channels, sampling_rate));
 
     channels = 2;
     sampling_rate = 44100;
 
-    tiz_check_omx (
-        tiz::graph::util::
-            set_channels_and_rate_on_audio_port< OMX_AUDIO_PARAM_VORBISTYPE > (
-                handle, port_id, OMX_IndexParamAudioVorbis, channels,
-                sampling_rate));
+    tiz_check_omx (tiz::graph::util::set_channels_and_rate_on_audio_port<
+                   OMX_AUDIO_PARAM_VORBISTYPE > (
+        handle, port_id, OMX_IndexParamAudioVorbis, channels, sampling_rate));
   }
   return OMX_ErrorNone;
 }
@@ -655,9 +671,9 @@ graph::youtubeops::get_channels_and_rate_from_decoder (
 
   if (OMX_ErrorNone == rc)
   {
-    rc = tiz::graph::util::
-        get_channels_and_rate_from_audio_port_v2< OMX_AUDIO_PARAM_PCMMODETYPE > (
-            handle, port_id, OMX_IndexParamAudioPcm, channels, sampling_rate);
+    rc = tiz::graph::util::get_channels_and_rate_from_audio_port_v2<
+        OMX_AUDIO_PARAM_PCMMODETYPE > (handle, port_id, OMX_IndexParamAudioPcm,
+                                       channels, sampling_rate);
   }
   TIZ_LOG (TIZ_PRIORITY_TRACE, "outcome = [%s]", tiz_err_to_str (rc));
 
@@ -721,10 +737,9 @@ bool graph::youtubeops::is_fatal_error (const OMX_ERRORTYPE error) const
   return rc;
 }
 
-void graph::youtubeops::do_record_fatal_error (const OMX_HANDLETYPE handle,
-                                               const OMX_ERRORTYPE error,
-                                               const OMX_U32 port,
-                                               const OMX_PTR p_eventdata /* = NULL */)
+void graph::youtubeops::do_record_fatal_error (
+    const OMX_HANDLETYPE handle, const OMX_ERRORTYPE error, const OMX_U32 port,
+    const OMX_PTR p_eventdata /* = NULL */)
 {
   tiz::graph::ops::do_record_fatal_error (handle, error, port, p_eventdata);
   if (error == OMX_ErrorContentURIError)
@@ -770,10 +785,12 @@ void graph::youtubeops::do_reconfigure_third_tunnel ()
       OMX_SetParameter (handles_[3], OMX_IndexParamAudioPcm, &renderer_pcmtype),
       "Unable to set the PCM settings on the audio renderer");
 
-  TIZ_PRINTF_MAG (
-      "     %ld Ch, %g KHz, %lu:%s:%s\n", renderer_pcmtype.nChannels,
+  printf ("     ");
+  TIZ_PRINTF_C05 (
+      "%ld Ch, %g KHz, %lu:%s:%s", renderer_pcmtype.nChannels,
       ((float)renderer_pcmtype.nSamplingRate) / 1000,
       renderer_pcmtype.nBitPerSample,
       renderer_pcmtype.eNumData == OMX_NumericalDataSigned ? "s" : "u",
       renderer_pcmtype.eEndian == OMX_EndianBig ? "b" : "l");
+  printf ("\n");
 }

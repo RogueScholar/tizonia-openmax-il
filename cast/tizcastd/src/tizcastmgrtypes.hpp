@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -43,20 +43,20 @@ namespace tiz
 
     typedef std::vector< unsigned char > uuid_t;
 
-    typedef boost::function< void() > cast_status_received_cback_t;
+    typedef boost::function< void () > cast_status_received_cback_t;
 
-    typedef boost::function< void(const uuid_t& uuid,
-                                  const tiz_chromecast_cast_status_t a_status,
-                                  const int a_volume) >
+    typedef boost::function< void (const uuid_t& uuid,
+                                   const tiz_chromecast_cast_status_t a_status,
+                                   const int a_volume) >
         cast_status_cback_t;
 
-    typedef boost::function< void(const uuid_t& uuid,
-                                  const tiz_chromecast_media_status_t a_status,
-                                  const int a_volume) >
+    typedef boost::function< void (const uuid_t& uuid,
+                                   const tiz_chromecast_media_status_t a_status,
+                                   const int a_volume) >
         media_status_cback_t;
 
-    typedef boost::function< void(const uuid_t& uuid, const uint32_t& status,
-                                  const std::string& error_str) >
+    typedef boost::function< void (const uuid_t& uuid, const uint32_t& status,
+                                   const std::string& error_str) >
         error_status_callback_t;
 
   }  // namespace cast

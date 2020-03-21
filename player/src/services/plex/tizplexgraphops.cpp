@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -71,8 +71,6 @@ void graph::plexops::do_enable_auto_detection (const int handle_id,
       = boost::dynamic_pointer_cast< plexconfig > (config_);
   assert (plex_config);
   tiz::graph::ops::do_enable_auto_detection (handle_id, port_id);
-  tiz::graph::util::dump_graph_info ("Plex", "Connecting",
-                                     plex_config->get_base_url ().c_str ());
 }
 
 void graph::plexops::do_disable_comp_ports (const int comp_id,
@@ -149,6 +147,11 @@ void graph::plexops::do_load ()
   // Now add the new components to the base class lists
   comp_lst_.insert (comp_lst_.begin (), comp_list.begin (), comp_list.end ());
   role_lst_.insert (role_lst_.begin (), role_list.begin (), role_list.end ());
+
+  OMX_U32 input_port = 0;
+  G_OPS_BAIL_IF_ERROR (util::get_volume_from_audio_port (
+                           handles_[handles_.size () - 1], input_port, volume_),
+                       "Unable to obtain the current volume");
 }
 
 void graph::plexops::do_configure ()
@@ -159,6 +162,9 @@ void graph::plexops::do_configure ()
                          "Unable to override decoder/renderer sampling rates");
     G_OPS_BAIL_IF_ERROR (apply_pcm_codec_info_from_decoder (),
                          "Unable to set OMX_IndexParamAudioPcm");
+    std::string coding_type_str ("Plex");
+    tiz::graph::util::dump_graph_info (coding_type_str.c_str (), "Connected",
+                                       playlist_->get_current_uri ().c_str ());
   }
 }
 
@@ -250,12 +256,14 @@ void graph::plexops::do_retrieve_metadata ()
   OMX_GetParameter (handles_[2], OMX_IndexParamAudioPcm, &renderer_pcmtype_);
 
   // Now print renderer metadata
-  TIZ_PRINTF_MAG (
-      "     %ld Ch, %g KHz, %lu:%s:%s \n", renderer_pcmtype_.nChannels,
+  printf ("     ");
+  TIZ_PRINTF_C05 (
+      "%ld Ch, %g KHz, %lu:%s:%s", renderer_pcmtype_.nChannels,
       ((float)renderer_pcmtype_.nSamplingRate) / 1000,
       renderer_pcmtype_.nBitPerSample,
       renderer_pcmtype_.eNumData == OMX_NumericalDataSigned ? "s" : "u",
       renderer_pcmtype_.eEndian == OMX_EndianBig ? "b" : "l");
+  printf ("\n");
 }
 
 // TODO: Move this implementation to the base class (and remove also from
@@ -435,10 +443,6 @@ graph::plexops::set_channels_and_rate_on_renderer (
   tiz_check_omx (
       OMX_SetParameter (handle, OMX_IndexParamAudioPcm, &renderer_pcmtype_));
 
-  std::string coding_type_str ("Plex");
-  tiz::graph::util::dump_graph_info (coding_type_str.c_str (), "Connected",
-                                     playlist_->get_current_uri ().c_str ());
-
   return OMX_ErrorNone;
 }
 
@@ -525,10 +529,12 @@ void graph::plexops::do_reconfigure_second_tunnel ()
       OMX_SetParameter (handles_[2], OMX_IndexParamAudioPcm, &renderer_pcmtype),
       "Unable to set the PCM settings on the audio renderer");
 
-  TIZ_PRINTF_MAG (
-      "     %ld Ch, %g KHz, %lu:%s:%s\n", renderer_pcmtype.nChannels,
+  printf ("     ");
+  TIZ_PRINTF_C05 (
+      "%ld Ch, %g KHz, %lu:%s:%s", renderer_pcmtype.nChannels,
       ((float)renderer_pcmtype.nSamplingRate) / 1000,
       renderer_pcmtype.nBitPerSample,
       renderer_pcmtype.eNumData == OMX_NumericalDataSigned ? "s" : "u",
       renderer_pcmtype.eEndian == OMX_EndianBig ? "b" : "l");
+  printf ("\n");
 }

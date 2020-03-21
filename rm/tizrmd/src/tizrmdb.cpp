@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -29,15 +29,13 @@
 #include <config.h>
 #endif
 
+#include <assert.h>
+#include <sqlite3.h>
 #include <stdlib.h>
 
-#include <sqlite3.h>
-
-#include <vector>
-#include <sstream>
 #include <iostream>
-
-#include <boost/assert.hpp>
+#include <sstream>
+#include <vector>
 
 #include <tizplatform.h>
 
@@ -50,9 +48,9 @@
 
 static const char *TIZ_RM_DB_DROP_ALLOC_TABLE
     = "drop table if exists allocation";
-static const char *TIZ_RM_DB_CREATE_ALLOC_TABLE =
-  "create table allocation(cname varchar(255), uuid varchar(16), grpid "
-  "smallint, pri smallint, resid smallint, allocation mediumint)";
+static const char *TIZ_RM_DB_CREATE_ALLOC_TABLE
+    = "create table allocation(cname varchar(255), uuid varchar(16), grpid "
+      "smallint, pri smallint, resid smallint, allocation mediumint)";
 
 // static const char *TIZ_RM_DB_RESNAMES_FROM_RESOURCES
 //     = "select resname from resources";
@@ -81,8 +79,7 @@ tiz_rm_error_t tizrmdb::connect ()
     TIZ_LOG (TIZ_PRIORITY_TRACE, "Opening db [%s]", dbname_.c_str ());
     if (rc != SQLITE_OK)
     {
-      TIZ_LOG (TIZ_PRIORITY_TRACE, "Could not open db [%s]",
-               dbname_.c_str ());
+      TIZ_LOG (TIZ_PRIORITY_TRACE, "Could not open db [%s]", dbname_.c_str ());
       ret_val = TIZ_RM_DATABASE_OPEN_ERROR;
     }
     else
@@ -121,7 +118,7 @@ tiz_rm_error_t tizrmdb::disconnect ()
 
 int tizrmdb::open (char const *ap_dbname)
 {
-  BOOST_ASSERT (ap_dbname);
+  assert (ap_dbname);
   close ();
   return sqlite3_open (ap_dbname, &pdb_);
 }
@@ -181,7 +178,7 @@ bool tizrmdb::resource_available (const unsigned int &rid,
            " availability for resid [%d] - quantity [%d]",
            rid, quantity);
 
-  snprintf (query, sizeof(query),
+  snprintf (query, sizeof (query),
             "select * from resources where resid='%d' and current>='%d'", rid,
             quantity);
 
@@ -207,7 +204,7 @@ bool tizrmdb::resource_provisioned (const unsigned int &rid) const
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "tizrmdb::resource_provisioned");
 
-  snprintf (query, sizeof(query), "select * from resources where resid='%d'",
+  snprintf (query, sizeof (query), "select * from resources where resid='%d'",
             rid);
 
   rc = run_query (query);
@@ -239,7 +236,7 @@ bool tizrmdb::resource_acquired (const std::vector< unsigned char > &uuid,
            "rid [%d] - quantity [%d]",
            uuid_str, rid, quantity);
 
-  snprintf (query, sizeof(query),
+  snprintf (query, sizeof (query),
             "select * from allocation where uuid='%s' and resid='%d' "
             "and allocation>='%d'",
             uuid_str, rid, quantity);
@@ -302,7 +299,7 @@ bool tizrmdb::comp_provisioned_with_resid (const std::string &cname,
            "resource id [%d]",
            cname.c_str (), rid);
 
-  snprintf (query, sizeof(query),
+  snprintf (query, sizeof (query),
             "select * from components where cname='%s' and resid=%d",
             cname.c_str (), rid);
 
@@ -360,7 +357,7 @@ tiz_rm_error_t tizrmdb::acquire_resource (
            "actually requested [%d] ...",
            cname.c_str (), requirement, quantity);
 
-  if (quantity > (unsigned int) requirement)
+  if (quantity > (unsigned int)requirement)
   {
     TIZ_LOG (TIZ_PRIORITY_TRACE,
              "tizrmdb::acquire_resource : "
@@ -387,7 +384,7 @@ tiz_rm_error_t tizrmdb::acquire_resource (
            "Resource [%d]: available [%d] units ...",
            rid, current);
 
-  snprintf (query, sizeof(query),
+  snprintf (query, sizeof (query),
             "insert or replace into allocation (cname, uuid, grpid, "
             "pri, resid, allocation) "
             "values('%s', '%s', %d, %d, %d, %d)",
@@ -404,7 +401,7 @@ tiz_rm_error_t tizrmdb::acquire_resource (
     return TIZ_RM_DATABASE_ERROR;
   }
 
-  snprintf (query, sizeof(query),
+  snprintf (query, sizeof (query),
             "update resources set current=%d where resid=%d",
             current - quantity, rid);
 
@@ -461,7 +458,7 @@ tiz_rm_error_t tizrmdb::release_resource (
            "actually requested [%d] ...",
            cname.c_str (), requirement, quantity);
 
-  if (quantity > (unsigned int) requirement)
+  if (quantity > (unsigned int)requirement)
   {
     TIZ_LOG (TIZ_PRIORITY_TRACE,
              "'%s': releasing [%d] units, "
@@ -490,7 +487,7 @@ tiz_rm_error_t tizrmdb::release_resource (
   // Update allocation table to reflect the resource release...
 
   // ... first delete the the row...
-  snprintf (query, sizeof(query),
+  snprintf (query, sizeof (query),
             "delete from allocation where "
             "cname='%s' and uuid='%s' and resid=%d",
             cname.c_str (), uuid_str, rid);
@@ -511,7 +508,7 @@ tiz_rm_error_t tizrmdb::release_resource (
   if (current - quantity)
   {
     // TODO : This string is duplicated. Move to a constant
-    snprintf (query, sizeof(query),
+    snprintf (query, sizeof (query),
               "insert or replace into allocation (cname, uuid, grpid, pri, "
               "resid, allocation) values('%s', '%s', %d, %d, %d, %d)",
               cname.c_str (), uuid_str, grpid, pri, rid, current - quantity);
@@ -536,7 +533,7 @@ tiz_rm_error_t tizrmdb::release_resource (
   current = strtol (vdata_[vdata_.size () - 1].c_str (), NULL, 0);
 
   // Now update the resource table...
-  snprintf (query, sizeof(query),
+  snprintf (query, sizeof (query),
             "update resources set current=%d where resid=%d",
             current + quantity, rid);
 
@@ -560,7 +557,7 @@ tiz_rm_error_t tizrmdb::release_resource (
 }
 
 tiz_rm_error_t tizrmdb::release_all (const std::string &cname,
-                                    const std::vector< unsigned char > &uuid)
+                                     const std::vector< unsigned char > &uuid)
 {
   int rc = SQLITE_OK;
   char query[500];
@@ -589,7 +586,7 @@ tiz_rm_error_t tizrmdb::release_all (const std::string &cname,
                cname.c_str (), uuid_str, rid, current);
 
       // Update allocation table to reflect the resource release...
-      snprintf (query, sizeof(query),
+      snprintf (query, sizeof (query),
                 "delete from allocation where "
                 "cname='%s' and uuid='%s' and resid=%d",
                 cname.c_str (), uuid_str, rid);
@@ -611,7 +608,7 @@ tiz_rm_error_t tizrmdb::release_all (const std::string &cname,
       remaining = strtol (vdata_[vdata_.size () - 1].c_str (), NULL, 0);
 
       // Now update the resource table...
-      snprintf (query, sizeof(query),
+      snprintf (query, sizeof (query),
                 "update resources set current=%d where resid=%d",
                 remaining + current, rid);
 
@@ -637,8 +634,8 @@ tiz_rm_error_t tizrmdb::release_all (const std::string &cname,
 }
 
 tiz_rm_error_t tizrmdb::find_owners (const unsigned int &rid,
-                                    const unsigned int &pri,
-                                    tiz_rm_owners_list_t &owners) const
+                                     const unsigned int &pri,
+                                     tiz_rm_owners_list_t &owners) const
 {
   int rc = SQLITE_OK;
   char query[500];
@@ -650,7 +647,7 @@ tiz_rm_error_t tizrmdb::find_owners (const unsigned int &rid,
 
   owners.clear ();
 
-  snprintf (query, sizeof(query),
+  snprintf (query, sizeof (query),
             "select * from allocation where resid='%d' and pri>'%d'", rid, pri);
 
   rc = run_query (query);
@@ -707,7 +704,7 @@ int tizrmdb::run_query (char const *ap_sql)
   char **pp_result;
   int nrow, ncol;
 
-  BOOST_ASSERT (ap_sql);
+  assert (ap_sql);
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "Running query [%s]", ap_sql);
 
@@ -748,7 +745,7 @@ int tizrmdb::run_query (char const *ap_sql)
 
 int tizrmdb::run_query (char const *ap_sql) const
 {
-  return const_cast< tizrmdb * >(this)->run_query (ap_sql);
+  return const_cast< tizrmdb * > (this)->run_query (ap_sql);
 }
 
 void tizrmdb::print_query_result () const

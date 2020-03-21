@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -18,16 +18,15 @@
 # along with Tizonia.  If not, see <http://www.gnu.org/licenses/>.
 
 SQLITE3=$(which sqlite3)
-BASEDIR=$(dirname $0)
+BASEDIR=$(dirname "$0")
 TIZ_RM_DB_NAME="@abs_top_builddir@/tests/tizrm.db"
-COMMANDS=${BASEDIR}"/"$1
+COMMANDS=$BASEDIR"/"$1
 
-if [ -f $TIZ_RM_DB_NAME ];
-then
-    rm $TIZ_RM_DB_NAME
-    echo -e "Deleted old $TIZ_RM_DB_NAME database..."
+if [ -f "$TIZ_RM_DB_NAME" ]; then
+  rm "$TIZ_RM_DB_NAME"
+  echo -e "Deleted old $TIZ_RM_DB_NAME database..."
 fi
 
 echo -e "Populating $TIZ_RM_DB_NAME using $COMMANDS..."
-$SQLITE3 $TIZ_RM_DB_NAME < $COMMANDS
+"$SQLITE3" "$TIZ_RM_DB_NAME" <"$COMMANDS"
 echo -e "Done."

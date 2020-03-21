@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,10 +30,11 @@
 #define TIZEV_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-/**
+  /**
  * @defgroup tizevent Global event loop, async io and timers.
  *
  * Global event loop, async io and timers.
@@ -47,25 +48,25 @@ extern "C" {
 #include <OMX_Core.h>
 #include <OMX_Types.h>
 
-/**
+  /**
  * Handle to an io event
  * @ingroup tizevent
  */
-typedef struct tiz_event_io tiz_event_io_t;
+  typedef struct tiz_event_io tiz_event_io_t;
 
-/**
+  /**
  * Handle to a timer event
  * @ingroup tizevent
  */
-typedef struct tiz_event_timer tiz_event_timer_t;
+  typedef struct tiz_event_timer tiz_event_timer_t;
 
-/**
+  /**
  * Handle to a file status change event
  * @ingroup tizevent
  */
-typedef struct tiz_event_stat tiz_event_stat_t;
+  typedef struct tiz_event_stat tiz_event_stat_t;
 
-/**
+  /**
  * Callback prototype for io events
  *
  * @param p_ev_io The io event being notified
@@ -76,27 +77,28 @@ typedef struct tiz_event_stat tiz_event_stat_t;
  *
  * @ingroup tizevent
  */
-typedef void (*tiz_event_io_cb_f) (void * ap_arg0, tiz_event_io_t * ap_ev_io,
-                                   void * ap_arg1, const uint32_t a_id,
-                                   int a_fd, int a_events);
-
-typedef void (*tiz_event_timer_cb_f) (void * ap_arg0,
-                                      tiz_event_timer_t * ap_ev_timer,
-                                      void * ap_arg1, const uint32_t a_id);
-
-typedef void (*tiz_event_stat_cb_f) (void * ap_arg0,
-                                     tiz_event_stat_t * ap_ev_stat,
+  typedef void (*tiz_event_io_cb_f) (void * ap_arg0, tiz_event_io_t * ap_ev_io,
                                      void * ap_arg1, const uint32_t a_id,
-                                     int a_events);
+                                     int a_fd, int a_events);
 
-typedef enum tiz_event_io_event {
-  TIZ_EVENT_READ = 0x01,  /* ev_io detected read will not block */
-  TIZ_EVENT_WRITE = 0x02, /* ev_io detected write will not block */
-  TIZ_EVENT_READ_OR_WRITE = 0x03,
-  TIZ_EVENT_MAX
-} tiz_event_io_event_t;
+  typedef void (*tiz_event_timer_cb_f) (void * ap_arg0,
+                                        tiz_event_timer_t * ap_ev_timer,
+                                        void * ap_arg1, const uint32_t a_id);
 
-/**
+  typedef void (*tiz_event_stat_cb_f) (void * ap_arg0,
+                                       tiz_event_stat_t * ap_ev_stat,
+                                       void * ap_arg1, const uint32_t a_id,
+                                       int a_events);
+
+  typedef enum tiz_event_io_event
+  {
+    TIZ_EVENT_READ = 0x01,  /* ev_io detected read will not block */
+    TIZ_EVENT_WRITE = 0x02, /* ev_io detected write will not block */
+    TIZ_EVENT_READ_OR_WRITE = 0x03,
+    TIZ_EVENT_MAX
+  } tiz_event_io_event_t;
+
+  /**
  * Explicit initialisation of the global event loop. The loop is hosted in
  * its own thread which is spawned the first time this function or any other
  * function in this module are called. Therefore it is not mandatory to call
@@ -110,10 +112,10 @@ typedef enum tiz_event_io_event {
  * otherwise.
  *
  */
-OMX_ERRORTYPE
-tiz_event_loop_init (void);
+  OMX_ERRORTYPE
+  tiz_event_loop_init (void);
 
-/**
+  /**
  * Explicit destruction of the global event loop. WARNING: After this
  * function, the event loop cannot be recreated in the current
  * process. Therefore, if this function is used, the caller should guarantee
@@ -122,67 +124,68 @@ tiz_event_loop_init (void);
  * @ingroup tizevent
  *
  */
-void
-tiz_event_loop_destroy (void);
+  void
+  tiz_event_loop_destroy (void);
 
-OMX_ERRORTYPE
-tiz_event_io_init (tiz_event_io_t ** app_ev_io, void * ap_arg0,
-                   tiz_event_io_cb_f ap_cback, void * ap_arg1);
+  OMX_ERRORTYPE
+  tiz_event_io_init (tiz_event_io_t ** app_ev_io, void * ap_arg0,
+                     tiz_event_io_cb_f ap_cback, void * ap_arg1);
 
-void
-tiz_event_io_set (tiz_event_io_t * ap_ev_io, int a_fd,
-                  tiz_event_io_event_t a_event, bool only_once);
+  void
+  tiz_event_io_set (tiz_event_io_t * ap_ev_io, int a_fd,
+                    tiz_event_io_event_t a_event, bool only_once);
 
-OMX_ERRORTYPE
-tiz_event_io_start (tiz_event_io_t * ap_ev_io, const uint32_t a_id);
+  OMX_ERRORTYPE
+  tiz_event_io_start (tiz_event_io_t * ap_ev_io, const uint32_t a_id);
 
-OMX_ERRORTYPE
-tiz_event_io_stop (tiz_event_io_t * ap_ev_io);
+  OMX_ERRORTYPE
+  tiz_event_io_stop (tiz_event_io_t * ap_ev_io);
 
-bool
-tiz_event_io_is_level_triggered (tiz_event_io_t * ap_ev_io);
+  bool
+  tiz_event_io_is_level_triggered (tiz_event_io_t * ap_ev_io);
 
-void
-tiz_event_io_destroy (tiz_event_io_t * ap_ev_io);
+  void
+  tiz_event_io_destroy (tiz_event_io_t * ap_ev_io);
 
-OMX_ERRORTYPE
-tiz_event_timer_init (tiz_event_timer_t ** app_ev_timer, void * ap_arg0,
-                      tiz_event_timer_cb_f ap_cback, void * ap_arg1);
+  OMX_ERRORTYPE
+  tiz_event_timer_init (tiz_event_timer_t ** app_ev_timer, void * ap_arg0,
+                        tiz_event_timer_cb_f ap_cback, void * ap_arg1);
 
-void
-tiz_event_timer_set (tiz_event_timer_t * ap_ev_timer, double a_after,
-                     double a_repeat);
+  void
+  tiz_event_timer_set (tiz_event_timer_t * ap_ev_timer, double a_after,
+                       double a_repeat);
 
-OMX_ERRORTYPE
-tiz_event_timer_start (tiz_event_timer_t * ap_ev_timer, const uint32_t a_id);
+  OMX_ERRORTYPE
+  tiz_event_timer_start (tiz_event_timer_t * ap_ev_timer, const uint32_t a_id);
 
-OMX_ERRORTYPE
-tiz_event_timer_restart (tiz_event_timer_t * ap_ev_timer, const uint32_t a_id);
+  OMX_ERRORTYPE
+  tiz_event_timer_restart (tiz_event_timer_t * ap_ev_timer,
+                           const uint32_t a_id);
 
-OMX_ERRORTYPE
-tiz_event_timer_stop (tiz_event_timer_t * ap_ev_timer);
+  OMX_ERRORTYPE
+  tiz_event_timer_stop (tiz_event_timer_t * ap_ev_timer);
 
-bool
-tiz_event_timer_is_repeat (tiz_event_timer_t * ap_ev_timer);
+  bool
+  tiz_event_timer_is_repeat (tiz_event_timer_t * ap_ev_timer);
 
-void
-tiz_event_timer_destroy (tiz_event_timer_t * ap_ev_timer);
+  void
+  tiz_event_timer_destroy (tiz_event_timer_t * ap_ev_timer);
 
-OMX_ERRORTYPE
-tiz_event_stat_init (tiz_event_stat_t ** app_ev_stat, void * ap_arg0,
-                     tiz_event_stat_cb_f ap_cback, void * ap_arg1);
+  OMX_ERRORTYPE
+  tiz_event_stat_init (tiz_event_stat_t ** app_ev_stat, void * ap_arg0,
+                       tiz_event_stat_cb_f ap_cback, void * ap_arg1);
 
-void
-tiz_event_stat_set (tiz_event_stat_t * ap_ev_stat, const char * ap_path);
+  void
+  tiz_event_stat_set (tiz_event_stat_t * ap_ev_stat, const char * ap_path);
 
-OMX_ERRORTYPE
-tiz_event_stat_start (tiz_event_stat_t * ap_ev_stat, const uint32_t a_id);
+  OMX_ERRORTYPE
+  tiz_event_stat_start (tiz_event_stat_t * ap_ev_stat, const uint32_t a_id);
 
-OMX_ERRORTYPE
-tiz_event_stat_stop (tiz_event_stat_t * ap_ev_stat);
+  OMX_ERRORTYPE
+  tiz_event_stat_stop (tiz_event_stat_t * ap_ev_stat);
 
-void
-tiz_event_stat_destroy (tiz_event_stat_t * ap_ev_stat);
+  void
+  tiz_event_stat_destroy (tiz_event_stat_t * ap_ev_stat);
 
 #ifdef __cplusplus
 }

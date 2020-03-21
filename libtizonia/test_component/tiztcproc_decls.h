@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -42,7 +42,6 @@ extern "C"
   {
     /* Object */
     const tiz_prc_t _;
-
   };
 
   typedef struct tiz_tcprc_class tiz_tcprc_class_t;
@@ -57,4 +56,4 @@ extern "C"
 }
 #endif
 
-#endif                          /* TIZTCPROC_DECLS_H */
+#endif /* TIZTCPROC_DECLS_H */

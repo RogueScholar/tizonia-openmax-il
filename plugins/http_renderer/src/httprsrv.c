@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -251,7 +251,7 @@ srv_set_nolinger (const int sock)
   struct linger lin = {0, 0};
   errno = 0;
   /* linger inactive. close call will return immediately to the caller, and any
-   * pending data will be delivered if possible. */
+     * pending data will be delivered if possible. */
   return setsockopt (sock, SOL_SOCKET, SO_LINGER, (void *) &lin,
                      sizeof (struct linger));
 }
@@ -310,8 +310,9 @@ srv_accept_socket (httpr_server_t * ap_server, char * ap_ip,
   some_error = (ICE_SOCK_ERROR == accepted_sockfd);
   bail_on_accept_error (some_error, strerror (errno));
 
-  if (0 != (err = getnameinfo ((struct sockaddr *) &sa, slen, ap_ip, a_ip_len,
-                               NULL, 0, NI_NUMERICHOST)))
+  if (0
+      != (err = getnameinfo ((struct sockaddr *) &sa, slen, ap_ip, a_ip_len,
+                             NULL, 0, NI_NUMERICHOST)))
     {
       snprintf (ap_ip, a_ip_len, "unknown");
       TIZ_ERROR (p_hdl, "getnameinfo error [%s]", gai_strerror (err));
@@ -423,7 +424,7 @@ srv_allocate_server_io_watcher (httpr_server_t * ap_server)
     ap_server->p_parent, &(ap_server->p_srv_ev_io), ap_server->lstn_sockfd,
     TIZ_EVENT_READ, /* Interested in read events only */
     true            /* Only one event at a time */
-    );
+  );
   if (OMX_ErrorNone != rc)
     {
       srv_destroy_server_io_watcher (ap_server);
@@ -483,9 +484,9 @@ srv_start_listener_timer_watcher (httpr_listener_t * ap_lstnr,
     {
       assert (ap_lstnr->p_server);
       assert (ap_lstnr->p_con);
-      tiz_check_omx (tiz_srv_timer_watcher_start (
-        ap_lstnr->p_server->p_parent, ap_lstnr->p_con->p_ev_timer, a_wait_time,
-        a_wait_time));
+      tiz_check_omx (tiz_srv_timer_watcher_start (ap_lstnr->p_server->p_parent,
+                                                  ap_lstnr->p_con->p_ev_timer,
+                                                  a_wait_time, a_wait_time));
       ap_lstnr->timer_started = true;
     }
   return rc;
@@ -560,8 +561,8 @@ srv_remove_listener (httpr_server_t * ap_server, httpr_listener_t * ap_lstnr)
   assert (nlstnrs - 1 == srv_get_listeners_count (ap_server));
 
   /* NOTE: No need to call srv_destroy_listener as this has been called already
-   * by
-   * the map's listeners_map_free_func */
+     * by
+     * the map's listeners_map_free_func */
 }
 
 static httpr_connection_t *
@@ -596,7 +597,7 @@ srv_create_connection (httpr_server_t * ap_server, httpr_listener_t * ap_lstnr,
   p_con->p_ev_timer = NULL;
 
   /* We are interested in knowing when a listener socket is available for
-   * writing */
+     * writing */
   rc = tiz_srv_io_watcher_init (ap_server->p_parent, &(p_con->p_ev_io),
                                 p_con->sockfd, TIZ_EVENT_WRITE, true);
   goto_end_on_omx_error (rc, p_hdl, "Unable to init the client's io event");
@@ -759,8 +760,8 @@ srv_build_http_negative_response (char * ap_buf, size_t len, int status,
   strftime (currenttime_buffer, sizeof (currenttime_buffer),
             "Date: %a, %d-%b-%Y %X GMT\r\n", gmtime_result);
 
-  ret = snprintf (ap_buf, len, "%sServer: %s\r\n%s%s%s%s", status_buffer,
-                  "Tizonia HTTP Server 0.1.0", currenttime_buffer,
+  ret = snprintf (ap_buf, len, "%sServer: %s%s\r\n%s%s%s%s", status_buffer,
+                  "Tizonia HTTP Server ", PACKAGE_VERSION, currenttime_buffer,
                   contenttype_buffer, (ap_msg ? "\r\n" : ""),
                   (ap_msg ? ap_msg : ""));
 
@@ -791,7 +792,8 @@ srv_send_http_error (httpr_server_t * ap_server, httpr_listener_t * ap_lstnr,
   ap_lstnr->buf.len = strnlen (ap_lstnr->buf.p_data, ICE_LISTENER_BUF_SIZE);
 
   /* Ignore send error */
-  (void) send (ap_lstnr->p_con->sockfd, ap_lstnr->buf.p_data, ap_lstnr->buf.len, 0);
+  (void) send (ap_lstnr->p_con->sockfd, ap_lstnr->buf.p_data, ap_lstnr->buf.len,
+               0);
   ap_lstnr->buf.len = 0;
 }
 
@@ -868,12 +870,13 @@ srv_build_http_positive_response (httpr_server_t * ap_server, char * ap_buf,
                 "icy-metaint:%lu\r\n", ap_server->mountpoint.metadata_period);
     }
 
-  ret = snprintf (
-    ap_buf, len, "%s%s%s%s%s%s%s%s%s%s%s%s\r\n", status_buffer,
-    contenttype_buffer, icybr_buffer, iceaudioinfo_buffer, icyname_buffer,
-    icydescription_buffer, icygenre_buffer, icyurl_buffer, icypub_buffer,
-    (metadata_needed ? icymetaint_buffer : ""),
-    "Server: Tizonia HTTP Renderer 0.1.0\r\n", "Cache-Control: no-cache\r\n");
+  ret = snprintf (ap_buf, len, "%s%s%s%s%s%s%s%s%s%s%s%s%s\r\n", status_buffer,
+                  contenttype_buffer, icybr_buffer, iceaudioinfo_buffer,
+                  icyname_buffer, icydescription_buffer, icygenre_buffer,
+                  icyurl_buffer, icypub_buffer,
+                  (metadata_needed ? icymetaint_buffer : ""),
+                  "Server: Tizonia HTTP Renderer ", PACKAGE_VERSION,
+                  "\r\nCache-Control: no-cache\r\n");
 
   return ret;
 }
@@ -932,7 +935,7 @@ srv_handle_listeners_request (httpr_server_t * ap_server,
 
   /*   some_error */
   /*       = (ap_lstnr->p_con->con_time + ICE_DEFAULT_HEADER_TIMEOUT <= time
-   * (NULL)); */
+     * (NULL)); */
   /*   bail_on_request_error (some_error, -1, "Connection timed out"); */
 
   some_error = ((nread = srv_read_from_listener (ap_lstnr)) <= 0);
@@ -969,10 +972,11 @@ srv_handle_listeners_request (httpr_server_t * ap_server,
 
   /* The request seems ok. Now build the response */
   some_error
-    = (0 == (to_write = srv_build_http_positive_response (
-               ap_server, ap_lstnr->buf.p_data, ICE_LISTENER_BUF_SIZE - 1,
-               ap_server->bitrate, ap_server->num_channels,
-               ap_server->sample_rate, ap_lstnr->want_metadata)));
+    = (0
+       == (to_write = srv_build_http_positive_response (
+             ap_server, ap_lstnr->buf.p_data, ICE_LISTENER_BUF_SIZE - 1,
+             ap_server->bitrate, ap_server->num_channels,
+             ap_server->sample_rate, ap_lstnr->want_metadata)));
   bail_on_request_error (some_error, 500, "Internal Server Error");
 
   some_error = (0 == srv_send_http_response (ap_server, ap_lstnr));
@@ -1421,7 +1425,7 @@ srv_accept_connection (httpr_server_t * ap_server)
   if (srv_get_listeners_count (ap_server) > 0)
     {
       /* This is a simple solution to prevent more than one connection at
-       * a time. One day this could be a multi-client renderer */
+         * a time. One day this could be a multi-client renderer */
       tiz_map_for_each (ap_server->p_lstnrs, srv_remove_existing_listener,
                         ap_server);
     }
@@ -1524,7 +1528,7 @@ srv_write (httpr_server_t * ap_server)
     }
 
   /* Until support for multiple listeners gets implemented, there will only be
-     one listener in the map */
+       one listener in the map */
   p_lstnr = srv_get_first_listener (ap_server);
   assert (p_lstnr);
   p_con = p_lstnr->p_con;
@@ -1598,7 +1602,7 @@ srv_stream_to_client (httpr_server_t * ap_server)
       case OMX_ErrorNone:
       case OMX_ErrorNoMore:
       /* Socket not ready, send buffer is full, or the burst limit has been
-         reached */
+       reached */
       case OMX_ErrorNotReady:
         {
           /* No connected clients just yet */
@@ -1775,7 +1779,7 @@ httpr_srv_stop (httpr_server_t * ap_server)
   if (ap_server->p_lstnrs)
     {
       /* Until support for multiple listeners gets implemented, there will only
-         be one listener in the map */
+           be one listener in the map */
       p_lstnr = srv_get_first_listener (ap_server);
       if (p_lstnr)
         {

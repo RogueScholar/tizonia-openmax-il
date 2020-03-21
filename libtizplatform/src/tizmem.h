@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,26 +30,27 @@
 #define TIZMEM_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <sys/types.h>
 #include <OMX_Types.h>
 
-/*@only@*/ /*@null@*/ /*@out@*/
-OMX_PTR
-tiz_mem_alloc (size_t size);
-void
-tiz_mem_free (/*@only@*/ /*@out@*/ /*@null@*/ OMX_PTR addr);
-/*@only@*/ /*@null@*/ /*@out@*/
-OMX_PTR
-tiz_mem_realloc (/*@only@*/ /*@out@*/ /*@null@*/
-                 OMX_PTR ptr, size_t size);
-/*@only@*/ /*@null@*/ /*@out@*/
-OMX_PTR
-tiz_mem_calloc (size_t nmemb, size_t size);
-OMX_PTR
-tiz_mem_set (OMX_PTR ap_dest, OMX_S32 a_orig, size_t a_num_bytes);
+  /*@only@*/ /*@null@*/ /*@out@*/
+  OMX_PTR
+  tiz_mem_alloc (size_t size);
+  void
+  tiz_mem_free (/*@only@*/ /*@out@*/ /*@null@*/ OMX_PTR addr);
+  /*@only@*/ /*@null@*/ /*@out@*/
+  OMX_PTR
+  tiz_mem_realloc (/*@only@*/ /*@out@*/ /*@null@*/
+                   OMX_PTR ptr, size_t size);
+  /*@only@*/ /*@null@*/ /*@out@*/
+  OMX_PTR
+  tiz_mem_calloc (size_t nmemb, size_t size);
+  OMX_PTR
+  tiz_mem_set (OMX_PTR ap_dest, OMX_S32 a_orig, size_t a_num_bytes);
 
 #ifdef __cplusplus
 }

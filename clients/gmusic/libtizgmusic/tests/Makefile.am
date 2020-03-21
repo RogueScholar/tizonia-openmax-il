@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -28,4 +28,3 @@ check_tizgmusic_CFLAGS = \
 check_tizgmusic_LDADD = \
 	$(top_builddir)/src/libtizgmusic.la \
 	@CHECK_LIBS@
-

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -31,8 +31,8 @@
 
 #include <boost/function.hpp>
 
-#include <tizgraphtypes.hpp>
 #include <tizgraphops.hpp>
+#include <tizgraphtypes.hpp>
 
 namespace tiz
 {
@@ -44,7 +44,7 @@ namespace tiz
     {
     public:
       chromecastops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-                 const omx_comp_role_lst_t &role_lst);
+                     const omx_comp_role_lst_t &role_lst);
 
     public:
       void do_load ();
@@ -61,14 +61,14 @@ namespace tiz
       void do_configure_http ();
       void do_configure_gmusic ();
       void do_configure_scloud ();
-//       void do_configure_dirble ();
+      void do_configure_tunein ();
       void do_configure_youtube ();
       void do_configure_plex ();
 
       OMX_ERRORTYPE get_encoding_type_from_chromecast_source ();
 
     private:
-      typedef boost::function< void() > config_service_func_t;
+      typedef boost::function< void () > config_service_func_t;
 
     private:
       // re-implemented from the base class

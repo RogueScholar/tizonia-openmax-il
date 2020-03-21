@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -61,7 +61,7 @@ namespace
   {
     return operand.type () == typeid (T);
   }
-}
+}  // namespace
 
 void *cast::thread_func (void *p_arg)
 {

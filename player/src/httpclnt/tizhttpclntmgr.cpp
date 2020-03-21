@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -31,7 +31,7 @@
 
 #include <assert.h>
 
-#include <boost/assign/list_of.hpp> // for 'list_of()'
+#include <boost/assign/list_of.hpp>  // for 'list_of()'
 #include <boost/make_shared.hpp>
 
 #include <tizplatform.h>
@@ -61,7 +61,8 @@ graphmgr::httpclntmgr::~httpclntmgr ()
 }
 
 graphmgr::ops *graphmgr::httpclntmgr::do_init (
-    const tizplaylist_ptr_t &playlist, const termination_callback_t &termination_cback,
+    const tizplaylist_ptr_t &playlist,
+    const termination_callback_t &termination_cback,
     graphmgr_capabilities_t &graphmgr_caps)
 {
   // Fill this graph manager capabilities
@@ -92,9 +93,9 @@ graphmgr::ops *graphmgr::httpclntmgr::do_init (
 //
 // decodemgrops
 //
-graphmgr::httpclntmgrops::httpclntmgrops (mgr *p_mgr,
-                                          const tizplaylist_ptr_t &playlist,
-                                          const termination_callback_t &termination_cback)
+graphmgr::httpclntmgrops::httpclntmgrops (
+    mgr *p_mgr, const tizplaylist_ptr_t &playlist,
+    const termination_callback_t &termination_cback)
   : tiz::graphmgr::ops (p_mgr, playlist, termination_cback)
 {
 }
@@ -107,7 +108,7 @@ tizgraph_ptr_t graphmgr::httpclntmgrops::get_graph (
   tizgraph_ptr_map_t::const_iterator it = graph_registry_.find (encoding);
   if (it == graph_registry_.end ())
   {
-    g_ptr = boost::make_shared< tiz::graph::httpclient >();
+    g_ptr = boost::make_shared< tiz::graph::httpclient > ();
     if (g_ptr)
     {
       // TODO: Check rc
@@ -154,7 +155,7 @@ void graphmgr::httpclntmgrops::do_execute ()
   assert (playlist_);
   assert (p_mgr_);
 
-  httpclntmgr *p_clientmgr = dynamic_cast< httpclntmgr * >(p_mgr_);
+  httpclntmgr *p_clientmgr = dynamic_cast< httpclntmgr * > (p_mgr_);
   assert (p_clientmgr);
 
   graph_config_.reset ();

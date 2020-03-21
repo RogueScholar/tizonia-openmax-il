@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -59,26 +59,26 @@
  *@ingroup plugins
  */
 
-static OMX_VERSIONTYPE mp3_metadata_version = { { 1, 0, 0, 0 } };
+static OMX_VERSIONTYPE mp3_metadata_version = {{1, 0, 0, 0}};
 
-static OMX_PTR instantiate_output_port (OMX_HANDLETYPE ap_hdl)
+static OMX_PTR
+instantiate_output_port (OMX_HANDLETYPE ap_hdl)
 {
   OMX_AUDIO_PARAM_MP3TYPE mp3type;
-  OMX_AUDIO_CODINGTYPE encodings[]
-      = { OMX_AUDIO_CodingMP3, OMX_AUDIO_CodingMax };
-  tiz_port_options_t mp3_port_opts
-      = { OMX_PortDomainAudio,
-          OMX_DirOutput,
-          ARATELIA_MP3_METADATA_ERASER_PORT_MIN_BUF_COUNT,
-          ARATELIA_MP3_METADATA_ERASER_PORT_MIN_BUF_SIZE,
-          ARATELIA_MP3_METADATA_ERASER_PORT_NONCONTIGUOUS,
-          ARATELIA_MP3_METADATA_ERASER_PORT_ALIGNMENT,
-          ARATELIA_MP3_METADATA_ERASER_PORT_SUPPLIERPREF,
-          { ARATELIA_MP3_METADATA_ERASER_PORT_INDEX, NULL, NULL, NULL },
-          -1 /* use -1 for now */
-      };
+  OMX_AUDIO_CODINGTYPE encodings[] = {OMX_AUDIO_CodingMP3, OMX_AUDIO_CodingMax};
+  tiz_port_options_t mp3_port_opts = {
+    OMX_PortDomainAudio,
+    OMX_DirOutput,
+    ARATELIA_MP3_METADATA_ERASER_PORT_MIN_BUF_COUNT,
+    ARATELIA_MP3_METADATA_ERASER_PORT_MIN_BUF_SIZE,
+    ARATELIA_MP3_METADATA_ERASER_PORT_NONCONTIGUOUS,
+    ARATELIA_MP3_METADATA_ERASER_PORT_ALIGNMENT,
+    ARATELIA_MP3_METADATA_ERASER_PORT_SUPPLIERPREF,
+    {ARATELIA_MP3_METADATA_ERASER_PORT_INDEX, NULL, NULL, NULL},
+    -1 /* use -1 for now */
+  };
 
-  mp3type.nSize = sizeof(OMX_AUDIO_PARAM_MP3TYPE);
+  mp3type.nSize = sizeof (OMX_AUDIO_PARAM_MP3TYPE);
   mp3type.nVersion.nVersion = OMX_VERSION;
   mp3type.nPortIndex = 0;
   mp3type.nChannels = 2;
@@ -92,7 +92,8 @@ static OMX_PTR instantiate_output_port (OMX_HANDLETYPE ap_hdl)
                       &encodings, &mp3type);
 }
 
-static OMX_PTR instantiate_config_port (OMX_HANDLETYPE ap_hdl)
+static OMX_PTR
+instantiate_config_port (OMX_HANDLETYPE ap_hdl)
 {
   return factory_new (tiz_get_type (ap_hdl, "tizuricfgport"),
                       NULL, /* this port does not take options */
@@ -100,7 +101,8 @@ static OMX_PTR instantiate_config_port (OMX_HANDLETYPE ap_hdl)
                       mp3_metadata_version);
 }
 
-static OMX_PTR instantiate_processor (OMX_HANDLETYPE ap_hdl)
+static OMX_PTR
+instantiate_processor (OMX_HANDLETYPE ap_hdl)
 {
   return factory_new (tiz_get_type (ap_hdl, "mp3metaprc"));
 }
@@ -109,25 +111,25 @@ OMX_ERRORTYPE
 OMX_ComponentInit (OMX_HANDLETYPE ap_hdl)
 {
   tiz_role_factory_t role_factory;
-  const tiz_role_factory_t *rf_list[] = { &role_factory };
+  const tiz_role_factory_t * rf_list[] = {&role_factory};
   tiz_type_factory_t mp3metaprc_type;
-  const tiz_type_factory_t *tf_list[] = { &mp3metaprc_type };
+  const tiz_type_factory_t * tf_list[] = {&mp3metaprc_type};
 
-  strcpy ((OMX_STRING)role_factory.role,
+  strcpy ((OMX_STRING) role_factory.role,
           ARATELIA_MP3_METADATA_ERASER_DEFAULT_ROLE);
   role_factory.pf_cport = instantiate_config_port;
   role_factory.pf_port[0] = instantiate_output_port;
   role_factory.nports = 1;
   role_factory.pf_proc = instantiate_processor;
 
-  strcpy ((OMX_STRING)mp3metaprc_type.class_name, "mp3metaprc_class");
+  strcpy ((OMX_STRING) mp3metaprc_type.class_name, "mp3metaprc_class");
   mp3metaprc_type.pf_class_init = mp3meta_prc_class_init;
-  strcpy ((OMX_STRING)mp3metaprc_type.object_name, "mp3metaprc");
+  strcpy ((OMX_STRING) mp3metaprc_type.object_name, "mp3metaprc");
   mp3metaprc_type.pf_object_init = mp3meta_prc_init;
 
   /* Initialize the component infrastructure */
   tiz_check_omx (
-      tiz_comp_init (ap_hdl, ARATELIA_MP3_METADATA_ERASER_COMPONENT_NAME));
+    tiz_comp_init (ap_hdl, ARATELIA_MP3_METADATA_ERASER_COMPONENT_NAME));
 
   /* Register the "mp3metaprc" class */
   tiz_check_omx (tiz_comp_register_types (ap_hdl, tf_list, 1));

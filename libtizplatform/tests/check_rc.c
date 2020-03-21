@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -28,44 +28,47 @@
 
 START_TEST (test_rcfile_get_single_value)
 {
-  const char *val =  NULL;
+  const char * val = NULL;
 
-  val = tiz_rcfile_get_value("resource-management", "rmdb");
+  val = tiz_rcfile_get_value ("resource-management", "rmdb");
   fail_if (val == NULL);
 
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "test_rcfile_get_single_value : "
-             "value [%s]", val);
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "test_rcfile_get_single_value : "
+           "value [%s]",
+           val);
 }
 END_TEST
 
 START_TEST (test_rcfile_get_unexistent_value)
 {
-  const char *val =  NULL;
+  const char * val = NULL;
 
-  val = tiz_rcfile_get_value("resource-management", "unexistentvalue124");
+  val = tiz_rcfile_get_value ("resource-management", "unexistentvalue124");
   fail_if (val != NULL);
-
 }
 END_TEST
 
 START_TEST (test_rcfile_get_value_list)
 {
-  char **pp_vlst =  NULL;
+  char ** pp_vlst = NULL;
   unsigned long length = 0;
-  int i=0;
+  int i = 0;
 
-  pp_vlst = tiz_rcfile_get_value_list("il-core", "component-paths", &length);
+  pp_vlst = tiz_rcfile_get_value_list ("il-core", "component-paths", &length);
   fail_if (pp_vlst == NULL);
   fail_if (length == 0);
 
-  for (i=0; i<length; i++)
+  for (i = 0; i < length; i++)
     {
-      TIZ_LOG (TIZ_PRIORITY_TRACE, "test_rcfile_get_value_list : "
-                 "pp_vlst[%d] = [%s]", i , pp_vlst[i]);
-      tiz_mem_free(pp_vlst[i]);
+      TIZ_LOG (TIZ_PRIORITY_TRACE,
+               "test_rcfile_get_value_list : "
+               "pp_vlst[%d] = [%s]",
+               i, pp_vlst[i]);
+      tiz_mem_free (pp_vlst[i]);
     }
 
-  tiz_mem_free(pp_vlst);
+  tiz_mem_free (pp_vlst);
 }
 END_TEST
 

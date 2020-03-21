@@ -133,12 +133,12 @@ clients/chromecast/libtizchromecast/Makefile
 clients/chromecast/libtizchromecast/src/Makefile
 clients/chromecast/libtizchromecast/tests/Makefile
 clients/chromecast/libtizchromecast/tizonia
-clients/dirble/Makefile
-clients/dirble/dirbleproxy/Makefile
-clients/dirble/libtizdirble/Makefile
-clients/dirble/libtizdirble/src/Makefile
-clients/dirble/libtizdirble/tests/Makefile
-clients/dirble/libtizdirble/tizonia
+clients/tunein/Makefile
+clients/tunein/tuneinproxy/Makefile
+clients/tunein/libtiztunein/Makefile
+clients/tunein/libtiztunein/src/Makefile
+clients/tunein/libtiztunein/tests/Makefile
+clients/tunein/libtiztunein/tizonia
 clients/gmusic/Makefile
 clients/gmusic/gmusicproxy/Makefile
 clients/gmusic/libtizgmusic/Makefile
@@ -180,6 +180,7 @@ docs/doxygen-src/html/
 docs/doxygen-src/xml/
 docs/sphinx-src/_build/
 docs/sphinx-src/overview/BUILDING.md
+docs/sphinx-src/overview/BUILDING_with_meson.md
 docs/sphinx-src/overview/CHANGELOG.md
 docs/sphinx-src/overview/CODE_OF_CONDUCT.md
 docs/sphinx-src/overview/CONTRIBUTING.md
@@ -187,6 +188,10 @@ docs/sphinx-src/overview/COPYING.LESSER.md
 docs/sphinx-src/overview/ISSUE_TEMPLATE.md
 docs/sphinx-src/overview/PROJECT.md
 docs/sphinx-src/overview/README.md
+docs/sphinx-src/overview/ROADMAP.md
+docs/sphinx-src/development/BUILDING.md
+docs/sphinx-src/development/BUILDING_with_meson.md
+docs/sphinx-src/development/PROJECT.md
 include/Makefile
 include/omxil-1.2/Makefile
 include/tizonia

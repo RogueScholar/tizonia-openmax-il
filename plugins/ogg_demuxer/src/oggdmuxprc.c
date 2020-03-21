@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -673,7 +673,7 @@ flush_ogg_packet (oggdmux_prc_t * ap_prc, const OMX_U32 a_pid,
   if (nbytes_remaining > 0)
     {
       /* Need_more_buffers. Temporarily store the data until an omx buffer is
-       * available */
+         * available */
       TIZ_TRACE (handleOf (ap_prc), "Need to store [%d] bytes - pid [%d]",
                  nbytes_remaining, a_pid);
       nbytes_remaining
@@ -937,7 +937,7 @@ obtain_tracks (oggdmux_prc_t * ap_prc)
   assert (p_prc);
 
   /* Seek to beginning of file and set the first pass callback that will help
-   * with the discovery of the codecs */
+     * with the discovery of the codecs */
   tiz_check_omx (seek_to_byte_offset (p_prc, 0));
   tiz_check_omx (set_read_page_callback (p_prc, read_page_first_pass));
 
@@ -1019,13 +1019,15 @@ buffers_available (oggdmux_prc_t * ap_prc)
     ap_prc, ARATELIA_OGG_DEMUXER_VIDEO_PORT_BASE_INDEX));
   if (aud_port_enabled)
     {
-      rc |= (NULL != get_header (ap_prc,
-                                 ARATELIA_OGG_DEMUXER_AUDIO_PORT_BASE_INDEX));
+      rc
+        |= (NULL
+            != get_header (ap_prc, ARATELIA_OGG_DEMUXER_AUDIO_PORT_BASE_INDEX));
     }
   if (vid_port_enabled)
     {
-      rc |= (NULL != get_header (ap_prc,
-                                 ARATELIA_OGG_DEMUXER_VIDEO_PORT_BASE_INDEX));
+      rc
+        |= (NULL
+            != get_header (ap_prc, ARATELIA_OGG_DEMUXER_VIDEO_PORT_BASE_INDEX));
     }
   return rc;
 }
@@ -1187,7 +1189,7 @@ oggdmux_prc_buffers_ready (const void * ap_obj)
   if (p_prc->awaiting_buffers_ && (!p_prc->aud_eos_ || !p_prc->vid_eos_))
     {
       /* Make sure we have flushed the temp buffers before reading any more
-       * data from file */
+         * data from file */
       if (flush_stores (p_prc) == 0)
         {
           p_prc->awaiting_buffers_ = true;

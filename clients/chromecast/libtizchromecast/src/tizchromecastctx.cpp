@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -79,7 +80,7 @@ namespace
 
     py_chromecastproxy = py_global["tizchromecastproxy"];
   }
-}
+}  // namespace
 
 tizchromecastctx::tizchromecastctx ()
 {
@@ -91,13 +92,15 @@ tizchromecastctx::~tizchromecastctx ()
   // boost::python doesn't support Py_Finalize() yet!
 }
 
-bp::object &tizchromecastctx::create_cc_proxy (const std::string &name_or_ip) const
+bp::object &tizchromecastctx::create_cc_proxy (
+    const std::string &name_or_ip) const
 {
   if (instances_.count (name_or_ip))
     {
       instances_.erase (name_or_ip);
     }
-  instances_[name_or_ip] = py_chromecastproxy_ (name_or_ip.c_str ());
+  try_catch_wrapper (instances_[name_or_ip]
+                     = py_chromecastproxy_ (name_or_ip.c_str ()));
   return instances_[name_or_ip];
 }
 

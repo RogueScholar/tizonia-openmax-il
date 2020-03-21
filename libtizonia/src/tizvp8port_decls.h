@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -20,42 +20,43 @@
 /**
  * @file   tizvp8port_decls.h
  * @author Juan A. Rubio <juan.rubio@aratelia.com>
- * 
+ *
  * @brief  vp8port class declarations
- * 
- * 
+ *
+ *
  */
 
 #ifndef TIZVP8PORT_DECLS_H
 #define TIZVP8PORT_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "OMX_Component.h"
 #include "tizvideoport_decls.h"
 
-typedef struct tiz_vp8port tiz_vp8port_t;
-struct tiz_vp8port
-{
-  /* Object */
-  const tiz_videoport_t _;
-  OMX_VIDEO_PARAM_VP8TYPE vp8type_;
-  OMX_VIDEO_PARAM_PROFILELEVELTYPE pltype_;
-  tiz_vector_t * p_levels_;
-  OMX_VIDEO_PARAM_BITRATETYPE pbrtype_;
-  OMX_VIDEO_CONFIG_BITRATETYPE cbrtype_;
-  OMX_CONFIG_FRAMERATETYPE frtype_;
-};
+  typedef struct tiz_vp8port tiz_vp8port_t;
+  struct tiz_vp8port
+  {
+    /* Object */
+    const tiz_videoport_t _;
+    OMX_VIDEO_PARAM_VP8TYPE vp8type_;
+    OMX_VIDEO_PARAM_PROFILELEVELTYPE pltype_;
+    tiz_vector_t * p_levels_;
+    OMX_VIDEO_PARAM_BITRATETYPE pbrtype_;
+    OMX_VIDEO_CONFIG_BITRATETYPE cbrtype_;
+    OMX_CONFIG_FRAMERATETYPE frtype_;
+  };
 
-typedef struct tiz_vp8port_class tiz_vp8port_class_t;
-struct tiz_vp8port_class
-{
-  /* Class */
-  const tiz_videoport_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct tiz_vp8port_class tiz_vp8port_class_t;
+  struct tiz_vp8port_class
+  {
+    /* Class */
+    const tiz_videoport_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

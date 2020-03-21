@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -126,7 +126,7 @@ typedef struct tiz_scheduler tiz_scheduler_t;
 struct tiz_scheduler
 {
   /* TODO: Reconsider the implementation of the buffer for the component's
-     name */
+       name */
   char cname[OMX_MAX_STRINGNAME_SIZE + 4096];
   tiz_thread_t thread;
   OMX_S32 thread_id;
@@ -733,8 +733,9 @@ store_hooks (tiz_map_t ** app_map, OMX_U32 a_pid, const void * ap_hooks,
 
   if (!p_map)
     {
-      if (OMX_ErrorNone != tiz_map_init (&p_map, hook_map_compare_func,
-                                         hook_map_free_func, NULL))
+      if (OMX_ErrorNone
+          != tiz_map_init (&p_map, hook_map_compare_func, hook_map_free_func,
+                           NULL))
         {
           return OMX_ErrorInsufficientResources;
         }
@@ -889,7 +890,7 @@ do_gparam (tiz_scheduler_t * ap_sched, tiz_sched_state_t * ap_state,
   if (OMX_IndexParamStandardComponentRole == p_msg_gparam->index)
     {
       /* IL 1.2 does not mandate support read-access for this index. Only write
-       * access is mandated. */
+         * access is mandated. */
       rc = OMX_ErrorUnsupportedIndex;
     }
   else
@@ -941,8 +942,9 @@ do_set_component_role (tiz_scheduler_t * ap_sched,
       if (role_pos >= nroles)
         {
           /* Check for "default" role */
-          if (0 == strncmp ((char *) ap_role->cRole, SCHED_OMX_DEFAULT_ROLE,
-                            OMX_MAX_STRINGNAME_SIZE))
+          if (0
+              == strncmp ((char *) ap_role->cRole, SCHED_OMX_DEFAULT_ROLE,
+                          OMX_MAX_STRINGNAME_SIZE))
             {
               TIZ_TRACE (ap_sched->child.p_hdl, "Found default role...");
               role_pos = 0;
@@ -969,7 +971,7 @@ do_set_component_role (tiz_scheduler_t * ap_sched,
             }
 
           /* Now, make sure the new role's processor has access to the IL
-             client's callback information */
+               client's callback information */
           tiz_srv_set_callbacks (ap_sched->child.p_prc, ap_sched->appdata,
                                  ap_sched->cbacks);
         }
@@ -1041,7 +1043,7 @@ do_sconfig (tiz_scheduler_t * ap_sched, tiz_sched_state_t * ap_state,
                           p_msg_sconfig->index, p_msg_sconfig->p_struct);
 
   /* Now have to delete the config struct, if api has been called
-     non-blocking */
+       non-blocking */
   if (OMX_FALSE == tiz_sched_blocking_apis_tbl[ETIZSchedMsgSetConfig])
     {
       tiz_mem_free (p_msg_sconfig->p_struct);
@@ -1198,9 +1200,10 @@ do_scbs (tiz_scheduler_t * ap_sched, tiz_sched_state_t * ap_state,
   assert (p_msg_scbs);
 
   /* Use the FSM to validate this API call */
-  if (OMX_ErrorNone != (rc = tiz_api_SetCallbacks (
-                          ap_sched->child.p_fsm, ap_msg->p_hdl,
-                          p_msg_scbs->p_cbacks, p_msg_scbs->p_appdata)))
+  if (OMX_ErrorNone
+      != (rc
+          = tiz_api_SetCallbacks (ap_sched->child.p_fsm, ap_msg->p_hdl,
+                                  p_msg_scbs->p_cbacks, p_msg_scbs->p_appdata)))
     {
       return rc;
     }
@@ -1301,7 +1304,7 @@ do_rr (tiz_scheduler_t * ap_sched, tiz_sched_state_t * ap_state,
   assert (p_msg_rr->p_role_list);
   assert (p_msg_rr->nroles > 0);
 
-/* Validate these inputs in debug mode */
+  /* Validate these inputs in debug mode */
 #ifndef NDEBUG
   {
     const tiz_role_factory_t * p_rf = NULL;
@@ -1407,8 +1410,8 @@ do_rph (tiz_scheduler_t * ap_sched, tiz_sched_state_t * ap_state,
   assert (p_hooks);
 
   /* Only allow in OMX_StateLoded state. Disallowed for
-   * other states, even if the port is disabled.
-   */
+     * other states, even if the port is disabled.
+     */
   TIZ_COMP_CHECK_LOADED_STATE (ap_sched);
 
   {
@@ -1468,8 +1471,8 @@ do_reh (tiz_scheduler_t * ap_sched, tiz_sched_state_t * ap_state,
   assert (p_hook);
 
   /* Only allow in OMX_StateLoded state. Disallowed for
-   * other states, even if the port is disabled.
-   */
+     * other states, even if the port is disabled.
+     */
   TIZ_COMP_CHECK_LOADED_STATE (ap_sched);
 
   {
@@ -1528,8 +1531,8 @@ do_rreh (tiz_scheduler_t * ap_sched, tiz_sched_state_t * ap_state,
   assert (ap_sched->child.nroles > 0);
 
   /* Only allow in OMX_StateLoded state. Disallowed for
-   * other states, even if the port is disabled.
-   */
+     * other states, even if the port is disabled.
+     */
   TIZ_COMP_CHECK_LOADED_STATE (ap_sched);
 
   p_msg_rreh = &(ap_msg->rreh);
@@ -1545,8 +1548,9 @@ do_rreh (tiz_scheduler_t * ap_sched, tiz_sched_state_t * ap_state,
         assert (ap_sched->child.p_role_list[role_pos]);
         tiz_role_factory_t * p_rf = ap_sched->child.p_role_list[role_pos]->p_rf;
         assert (p_rf);
-        if (0 == strncmp ((char *) p_msg_rreh->p_role,
-                          (const char *) p_rf->role, OMX_MAX_STRINGNAME_SIZE))
+        if (0
+            == strncmp ((char *) p_msg_rreh->p_role, (const char *) p_rf->role,
+                        OMX_MAX_STRINGNAME_SIZE))
           {
             TIZ_TRACE (ap_sched->child.p_hdl, "Found role [%s]...", p_rf->role);
             break;
@@ -1805,9 +1809,10 @@ sched_SendCommand (OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
   tiz_sched_msg_sendcommand_t * p_msg_scmd = NULL;
   tiz_scheduler_t * p_sched = NULL;
 
-  if (!ap_hdl || (OMX_CommandStateSet == a_cmd
-                  && (a_param1 < OMX_StateLoaded
-                      || a_param1 > OMX_StateWaitForResources)))
+  if (!ap_hdl
+      || (OMX_CommandStateSet == a_cmd
+          && (a_param1 < OMX_StateLoaded
+              || a_param1 > OMX_StateWaitForResources)))
     {
       TIZ_LOG (TIZ_PRIORITY_ERROR,
                "[OMX_ErrorBadParameter] : "
@@ -2067,8 +2072,8 @@ sched_UseBuffer (OMX_HANDLETYPE ap_hdl, OMX_BUFFERHEADERTYPE ** app_hdr,
   tiz_scheduler_t * p_sched = NULL;
 
   /* From 1.2, ap_buf may be NULL. The provisional spec does not say what
-   * a_size would be when ap_buf is NULL. For now assume a_size may also be
-   * zero. */
+     * a_size would be when ap_buf is NULL. For now assume a_size may also be
+     * zero. */
   if (!ap_hdl || !app_hdr)
     {
       TIZ_LOG (TIZ_PRIORITY_ERROR,
@@ -2247,8 +2252,8 @@ sched_UseEGLImage (OMX_HANDLETYPE ap_hdl, OMX_BUFFERHEADERTYPE ** app_hdr,
   tiz_scheduler_t * p_sched = NULL;
 
   /* From 1.2, ap_buf may be NULL. The provisional spec does not say what
-   * a_size would be when ap_buf is NULL. For now assume a_size may also be
-   * zero. */
+     * a_size would be when ap_buf is NULL. For now assume a_size may also be
+     * zero. */
   if (!ap_hdl || !app_hdr)
     {
       TIZ_LOG (TIZ_PRIORITY_ERROR,

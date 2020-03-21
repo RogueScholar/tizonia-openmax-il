@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,7 +30,8 @@
 #define TIZOBJSYS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_Core.h>
@@ -38,31 +39,32 @@ extern "C" {
 
 #include <tizplatform.h>
 
-typedef struct tiz_os tiz_os_t;
+  typedef struct tiz_os tiz_os_t;
 
-typedef void * (*tiz_os_type_init_f) (void * ap_tos, void * ap_hdl);
+  typedef void * (*tiz_os_type_init_f) (void * ap_tos, void * ap_hdl);
 
-OMX_ERRORTYPE
-tiz_os_init (tiz_os_t ** app_os, const OMX_HANDLETYPE ap_hdl,
-             tiz_soa_t * ap_soa);
+  OMX_ERRORTYPE
+  tiz_os_init (tiz_os_t ** app_os, const OMX_HANDLETYPE ap_hdl,
+               tiz_soa_t * ap_soa);
 
-void
-tiz_os_destroy (tiz_os_t * ap_os);
+  void
+  tiz_os_destroy (tiz_os_t * ap_os);
 
-OMX_ERRORTYPE
-tiz_os_register_base_types (tiz_os_t * ap_os);
+  OMX_ERRORTYPE
+  tiz_os_register_base_types (tiz_os_t * ap_os);
 
-OMX_ERRORTYPE
-tiz_os_register_type (tiz_os_t * ap_os, const tiz_os_type_init_f a_type_init_f,
-                      const OMX_STRING a_type_name);
+  OMX_ERRORTYPE
+  tiz_os_register_type (tiz_os_t * ap_os,
+                        const tiz_os_type_init_f a_type_init_f,
+                        const OMX_STRING a_type_name);
 
-void *
-tiz_os_get_type (const tiz_os_t * ap_os, const char * a_type_name);
+  void *
+  tiz_os_get_type (const tiz_os_t * ap_os, const char * a_type_name);
 
-void *
-tiz_os_calloc (const tiz_os_t * ap_os, size_t a_size);
-void
-tiz_os_free (const tiz_os_t * ap_os, void * ap_addr);
+  void *
+  tiz_os_calloc (const tiz_os_t * ap_os, size_t a_size);
+  void
+  tiz_os_free (const tiz_os_t * ap_os, void * ap_addr);
 
 #ifdef __cplusplus
 }

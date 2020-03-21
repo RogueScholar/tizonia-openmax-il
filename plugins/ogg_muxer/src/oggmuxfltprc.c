@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -351,7 +351,7 @@ og_io_write (void * ap_user_handle, void * ap_buf, size_t n)
           p_hdr->nFilledLen += bytes_written;
           TIZ_DEBUG (handleOf (p_prc), "bytes - n [%d] nFilledLen [%d]", n,
                      p_hdr->nFilledLen);
-          if (0 == TIZ_OMX_BUF_AVAIL (p_hdr) || tiz_filter_prc_is_eos(p_prc))
+          if (0 == TIZ_OMX_BUF_AVAIL (p_hdr) || tiz_filter_prc_is_eos (p_prc))
             {
               release_output_header (p_prc, p_hdr);
             }
@@ -607,7 +607,7 @@ static OMX_ERRORTYPE
 oggmuxflt_prc_stop_and_return (void * ap_prc)
 {
   /* Do flush on all ports; this will reset the stream parameters and release
-     any buffers held */
+       any buffers held */
   return do_flush (ap_prc, OMX_ALL);
 }
 

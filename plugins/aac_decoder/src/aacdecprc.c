@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -48,9 +48,11 @@
 #endif
 
 /* Forward declarations */
-static OMX_ERRORTYPE aacdec_prc_deallocate_resources (void *);
+static OMX_ERRORTYPE
+aacdec_prc_deallocate_resources (void *);
 
-static OMX_ERRORTYPE allocate_temp_data_store (aacdec_prc_t *ap_prc)
+static OMX_ERRORTYPE
+allocate_temp_data_store (aacdec_prc_t * ap_prc)
 {
   OMX_PARAM_PORTDEFINITIONTYPE port_def;
 
@@ -58,15 +60,16 @@ static OMX_ERRORTYPE allocate_temp_data_store (aacdec_prc_t *ap_prc)
 
   TIZ_INIT_OMX_PORT_STRUCT (port_def, ARATELIA_AAC_DECODER_INPUT_PORT_INDEX);
   tiz_check_omx (
-      tiz_api_GetParameter (tiz_get_krn (handleOf (ap_prc)), handleOf (ap_prc),
-                            OMX_IndexParamPortDefinition, &port_def));
+    tiz_api_GetParameter (tiz_get_krn (handleOf (ap_prc)), handleOf (ap_prc),
+                          OMX_IndexParamPortDefinition, &port_def));
 
   assert (ap_prc->p_store_ == NULL);
   return tiz_buffer_init (&(ap_prc->p_store_), port_def.nBufferSize);
 }
 
-static inline void deallocate_temp_data_store (
-    /*@special@ */ aacdec_prc_t *ap_prc)
+static inline void
+deallocate_temp_data_store (
+  /*@special@ */ aacdec_prc_t * ap_prc)
 /*@releases ap_prc->p_store_@ */
 /*@ensures isnull ap_prc->p_store_@ */
 {
@@ -75,9 +78,10 @@ static inline void deallocate_temp_data_store (
   ap_prc->p_store_ = NULL;
 }
 
-static void skip_id3_tag (aacdec_prc_t *ap_prc)
+static void
+skip_id3_tag (aacdec_prc_t * ap_prc)
 {
-  OMX_U8 *p_buffer = tiz_buffer_get (ap_prc->p_store_);
+  OMX_U8 * p_buffer = tiz_buffer_get (ap_prc->p_store_);
 
   assert (ap_prc);
 
@@ -92,22 +96,24 @@ static void skip_id3_tag (aacdec_prc_t *ap_prc)
     }
 }
 
-static inline OMX_ERRORTYPE retrieve_aac_settings (
-    const void *ap_prc, OMX_AUDIO_PARAM_AACPROFILETYPE *ap_aactype)
+static inline OMX_ERRORTYPE
+retrieve_aac_settings (const void * ap_prc,
+                       OMX_AUDIO_PARAM_AACPROFILETYPE * ap_aactype)
 {
-  const aacdec_prc_t *p_prc = ap_prc;
+  const aacdec_prc_t * p_prc = ap_prc;
   assert (ap_prc);
   assert (ap_aactype);
 
   /* Retrieve the aac settings from the input port */
   TIZ_INIT_OMX_PORT_STRUCT (*ap_aactype, ARATELIA_AAC_DECODER_INPUT_PORT_INDEX);
   tiz_check_omx (tiz_api_GetParameter (tiz_get_krn (handleOf (p_prc)),
-                                           handleOf (p_prc),
-                                           OMX_IndexParamAudioAac, ap_aactype));
+                                       handleOf (p_prc), OMX_IndexParamAudioAac,
+                                       ap_aactype));
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE set_decoder_config (aacdec_prc_t *ap_prc)
+static OMX_ERRORTYPE
+set_decoder_config (aacdec_prc_t * ap_prc)
 {
   OMX_ERRORTYPE rc = OMX_ErrorInsufficientResources;
   NeAACDecConfigurationPtr p_config;
@@ -127,7 +133,7 @@ static OMX_ERRORTYPE set_decoder_config (aacdec_prc_t *ap_prc)
       p_config->defSampleRate = aactype.nSampleRate;
       p_config->defObjectType = aactype.eAACProfile;
       p_config->outputFormat
-          = FAAD_FMT_16BIT;           /* we making this fixed for now */
+        = FAAD_FMT_16BIT;             /* we making this fixed for now */
       p_config->downMatrix = 1;       /* Down matrix 5.1 to 2 channels */
       p_config->useOldADTSFormat = 0; /* we making this fixed for now */
       /* config->dontUpSampleImplicitSBR = 1; */
@@ -151,11 +157,12 @@ static OMX_ERRORTYPE set_decoder_config (aacdec_prc_t *ap_prc)
   return rc;
 }
 
-static OMX_ERRORTYPE update_pcm_mode (aacdec_prc_t *ap_prc, const OMX_U32 a_samplerate,
-                                      const OMX_U32 a_channels)
+static OMX_ERRORTYPE
+update_pcm_mode (aacdec_prc_t * ap_prc, const OMX_U32 a_samplerate,
+                 const OMX_U32 a_channels)
 {
   assert (ap_prc);
-  if (a_samplerate  != ap_prc->pcmmode_.nSamplingRate
+  if (a_samplerate != ap_prc->pcmmode_.nSamplingRate
       || a_channels != ap_prc->pcmmode_.nChannels)
     {
       TIZ_DEBUG (handleOf (ap_prc),
@@ -165,11 +172,11 @@ static OMX_ERRORTYPE update_pcm_mode (aacdec_prc_t *ap_prc, const OMX_U32 a_samp
                  "Updating pcm mode : old channels [%d] new channels [%d]",
                  ap_prc->pcmmode_.nChannels, a_channels);
       ap_prc->pcmmode_.nSamplingRate = a_samplerate;
-      ap_prc->pcmmode_.nChannels     = a_channels;
-      tiz_check_omx (tiz_krn_SetParameter_internal
-                         (tiz_get_krn (handleOf (ap_prc)), handleOf (ap_prc),
-                          OMX_IndexParamAudioPcm, &(ap_prc->pcmmode_)));
-      tiz_srv_issue_event ((OMX_PTR)ap_prc, OMX_EventPortSettingsChanged,
+      ap_prc->pcmmode_.nChannels = a_channels;
+      tiz_check_omx (tiz_krn_SetParameter_internal (
+        tiz_get_krn (handleOf (ap_prc)), handleOf (ap_prc),
+        OMX_IndexParamAudioPcm, &(ap_prc->pcmmode_)));
+      tiz_srv_issue_event ((OMX_PTR) ap_prc, OMX_EventPortSettingsChanged,
                            ARATELIA_AAC_DECODER_OUTPUT_PORT_INDEX,
                            OMX_IndexParamAudioPcm, /* the index of the
                                                       struct that has
@@ -179,12 +186,12 @@ static OMX_ERRORTYPE update_pcm_mode (aacdec_prc_t *ap_prc, const OMX_U32 a_samp
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE store_metadata (aacdec_prc_t *ap_prc,
-                                     const char *ap_header_name,
-                                     const char *ap_header_info)
+static OMX_ERRORTYPE
+store_metadata (aacdec_prc_t * ap_prc, const char * ap_header_name,
+                const char * ap_header_info)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
-  OMX_CONFIG_METADATAITEMTYPE *p_meta = NULL;
+  OMX_CONFIG_METADATAITEMTYPE * p_meta = NULL;
   size_t metadata_len = 0;
   size_t info_len = 0;
 
@@ -192,22 +199,23 @@ static OMX_ERRORTYPE store_metadata (aacdec_prc_t *ap_prc,
   if (ap_header_name && ap_header_info)
     {
       info_len = strnlen (ap_header_info, OMX_MAX_STRINGNAME_SIZE - 1) + 1;
-      metadata_len = sizeof(OMX_CONFIG_METADATAITEMTYPE) + info_len;
+      metadata_len = sizeof (OMX_CONFIG_METADATAITEMTYPE) + info_len;
 
-      if (NULL == (p_meta = (OMX_CONFIG_METADATAITEMTYPE *)tiz_mem_calloc (
-                       1, metadata_len)))
+      if (NULL
+          == (p_meta = (OMX_CONFIG_METADATAITEMTYPE *) tiz_mem_calloc (
+                1, metadata_len)))
         {
           rc = OMX_ErrorInsufficientResources;
         }
       else
         {
           const size_t name_len
-              = strnlen (ap_header_name, OMX_MAX_STRINGNAME_SIZE - 1) + 1;
-          strncpy ((char *)p_meta->nKey, ap_header_name, name_len - 1);
+            = strnlen (ap_header_name, OMX_MAX_STRINGNAME_SIZE - 1) + 1;
+          strncpy ((char *) p_meta->nKey, ap_header_name, name_len - 1);
           p_meta->nKey[name_len - 1] = '\0';
           p_meta->nKeySizeUsed = name_len;
 
-          strncpy ((char *)p_meta->nValue, ap_header_info, info_len - 1);
+          strncpy ((char *) p_meta->nValue, ap_header_info, info_len - 1);
           p_meta->nValue[info_len - 1] = '\0';
           p_meta->nValueMaxSize = info_len;
           p_meta->nValueSizeUsed = info_len;
@@ -227,12 +235,13 @@ static OMX_ERRORTYPE store_metadata (aacdec_prc_t *ap_prc,
   return rc;
 }
 
-static void store_stream_metadata (aacdec_prc_t *ap_prc)
+static void
+store_stream_metadata (aacdec_prc_t * ap_prc)
 {
-  const char *p_object_type;
-  const char *p_sbr;
-  const char *p_header_type;
-  const char *p_ps;
+  const char * p_object_type;
+  const char * p_sbr;
+  const char * p_header_type;
+  const char * p_ps;
   char info[100];
 
   assert (ap_prc);
@@ -319,31 +328,33 @@ static void store_stream_metadata (aacdec_prc_t *ap_prc)
         break;
     };
 
-  (void)tiz_krn_clear_metadata (tiz_get_krn (handleOf (ap_prc)));
+  (void) tiz_krn_clear_metadata (tiz_get_krn (handleOf (ap_prc)));
 
   snprintf (info, 99, "%lu Hz, %d ch", ap_prc->samplerate_, ap_prc->channels_);
   info[99] = '\0';
-  (void)store_metadata (ap_prc, "Audio Stream", info);
+  (void) store_metadata (ap_prc, "Audio Stream", info);
 
   snprintf (info, 99, "%s, %s, %s, %s", p_object_type, p_sbr, p_header_type,
             p_ps);
   info[99] = '\0';
-  (void)store_metadata (ap_prc, "AAC", info);
+  (void) store_metadata (ap_prc, "AAC", info);
 }
 
-static OMX_ERRORTYPE init_aac_decoder (aacdec_prc_t *ap_prc)
+static OMX_ERRORTYPE
+init_aac_decoder (aacdec_prc_t * ap_prc)
 {
   OMX_ERRORTYPE rc = OMX_ErrorStreamCorruptFatal;
   long nbytes = 0;
-  OMX_BUFFERHEADERTYPE *p_in = tiz_filter_prc_get_header (
-      ap_prc, ARATELIA_AAC_DECODER_INPUT_PORT_INDEX);
+  OMX_BUFFERHEADERTYPE * p_in
+    = tiz_filter_prc_get_header (ap_prc, ARATELIA_AAC_DECODER_INPUT_PORT_INDEX);
 
   assert (ap_prc);
   assert (ap_prc->p_aac_dec_);
   assert (p_in);
 
   if (tiz_buffer_push (ap_prc->p_store_, p_in->pBuffer + p_in->nOffset,
-                             p_in->nFilledLen) < p_in->nFilledLen)
+                       p_in->nFilledLen)
+      < p_in->nFilledLen)
     {
       TIZ_ERROR (handleOf (ap_prc), "[%s] : Unable to store all the data.",
                  tiz_err_to_str (rc));
@@ -355,16 +366,15 @@ static OMX_ERRORTYPE init_aac_decoder (aacdec_prc_t *ap_prc)
   skip_id3_tag (ap_prc);
 
   /* Set the decoder configuration according to the configuration found on the
-     input port
-     (useful in case of raw aac files) */
+       input port
+       (useful in case of raw aac files) */
   tiz_check_omx (set_decoder_config (ap_prc));
 
   /* Retrieve againg the pointer to the current position in the buffer
-     (skip_id3_tag may have modified it */
+       (skip_id3_tag may have modified it */
 
   /* Initialise the library using one of the initialization functions */
-  nbytes = NeAACDecInit (ap_prc->p_aac_dec_,
-                         tiz_buffer_get (ap_prc->p_store_),
+  nbytes = NeAACDecInit (ap_prc->p_aac_dec_, tiz_buffer_get (ap_prc->p_store_),
                          tiz_buffer_available (ap_prc->p_store_),
                          &(ap_prc->samplerate_), &(ap_prc->channels_));
 
@@ -377,25 +387,26 @@ static OMX_ERRORTYPE init_aac_decoder (aacdec_prc_t *ap_prc)
   else
     {
       /* Make sure the the output port parameters are up to date */
-      tiz_check_omx (update_pcm_mode (ap_prc, ap_prc->samplerate_,
-                                          ap_prc->channels_));
+      tiz_check_omx (
+        update_pcm_mode (ap_prc, ap_prc->samplerate_, ap_prc->channels_));
       /* We will skip this many bytes the next time we read from this buffer */
       tiz_buffer_advance (ap_prc->p_store_, nbytes);
       TIZ_DEBUG (handleOf (ap_prc), "samplerate [%d] channels [%d]",
-                 ap_prc->samplerate_, (int)ap_prc->channels_);
+                 ap_prc->samplerate_, (int) ap_prc->channels_);
       store_stream_metadata (ap_prc);
       rc = OMX_ErrorNone;
     }
   return rc;
 }
 
-static OMX_ERRORTYPE transform_buffer (aacdec_prc_t *ap_prc)
+static OMX_ERRORTYPE
+transform_buffer (aacdec_prc_t * ap_prc)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
-  OMX_BUFFERHEADERTYPE *p_in = tiz_filter_prc_get_header (
-      ap_prc, ARATELIA_AAC_DECODER_INPUT_PORT_INDEX);
-  OMX_BUFFERHEADERTYPE *p_out = tiz_filter_prc_get_header (
-      ap_prc, ARATELIA_AAC_DECODER_OUTPUT_PORT_INDEX);
+  OMX_BUFFERHEADERTYPE * p_in
+    = tiz_filter_prc_get_header (ap_prc, ARATELIA_AAC_DECODER_INPUT_PORT_INDEX);
+  OMX_BUFFERHEADERTYPE * p_out = tiz_filter_prc_get_header (
+    ap_prc, ARATELIA_AAC_DECODER_OUTPUT_PORT_INDEX);
 
   if (NULL == p_in || NULL == p_out)
     {
@@ -407,8 +418,7 @@ static OMX_ERRORTYPE transform_buffer (aacdec_prc_t *ap_prc)
   assert (ap_prc);
   assert (ap_prc->p_aac_dec_);
 
-  if (0 == p_in->nFilledLen && tiz_buffer_available (ap_prc->p_store_)
-                               == 0)
+  if (0 == p_in->nFilledLen && tiz_buffer_available (ap_prc->p_store_) == 0)
     {
       TIZ_TRACE (handleOf (ap_prc), "HEADER [%p] nFlags [%d] is empty", p_in,
                  p_in->nFlags);
@@ -421,14 +431,14 @@ static OMX_ERRORTYPE transform_buffer (aacdec_prc_t *ap_prc)
           tiz_filter_prc_update_eos_flag (ap_prc, true);
           p_in->nFlags &= ~(1 << OMX_BUFFERFLAG_EOS);
           tiz_check_omx (tiz_filter_prc_release_header (
-              ap_prc, ARATELIA_AAC_DECODER_OUTPUT_PORT_INDEX));
+            ap_prc, ARATELIA_AAC_DECODER_OUTPUT_PORT_INDEX));
         }
     }
 
   if (p_in->nFilledLen > 0)
     {
-      if (tiz_buffer_push (
-              ap_prc->p_store_, p_in->pBuffer + p_in->nOffset, p_in->nFilledLen)
+      if (tiz_buffer_push (ap_prc->p_store_, p_in->pBuffer + p_in->nOffset,
+                           p_in->nFilledLen)
           < p_in->nFilledLen)
         {
           rc = OMX_ErrorInsufficientResources;
@@ -442,15 +452,15 @@ static OMX_ERRORTYPE transform_buffer (aacdec_prc_t *ap_prc)
   if (tiz_buffer_available (ap_prc->p_store_) > 0)
     {
       /* Decode the AAC data passed in the buffer. Returns a pointer to a
-         sample buffer or NULL. Info about the decoded frame is filled in the
-         NeAACDecFrameInfo structure. This structure holds information about
-         errors during decoding, number of sample, number of channels and
-         samplerate. The returned buffer contains the channel interleaved
-         samples of the frame. */
-      short *p_sample_buf
-          = NeAACDecDecode (ap_prc->p_aac_dec_, &(ap_prc->aac_info_),
-                            tiz_buffer_get (ap_prc->p_store_),
-                            tiz_buffer_available (ap_prc->p_store_));
+           sample buffer or NULL. Info about the decoded frame is filled in the
+           NeAACDecFrameInfo structure. This structure holds information about
+           errors during decoding, number of sample, number of channels and
+           samplerate. The returned buffer contains the channel interleaved
+           samples of the frame. */
+      short * p_sample_buf
+        = NeAACDecDecode (ap_prc->p_aac_dec_, &(ap_prc->aac_info_),
+                          tiz_buffer_get (ap_prc->p_store_),
+                          tiz_buffer_available (ap_prc->p_store_));
 
       if (ap_prc->first_buffer_read_ && !ap_prc->second_buffer_read_)
         {
@@ -470,11 +480,11 @@ static OMX_ERRORTYPE transform_buffer (aacdec_prc_t *ap_prc)
       if ((ap_prc->aac_info_.error == 0) && (ap_prc->aac_info_.samples > 0))
         {
           int i = 0;
-          char *p_data = (char *)(p_out->pBuffer + p_out->nOffset);
+          char * p_data = (char *) (p_out->pBuffer + p_out->nOffset);
           for (i = 0; i < ap_prc->aac_info_.samples; ++i)
             {
-              p_data[i * 2] = (char)(p_sample_buf[i] & 0xFF);
-              p_data[i * 2 + 1] = (char)((p_sample_buf[i] >> 8) & 0xFF);
+              p_data[i * 2] = (char) (p_sample_buf[i] & 0xFF);
+              p_data[i * 2 + 1] = (char) ((p_sample_buf[i] >> 8) & 0xFF);
             }
           p_out->nFilledLen = ap_prc->aac_info_.samples * ap_prc->channels_ * 1;
         }
@@ -490,8 +500,8 @@ static OMX_ERRORTYPE transform_buffer (aacdec_prc_t *ap_prc)
     }
 
   if (OMX_ErrorNone == rc && 0 == p_in->nFilledLen
-      && tiz_buffer_available (ap_prc->p_store_) < FAAD_MIN_STREAMSIZE
-                                                         * ap_prc->channels_)
+      && tiz_buffer_available (ap_prc->p_store_)
+           < FAAD_MIN_STREAMSIZE * ap_prc->channels_)
     {
       TIZ_TRACE (handleOf (ap_prc), "HEADER [%p] nFlags [%d] is empty", p_in,
                  p_in->nFlags);
@@ -503,7 +513,7 @@ static OMX_ERRORTYPE transform_buffer (aacdec_prc_t *ap_prc)
           p_in->nFlags &= ~(1 << OMX_BUFFERFLAG_EOS);
         }
       rc = tiz_filter_prc_release_header (
-          ap_prc, ARATELIA_AAC_DECODER_INPUT_PORT_INDEX);
+        ap_prc, ARATELIA_AAC_DECODER_INPUT_PORT_INDEX);
     }
 
   if (tiz_filter_prc_is_eos (ap_prc))
@@ -519,19 +529,20 @@ static OMX_ERRORTYPE transform_buffer (aacdec_prc_t *ap_prc)
       TIZ_TRACE (handleOf (ap_prc),
                  "Releasing output HEADER [%p] nFilledLen [%d]", p_out,
                  p_out->nFilledLen);
-      TIZ_PRINTF_DBG_GRN ("Releasing buffer [%p] with size [%u].",
-                          p_out, (unsigned int)p_out->nFilledLen);
+      TIZ_PRINTF_DBG_GRN ("Releasing buffer [%p] with size [%u].", p_out,
+                          (unsigned int) p_out->nFilledLen);
       rc = tiz_filter_prc_release_header (
-          ap_prc, ARATELIA_AAC_DECODER_OUTPUT_PORT_INDEX);
+        ap_prc, ARATELIA_AAC_DECODER_OUTPUT_PORT_INDEX);
     }
 
   return rc;
 }
 
-static void reset_stream_parameters (aacdec_prc_t *ap_prc)
+static void
+reset_stream_parameters (aacdec_prc_t * ap_prc)
 {
   assert (ap_prc);
-  tiz_mem_set (&(ap_prc->aac_info_), 0, sizeof(ap_prc->aac_info_));
+  tiz_mem_set (&(ap_prc->aac_info_), 0, sizeof (ap_prc->aac_info_));
   ap_prc->samplerate_ = 0;
   ap_prc->channels_ = 0;
   ap_prc->nbytes_read_ = 0;
@@ -544,9 +555,10 @@ static void reset_stream_parameters (aacdec_prc_t *ap_prc)
  * aacdecprc
  */
 
-static void *aacdec_prc_ctor (void *ap_obj, va_list *app)
+static void *
+aacdec_prc_ctor (void * ap_obj, va_list * app)
 {
-  aacdec_prc_t *p_prc = super_ctor (typeOf (ap_obj, "aacdecprc"), ap_obj, app);
+  aacdec_prc_t * p_prc = super_ctor (typeOf (ap_obj, "aacdecprc"), ap_obj, app);
   assert (p_prc);
   unsigned long cap = NeAACDecGetCapabilities ();
   TIZ_DEBUG (handleOf (ap_obj), "libfaad2 caps: %X", cap);
@@ -557,11 +569,12 @@ static void *aacdec_prc_ctor (void *ap_obj, va_list *app)
   return p_prc;
 }
 
-static void *aacdec_prc_dtor (void *ap_obj)
+static void *
+aacdec_prc_dtor (void * ap_obj)
 {
-  aacdec_prc_t *p_prc = ap_obj;
+  aacdec_prc_t * p_prc = ap_obj;
   assert (p_prc);
-  (void)aacdec_prc_deallocate_resources (p_prc);
+  (void) aacdec_prc_deallocate_resources (p_prc);
   if (p_prc->p_aac_dec_)
     {
       NeAACDecClose (p_prc->p_aac_dec_);
@@ -574,9 +587,10 @@ static void *aacdec_prc_dtor (void *ap_obj)
  * from tizsrv class
  */
 
-static OMX_ERRORTYPE aacdec_prc_allocate_resources (void *ap_obj, OMX_U32 a_pid)
+static OMX_ERRORTYPE
+aacdec_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
 {
-  aacdec_prc_t *p_prc = ap_obj;
+  aacdec_prc_t * p_prc = ap_obj;
   assert (p_prc);
   tiz_check_omx (allocate_temp_data_store (p_prc));
   /* Check that the library has been successfully inited */
@@ -584,32 +598,35 @@ static OMX_ERRORTYPE aacdec_prc_allocate_resources (void *ap_obj, OMX_U32 a_pid)
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE aacdec_prc_deallocate_resources (void *ap_obj)
+static OMX_ERRORTYPE
+aacdec_prc_deallocate_resources (void * ap_obj)
 {
   deallocate_temp_data_store (ap_obj);
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE aacdec_prc_prepare_to_transfer (void *ap_obj,
-                                                     OMX_U32 a_pid)
+static OMX_ERRORTYPE
+aacdec_prc_prepare_to_transfer (void * ap_obj, OMX_U32 a_pid)
 {
-  aacdec_prc_t *p_prc = ap_obj;
+  aacdec_prc_t * p_prc = ap_obj;
   assert (p_prc);
   reset_stream_parameters (p_prc);
-  TIZ_INIT_OMX_PORT_STRUCT (p_prc->pcmmode_, ARATELIA_AAC_DECODER_OUTPUT_PORT_INDEX);
-  tiz_check_omx (tiz_api_GetParameter
-                     (tiz_get_krn (handleOf (p_prc)), handleOf (p_prc),
-                      OMX_IndexParamAudioPcm, &(p_prc->pcmmode_)));
+  TIZ_INIT_OMX_PORT_STRUCT (p_prc->pcmmode_,
+                            ARATELIA_AAC_DECODER_OUTPUT_PORT_INDEX);
+  tiz_check_omx (tiz_api_GetParameter (tiz_get_krn (handleOf (p_prc)),
+                                       handleOf (p_prc), OMX_IndexParamAudioPcm,
+                                       &(p_prc->pcmmode_)));
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE aacdec_prc_transfer_and_process (void *ap_obj,
-                                                      OMX_U32 a_pid)
+static OMX_ERRORTYPE
+aacdec_prc_transfer_and_process (void * ap_obj, OMX_U32 a_pid)
 {
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE aacdec_prc_stop_and_return (void *ap_obj)
+static OMX_ERRORTYPE
+aacdec_prc_stop_and_return (void * ap_obj)
 {
   return tiz_filter_prc_release_all_headers (ap_obj);
 }
@@ -618,9 +635,10 @@ static OMX_ERRORTYPE aacdec_prc_stop_and_return (void *ap_obj)
  * from tizprc class
  */
 
-static OMX_ERRORTYPE aacdec_prc_buffers_ready (const void *ap_prc)
+static OMX_ERRORTYPE
+aacdec_prc_buffers_ready (const void * ap_prc)
 {
-  aacdec_prc_t *p_prc = (aacdec_prc_t *)ap_prc;
+  aacdec_prc_t * p_prc = (aacdec_prc_t *) ap_prc;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
   assert (ap_prc);
@@ -646,16 +664,18 @@ static OMX_ERRORTYPE aacdec_prc_buffers_ready (const void *ap_prc)
   return rc;
 }
 
-static OMX_ERRORTYPE aacdec_prc_port_enable (const void *ap_prc, OMX_U32 a_pid)
+static OMX_ERRORTYPE
+aacdec_prc_port_enable (const void * ap_prc, OMX_U32 a_pid)
 {
-  aacdec_prc_t *p_prc = (aacdec_prc_t *)ap_prc;
+  aacdec_prc_t * p_prc = (aacdec_prc_t *) ap_prc;
   tiz_filter_prc_update_port_disabled_flag (p_prc, a_pid, false);
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE aacdec_prc_port_disable (const void *ap_prc, OMX_U32 a_pid)
+static OMX_ERRORTYPE
+aacdec_prc_port_disable (const void * ap_prc, OMX_U32 a_pid)
 {
-  aacdec_prc_t *p_prc = (aacdec_prc_t *)ap_prc;
+  aacdec_prc_t * p_prc = (aacdec_prc_t *) ap_prc;
   OMX_ERRORTYPE rc = tiz_filter_prc_release_header (p_prc, a_pid);
   tiz_filter_prc_update_port_disabled_flag (p_prc, a_pid, true);
   return rc;
@@ -665,7 +685,8 @@ static OMX_ERRORTYPE aacdec_prc_port_disable (const void *ap_prc, OMX_U32 a_pid)
  * aacdec_prc_class
  */
 
-static void *aacdec_prc_class_ctor (void *ap_obj, va_list *app)
+static void *
+aacdec_prc_class_ctor (void * ap_obj, va_list * app)
 {
   /* NOTE: Class methods might be added in the future. None for now. */
   return super_ctor (typeOf (ap_obj, "aacdecprc_class"), ap_obj, app);
@@ -675,54 +696,56 @@ static void *aacdec_prc_class_ctor (void *ap_obj, va_list *app)
  * initialization
  */
 
-void *aacdec_prc_class_init (void *ap_tos, void *ap_hdl)
+void *
+aacdec_prc_class_init (void * ap_tos, void * ap_hdl)
 {
-  void *tizfilterprc = tiz_get_type (ap_hdl, "tizfilterprc");
-  void *aacdecprc_class = factory_new
-      /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
-      (classOf (tizfilterprc), "aacdecprc_class", classOf (tizfilterprc),
-       sizeof(aacdec_prc_class_t),
-       /* TIZ_CLASS_COMMENT: */
-       ap_tos, ap_hdl,
-       /* TIZ_CLASS_COMMENT: class constructor */
-       ctor, aacdec_prc_class_ctor,
-       /* TIZ_CLASS_COMMENT: stop value*/
-       0);
+  void * tizfilterprc = tiz_get_type (ap_hdl, "tizfilterprc");
+  void * aacdecprc_class = factory_new
+    /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
+    (classOf (tizfilterprc), "aacdecprc_class", classOf (tizfilterprc),
+     sizeof (aacdec_prc_class_t),
+     /* TIZ_CLASS_COMMENT: */
+     ap_tos, ap_hdl,
+     /* TIZ_CLASS_COMMENT: class constructor */
+     ctor, aacdec_prc_class_ctor,
+     /* TIZ_CLASS_COMMENT: stop value*/
+     0);
   return aacdecprc_class;
 }
 
-void *aacdec_prc_init (void *ap_tos, void *ap_hdl)
+void *
+aacdec_prc_init (void * ap_tos, void * ap_hdl)
 {
-  void *tizfilterprc = tiz_get_type (ap_hdl, "tizfilterprc");
-  void *aacdecprc_class = tiz_get_type (ap_hdl, "aacdecprc_class");
+  void * tizfilterprc = tiz_get_type (ap_hdl, "tizfilterprc");
+  void * aacdecprc_class = tiz_get_type (ap_hdl, "aacdecprc_class");
   TIZ_LOG_CLASS (aacdecprc_class);
-  void *aacdecprc = factory_new
-      /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
-      (aacdecprc_class, "aacdecprc", tizfilterprc, sizeof(aacdec_prc_t),
-       /* TIZ_CLASS_COMMENT: */
-       ap_tos, ap_hdl,
-       /* TIZ_CLASS_COMMENT: class constructor */
-       ctor, aacdec_prc_ctor,
-       /* TIZ_CLASS_COMMENT: class destructor */
-       dtor, aacdec_prc_dtor,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_srv_allocate_resources, aacdec_prc_allocate_resources,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_srv_deallocate_resources, aacdec_prc_deallocate_resources,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_srv_prepare_to_transfer, aacdec_prc_prepare_to_transfer,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_srv_transfer_and_process, aacdec_prc_transfer_and_process,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_srv_stop_and_return, aacdec_prc_stop_and_return,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_prc_buffers_ready, aacdec_prc_buffers_ready,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_prc_port_enable, aacdec_prc_port_enable,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_prc_port_disable, aacdec_prc_port_disable,
-       /* TIZ_CLASS_COMMENT: stop value */
-       0);
+  void * aacdecprc = factory_new
+    /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
+    (aacdecprc_class, "aacdecprc", tizfilterprc, sizeof (aacdec_prc_t),
+     /* TIZ_CLASS_COMMENT: */
+     ap_tos, ap_hdl,
+     /* TIZ_CLASS_COMMENT: class constructor */
+     ctor, aacdec_prc_ctor,
+     /* TIZ_CLASS_COMMENT: class destructor */
+     dtor, aacdec_prc_dtor,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_allocate_resources, aacdec_prc_allocate_resources,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_deallocate_resources, aacdec_prc_deallocate_resources,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_prepare_to_transfer, aacdec_prc_prepare_to_transfer,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_transfer_and_process, aacdec_prc_transfer_and_process,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_stop_and_return, aacdec_prc_stop_and_return,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_prc_buffers_ready, aacdec_prc_buffers_ready,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_prc_port_enable, aacdec_prc_port_enable,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_prc_port_disable, aacdec_prc_port_disable,
+     /* TIZ_CLASS_COMMENT: stop value */
+     0);
 
   return aacdecprc;
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,7 +30,8 @@
 #define TIZLOG_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <log4c.h>
@@ -39,7 +40,7 @@ extern "C" {
 #define TIZ_LOG_CATEGORY_NAME "root"
 #endif
 
-/* #define WITHOUT_LOG4C 1 */
+  /* #define WITHOUT_LOG4C 1 */
 
 #define TIZ_LOG(priority, format, args...)                                    \
   tiz_log (__FILE__, __LINE__, __FUNCTION__, TIZ_LOG_CATEGORY_NAME, priority, \
@@ -59,19 +60,19 @@ extern "C" {
 #define TIZ_PRIORITY_TRACE 5
 #endif
 
-int
-tiz_log_init (void);
-void
-tiz_log_set_unique_rolling_file (const char * ap_logdir,
-                                 const char * ap_file_prefix);
-int
-tiz_log_deinit (void);
-void
-tiz_log (const char * __p_file, int __line, const char * __p_func,
-         const char * __p_cat_name, int __priority,
-         /*@null@ */ const char * __p_cname,
-         /*@null@ */ char * __p_cbuf,
-         /*@null@ */ const char * __p_format, ...);
+  int
+  tiz_log_init (void);
+  void
+  tiz_log_set_unique_rolling_file (const char * ap_logdir,
+                                   const char * ap_file_prefix);
+  int
+  tiz_log_deinit (void);
+  void
+  tiz_log (const char * __p_file, int __line, const char * __p_func,
+           const char * __p_cat_name, int __priority,
+           /*@null@ */ const char * __p_cname,
+           /*@null@ */ char * __p_cbuf,
+           /*@null@ */ const char * __p_format, ...);
 
 #ifdef __cplusplus
 }

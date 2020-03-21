@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -259,8 +259,8 @@ fr_prc_buffers_ready (const void * ap_obj)
     {
       OMX_BUFFERHEADERTYPE * p_hdr = NULL;
       tiz_check_omx (tiz_krn_claim_buffer (tiz_get_krn (handleOf (p_prc)),
-                                               ARATELIA_FILE_READER_PORT_INDEX,
-                                               0, &p_hdr));
+                                           ARATELIA_FILE_READER_PORT_INDEX, 0,
+                                           &p_hdr));
       if (p_hdr)
         {
           TIZ_TRACE (handleOf (p_prc), "Claimed HEADER [%p]...nFilledLen [%d]",

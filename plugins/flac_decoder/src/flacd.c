@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -186,8 +186,7 @@ OMX_ComponentInit (OMX_HANDLETYPE ap_hdl)
   flacdprc_type.pf_object_init = flacd_prc_init;
 
   /* Initialize the component infrastructure */
-  tiz_check_omx (
-    tiz_comp_init (ap_hdl, ARATELIA_FLAC_DECODER_COMPONENT_NAME));
+  tiz_check_omx (tiz_comp_init (ap_hdl, ARATELIA_FLAC_DECODER_COMPONENT_NAME));
 
   /* Register the "flacdprc" class */
   tiz_check_omx (tiz_comp_register_types (ap_hdl, tf_list, 1));

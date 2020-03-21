@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -30,51 +31,52 @@
 #define TIZCHROMECASTCTX_C_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
 
 #include "tizchromecasttypes.h"
 
-/**
- * @defgroup libtizchromecastctx 'libtizchromecastctx' : Tizonia's Chromecast
- * client library
- *
- * A C library to access and control a Chromecast streaming device.
- *
- * @ingroup Tizonia
- */
+  /**
+   * @defgroup libtizchromecastctx 'libtizchromecastctx' : Tizonia's Chromecast
+   * client library
+   *
+   * A C library to access and control a Chromecast streaming device.
+   *
+   * @ingroup Tizonia
+   */
 
-/**
- * The chromecast opaque structure
- * @ingroup libtizchromecastctx
- */
-typedef struct tiz_chromecast_ctx tiz_chromecast_ctx_t;
-typedef /*@null@ */ tiz_chromecast_ctx_t *tiz_chromecast_ctx_ptr_t;
+  /**
+   * The chromecast opaque structure
+   * @ingroup libtizchromecastctx
+   */
+  typedef struct tiz_chromecast_ctx tiz_chromecast_ctx_t;
+  typedef /*@null@ */ tiz_chromecast_ctx_t *tiz_chromecast_ctx_ptr_t;
 
-/**
- * Initialize the chromecast context handle.
- *
- * @ingroup libtizchromecastctx
- *
- * @param app_cc_ctx A pointer to the chromecast handle which will be
- * initialised.
- *
- * @return 0 on success.
- */
-int tiz_chromecast_ctx_init (
-    /*@null@ */ tiz_chromecast_ctx_ptr_t *app_cc_ctx);
+  /**
+   * Initialize the chromecast context handle.
+   *
+   * @ingroup libtizchromecastctx
+   *
+   * @param app_cc_ctx A pointer to the chromecast handle which will be
+   * initialised.
+   *
+   * @return 0 on success.
+   */
+  int tiz_chromecast_ctx_init (
+      /*@null@ */ tiz_chromecast_ctx_ptr_t *app_cc_ctx);
 
-/**
- * Destroy the chromecast context handle.
- *
- * @ingroup libtizchromecastctx
- *
- * @param app_cc_ctx The chromecast context handle.
- */
-void tiz_chromecast_ctx_destroy (
-    /*@null@ */ tiz_chromecast_ctx_ptr_t *app_cc_ctx);
+  /**
+   * Destroy the chromecast context handle.
+   *
+   * @ingroup libtizchromecastctx
+   *
+   * @param app_cc_ctx The chromecast context handle.
+   */
+  void tiz_chromecast_ctx_destroy (
+      /*@null@ */ tiz_chromecast_ctx_ptr_t *app_cc_ctx);
 
 #ifdef __cplusplus
 }

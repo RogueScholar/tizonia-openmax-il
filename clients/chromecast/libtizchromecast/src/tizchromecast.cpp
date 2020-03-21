@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -85,6 +86,8 @@ tizchromecast::tizchromecast (const tizchromecastctx &cc_ctx,
 
 tizchromecast::~tizchromecast ()
 {
+  cbacks_.pf_cast_status = NULL;
+  cbacks_.pf_media_status = NULL;
 }
 
 tiz_chromecast_error_t tizchromecast::init ()
@@ -100,8 +103,8 @@ tiz_chromecast_error_t tizchromecast::start ()
 
   if (ETizCcErrorNoError == rc)
     {
-      typedef boost::function< void(std::string, float) > handler_fn1;
-      typedef boost::function< void(std::string, int) > handler_fn2;
+      typedef boost::function< void (std::string, float) > handler_fn1;
+      typedef boost::function< void (std::string, int) > handler_fn2;
       handler_fn1 cast_status_handler (
           boost::bind (&tizchromecast::new_cast_status, this, _1, _2));
       handler_fn2 media_status_handler (
@@ -110,7 +113,7 @@ tiz_chromecast_error_t tizchromecast::start ()
           bp::make_function (cast_status_handler),
           bp::make_function (media_status_handler)));
     }
-  std::cout << "tizchromecast::start: rc " << rc << std::endl;
+  // std::cout << "tizchromecast::start: rc " << rc << std::endl;
   return rc;
 }
 
@@ -134,6 +137,7 @@ void tizchromecast::deinit ()
 tiz_chromecast_error_t tizchromecast::poll_socket (int a_poll_time_ms)
 {
   tiz_chromecast_error_t rc = ETizCcErrorNoError;
+
   if (cc_ctx_.cc_proxy_exists (name_or_ip_))
     {
       try_catch_wrapper (
@@ -148,6 +152,8 @@ tiz_chromecast_error_t tizchromecast::media_load (
     const std::string &title, const std::string &album_art)
 {
   tiz_chromecast_error_t rc = ETizCcErrorNoError;
+  // std::cout << "tizchromecast::media_load: " << url << std::endl;
+
   if (cc_ctx_.cc_proxy_exists (name_or_ip_))
     {
       try_catch_wrapper (cc_ctx_.get_cc_proxy (name_or_ip_)
@@ -161,6 +167,7 @@ tiz_chromecast_error_t tizchromecast::media_load (
 tiz_chromecast_error_t tizchromecast::media_play ()
 {
   tiz_chromecast_error_t rc = ETizCcErrorNoError;
+  // std::cout << "tizchromecast::media_play: " << std::endl;
   if (cc_ctx_.cc_proxy_exists (name_or_ip_))
     {
       try_catch_wrapper (
@@ -172,6 +179,7 @@ tiz_chromecast_error_t tizchromecast::media_play ()
 tiz_chromecast_error_t tizchromecast::media_stop ()
 {
   tiz_chromecast_error_t rc = ETizCcErrorNoError;
+  // std::cout << "tizchromecast::media_stop: " << std::endl;
   if (cc_ctx_.cc_proxy_exists (name_or_ip_))
     {
       try_catch_wrapper (
@@ -250,19 +258,30 @@ void tizchromecast::new_cast_status (const std::string &status,
                                      const float &volume)
 {
   const int vol = volume * (float)100;
-  std::cout << "tizchromecast::new_cast_status: " << status << " volume "
-            << volume << " pid " << getpid () << std::endl;
+  // std::cout << "tizchromecast::new_cast_status: " << status << " volume "
+  //             << volume << " pid " << getpid () << std::endl;
   if (!status.compare ("UNKNOWN"))
     {
-      cbacks_.pf_cast_status (p_user_data_, ETizCcCastStatusUnknown, vol);
+      if (cbacks_.pf_cast_status)
+        {
+          cbacks_.pf_cast_status (p_user_data_, ETizCcCastStatusUnknown, vol);
+        }
     }
   else if (!status.compare ("READY_TO_CAST"))
     {
-      cbacks_.pf_cast_status (p_user_data_, ETizCcCastStatusReadyToCast, vol);
+      if (cbacks_.pf_cast_status)
+        {
+          cbacks_.pf_cast_status (p_user_data_, ETizCcCastStatusReadyToCast,
+                                  vol);
+        }
     }
   else if (!status.compare ("NOW_CASTING"))
     {
-      cbacks_.pf_cast_status (p_user_data_, ETizCcCastStatusNowCasting, vol);
+      if (cbacks_.pf_cast_status)
+        {
+          cbacks_.pf_cast_status (p_user_data_, ETizCcCastStatusNowCasting,
+                                  vol);
+        }
     }
   else
     {
@@ -273,28 +292,46 @@ void tizchromecast::new_cast_status (const std::string &status,
 void tizchromecast::new_media_status (const std::string &status,
                                       const int &volume)
 {
-  std::cout << "tizchromecast::new_media_status: " << status << " volume "
-            << volume << " pid " << getpid () << std::endl;
+  // std::cout << "tizchromecast::new_media_status: " << status << " volume "
+  //           << volume << " pid " << getpid () << std::endl;
   if (!status.compare ("UNKNOWN"))
     {
-      cbacks_.pf_media_status (p_user_data_, ETizCcMediaStatusUnknown, volume);
+      if (cbacks_.pf_media_status)
+        {
+          cbacks_.pf_media_status (p_user_data_, ETizCcMediaStatusUnknown,
+                                   volume);
+        }
     }
   else if (!status.compare ("IDLE"))
     {
-      cbacks_.pf_media_status (p_user_data_, ETizCcMediaStatusIdle, volume);
+      if (cbacks_.pf_media_status)
+        {
+          cbacks_.pf_media_status (p_user_data_, ETizCcMediaStatusIdle, volume);
+        }
     }
   else if (!status.compare ("BUFFERING"))
     {
-      cbacks_.pf_media_status (p_user_data_, ETizCcMediaStatusBuffering,
-                               volume);
+      if (cbacks_.pf_media_status)
+        {
+          cbacks_.pf_media_status (p_user_data_, ETizCcMediaStatusBuffering,
+                                   volume);
+        }
     }
   else if (!status.compare ("PAUSED"))
     {
-      cbacks_.pf_media_status (p_user_data_, ETizCcMediaStatusPaused, volume);
+      if (cbacks_.pf_media_status)
+        {
+          cbacks_.pf_media_status (p_user_data_, ETizCcMediaStatusPaused,
+                                   volume);
+        }
     }
   else if (!status.compare ("PLAYING"))
     {
-      cbacks_.pf_media_status (p_user_data_, ETizCcMediaStatusPlaying, volume);
+      if (cbacks_.pf_media_status)
+        {
+          cbacks_.pf_media_status (p_user_data_, ETizCcMediaStatusPlaying,
+                                   volume);
+        }
     }
   else
     {

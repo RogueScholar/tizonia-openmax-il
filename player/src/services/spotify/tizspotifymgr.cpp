@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -107,7 +107,7 @@ tizgraph_ptr_t graphmgr::spotifymgrops::get_graph (
   tizgraph_ptr_map_t::const_iterator it = graph_registry_.find (encoding);
   if (it == graph_registry_.end ())
   {
-    g_ptr = boost::make_shared< tiz::graph::spotify >();
+    g_ptr = boost::make_shared< tiz::graph::spotify > ();
     if (g_ptr)
     {
       // TODO: Check rc
@@ -154,7 +154,7 @@ void graphmgr::spotifymgrops::do_execute ()
   assert (playlist_);
   assert (p_mgr_);
 
-  spotifymgr *p_clientmgr = dynamic_cast< spotifymgr * >(p_mgr_);
+  spotifymgr *p_clientmgr = dynamic_cast< spotifymgr * > (p_mgr_);
   assert (p_clientmgr);
 
   graph_config_.reset ();

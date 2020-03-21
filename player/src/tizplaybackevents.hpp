@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -33,8 +33,8 @@
 #include <string>
 #include <vector>
 
-#include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 #include <boost/signals2/signal.hpp>
 
 #include <tizplatform.h>
@@ -50,16 +50,21 @@ namespace tiz
     class playback_events
     {
     public:
-      typedef boost::signals2::signal<void (const playback_status_t status)> playback_status_event_t;
+      typedef boost::signals2::signal< void (const playback_status_t status) >
+          playback_status_event_t;
       typedef playback_status_event_t::slot_type playback_status_observer_t;
 
-      typedef boost::signals2::signal<void (const loop_status_t status)> loop_status_event_t;
+      typedef boost::signals2::signal< void (const loop_status_t status) >
+          loop_status_event_t;
       typedef loop_status_event_t::slot_type loop_status_observer_t;
 
-      typedef boost::signals2::signal<void (const track_metadata_map_t &metadata)> metadata_event_t;
+      typedef boost::signals2::signal< void (
+          const track_metadata_map_t &metadata) >
+          metadata_event_t;
       typedef metadata_event_t::slot_type metadata_observer_t;
 
-      typedef boost::signals2::signal<void (const double volume)> volume_event_t;
+      typedef boost::signals2::signal< void (const double volume) >
+          volume_event_t;
       typedef volume_event_t::slot_type volume_observer_t;
 
     public:
@@ -72,10 +77,8 @@ namespace tiz
       volume_event_t volume_;
     };
 
-    typedef boost::shared_ptr< playback_events_t >
-        playback_events_ptr_t;
-    typedef boost::scoped_ptr< playback_events_t >
-        playback_events_scoped_ptr_t;
+    typedef boost::shared_ptr< playback_events_t > playback_events_ptr_t;
+    typedef boost::scoped_ptr< playback_events_t > playback_events_scoped_ptr_t;
   }  // namespace control
 }  // namespace tiz
 

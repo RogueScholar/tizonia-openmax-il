@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -29,29 +29,29 @@
 #include <config.h>
 #endif
 
+#include <algorithm>
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include <vector>
-#include <algorithm>
 
+#include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/split.hpp>
-#include <boost/algorithm/string/classification.hpp>
+#include <boost/assign/list_of.hpp>
+#include <boost/lexical_cast.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/mem_fn.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/assign/list_of.hpp>
 
-#include <tizplatform.h>
 #include <tizmacros.h>
+#include <tizplatform.h>
 
-#include "tizgraphfactory.hpp"
 #include "tizgraph.hpp"
-#include "tizgraphconfig.hpp"
-#include "tizgraphutil.hpp"
 #include "tizgraphcback.hpp"
+#include "tizgraphconfig.hpp"
+#include "tizgraphfactory.hpp"
 #include "tizgraphops.hpp"
+#include "tizgraphutil.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -108,8 +108,8 @@ void graph::ops::do_load ()
 
   tiz::graph::cbackhandler &cbacks = p_graph_->cback_handler_;
   G_OPS_BAIL_IF_ERROR (
-      util::instantiate_comp_list (comp_lst_, handles_, h2n_,
-                                   &(cbacks), cbacks.get_omx_cbacks ()),
+      util::instantiate_comp_list (comp_lst_, handles_, h2n_, &(cbacks),
+                                   cbacks.get_omx_cbacks ()),
       "Unable to instantiate the component list.");
 
   G_OPS_BAIL_IF_ERROR (
@@ -128,7 +128,7 @@ void graph::ops::do_load_comp (const int comp_id)
 
 void graph::ops::do_setup ()
 {
-  do_setup_tunnel(OMX_ALL);
+  do_setup_tunnel (OMX_ALL);
 }
 
 void graph::ops::do_setup_tunnel (const int tunnel_id)
@@ -157,9 +157,11 @@ void graph::ops::do_store_config (const tizgraphconfig_ptr_t &config)
   playlist_ = config_->get_playlist ();
 }
 
-void graph::ops::do_enable_auto_detection (const int handle_id, const int port_id)
+void graph::ops::do_enable_auto_detection (const int handle_id,
+                                           const int port_id)
 {
-  assert (handle_id >= 0 && static_cast<std::size_t>(handle_id) < handles_.size ());
+  assert (handle_id >= 0
+          && static_cast< std::size_t > (handle_id) < handles_.size ());
   G_OPS_BAIL_IF_ERROR (
       tiz::graph::util::enable_port_format_auto_detection (
           handles_[handle_id], port_id, OMX_PortDomainAudio),
@@ -168,7 +170,8 @@ void graph::ops::do_enable_auto_detection (const int handle_id, const int port_i
 
 void graph::ops::do_disable_comp_ports (const int comp_id, const int port_id)
 {
-  assert (comp_id >= 0 && static_cast<std::size_t>(comp_id) < handles_.size ());
+  assert (comp_id >= 0
+          && static_cast< std::size_t > (comp_id) < handles_.size ());
   G_OPS_BAIL_IF_ERROR (util::disable_port (handles_[comp_id], port_id),
                        "Unable to disable components port.");
   clear_expected_port_transitions ();
@@ -181,7 +184,7 @@ void graph::ops::do_disable_tunnel (const int tunnel_id)
   if (last_op_succeeded ())
   {
     std::string err_msg ("Unable to disable tunnel id [");
-    err_msg.append (boost::lexical_cast< std::string >(tunnel_id));
+    err_msg.append (boost::lexical_cast< std::string > (tunnel_id));
     err_msg.append ("]");
     G_OPS_BAIL_IF_ERROR (switch_tunnel (tunnel_id, OMX_CommandPortDisable),
                          err_msg);
@@ -190,7 +193,8 @@ void graph::ops::do_disable_tunnel (const int tunnel_id)
 
 void graph::ops::do_enable_comp_ports (const int comp_id, const int port_id)
 {
-  assert (comp_id >= 0 && static_cast<std::size_t>(comp_id) < handles_.size ());
+  assert (comp_id >= 0
+          && static_cast< std::size_t > (comp_id) < handles_.size ());
   G_OPS_BAIL_IF_ERROR (util::enable_port (handles_[comp_id], port_id),
                        "Unable to enable components port.");
   clear_expected_port_transitions ();
@@ -203,7 +207,7 @@ void graph::ops::do_enable_tunnel (const int tunnel_id)
   if (last_op_succeeded ())
   {
     std::string err_msg ("Unable to enable tunnel id [");
-    err_msg.append (boost::lexical_cast< std::string >(tunnel_id));
+    err_msg.append (boost::lexical_cast< std::string > (tunnel_id));
     err_msg.append ("]");
     G_OPS_BAIL_IF_ERROR (switch_tunnel (tunnel_id, OMX_CommandPortEnable),
                          err_msg);
@@ -254,9 +258,8 @@ void graph::ops::do_loaded2idle_comp (const int comp_id)
 {
   if (last_op_succeeded ())
   {
-    G_OPS_BAIL_IF_ERROR (
-        transition_comp (comp_id, OMX_StateIdle),
-        "Unable to transition component from Loaded->Idle");
+    G_OPS_BAIL_IF_ERROR (transition_comp (comp_id, OMX_StateIdle),
+                         "Unable to transition component from Loaded->Idle");
   }
 }
 
@@ -285,9 +288,8 @@ void graph::ops::do_idle2exe_comp (const int comp_id)
 {
   if (last_op_succeeded ())
   {
-    G_OPS_BAIL_IF_ERROR (
-        transition_comp (comp_id, OMX_StateExecuting),
-        "Unable to transition component from Idle->Exe");
+    G_OPS_BAIL_IF_ERROR (transition_comp (comp_id, OMX_StateExecuting),
+                         "Unable to transition component from Idle->Exe");
   }
 }
 
@@ -514,9 +516,10 @@ void graph::ops::do_restore_volume ()
     OMX_U32 input_port = 0;
     assert (!handles_.empty ());
     TIZ_LOG (TIZ_PRIORITY_TRACE, "volume_ = %d", volume_);
-    G_OPS_BAIL_IF_ERROR (util::apply_volume (handles_[handles_.size () - 1],
-                                             input_port, ((double) volume_ / (double) 100), volume_),
-                         "Unable to restore the existing volume");
+    G_OPS_BAIL_IF_ERROR (
+        util::apply_volume (handles_[handles_.size () - 1], input_port,
+                            ((double)volume_ / (double)100), volume_),
+        "Unable to restore the existing volume");
     TIZ_LOG (TIZ_PRIORITY_TRACE, "volume_ = %d", volume_);
   }
 }
@@ -532,6 +535,12 @@ void graph::ops::do_mute ()
   {
     OMX_U32 input_port = 0;
     assert (!handles_.empty ());
+    // Obtain the current volume
+    G_OPS_BAIL_IF_ERROR (
+        util::get_volume_from_audio_port (handles_[handles_.size () - 1],
+                                          input_port, volume_),
+        "Unable to obtain the current volume");
+    // Now mute the audio port
     G_OPS_BAIL_IF_ERROR (
         util::apply_mute (handles_[handles_.size () - 1], input_port),
         "Unable to apply mute");
@@ -565,17 +574,21 @@ void graph::ops::do_destroy_graph ()
   util::destroy_list (handles_);
   handles_.clear ();
   h2n_.clear ();
-  comp_lst_.clear();
-  role_lst_.clear();
+  comp_lst_.clear ();
+  role_lst_.clear ();
 }
 
 void graph::ops::do_destroy_comp (const int handle_id)
 {
-  assert (handle_id >= 0 && static_cast<std::size_t>(handle_id) < handles_.size ());
-  assert (handle_id >= 0 && static_cast<std::size_t>(handle_id) < comp_lst_.size ());
-  comp_lst_.erase(comp_lst_.begin() + handle_id, comp_lst_.begin() + handle_id + 1);
-  role_lst_.erase(role_lst_.begin() + handle_id, role_lst_.begin() + handle_id + 1);
-  h2n_.erase(handles_[handle_id]);
+  assert (handle_id >= 0
+          && static_cast< std::size_t > (handle_id) < handles_.size ());
+  assert (handle_id >= 0
+          && static_cast< std::size_t > (handle_id) < comp_lst_.size ());
+  comp_lst_.erase (comp_lst_.begin () + handle_id,
+                   comp_lst_.begin () + handle_id + 1);
+  role_lst_.erase (role_lst_.begin () + handle_id,
+                   role_lst_.begin () + handle_id + 1);
+  h2n_.erase (handles_[handle_id]);
   util::destroy_component (handles_, handle_id);
 }
 
@@ -630,8 +643,7 @@ void graph::ops::do_record_fatal_error (const OMX_HANDLETYPE handle,
   record_error (error, msg);
 }
 
-void
-graph::ops::do_start_progress_display()
+void graph::ops::do_start_progress_display ()
 {
   if (last_op_succeeded () && p_graph_)
   {
@@ -639,8 +651,8 @@ graph::ops::do_start_progress_display()
   }
 }
 
-void
-graph::ops::do_increase_progress_display(void *ap_arg1, const unsigned int a_id)
+void graph::ops::do_increase_progress_display (void *ap_arg1,
+                                               const unsigned int a_id)
 {
   if (last_op_succeeded () && p_graph_)
   {
@@ -648,8 +660,7 @@ graph::ops::do_increase_progress_display(void *ap_arg1, const unsigned int a_id)
   }
 }
 
-void
-graph::ops::do_pause_progress_display()
+void graph::ops::do_pause_progress_display ()
 {
   if (last_op_succeeded () && p_graph_)
   {
@@ -657,8 +668,7 @@ graph::ops::do_pause_progress_display()
   }
 }
 
-void
-graph::ops::do_resume_progress_display()
+void graph::ops::do_resume_progress_display ()
 {
   if (last_op_succeeded () && p_graph_)
   {
@@ -666,8 +676,7 @@ graph::ops::do_resume_progress_display()
   }
 }
 
-void
-graph::ops::do_stop_progress_display()
+void graph::ops::do_stop_progress_display ()
 {
   if (last_op_succeeded () && p_graph_)
   {
@@ -787,10 +796,13 @@ bool graph::ops::is_destination_state (const OMX_STATETYPE to_state)
   return (destination_state_ == to_state);
 }
 
-bool graph::ops::is_component_state (const int handle_id, const OMX_STATETYPE state_id)
+bool graph::ops::is_component_state (const int handle_id,
+                                     const OMX_STATETYPE state_id)
 {
-  assert (handle_id >= 0 && static_cast<std::size_t>(handle_id) < handles_.size ());
-  return tiz::graph::util::verify_transition_one (handles_[handle_id], state_id);
+  assert (handle_id >= 0
+          && static_cast< std::size_t > (handle_id) < handles_.size ());
+  return tiz::graph::util::verify_transition_one (handles_[handle_id],
+                                                  state_id);
 }
 
 bool graph::ops::is_port_disabling_complete (const OMX_HANDLETYPE handle,
@@ -910,7 +922,8 @@ bool graph::ops::is_port_transition_complete (
     const OMX_COMMANDTYPE disable_or_enable)
 {
   bool rc = false;
-  TIZ_PRINTF_DBG_RED ("expected_port_transitions_lst_ size [%d]\n", expected_port_transitions_lst_.size ());
+  TIZ_PRINTF_DBG_RED ("expected_port_transitions_lst_ size [%d]\n",
+                      expected_port_transitions_lst_.size ());
   assert (std::find (handles_.begin (), handles_.end (), handle)
           != handles_.end ());
   assert (!expected_port_transitions_lst_.empty ());
@@ -935,7 +948,8 @@ bool graph::ops::is_port_transition_complete (
       }
     }
   }
-  TIZ_PRINTF_DBG_RED ("expected_port_transitions_lst_ size [%d]\n", expected_port_transitions_lst_.size ());
+  TIZ_PRINTF_DBG_RED ("expected_port_transitions_lst_ size [%d]\n",
+                      expected_port_transitions_lst_.size ());
   return rc;
 }
 
@@ -945,7 +959,7 @@ graph::ops::probe_stream (const OMX_PORTDOMAINTYPE omx_domain,
                           const std::string &graph_action,
                           stream_info_dump_func_t stream_info_dump_f,
                           const bool quiet  // = false
-                          )
+)
 {
   OMX_ERRORTYPE rc = OMX_ErrorInsufficientResources;
   assert (playlist_);
@@ -956,7 +970,7 @@ graph::ops::probe_stream (const OMX_PORTDOMAINTYPE omx_domain,
   // Probe a new uri
   probe_ptr_.reset ();
   const bool quiet_probing = true;
-  probe_ptr_ = boost::make_shared< tiz::probe >(uri, quiet_probing);
+  probe_ptr_ = boost::make_shared< tiz::probe > (uri, quiet_probing);
 
   if (probe_ptr_)
   {
@@ -988,8 +1002,8 @@ graph::ops::probe_stream (const OMX_PORTDOMAINTYPE omx_domain,
     {
       // The current uri is not what we expected. So skip it and erase it from
       // the playlist so that we don't attempt the playback again.
-      tiz::graph::util::dump_graph_info ("Unknown/unexpected format", "skipping",
-                                         uri);
+      tiz::graph::util::dump_graph_info ("Unknown/unexpected format",
+                                         "skipping", uri);
       playlist_->erase_uri (playlist_->current_index ());
       playlist_->set_index (playlist_->current_index () - 1);
       rc = OMX_ErrorContentURIError;
@@ -1010,8 +1024,8 @@ graph::ops::probe_stream (const OMX_PORTDOMAINTYPE omx_domain,
         tiz::graph::util::dump_graph_info (graph_id.c_str (),
                                            graph_action.c_str (), uri);
         probe_ptr_->dump_stream_metadata ();
-        store_last_track_duration (probe_ptr_->stream_length ().c_str());
-        boost::bind (boost::mem_fn (stream_info_dump_f), probe_ptr_)();
+        store_last_track_duration (probe_ptr_->stream_length ().c_str ());
+        boost::bind (boost::mem_fn (stream_info_dump_f), probe_ptr_) ();
 
         metadata_ = boost::assign::map_list_of ("trackid", "1")
                         .convert_to_container< track_metadata_map_t > ();
@@ -1044,8 +1058,7 @@ OMX_ERRORTYPE
 graph::ops::transition_comp (const int comp_id, const OMX_STATETYPE to_state)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
-  rc = tiz::graph::util::transition_one (handles_, comp_id,
-                                         to_state);
+  rc = tiz::graph::util::transition_one (handles_, comp_id, to_state);
   if (OMX_ErrorNone == rc)
   {
     clear_expected_transitions ();
@@ -1081,7 +1094,7 @@ graph::ops::transition_tunnel (const int tunnel_id,
 
 OMX_ERRORTYPE
 graph::ops::switch_tunnel (const int tunnel_id,
-                               const OMX_COMMANDTYPE to_disabled_or_enabled)
+                           const OMX_COMMANDTYPE to_disabled_or_enabled)
 {
   // Default implementation. To be overriden by derived classes.
   return OMX_ErrorNone;
@@ -1097,10 +1110,11 @@ graph::ops::dump_metadata_item (const OMX_U32 index, const int comp_index,
   size_t value_len = 0;
 
   value_len = OMX_MAX_STRINGNAME_SIZE;
-  metadata_len = sizeof(OMX_CONFIG_METADATAITEMTYPE) + value_len;
+  metadata_len = sizeof (OMX_CONFIG_METADATAITEMTYPE) + value_len;
 
-  if (NULL == (p_meta = (OMX_CONFIG_METADATAITEMTYPE *)tiz_mem_calloc (
-                   1, metadata_len)))
+  if (NULL
+      == (p_meta
+          = (OMX_CONFIG_METADATAITEMTYPE *)tiz_mem_calloc (1, metadata_len)))
   {
     rc = OMX_ErrorInsufficientResources;
   }
@@ -1126,19 +1140,21 @@ graph::ops::dump_metadata_item (const OMX_U32 index, const int comp_index,
         && strnlen ((const char *)p_meta->nValue, OMX_MAX_STRINGNAME_SIZE))
     {
       if (0 == index && use_first_as_heading)
-        {
-          TIZ_PRINTF_YEL ("   %s : %s\n", p_meta->nKey, p_meta->nValue);
-        }
+      {
+        printf ("   ");
+        TIZ_PRINTF_C03 ("%s : %s", p_meta->nKey, p_meta->nValue);
+      }
       else
+      {
+        printf ("     ");
+        TIZ_PRINTF_C06 ("%s : %s", p_meta->nKey, p_meta->nValue);
+        std::string key;
+        key.assign ((const char *)p_meta->nKey);
+        if (boost::starts_with (key, "Duration"))
         {
-          TIZ_PRINTF_CYN ("     %s : %s\n", p_meta->nKey, p_meta->nValue);
-          std::string key;
-          key.assign ((const char*)p_meta->nKey);
-          if (boost::starts_with (key, "Duration"))
-            {
-              store_last_track_duration ((const char*)p_meta->nValue);
-            }
+          store_last_track_duration ((const char *)p_meta->nValue);
         }
+      }
     }
 
     tiz_mem_free (p_meta);
@@ -1147,7 +1163,7 @@ graph::ops::dump_metadata_item (const OMX_U32 index, const int comp_index,
   return rc;
 }
 
-void graph::ops::store_last_track_duration(const char * p_value)
+void graph::ops::store_last_track_duration (const char *p_value)
 {
   if (p_value)
   {
@@ -1158,8 +1174,9 @@ void graph::ops::store_last_track_duration(const char * p_value)
     unsigned long seconds = 0;
     for (size_t i = 0; i < strs.size (); i++)
     {
-      std::string section(strs[i]);
-      section.erase(remove_if(section.begin(), section.end(), ::isspace), section.end());
+      std::string section (strs[i]);
+      section.erase (remove_if (section.begin (), section.end (), ::isspace),
+                     section.end ());
       unsigned long value = boost::lexical_cast< unsigned long > (
           section.substr (0, section.size () - 1));
       if (boost::ends_with (section, "h"))

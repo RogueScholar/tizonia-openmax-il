@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -112,7 +112,7 @@ release_headers (const void * ap_obj, OMX_U32 a_pid)
           if (p_obj->eos_)
             {
               /* EOS has been received and all the input data has been consumed
-               * already, so its time to propagate the EOS flag */
+                 * already, so its time to propagate the EOS flag */
               p_obj->p_outhdr_->nFlags |= OMX_BUFFERFLAG_EOS;
               p_obj->eos_ = false;
             }
@@ -145,8 +145,9 @@ store_metadata (mp3d_prc_t * ap_prc, const char * ap_header_name,
       info_len = strnlen (ap_header_info, OMX_MAX_STRINGNAME_SIZE - 1) + 1;
       metadata_len = sizeof (OMX_CONFIG_METADATAITEMTYPE) + info_len;
 
-      if (NULL == (p_meta = (OMX_CONFIG_METADATAITEMTYPE *) tiz_mem_calloc (
-                     1, metadata_len)))
+      if (NULL
+          == (p_meta = (OMX_CONFIG_METADATAITEMTYPE *) tiz_mem_calloc (
+                1, metadata_len)))
         {
           rc = OMX_ErrorInsufficientResources;
         }
@@ -224,9 +225,9 @@ store_stream_metadata (mp3d_prc_t * ap_prc, struct mad_header * Header)
     }
 
   /* Convert the emphasis to it's printed representation. Note that
-   * the MAD_EMPHASIS_RESERVED enumeration value appeared in libmad
-   * version 0.15.0b.
-   */
+     * the MAD_EMPHASIS_RESERVED enumeration value appeared in libmad
+     * version 0.15.0b.
+     */
   switch (Header->emphasis)
     {
       case MAD_EMPHASIS_NONE:
@@ -284,24 +285,24 @@ static signed short
 mad_fixed_to_sshort (mad_fixed_t fixed)
 {
   /* A fixed point number is formed of the following bit pattern:
-   *
-   * SWWWFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-   * MSB                          LSB
-   * S ==> Sign (0 is positive, 1 is negative)
-   * W ==> Whole part bits
-   * F ==> Fractional part bits
-   *
-   * This pattern contains MAD_F_FRACBITS fractional bits, one
-   * should alway use this macro when working on the bits of a fixed
-   * point number. It is not guaranteed to be constant over the
-   * different platforms supported by libmad.
-   *
-   * The signed short value is formed, after clipping, by the least
-   * significant whole part bit, followed by the 15 most significant
-   * fractional part bits. Warning: this is a quick and dirty way to
-   * compute the 16-bit number, madplay includes much better
-   * algorithms.
-   */
+     *
+     * SWWWFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+     * MSB                          LSB
+     * S ==> Sign (0 is positive, 1 is negative)
+     * W ==> Whole part bits
+     * F ==> Fractional part bits
+     *
+     * This pattern contains MAD_F_FRACBITS fractional bits, one
+     * should alway use this macro when working on the bits of a fixed
+     * point number. It is not guaranteed to be constant over the
+     * different platforms supported by libmad.
+     *
+     * The signed short value is formed, after clipping, by the least
+     * significant whole part bit, followed by the 15 most significant
+     * fractional part bits. Warning: this is a quick and dirty way to
+     * compute the 16-bit number, madplay includes much better
+     * algorithms.
+     */
 
   /* Clipping */
   if (fixed >= MAD_F_ONE)
@@ -402,8 +403,8 @@ synthesize_samples (const void * ap_obj, int next_sample)
       *(p_output++) = sample & 0xff;
 
       /* Right channel. If the decoded stream is monophonic then
-       * the right output channel is the same as the left one.
-       */
+         * the right output channel is the same as the left one.
+         */
       if (MAD_NCHANNELS (&p_prc->frame_.header) == 2)
         {
           sample = mad_fixed_to_sshort (p_prc->synth_.pcm.samples[1][i]);
@@ -417,7 +418,7 @@ synthesize_samples (const void * ap_obj, int next_sample)
           || p_prc->pcmmode_.nChannels < 2)
         {
           /* We're outputting two channels, also for mono streams.
-           */
+             */
           const OMX_U32 nchannels = 2;
           TIZ_PRINTF_DBG_GRN ("samplerate [%d] NCHANNELS [%d] channels [%d].",
                               p_prc->frame_.header.samplerate,
@@ -429,7 +430,7 @@ synthesize_samples (const void * ap_obj, int next_sample)
         }
 
       /* release the output buffer if it is full, or if we are at the early stages
-         of the decoding */
+           of the decoding */
       if (p_output == p_bufend)
         {
           p_output = p_prc->p_outhdr_->pBuffer;
@@ -471,7 +472,7 @@ decode_buffer (const void * ap_obj)
   assert (p_obj->p_outhdr_);
 
   /* Check if there is any remaining PCM data from a previous run of the
-   * decoding loop that needs to be synthesised */
+     * decoding loop that needs to be synthesised */
   if ((0 != p_obj->next_synth_sample_
        && p_obj->next_synth_sample_ < p_obj->synth_.pcm.length)
       && (p_obj->p_outhdr_->nFilledLen < p_obj->p_outhdr_->nAllocLen))
@@ -484,8 +485,8 @@ decode_buffer (const void * ap_obj)
     {
 
       /* The input bucket must be filled if it becomes empty or if
-       * it's the first execution of the loop.
-       */
+         * it's the first execution of the loop.
+         */
 
       if ((NULL == p_obj->stream_.buffer
            || MAD_ERROR_BUFLEN == p_obj->stream_.error)
@@ -512,10 +513,10 @@ decode_buffer (const void * ap_obj)
             }
 
           /* Fill-in the buffer. If an error occurs print a message
-           * and leave the decoding loop. If the end of stream is
-           * reached we also leave the loop but the return status is
-           * left untouched.
-           */
+             * and leave the decoding loop. If the end of stream is
+             * reached we also leave the loop but the return status is
+             * left untouched.
+             */
           read_size = read_from_omx_buffer (p_obj, p_read_start, read_size,
                                             p_obj->p_inhdr_);
           if (read_size == 0)
@@ -542,8 +543,8 @@ decode_buffer (const void * ap_obj)
           /*         } */
 
           /* Pipe the new buffer content to libmad's stream decoder
-           * facility.
-           */
+             * facility.
+             */
           mad_stream_buffer (&p_obj->stream_, p_obj->in_buff_,
                              read_size + p_obj->remaining_);
           p_obj->stream_.error = 0;
@@ -594,8 +595,8 @@ decode_buffer (const void * ap_obj)
         }
 
       /* The characteristics of the stream's first frame is printed The first
-       * frame is representative of the entire stream.
-       */
+         * frame is representative of the entire stream.
+         */
       if (0 == p_obj->frame_count_)
         {
           store_stream_metadata (p_obj, &(p_obj->frame_.header));
@@ -605,8 +606,8 @@ decode_buffer (const void * ap_obj)
       mad_timer_add (&p_obj->timer_, p_obj->frame_.header.duration);
 
       /* Once decoded the frame is synthesized to PCM samples. No errors
-       * are reported by mad_synth_frame();
-       */
+         * are reported by mad_synth_frame();
+         */
       mad_synth_frame (&p_obj->synth_, &p_obj->frame_);
 
       p_obj->next_synth_sample_
@@ -629,7 +630,7 @@ decode_buffer (const void * ap_obj)
   /*                        "nFilledLen = [%d] OMX_BUFFERFLAG_EOS", */
   /*                        p_obj->p_outhdr_, p_obj->p_outhdr_->nFilledLen); */
   /*       tiz_krn_release_buffer (tiz_get_krn (handleOf (ap_obj)), 1,
-   * p_obj->p_outhdr_); */
+     * p_obj->p_outhdr_); */
   /*       /\* p_obj->p_outhdr_ = NULL; *\/ */
   /*     } */
 
@@ -750,7 +751,7 @@ mp3d_proc_prepare_to_transfer (void * ap_obj, OMX_U32 a_pid)
   assert (p_prc);
 
   /* NOTE: init the decoder here, as it might have been de-inited in a
-     transition Exe->Idle */
+       transition Exe->Idle */
   init_mad_decoder (ap_obj);
 
   TIZ_INIT_OMX_PORT_STRUCT (mp3type, ARATELIA_MP3_DECODER_INPUT_PORT_INDEX);
@@ -794,7 +795,7 @@ mp3d_proc_stop_and_return (void * ap_obj)
   TIZ_TRACE (handleOf (p_obj), "%lu frames decoded (%s)", p_obj->frame_count_,
              buffer);
   /* NOTE: de-init the decoder here, as there seems to be no obvious flush
-     functionality that could be used instead */
+       functionality that could be used instead */
   deinit_mad_decoder (ap_obj);
   return release_headers (p_obj, OMX_ALL);
 }
@@ -842,7 +843,7 @@ mp3d_proc_buffers_ready (const void * ap_obj)
   if (p_obj->eos_ && p_obj->p_outhdr_)
     {
       /* EOS has been received and all the input data has been consumed
-       * already, so its time to propagate the EOS flag */
+         * already, so its time to propagate the EOS flag */
       tiz_check_omx (
         release_headers (p_obj, ARATELIA_MP3_DECODER_OUTPUT_PORT_INDEX));
     }

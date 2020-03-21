@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -31,8 +31,8 @@
 
 #include <string>
 
-#include "tizgraphtypes.hpp"
 #include "tizgraphconfig.hpp"
+#include "tizgraphtypes.hpp"
 
 namespace tiz
 {
@@ -42,16 +42,22 @@ namespace tiz
     {
 
     public:
-      httpservconfig (const tizplaylist_ptr_t &playlist, const std::string &host,
-                      const std::string &ip_address, const long int port,
-                      const std::vector<int> &sampling_rate_list,
+      httpservconfig (const tizplaylist_ptr_t &playlist,
+                      const std::string &host, const std::string &ip_address,
+                      const long int port,
+                      const std::vector< int > &sampling_rate_list,
                       const std::vector< std::string > &bitrate_mode_list,
                       const std::string &station_name,
                       const std::string &station_genre,
                       const bool &icy_metadata_enabled)
-        : config (playlist, 0), host_ (host), addr_ (ip_address), port_ (port),
-          sampling_rate_list_ (sampling_rate_list), bitrate_mode_list_ (bitrate_mode_list),
-          station_name_ (station_name), station_genre_ (station_genre),
+        : config (playlist, 0),
+          host_ (host),
+          addr_ (ip_address),
+          port_ (port),
+          sampling_rate_list_ (sampling_rate_list),
+          bitrate_mode_list_ (bitrate_mode_list),
+          station_name_ (station_name),
+          station_genre_ (station_genre),
           icy_metadata_enabled_ (icy_metadata_enabled)
       {
       }
@@ -75,7 +81,7 @@ namespace tiz
         return port_;
       }
 
-      const std::vector<int> &get_sampling_rates () const
+      const std::vector< int > &get_sampling_rates () const
       {
         return sampling_rate_list_;
       }
@@ -104,7 +110,7 @@ namespace tiz
       const std::string host_;
       const std::string addr_;
       const long int port_;
-      const std::vector<int> sampling_rate_list_;
+      const std::vector< int > sampling_rate_list_;
       const std::vector< std::string > bitrate_mode_list_;
       const std::string station_name_;
       const std::string station_genre_;

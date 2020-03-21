@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -158,7 +158,8 @@ update_video_coding_type (void * ap_obj, const OMX_VIDEO_CODINGTYPE a_encoding)
       goto end;
     }
 
-  if (!tiz_vector_find (p_obj->p_video_encodings_, (const OMX_PTR) (&a_encoding)))
+  if (!tiz_vector_find (p_obj->p_video_encodings_,
+                        (const OMX_PTR) (&a_encoding)))
     {
       TIZ_ERROR (handleOf (ap_obj),
                  "[OMX_ErrorUnsupportedSetting] : "
@@ -182,7 +183,8 @@ end:
 }
 
 static inline OMX_ERRORTYPE
-update_color_format_type (void * ap_obj, const OMX_COLOR_FORMATTYPE a_color_format)
+update_color_format_type (void * ap_obj,
+                          const OMX_COLOR_FORMATTYPE a_color_format)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
   tiz_videoport_t * p_obj = ap_obj;
@@ -200,7 +202,8 @@ update_color_format_type (void * ap_obj, const OMX_COLOR_FORMATTYPE a_color_form
       goto end;
     }
 
-  if (!tiz_vector_find (p_obj->p_color_formats_, (const OMX_PTR) (&a_color_format)))
+  if (!tiz_vector_find (p_obj->p_color_formats_,
+                        (const OMX_PTR) (&a_color_format)))
     {
       TIZ_ERROR (handleOf (ap_obj),
                  "[OMX_ErrorUnsupportedSetting] : "
@@ -388,7 +391,7 @@ videoport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
   assert (p_obj);
 
   /* Do now allow changes to nFrameWidth or nFrameHeight if this is a slave
-   * output port */
+     * output port */
   if (OMX_IndexParamPortDefinition == a_index)
     {
       const tiz_port_t * p_base = ap_obj;
@@ -412,8 +415,7 @@ videoport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
         }
     }
 
-  return videoport_SetParameter_common (ap_obj, ap_hdl, a_index,
-                                        ap_struct);
+  return videoport_SetParameter_common (ap_obj, ap_hdl, a_index, ap_struct);
 }
 
 static OMX_ERRORTYPE
@@ -426,9 +428,11 @@ videoport_set_portdef_format (void * ap_obj,
   assert (p_obj);
   assert (ap_pdef);
 
-  tiz_check_omx (update_video_coding_type (p_obj, ap_pdef->format.video.eCompressionFormat));
+  tiz_check_omx (
+    update_video_coding_type (p_obj, ap_pdef->format.video.eCompressionFormat));
 
-  tiz_check_omx (update_color_format_type (p_obj, ap_pdef->format.video.eColorFormat));
+  tiz_check_omx (
+    update_color_format_type (p_obj, ap_pdef->format.video.eColorFormat));
 
   p_base->portdef_.format.video.pNativeRender
     = ap_pdef->format.video.pNativeRender;
@@ -444,21 +448,21 @@ videoport_set_portdef_format (void * ap_obj,
     = ap_pdef->format.video.bFlagErrorConcealment;
 
   /* Also update the port's minimum buffer size, if needed,
-     but only on an uncompressed video port */
+       but only on an uncompressed video port */
   if (OMX_VIDEO_CodingUnused == p_obj->port_format_.eCompressionFormat)
-  {
-    const OMX_U32 new_width = ap_pdef->format.video.nFrameWidth;
-    const OMX_U32 new_height = ap_pdef->format.video.nFrameHeight;
-    const OMX_U32 y_sz = new_width * new_height;
-    const OMX_U32 u_sz = y_sz / 4;
-    const OMX_U32 v_sz = u_sz;
-    const OMX_U32 new_buf_sz = y_sz + u_sz + v_sz;
+    {
+      const OMX_U32 new_width = ap_pdef->format.video.nFrameWidth;
+      const OMX_U32 new_height = ap_pdef->format.video.nFrameHeight;
+      const OMX_U32 y_sz = new_width * new_height;
+      const OMX_U32 u_sz = y_sz / 4;
+      const OMX_U32 v_sz = u_sz;
+      const OMX_U32 new_buf_sz = y_sz + u_sz + v_sz;
 
-    if (new_buf_sz != p_base->portdef_.nBufferSize)
-      {
+      if (new_buf_sz != p_base->portdef_.nBufferSize)
+        {
           p_base->portdef_.nBufferSize = new_buf_sz;
-      }
-  }
+        }
+    }
 
   /* Shadow copy is debatable; perhaps a deep copy would be needed. */
   p_base->portdef_.format.video.pNativeWindow
@@ -484,7 +488,7 @@ videoport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
   assert (ap_struct != NULL);
   assert (ap_changed_idxs != NULL);
 
-  TIZ_TRACE (handleOf(ap_obj), "slaving_behaviour [%s] on pid [%d] ...",
+  TIZ_TRACE (handleOf (ap_obj), "slaving_behaviour [%s] on pid [%d] ...",
              tiz_idx_to_str (a_index), tiz_port_index (ap_obj));
 
   if (OMX_IndexParamPortDefinition == a_index)
@@ -540,7 +544,7 @@ videoport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
         }
 
       /* Also update the port's minimum buffer size, if needed,
-         but only on an uncompressed video port */
+           but only on an uncompressed video port */
       if (new_buf_sz != p_base->portdef_.nBufferSize
           && OMX_VIDEO_CodingUnused == p_obj->port_format_.eCompressionFormat)
         {
@@ -577,18 +581,19 @@ videoport_SetParameter_internal (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
              tiz_idx_to_str (a_index));
   switch (a_index)
     {
-    case OMX_IndexParamVideoPortFormat:
-      {
-        rc = videoport_SetParameter_common (ap_obj, ap_hdl, a_index, ap_struct);
-      }
-      break;
-    default:
-      {
-        /* Try the parent's indexes */
-        rc = super_SetParameter (typeOf (ap_obj, "tizvideoport"), ap_obj,
-                                 ap_hdl, a_index, ap_struct);
-      }
-      break;
+      case OMX_IndexParamVideoPortFormat:
+        {
+          rc = videoport_SetParameter_common (ap_obj, ap_hdl, a_index,
+                                              ap_struct);
+        }
+        break;
+      default:
+        {
+          /* Try the parent's indexes */
+          rc = super_SetParameter (typeOf (ap_obj, "tizvideoport"), ap_obj,
+                                   ap_hdl, a_index, ap_struct);
+        }
+        break;
     };
   return rc;
 }

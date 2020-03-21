@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -263,7 +263,7 @@ pcmport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
           const tiz_port_t * p_base = ap_obj;
 
           /* Do now allow changes to sampling rate, num of channels or bits per
-         * sample if this is a slave output port */
+        * sample if this is a slave output port */
 
           if ((OMX_DirOutput == p_base->portdef_.eDir)
               && (p_base->opts_.mos_port != (OMX_U32) -1)
@@ -482,9 +482,9 @@ pcmport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
   /* OpenMAX IL 1.2 Section 3.5 : Slaving behaviour for nSamplingRate and
-   * nChannels, both in OMX_AUDIO_PARAM_PCMMODETYPE. nBufferSize may also
-   * change if the current value is not big enough to fit 5 ms of PCM audio
-   * data - see OpenMAX IL 1.2 section 4.1.2. */
+     * nChannels, both in OMX_AUDIO_PARAM_PCMMODETYPE. nBufferSize may also
+     * change if the current value is not big enough to fit 5 ms of PCM audio
+     * data - see OpenMAX IL 1.2 section 4.1.2. */
 
   assert (p_obj);
   assert (ap_struct);

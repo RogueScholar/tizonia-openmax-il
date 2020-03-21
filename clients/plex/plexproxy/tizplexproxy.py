@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -13,66 +13,83 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """@package tizplexproxy
 Simple Plex API proxy/wrapper.
 
 Access Plex servers to retrieve audio track URLs and create a playback queue.
 
 """
-
-
-
-import sys
-import os
+import configparser
+import imp
 import logging
+import os
 import random
-import unicodedata
 import re
+import sys
+import unicodedata
+
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 from plexapi.exceptions import NotFound
 from plexapi.myplex import MyPlexAccount
 from plexapi.server import PlexServer
-from fuzzywuzzy import process
-from fuzzywuzzy import fuzz
-import imp
 
-if sys.version[0] == '2':
+if sys.version[0] == "2":
     imp.reload(sys)
-    sys.setdefaultencoding('utf-8')
+    sys.setdefaultencoding("utf-8")
 
 # For use during debugging
 # import pprint
 
-FORMAT = '[%(asctime)s] [%(levelname)5s] [%(thread)d] ' \
-         '[%(module)s:%(funcName)s:%(lineno)d] - %(message)s'
+FORMAT = ("[%(asctime)s] [%(levelname)5s] [%(thread)d] "
+          "[%(module)s:%(funcName)s:%(lineno)d] - %(message)s")
 
 logging.captureWarnings(True)
 logging.getLogger().setLevel(logging.DEBUG)
 
-if os.environ.get('TIZONIA_PLEXPROXY_DEBUG'):
+if os.environ.get("TIZONIA_PLEXPROXY_DEBUG"):
     logging.basicConfig(format=FORMAT)
     from traceback import print_exception
 else:
     logging.getLogger().addHandler(logging.NullHandler())
 
-class _Colors:
-    """A trivial class that defines various ANSI color codes.
 
-    """
-    BOLD = '\033[1m'
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
+class ConfigColors:
+    def __init__(self):
+        self.config = configparser.ConfigParser()
+        self.config.read(
+            os.path.join(os.getenv("HOME"), ".config/tizonia/tizonia.conf"))
+        active_theme = self.config.get("color-themes",
+                                       "active-theme",
+                                       fallback="tizonia")
+        active_theme = active_theme + "."
+        self.FAIL = ("\033[" + self.config.get(
+            "color-themes", active_theme + "C08", fallback="91").replace(
+                ",", ";").split("#", 1)[0].strip() + "m")
+        self.OKGREEN = ("\033[" + self.config.get(
+            "color-themes", active_theme + "C09", fallback="92").replace(
+                ",", ";").split("#", 1)[0].strip() + "m")
+        self.WARNING = ("\033[" + self.config.get(
+            "color-themes", active_theme + "C10", fallback="93").replace(
+                ",", ";").split("#", 1)[0].strip() + "m")
+        self.OKBLUE = ("\033[" + self.config.get(
+            "color-themes", active_theme + "C11", fallback="94").replace(
+                ",", ";").split("#", 1)[0].strip() + "m")
+        self.OKMAGENTA = ("\033[" + self.config.get(
+            "color-themes", active_theme + "C12", fallback="95").replace(
+                ",", ";").split("#", 1)[0].strip() + "m")
+        self.ENDC = "\033[0m"
 
-# This code is here for debugging purposes
+
+_Colors = ConfigColors()
+
+
 def pretty_print(color, msg=""):
     """Print message with color.
 
     """
     print(color + msg + _Colors.ENDC)
+
 
 def print_msg(msg=""):
     """Print a normal message.
@@ -80,11 +97,20 @@ def print_msg(msg=""):
     """
     pretty_print(_Colors.OKGREEN + msg + _Colors.ENDC)
 
+
 def print_nfo(msg=""):
     """Print an info message.
 
     """
     pretty_print(_Colors.OKBLUE + msg + _Colors.ENDC)
+
+
+def print_adv(msg=""):
+    """Print an advisory message.
+
+    """
+    pretty_print(_Colors.OKMAGENTA + msg + _Colors.ENDC)
+
 
 def print_wrn(msg=""):
     """Print a warning message.
@@ -92,11 +118,13 @@ def print_wrn(msg=""):
     """
     pretty_print(_Colors.WARNING + msg + _Colors.ENDC)
 
+
 def print_err(msg=""):
     """Print an error message.
 
     """
     pretty_print(_Colors.FAIL + msg + _Colors.ENDC)
+
 
 def exception_handler(exception_type, exception, traceback):
     """A simple handler that prints the exception message.
@@ -105,28 +133,34 @@ def exception_handler(exception_type, exception, traceback):
 
     print_err("[Plex] (%s) : %s" % (exception_type.__name__, exception))
 
-    if os.environ.get('TIZONIA_PLEXPROXY_DEBUG'):
+    if os.environ.get("TIZONIA_PLEXPROXY_DEBUG"):
         print_exception(exception_type, exception, traceback)
 
+
 sys.excepthook = exception_handler
+
 
 class TizEnumeration(set):
     """A simple enumeration class.
 
     """
+
     def __getattr__(self, name):
         if name in self:
             return name
         raise AttributeError
+
 
 def to_ascii(msg):
     """Unicode to ascii helper.
 
     """
 
-    if sys.version[0] == '2':
-        return unicodedata.normalize('NFKD', str(msg)).encode('ASCII', 'ignore')
+    if sys.version[0] == "2":
+        return unicodedata.normalize("NFKD",
+                                     str(msg)).encode("ASCII", "ignore")
     return msg
+
 
 class TrackInfo(object):
     """ Class that represents a Plex track in the queue.
@@ -138,8 +172,8 @@ class TrackInfo(object):
         self.title = track.title
         self.artist = artist.title
         self.album = album.title
-        self.year = album.year if album.year else 0;
-        self.duration = track.duration / 1000 if track.duration else 0;
+        self.year = album.year if album.year else 0
+        self.duration = track.duration / 1000 if track.duration else 0
         self.url = track.getStreamURL()
         self.thumb_url = track.thumbUrl
         self.art_url = track.artUrl
@@ -150,6 +184,7 @@ class TrackInfo(object):
             self.channels = media.audioChannels
             part = media.parts[0]
             self.size = part.size if part else 0
+
 
 class tizplexproxy(object):
     """A class that accesses Plex servers, retrieves track URLs and creates and
@@ -175,7 +210,7 @@ class tizplexproxy(object):
 
         """
         self.current_play_mode = getattr(self.play_modes, mode)
-        self.__update_play_queue_order()
+        self._update_play_queue_order()
 
     def enqueue_audio_tracks(self, arg):
         """Search the Plex server for audio tracks and add them to the playback queue.
@@ -183,33 +218,35 @@ class tizplexproxy(object):
         :param arg: a search string
 
         """
-        logging.info('arg : %s', arg)
-        print_msg("[Plex] [Track search in server] : '{0}'. " \
-                  .format(self.base_url))
+        logging.info("arg : %s", arg)
+        print_msg("[Plex] [Track search in server] : '{0}'. ".format(
+            self.base_url))
         try:
             count = len(self.queue)
 
             try:
                 tracks = self._music.searchTracks(title=arg)
                 for track in tracks:
-                    track_info = TrackInfo(track, track.artist(), track.album())
-                    self.add_to_playback_queue(track_info)
+                    track_info = TrackInfo(track, track.artist(),
+                                           track.album())
+                    self._add_to_playback_queue(track_info)
 
             except (NotFound):
                 pass
 
             if count == len(self.queue):
-                tracks = self._music.search(libtype='track')
+                tracks = self._music.search(libtype="track")
                 for track in tracks:
                     track_name = track.title
                     if fuzz.partial_ratio(arg, track_name) > 60:
-                        track_info = TrackInfo(track, track.artist(), track.album())
-                        self.add_to_playback_queue(track_info)
+                        track_info = TrackInfo(track, track.artist(),
+                                               track.album())
+                        self._add_to_playback_queue(track_info)
 
             if count == len(self.queue):
                 raise ValueError
 
-            self.__update_play_queue_order()
+            self._update_play_queue_order()
 
         except ValueError:
             raise ValueError(str("Track not found : %s" % arg))
@@ -221,24 +258,23 @@ class tizplexproxy(object):
         :param arg: an artist search term
 
         """
-        logging.info('arg : %s', arg)
-        print_msg("[Plex] [Artist search in server] : '{0}'. " \
-                  .format(self.base_url))
+        logging.info("arg : %s", arg)
+        print_msg("[Plex] [Artist search in server] : '{0}'. ".format(
+            self.base_url))
         try:
             count = len(self.queue)
             artist = None
-            artist_name = ''
+            artist_name = ""
 
             try:
                 artists = self._music.searchArtists(title=arg)
                 for artist in artists:
                     artist_name = artist.title
-                    print_wrn("[Plex] Playing '{0}'." \
-                              .format(artist_name))
+                    print_wrn("[Plex] Playing '{0}'.".format(artist_name))
                     for album in artist.albums():
                         for track in album.tracks():
                             track_info = TrackInfo(track, artist, album)
-                            self.add_to_playback_queue(track_info)
+                            self._add_to_playback_queue(track_info)
 
             except (NotFound):
                 pass
@@ -246,7 +282,7 @@ class tizplexproxy(object):
             if count == len(self.queue):
                 artist_dict = dict()
                 artist_names = list()
-                artists = self._music.search(libtype='artist')
+                artists = self._music.search(libtype="artist")
                 for art in artists:
                     artist_names.append(art.title)
                     artist_dict[art.title] = art
@@ -259,19 +295,18 @@ class tizplexproxy(object):
                     artist = artist_dict[artist_name]
 
                 if artist:
-                    print_wrn("[Plex] '{0}' not found. " \
-                              "Playing '{1}' instead." \
-                              .format(arg, \
-                                      artist_name))
+                    print_adv("[Plex] '{0}' not found. "
+                              "Playing '{1}' instead.".format(
+                                  arg, artist_name))
                     for album in artist.albums():
                         for track in album.tracks():
                             track_info = TrackInfo(track, artist, album)
-                            self.add_to_playback_queue(track_info)
+                            self._add_to_playback_queue(track_info)
 
             if count == len(self.queue):
                 raise ValueError
 
-            self.__update_play_queue_order()
+            self._update_play_queue_order()
 
         except ValueError:
             raise ValueError(str("Artist not found : %s" % arg))
@@ -283,23 +318,22 @@ class tizplexproxy(object):
         :param arg: an album search term
 
         """
-        logging.info('arg : %s', arg)
-        print_msg("[Plex] [Album search in server] : '{0}'. " \
-                  .format(self.base_url))
+        logging.info("arg : %s", arg)
+        print_msg("[Plex] [Album search in server] : '{0}'. ".format(
+            self.base_url))
         try:
             count = len(self.queue)
             album = None
-            album_name = ''
+            album_name = ""
 
             try:
                 albums = self._music.searchAlbums(title=arg)
                 for album in albums:
                     album_name = album.title
-                    print_wrn("[Plex] Playing '{0}'." \
-                              .format(album_name))
+                    print_wrn("[Plex] Playing '{0}'.".format(album_name))
                     for track in album.tracks():
                         track_info = TrackInfo(track, track.artist(), album)
-                        self.add_to_playback_queue(track_info)
+                        self._add_to_playback_queue(track_info)
 
             except (NotFound):
                 pass
@@ -307,7 +341,7 @@ class tizplexproxy(object):
             if count == len(self.queue):
                 album_dict = dict()
                 album_names = list()
-                albums = self._music.search(libtype='album')
+                albums = self._music.search(libtype="album")
                 for alb in albums:
                     album_names.append(alb.title)
                     album_dict[alb.title] = alb
@@ -320,18 +354,16 @@ class tizplexproxy(object):
                     album = album_dict[album_name]
 
                 if album:
-                    print_wrn("[Plex] '{0}' not found. " \
-                              "Playing '{1}' instead." \
-                              .format(arg, \
-                                      album_name))
+                    print_adv("[Plex] '{0}' not found. "
+                              "Playing '{1}' instead.".format(arg, album_name))
                     for track in album.tracks():
                         track_info = TrackInfo(track, album, album)
-                        self.add_to_playback_queue(track_info)
+                        self._add_to_playback_queue(track_info)
 
             if count == len(self.queue):
                 raise ValueError
 
-            self.__update_play_queue_order()
+            self._update_play_queue_order()
 
         except ValueError:
             raise ValueError(str("Album not found : %s" % arg))
@@ -342,29 +374,29 @@ class tizplexproxy(object):
         :param arg: a playlist search term
 
         """
-        logging.info('arg : %s', arg)
-        print_msg("[Plex] [Playlist search in server] : '{0}'. " \
-                  .format(self.base_url))
+        logging.info("arg : %s", arg)
+        print_msg("[Plex] [Playlist search in server] : '{0}'. ".format(
+            self.base_url))
         try:
             count = len(self.queue)
-            playlist_title = ''
+            playlist_title = ""
             playlist = None
 
             try:
                 playlist = self._plex.playlist(title=arg)
                 if playlist:
                     playlist_title = playlist.title
-                    print_wrn("[Plex] Playing '{0}'." \
-                              .format(playlist_title))
+                    print_wrn("[Plex] Playing '{0}'.".format(playlist_title))
                     for item in list(playlist.items()):
-                        if item.TYPE == 'track':
+                        if item.TYPE == "track":
                             track = item
-                            track_info = TrackInfo(track, track.artist(), \
+                            track_info = TrackInfo(track, track.artist(),
                                                    track.album())
-                            self.add_to_playback_queue(track_info)
+                            self._add_to_playback_queue(track_info)
                         if count == len(self.queue):
-                            print_wrn("[Plex] '{0}' No audio tracks found." \
-                                      .format(playlist_title))
+                            print_wrn(
+                                "[Plex] '{0}' No audio tracks found.".format(
+                                    playlist_title))
                             raise ValueError
 
             except (NotFound):
@@ -379,34 +411,37 @@ class tizplexproxy(object):
                     playlist_dict[pl.title] = pl
 
                 if len(playlist_titles) > 1:
-                    playlist_title = process.extractOne(arg, playlist_titles)[0]
+                    playlist_title = process.extractOne(arg,
+                                                        playlist_titles)[0]
                     playlist = playlist_dict[playlist_title]
                 elif len(playlist_titles) == 1:
                     playlist_title = playlist_titles[0]
                     playlist = playlist_dict[playlist_title]
 
                 if playlist:
-                    print_wrn("[Plex] '{0}' not found. " \
-                              "Playing '{1}' instead." \
-                              .format(arg, \
-                                      playlist_title))
+                    print_adv("[Plex] '{0}' not found. "
+                              "Playing '{1}' instead.".format(
+                                  arg, playlist_title))
                     for item in list(playlist.items()):
-                        if item.TYPE == 'track':
+                        if item.TYPE == "track":
                             track = item
-                            track_info = TrackInfo(track, track.artist(), \
+                            track_info = TrackInfo(track, track.artist(),
                                                    track.album())
-                            self.add_to_playback_queue(track_info)
+                            self._add_to_playback_queue(track_info)
                         if count == len(self.queue):
-                            print_wrn("[Plex] '{0}' No audio tracks found." \
-                                      .format(playlist_title))
+                            print_wrn(
+                                "[Plex] '{0}' No audio tracks found.".format(
+                                    playlist_title))
 
             if count == len(self.queue):
                 raise ValueError
 
-            self.__update_play_queue_order()
+            self._update_play_queue_order()
 
         except (ValueError, NotFound):
-            raise ValueError(str("Playlist not found or no audio tracks in playlist : %s" % arg))
+            raise ValueError(
+                str("Playlist not found or no audio tracks in playlist : %s" %
+                    arg))
 
     def current_audio_track_title(self):
         """ Retrieve the current track's title.
@@ -414,7 +449,7 @@ class tizplexproxy(object):
         """
         logging.info("current_audio_track_title")
         track = self.now_playing_track
-        title = ''
+        title = ""
         if track:
             title = to_ascii(track.title)
         return title
@@ -425,7 +460,7 @@ class tizplexproxy(object):
         """
         logging.info("current_audio_track_artist")
         track = self.now_playing_track
-        artist = ''
+        artist = ""
         if track:
             artist = to_ascii(track.artist)
         return artist
@@ -436,7 +471,7 @@ class tizplexproxy(object):
         """
         logging.info("current_audio_track_album")
         track = self.now_playing_track
-        album = ''
+        album = ""
         if track and track.album:
             album = to_ascii(track.album)
         return album
@@ -491,7 +526,7 @@ class tizplexproxy(object):
         """
         logging.info("current_audio_track_codec")
         track = self.now_playing_track
-        codec = ''
+        codec = ""
         if track:
             codec = to_ascii(track.codec)
         return codec
@@ -502,7 +537,7 @@ class tizplexproxy(object):
         """
         logging.info("current_audio_track_album_art")
         track = self.now_playing_track
-        album_art = ''
+        album_art = ""
         if track and track.thumb_url:
             album_art = to_ascii(track.thumb_url)
         return album_art
@@ -529,13 +564,13 @@ class tizplexproxy(object):
         logging.info("")
         if len(self.queue) and self.queue_index:
             track = self.queue[self.queue_index]
-            print_nfo("[Plex] [Track] '{0}' removed." \
-                      .format(to_ascii(track['i'].title)))
+            print_nfo("[Plex] [Track] '{0}' removed.".format(
+                to_ascii(track["i"].title)))
             del self.queue[self.queue_index]
             self.queue_index -= 1
             if self.queue_index < 0:
                 self.queue_index = 0
-            self.__update_play_queue_order()
+            self._update_play_queue_order()
 
     def next_url(self):
         """ Retrieve the url of the next track in the playback queue.
@@ -545,16 +580,16 @@ class tizplexproxy(object):
         try:
             if len(self.queue):
                 self.queue_index += 1
-                if (self.queue_index < len(self.queue)) \
-                   and (self.queue_index >= 0):
-                    next_track = self.queue[self.play_queue_order \
-                                            [self.queue_index]]
-                    return self.__retrieve_track_url(next_track)
+                if (self.queue_index < len(self.queue)) and (self.queue_index
+                                                             >= 0):
+                    next_track = self.queue[self.play_queue_order[
+                        self.queue_index]]
+                    return self._retrieve_track_url(next_track)
                 else:
                     self.queue_index = -1
                     return self.next_url()
             else:
-                return ''
+                return ""
         except (KeyError, AttributeError):
             # TODO: We don't remove this for now
             # del self.queue[self.queue_index]
@@ -569,23 +604,23 @@ class tizplexproxy(object):
         try:
             if len(self.queue):
                 self.queue_index -= 1
-                if (self.queue_index < len(self.queue)) \
-                   and (self.queue_index >= 0):
-                    prev_track = self.queue[self.play_queue_order \
-                                            [self.queue_index]]
-                    return self.__retrieve_track_url(prev_track)
+                if (self.queue_index < len(self.queue)) and (self.queue_index
+                                                             >= 0):
+                    prev_track = self.queue[self.play_queue_order[
+                        self.queue_index]]
+                    return self._retrieve_track_url(prev_track)
                 else:
                     self.queue_index = len(self.queue)
                     return self.prev_url()
             else:
-                return ''
+                return ""
         except (KeyError, AttributeError):
             # TODO: We don't remove this for now
             # del self.queue[self.queue_index]
             logging.info("exception")
             return self.prev_url()
 
-    def __update_play_queue_order(self):
+    def _update_play_queue_order(self):
         """ Update the queue playback order.
 
         A sequential order is applied if the current play mode is "NORMAL" or a
@@ -599,10 +634,9 @@ class tizplexproxy(object):
                 self.play_queue_order = list(range(total_tracks))
             if self.current_play_mode == self.play_modes.SHUFFLE:
                 random.shuffle(self.play_queue_order)
-            print_nfo("[Plex] [Tracks in queue] '{0}'." \
-                      .format(total_tracks))
+            print_nfo("[Plex] [Tracks in queue] '{0}'.".format(total_tracks))
 
-    def __retrieve_track_url(self, track):
+    def _retrieve_track_url(self, track):
         """ Retrieve a track url
 
         """
@@ -614,14 +648,14 @@ class tizplexproxy(object):
             logging.info("Could not retrieve the track url!")
             raise
 
-    def add_to_playback_queue(self, track):
+    def _add_to_playback_queue(self, track):
         """ Add to the playback queue. """
 
-        print_nfo("[Plex] [Track] '{0}' [{1}]." \
-                  .format(to_ascii(track.title), \
-                          to_ascii(track.codec)))
+        print_nfo("[Plex] [Track] '{0}' [{1}].".format(to_ascii(track.title),
+                                                       to_ascii(track.codec)))
         queue_index = len(self.queue)
         self.queue.append(track)
+
 
 if __name__ == "__main__":
     tizplexproxy()

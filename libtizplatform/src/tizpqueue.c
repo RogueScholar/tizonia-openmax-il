@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -46,9 +46,9 @@ _pq_dump_item (const char *ap_name, void    *ap_data,
                OMX_S32  a_priority, void    *ap_cur,
                void    *ap_prev, void *ap_next)
 {
-  TIZ_LOG (TIZ_PRIORITY_ERROR, "DUMP [%s]: ap_data[%p] a_priority[%d] "
-           "ap_cur[%p] ap_prev[%p] ap_next[%p]",
-           ap_name, ap_data, a_priority, ap_cur, ap_prev, ap_next);
+    TIZ_LOG (TIZ_PRIORITY_ERROR, "DUMP [%s]: ap_data[%p] a_priority[%d] "
+             "ap_cur[%p] ap_prev[%p] ap_next[%p]",
+             ap_name, ap_data, a_priority, ap_cur, ap_prev, ap_next);
 }
 #endif
 
@@ -193,8 +193,9 @@ tiz_pqueue_send (tiz_pqueue_t * p_q, void * ap_data, OMX_S32 a_priority)
   assert (a_priority >= 0);
   assert (a_priority <= p_q->max_prio);
 
-  if (NULL == (p_new = (tiz_pqueue_item_t *) pqueue_calloc (
-                 p_q->p_soa, sizeof (tiz_pqueue_item_t))))
+  if (NULL
+      == (p_new = (tiz_pqueue_item_t *) pqueue_calloc (
+            p_q->p_soa, sizeof (tiz_pqueue_item_t))))
     {
       rc = OMX_ErrorInsufficientResources;
     }
@@ -202,7 +203,7 @@ tiz_pqueue_send (tiz_pqueue_t * p_q, void * ap_data, OMX_S32 a_priority)
     {
       OMX_S32 next_prio = a_priority + 1;
       /* Find the next priority upwards. This will make next_prio equal to next
-       * prio up or max+1 if none */
+         * prio up or max+1 if none */
       while ((next_prio <= p_q->max_prio) && (NULL == p_q->pp_store[next_prio]))
         {
           next_prio++;
@@ -485,7 +486,7 @@ tiz_pqueue_remove_func (tiz_pqueue_t * p_q, tiz_pq_func_f a_pf_func,
             pqueue_free (p_q->p_soa, p_to_delete);
             p_q->length--;
             /* NOTE: We continue here to remove as many matching items as
-             * possible */
+                 * possible */
           }
         }
       else

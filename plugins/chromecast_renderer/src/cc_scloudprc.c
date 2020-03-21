@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -97,7 +97,7 @@ enqueue_gm_playlist_items (cc_scloud_prc_t * ap_prc)
 
     tiz_scloud_set_playback_mode (
       ap_prc->p_sc_, (shuffle == OMX_TRUE ? ETIZScloudPlaybackModeShuffle
-                                              : ETIZScloudPlaybackModeNormal));
+                                          : ETIZScloudPlaybackModeNormal));
 
     switch (ap_prc->sc_playlist_.ePlaylistType)
       {
@@ -238,7 +238,7 @@ cc_scloud_prc_get_current_stream_album_art_url (const void * p_obj)
   const char * p_avatar_url = NULL;
   assert (p_prc);
   assert (p_prc->p_sc_);
-#define SC_LOGO "http://tizonia.org/img/soundcloud-logo.png"
+#define SC_LOGO "https://tizonia.org/img/soundcloud-logo.png"
   p_avatar_url = tiz_scloud_get_current_track_user_avatar (p_prc->p_sc_);
   return (p_avatar_url ? p_avatar_url : SC_LOGO);
 }

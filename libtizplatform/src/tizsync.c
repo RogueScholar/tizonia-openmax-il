@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -144,7 +144,8 @@ tiz_sem_timedwait (tiz_sem_t * app_sem, OMX_U32 a_millis)
         }
       else
         {
-          TIZ_LOG (TIZ_PRIORITY_ERROR, "OMX_ErrorUndefined : %s", strerror (errno));
+          TIZ_LOG (TIZ_PRIORITY_ERROR, "OMX_ErrorUndefined : %s",
+                   strerror (errno));
           rc = OMX_ErrorUndefined;
         }
     }

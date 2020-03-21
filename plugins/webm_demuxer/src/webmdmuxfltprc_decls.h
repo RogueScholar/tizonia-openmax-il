@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -29,7 +29,8 @@
 #define WEBMDMUXFLTPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -43,44 +44,44 @@ extern "C" {
 
 #include "nestegg.h"
 
-typedef struct webmdmuxflt_prc webmdmuxflt_prc_t;
-struct webmdmuxflt_prc
-{
-  /* Object */
-  const tiz_filter_prc_t _;
-  tiz_buffer_t * p_webm_store_;
-  tiz_buffer_t * p_aud_store_;
-  tiz_buffer_t * p_vid_store_;
-  tiz_vector_t * p_aud_header_lengths_;
-  tiz_vector_t * p_vid_header_lengths_;
-  bool ne_inited_;
-  bool audio_metadata_delivered_;
-  bool video_metadata_delivered_;
-  bool audio_auto_detect_on_;
-  OMX_S32 audio_coding_type_;
-  bool video_auto_detect_on_;
-  OMX_S32 video_coding_type_;
-  nestegg * p_ne_;
-  nestegg_io ne_io_;
-  nestegg_audio_params ne_audio_params_;
-  nestegg_video_params ne_video_params_;
-  unsigned int ne_audio_track_;
-  unsigned int ne_video_track_;
-  uint64_t ne_duration_;
-  nestegg_packet * p_ne_pkt_;
-  unsigned int ne_chunk_;
-  int ne_read_err_;
-  int ne_last_read_len_;
-  int ne_failed_init_count_;
-};
+  typedef struct webmdmuxflt_prc webmdmuxflt_prc_t;
+  struct webmdmuxflt_prc
+  {
+    /* Object */
+    const tiz_filter_prc_t _;
+    tiz_buffer_t * p_webm_store_;
+    tiz_buffer_t * p_aud_store_;
+    tiz_buffer_t * p_vid_store_;
+    tiz_vector_t * p_aud_header_lengths_;
+    tiz_vector_t * p_vid_header_lengths_;
+    bool ne_inited_;
+    bool audio_metadata_delivered_;
+    bool video_metadata_delivered_;
+    bool audio_auto_detect_on_;
+    OMX_S32 audio_coding_type_;
+    bool video_auto_detect_on_;
+    OMX_S32 video_coding_type_;
+    nestegg * p_ne_;
+    nestegg_io ne_io_;
+    nestegg_audio_params ne_audio_params_;
+    nestegg_video_params ne_video_params_;
+    unsigned int ne_audio_track_;
+    unsigned int ne_video_track_;
+    uint64_t ne_duration_;
+    nestegg_packet * p_ne_pkt_;
+    unsigned int ne_chunk_;
+    int ne_read_err_;
+    int ne_last_read_len_;
+    int ne_failed_init_count_;
+  };
 
-typedef struct webmdmuxflt_prc_class webmdmuxflt_prc_class_t;
-struct webmdmuxflt_prc_class
-{
-  /* Class */
-  const tiz_filter_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct webmdmuxflt_prc_class webmdmuxflt_prc_class_t;
+  struct webmdmuxflt_prc_class
+  {
+    /* Class */
+    const tiz_filter_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

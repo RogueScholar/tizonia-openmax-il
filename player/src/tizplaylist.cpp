@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -32,9 +32,9 @@
 
 #include <algorithm>
 
-#include <boost/system/error_code.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/system/error_code.hpp>
 
 #include <tizplatform.h>
 
@@ -53,14 +53,15 @@ namespace  // unnamed namespace
     {
     }
 
-    void operator()(const boost::filesystem::directory_entry &p) const
+    void operator() (const boost::filesystem::directory_entry &p) const
     {
       uri_list_.push_back (p.path ().string ());
     }
     uri_lst_t &uri_list_;
   };
 
-  void add_to_extension_list (file_extension_lst_t &list, const std::string &extension)
+  void add_to_extension_list (file_extension_lst_t &list,
+                              const std::string &extension)
   {
     list.insert (list.end (), extension);
   }
@@ -199,22 +200,24 @@ bool tiz::playlist::assemble_play_list (
     }
 
     boost::system::error_code errcode;
-    std::string canonical_base_uri = boost::filesystem::canonical (base_uri,
-                                                                   errcode).string ();
+    std::string canonical_base_uri
+        = boost::filesystem::canonical (base_uri, errcode).string ();
     if (errcode.value () != 0)
     {
       error_msg.assign (errcode.message ());
       goto end;
     }
 
-    if (OMX_ErrorNone != process_base_uri (canonical_base_uri, uri_list, recurse))
+    if (OMX_ErrorNone
+        != process_base_uri (canonical_base_uri, uri_list, recurse))
     {
       error_msg.assign ("File not found.");
       goto end;
     }
 
-    if (OMX_ErrorNone != filter_unknown_media (extension_list, uri_list,
-                                               extension_list_filtered))
+    if (OMX_ErrorNone
+        != filter_unknown_media (extension_list, uri_list,
+                                 extension_list_filtered))
     {
       error_msg.assign ("No supported media types found.");
       goto end;
@@ -272,9 +275,10 @@ void tiz::playlist::skip (const int jump)
   }
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "jump [%d] new index [%d]... [%s]", jump,
-           current_index_, current_index_ < list_size && current_index_ >= 0
-                               ? uri_list_[current_index_].c_str ()
-                               : "");
+           current_index_,
+           current_index_ < list_size && current_index_ >= 0
+               ? uri_list_[current_index_].c_str ()
+               : "");
 }
 
 const std::string &tiz::playlist::get_current_uri () const
@@ -537,7 +541,7 @@ int tiz::playlist::find_next_sub_list (const int index) const
 
 void tiz::playlist::print_info ()
 {
-  TIZ_PRINTF_BLU ("Playlist length: %lu. File extensions in playlist: %s\n",
+  TIZ_PRINTF_C04 ("Playlist length: %lu. File extensions in playlist: %s",
                   (long)uri_list_.size (),
                   boost::algorithm::join (extension_list_, ", ").c_str ());
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,7 +30,8 @@
 #define OGGDMUXPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -38,40 +39,40 @@ extern "C" {
 
 #include <tizprc_decls.h>
 
-typedef struct oggdmux_prc oggdmux_prc_t;
-struct oggdmux_prc
-{
-  /* Object */
-  const tiz_prc_t _;
-  FILE * p_file_;
-  OMX_PARAM_CONTENTURITYPE * p_uri_;
-  OGGZ * p_oggz_;
-  OggzTable * p_tracks_;
-  OMX_BUFFERHEADERTYPE * p_aud_hdr_;
-  OMX_BUFFERHEADERTYPE * p_vid_hdr_;
-  OMX_U32 aud_buf_size_;
-  OMX_U32 vid_buf_size_;
-  bool awaiting_buffers_;
-  OMX_U8 * p_aud_store_;
-  OMX_U8 * p_vid_store_;
-  OMX_U32 aud_store_size_;
-  OMX_U32 vid_store_size_;
-  OMX_U32 aud_store_offset_;
-  OMX_U32 vid_store_offset_;
-  bool file_eos_;
-  bool aud_eos_;
-  bool vid_eos_;
-  bool aud_port_disabled_;
-  bool vid_port_disabled_;
-};
+  typedef struct oggdmux_prc oggdmux_prc_t;
+  struct oggdmux_prc
+  {
+    /* Object */
+    const tiz_prc_t _;
+    FILE * p_file_;
+    OMX_PARAM_CONTENTURITYPE * p_uri_;
+    OGGZ * p_oggz_;
+    OggzTable * p_tracks_;
+    OMX_BUFFERHEADERTYPE * p_aud_hdr_;
+    OMX_BUFFERHEADERTYPE * p_vid_hdr_;
+    OMX_U32 aud_buf_size_;
+    OMX_U32 vid_buf_size_;
+    bool awaiting_buffers_;
+    OMX_U8 * p_aud_store_;
+    OMX_U8 * p_vid_store_;
+    OMX_U32 aud_store_size_;
+    OMX_U32 vid_store_size_;
+    OMX_U32 aud_store_offset_;
+    OMX_U32 vid_store_offset_;
+    bool file_eos_;
+    bool aud_eos_;
+    bool vid_eos_;
+    bool aud_port_disabled_;
+    bool vid_port_disabled_;
+  };
 
-typedef struct oggdmux_prc_class oggdmux_prc_class_t;
-struct oggdmux_prc_class
-{
-  /* Class */
-  const tiz_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct oggdmux_prc_class oggdmux_prc_class_t;
+  struct oggdmux_prc_class
+  {
+    /* Class */
+    const tiz_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

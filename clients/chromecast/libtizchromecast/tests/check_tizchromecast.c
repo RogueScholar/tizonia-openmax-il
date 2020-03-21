@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -36,8 +36,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 #include "tizchromecast_c.h"
 
@@ -53,7 +53,7 @@
 #define CONTENT_TYPE "audio/mpeg"
 #define TITLE "Tizonia Audio Stream"
 
-void chromecast_new_media_status (void* ap_user_data)
+void chromecast_new_media_status (void *ap_user_data)
 {
   printf ("New media status!!!\n");
 }
@@ -61,7 +61,7 @@ void chromecast_new_media_status (void* ap_user_data)
 START_TEST (test_chromecast)
 {
   tiz_chromecast_t *p_chromecast = NULL;
-  pid_t pid = getpid();
+  pid_t pid = getpid ();
   int rc = tiz_chromecast_init (&p_chromecast, CHROMECAST_DEVICE_NAME,
                                 chromecast_new_media_status, NULL);
   int i = 0;
@@ -115,7 +115,8 @@ START_TEST (test_chromecast)
 
     for (i = 0; i < 2; ++i)
       {
-        fprintf (stderr, "\n\n\ntest_chromecast:volume_up [%d] = before \n", pid);
+        fprintf (stderr, "\n\n\ntest_chromecast:volume_up [%d] = before \n",
+                 pid);
         rc = tiz_chromecast_volume_up (p_chromecast);
         fprintf (stderr, "test_chromecast:volume_up [%d] = %d \n", pid, rc);
         ck_assert (0 == rc);
@@ -137,7 +138,8 @@ START_TEST (test_chromecast)
 
     for (i = 0; i < 2; ++i)
       {
-        fprintf (stderr, "\n\n\ntest_chromecast:volume_down [%d] = before \n", pid);
+        fprintf (stderr, "\n\n\ntest_chromecast:volume_down [%d] = before \n",
+                 pid);
         rc = tiz_chromecast_volume_down (p_chromecast);
         fprintf (stderr, "test_chromecast:volume_down [%d] = %d \n", pid, rc);
         ck_assert (0 == rc);

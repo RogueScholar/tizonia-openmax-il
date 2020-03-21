@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -31,8 +31,8 @@
 
 #include <string>
 
-#include "tizgraphtypes.hpp"
 #include "tizgraphconfig.hpp"
+#include "tizgraphtypes.hpp"
 
 namespace tiz
 {
@@ -43,26 +43,24 @@ namespace tiz
 
     public:
       spotifyconfig (const tizplaylist_ptr_t &playlist, const std::string &user,
-                     const std::string &pass,
-                     const std::string &proxy_server,
+                     const std::string &pass, const std::string &proxy_server,
                      const std::string &proxy_user,
                      const std::string &proxy_password,
                      const OMX_TIZONIA_AUDIO_SPOTIFYPLAYLISTTYPE playlist_type,
-                     const std::string &owner,
-                     const bool recover_lost_token,
+                     const std::string &owner, const bool recover_lost_token,
                      const bool allow_explicit_tracks,
                      const uint32_t preferred_bitrate)
-      : config (playlist, 0),
-        user_ (user),
-        pass_ (pass),
-        proxy_server_ (proxy_server),
-        proxy_user_ (proxy_user),
-        proxy_password_ (proxy_password),
-        playlist_type_ (playlist_type),
-        owner_ (owner),
-        recover_lost_token_ (recover_lost_token),
-        allow_explicit_tracks_ (allow_explicit_tracks),
-        preferred_bitrate_ (preferred_bitrate)
+        : config (playlist, 0),
+          user_ (user),
+          pass_ (pass),
+          proxy_server_ (proxy_server),
+          proxy_user_ (proxy_user),
+          proxy_password_ (proxy_password),
+          playlist_type_ (playlist_type),
+          owner_ (owner),
+          recover_lost_token_ (recover_lost_token),
+          allow_explicit_tracks_ (allow_explicit_tracks),
+          preferred_bitrate_ (preferred_bitrate)
       {
       }
 

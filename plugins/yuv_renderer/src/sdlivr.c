@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -78,7 +78,7 @@ instantiate_input_port (OMX_HANDLETYPE ap_hdl)
   };
 
   /* This figures are based on the defaults defined in the standard for the YUV
-   * Overlay Image/Video Renderer */
+     * Overlay Image/Video Renderer */
   portdef.pNativeRender = NULL;
   portdef.nFrameWidth = 176;
   portdef.nFrameHeight = 220;

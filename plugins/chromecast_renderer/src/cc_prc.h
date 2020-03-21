@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,37 +30,38 @@
 #define CC_PRC_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #define CC_INPUT_PORT_INDEX 0
 #define CC_OUTPUT_PORT_INDEX 1
 
-void *
-cc_prc_class_init (void * ap_tos, void * ap_hdl);
-void *
-cc_prc_init (void * ap_tos, void * ap_hdl);
+  void *
+  cc_prc_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  cc_prc_init (void * ap_tos, void * ap_hdl);
 
-const char *
-cc_prc_get_next_url (const void * p_obj);
+  const char *
+  cc_prc_get_next_url (const void * p_obj);
 
-const char *
-cc_prc_get_prev_url (const void * p_obj);
+  const char *
+  cc_prc_get_prev_url (const void * p_obj);
 
-const char *
-cc_prc_get_current_stream_album_art_url (const void * p_obj);
+  const char *
+  cc_prc_get_current_stream_album_art_url (const void * p_obj);
 
-OMX_ERRORTYPE
-cc_prc_store_stream_metadata (const void * p_obj);
+  OMX_ERRORTYPE
+  cc_prc_store_stream_metadata (const void * p_obj);
 
-OMX_ERRORTYPE
-cc_prc_store_stream_metadata_item (const void * p_obj,
-                                 const char * ap_header_name,
-                                 const char * ap_header_info);
+  OMX_ERRORTYPE
+  cc_prc_store_stream_metadata_item (const void * p_obj,
+                                     const char * ap_header_name,
+                                     const char * ap_header_info);
 
-OMX_ERRORTYPE
-cc_prc_store_display_title (const void * p_obj, const char * ap_artist,
-                            const char * ap_title);
+  OMX_ERRORTYPE
+  cc_prc_store_display_title (const void * p_obj, const char * ap_artist,
+                              const char * ap_title);
 
 #ifdef __cplusplus
 }

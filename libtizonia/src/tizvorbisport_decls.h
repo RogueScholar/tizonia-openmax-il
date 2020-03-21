@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,26 +30,27 @@
 #define TIZVORBISPORT_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "tizaudioport_decls.h"
 
-typedef struct tiz_vorbisport tiz_vorbisport_t;
-struct tiz_vorbisport
-{
-  /* Object */
-  const tiz_audioport_t _;
-  OMX_AUDIO_PARAM_VORBISTYPE vorbistype_;
-};
+  typedef struct tiz_vorbisport tiz_vorbisport_t;
+  struct tiz_vorbisport
+  {
+    /* Object */
+    const tiz_audioport_t _;
+    OMX_AUDIO_PARAM_VORBISTYPE vorbistype_;
+  };
 
-typedef struct tiz_vorbisport_class tiz_vorbisport_class_t;
-struct tiz_vorbisport_class
-{
-  /* Class */
-  const tiz_audioport_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct tiz_vorbisport_class tiz_vorbisport_class_t;
+  struct tiz_vorbisport_class
+  {
+    /* Class */
+    const tiz_audioport_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

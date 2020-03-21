@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -54,7 +54,7 @@ demuxer_cfgport_ctor (void * ap_obj, va_list * app)
     = super_ctor (typeOf (ap_obj, "tizdemuxercfgport"), ap_obj, app);
 
   /* In addition to the indexes registered by the parent class, register here
-     the demuxer-specific ones */
+       the demuxer-specific ones */
   tiz_check_omx_ret_null (
     tiz_port_register_index (p_obj, OMX_IndexConfigTimePosition)); /* r/w */
   tiz_check_omx_ret_null (
@@ -89,7 +89,7 @@ demuxer_cfgport_GetConfig (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       case OMX_IndexConfigTimeSeekMode:
         {
           /* Only the processor knows about current position or seek mode. So
-           lets get the processor to fill this info for us. */
+         lets get the processor to fill this info for us. */
           void * p_prc = tiz_get_prc (ap_hdl);
           assert (p_prc);
           if (OMX_ErrorNone
@@ -130,7 +130,7 @@ demuxer_cfgport_SetConfig (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       case OMX_IndexConfigTimeSeekMode:
         {
           /* Only the processor knows about current position or seek mode. So
-           lets get the processor update this info for us. */
+         lets get the processor update this info for us. */
           void * p_prc = tiz_get_prc (ap_hdl);
           assert (p_prc);
           if (OMX_ErrorNone

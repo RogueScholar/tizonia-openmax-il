@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -29,11 +29,11 @@
 #ifndef TIZGRAPHTYPES_HPP
 #define TIZGRAPHTYPES_HPP
 
-#include <set>
-#include <vector>
 #include <deque>
-#include <string>
 #include <map>
+#include <set>
+#include <string>
+#include <vector>
 
 #include <boost/shared_ptr.hpp>
 
@@ -62,13 +62,13 @@ namespace tiz
     class spotifyconfig;
     class gmusicconfig;
     class scloudconfig;
-//     class dirbleconfig;
+    class tuneinconfig;
     class youtubeconfig;
     class plexconfig;
     class chromecastconfig;
     struct omx_event_info;
-  }
-}
+  }  // namespace graph
+}  // namespace tiz
 typedef boost::shared_ptr< tiz::probe > tizprobe_ptr_t;
 typedef std::vector< tiz::graph::omx_event_info > omx_event_info_lst_t;
 typedef boost::shared_ptr< tiz::graph::graph > tizgraph_ptr_t;
@@ -78,10 +78,11 @@ typedef boost::shared_ptr< tiz::graph::httpservconfig > tizhttpservconfig_ptr_t;
 typedef boost::shared_ptr< tiz::graph::spotifyconfig > tizspotifyconfig_ptr_t;
 typedef boost::shared_ptr< tiz::graph::gmusicconfig > tizgmusicconfig_ptr_t;
 typedef boost::shared_ptr< tiz::graph::scloudconfig > tizscloudconfig_ptr_t;
-// typedef boost::shared_ptr< tiz::graph::dirbleconfig > tizdirbleconfig_ptr_t;
+typedef boost::shared_ptr< tiz::graph::tuneinconfig > tiztuneinconfig_ptr_t;
 typedef boost::shared_ptr< tiz::graph::youtubeconfig > tizyoutubeconfig_ptr_t;
 typedef boost::shared_ptr< tiz::graph::plexconfig > tizplexconfig_ptr_t;
-typedef boost::shared_ptr< tiz::graph::chromecastconfig > tizchromecastconfig_ptr_t;
+typedef boost::shared_ptr< tiz::graph::chromecastconfig >
+    tizchromecastconfig_ptr_t;
 typedef tiz::playlist tizplaylist_t;
 typedef boost::shared_ptr< tiz::playlist > tizplaylist_ptr_t;
 

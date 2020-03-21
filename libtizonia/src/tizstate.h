@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,7 +30,8 @@
 #define TIZSTATE_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "tizapi.h"
@@ -45,39 +46,41 @@ extern "C" {
 #include "tizpause.h"
 #include "tizpausetoidle.h"
 
-void *
-tiz_state_class_init (void * ap_tos, void * ap_hdl);
-void *
-tiz_state_init (void * ap_tos, void * ap_hdl);
+  void *
+  tiz_state_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  tiz_state_init (void * ap_tos, void * ap_hdl);
 
-OMX_ERRORTYPE
-tiz_state_state_set (const void * p_obj, OMX_HANDLETYPE ap_hdl,
-                     OMX_COMMANDTYPE a_cmd, OMX_U32 a_param1,
-                     OMX_PTR ap_cmd_data);
+  OMX_ERRORTYPE
+  tiz_state_state_set (const void * p_obj, OMX_HANDLETYPE ap_hdl,
+                       OMX_COMMANDTYPE a_cmd, OMX_U32 a_param1,
+                       OMX_PTR ap_cmd_data);
 
-OMX_ERRORTYPE
-tiz_state_flush (const void * p_obj, OMX_HANDLETYPE ap_hdl,
-                 OMX_COMMANDTYPE a_cmd, OMX_U32 a_param1, OMX_PTR ap_cmd_data);
-
-OMX_ERRORTYPE
-tiz_state_disable (const void * p_obj, OMX_HANDLETYPE ap_hdl,
+  OMX_ERRORTYPE
+  tiz_state_flush (const void * p_obj, OMX_HANDLETYPE ap_hdl,
                    OMX_COMMANDTYPE a_cmd, OMX_U32 a_param1,
                    OMX_PTR ap_cmd_data);
 
-OMX_ERRORTYPE
-tiz_state_enable (const void * p_obj, OMX_HANDLETYPE ap_hdl,
+  OMX_ERRORTYPE
+  tiz_state_disable (const void * p_obj, OMX_HANDLETYPE ap_hdl,
+                     OMX_COMMANDTYPE a_cmd, OMX_U32 a_param1,
+                     OMX_PTR ap_cmd_data);
+
+  OMX_ERRORTYPE
+  tiz_state_enable (const void * p_obj, OMX_HANDLETYPE ap_hdl,
+                    OMX_COMMANDTYPE a_cmd, OMX_U32 a_param1,
+                    OMX_PTR ap_cmd_data);
+
+  OMX_ERRORTYPE
+  tiz_state_mark (const void * p_obj, OMX_HANDLETYPE ap_hdl,
                   OMX_COMMANDTYPE a_cmd, OMX_U32 a_param1, OMX_PTR ap_cmd_data);
 
-OMX_ERRORTYPE
-tiz_state_mark (const void * p_obj, OMX_HANDLETYPE ap_hdl,
-                OMX_COMMANDTYPE a_cmd, OMX_U32 a_param1, OMX_PTR ap_cmd_data);
+  OMX_ERRORTYPE
+  tiz_state_trans_complete (const void * p_obj, OMX_PTR ap_servant,
+                            OMX_STATETYPE a_new_state);
 
-OMX_ERRORTYPE
-tiz_state_trans_complete (const void * p_obj, OMX_PTR ap_servant,
-                          OMX_STATETYPE a_new_state);
-
-OMX_ERRORTYPE
-tiz_state_tunneled_ports_status_update (void * ap_obj);
+  OMX_ERRORTYPE
+  tiz_state_tunneled_ports_status_update (void * ap_obj);
 
 #ifdef __cplusplus
 }

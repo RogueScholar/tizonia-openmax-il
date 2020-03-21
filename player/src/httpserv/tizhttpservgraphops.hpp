@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -60,8 +60,8 @@ namespace tiz
       OMX_ERRORTYPE configure_server ();
       OMX_ERRORTYPE configure_station ();
       OMX_ERRORTYPE configure_stream_metadata ();
-      OMX_ERRORTYPE switch_tunnel (const int tunnel_id,
-          const OMX_COMMANDTYPE to_disabled_or_enabled);
+      OMX_ERRORTYPE switch_tunnel (
+          const int tunnel_id, const OMX_COMMANDTYPE to_disabled_or_enabled);
 
     private:
       void get_mp3_codec_info (OMX_AUDIO_PARAM_MP3TYPE &mp3type);

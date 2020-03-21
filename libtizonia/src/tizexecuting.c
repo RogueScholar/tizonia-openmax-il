@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -75,10 +75,11 @@ executing_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
   p_krn = tiz_get_krn (ap_hdl);
 
   /* TODO: Optimization: find_managing_port is called twice, first time here,
-   * then in the SetParameter implementation of the kernel object. */
+     * then in the SetParameter implementation of the kernel object. */
 
-  if (OMX_ErrorNone != (ret_val = tiz_krn_find_managing_port (
-                          p_krn, a_index, a_struct, &p_port)))
+  if (OMX_ErrorNone
+      != (ret_val
+          = tiz_krn_find_managing_port (p_krn, a_index, a_struct, &p_port)))
     {
       TIZ_ERROR (ap_hdl,
                  "[%s] : "
@@ -213,8 +214,9 @@ executing_state_set (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
   if (ESubStateExecutingToIdle == new_state)
     {
       OMX_ERRORTYPE rc = OMX_ErrorNone;
-      if (OMX_ErrorNone != (rc = tiz_fsm_set_state (tiz_get_fsm (ap_hdl),
-                                                    new_state, EStateMax)))
+      if (OMX_ErrorNone
+          != (rc
+              = tiz_fsm_set_state (tiz_get_fsm (ap_hdl), new_state, EStateMax)))
         {
           return rc;
         }

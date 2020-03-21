@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -105,8 +105,9 @@ tiz_thread_create (tiz_thread_t * ap_thread, size_t a_stack_size,
               (void) pthread_attr_getschedparam (&custom_attr,
                                                  &priority_holder);
               priority_holder.sched_priority += a_priority;
-              if (PTHREAD_SUCCESS != (error = pthread_attr_setschedparam (
-                                        &custom_attr, &priority_holder)))
+              if (PTHREAD_SUCCESS
+                  != (error = pthread_attr_setschedparam (&custom_attr,
+                                                          &priority_holder)))
                 {
                   TIZ_LOG (TIZ_PRIORITY_ERROR,
                            "Could not set the thread "

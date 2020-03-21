@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,13 +30,14 @@
 #define TIZPCMPORT_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-void *
-tiz_pcmport_class_init (void * ap_tos, void * ap_hdl);
-void *
-tiz_pcmport_init (void * ap_tos, void * ap_hdl);
+  void *
+  tiz_pcmport_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  tiz_pcmport_init (void * ap_tos, void * ap_hdl);
 
 #ifdef __cplusplus
 }

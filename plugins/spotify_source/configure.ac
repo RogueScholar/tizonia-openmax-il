@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -16,7 +16,7 @@
 # along with Tizonia.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_PREREQ([2.67])
-AC_INIT([tizspotifysrc], [0.19.0], [juan.rubio@aratelia.com])
+AC_INIT([tizspotifysrc], [0.21.0], [juan.rubio@aratelia.com])
 AC_USE_SYSTEM_EXTENSIONS
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE([foreign color-tests silent-rules -Wall -Werror])
@@ -44,7 +44,7 @@ AC_CONFIG_MACRO_DIR([m4])
 #     then set AGE to 0.                                                       #
 #                                                                              #
 ################################################################################
-SHARED_VERSION_INFO="0:19:0"
+SHARED_VERSION_INFO="0:21:0"
 SHLIB_VERSION_ARG=""
 
 AC_SUBST(SHLIB_VERSION_ARG)

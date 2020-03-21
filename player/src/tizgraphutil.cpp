@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -92,7 +92,7 @@ namespace  // Unnamed namespace
     OMX_ERRORTYPE error_;
     bool transition_verified_;
   };
-}
+}  // namespace
 
 OMX_ERRORTYPE
 graph::util::verify_comp_list (const omx_comp_name_lst_t &comp_list)
@@ -653,7 +653,7 @@ graph::util::set_content_uri (const OMX_HANDLETYPE handle,
 OMX_ERRORTYPE
 graph::util::set_pcm_mode (
     const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-    boost::function< void(OMX_AUDIO_PARAM_PCMMODETYPE &pcmmode) > getter)
+    boost::function< void (OMX_AUDIO_PARAM_PCMMODETYPE &pcmmode) > getter)
 {
   // Set the pcm settings
   OMX_AUDIO_PARAM_PCMMODETYPE pcmtype;
@@ -666,7 +666,7 @@ graph::util::set_pcm_mode (
 OMX_ERRORTYPE
 graph::util::set_mp3_type (
     const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-    boost::function< void(OMX_AUDIO_PARAM_MP3TYPE &mp3type) > getter,
+    boost::function< void (OMX_AUDIO_PARAM_MP3TYPE &mp3type) > getter,
     bool &need_port_settings_changed_evt)
 {
   // Retrieve the current mp3 settings
@@ -695,7 +695,7 @@ graph::util::set_mp3_type (
 OMX_ERRORTYPE
 graph::util::set_aac_type (
     const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-    boost::function< void(OMX_AUDIO_PARAM_AACPROFILETYPE &aactype) > getter,
+    boost::function< void (OMX_AUDIO_PARAM_AACPROFILETYPE &aactype) > getter,
     bool &need_port_settings_changed_evt)
 {
   // Retrieve the current aac settings
@@ -724,7 +724,7 @@ graph::util::set_aac_type (
 OMX_ERRORTYPE
 graph::util::set_flac_type (
     const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-    boost::function< void(OMX_TIZONIA_AUDIO_PARAM_FLACTYPE &flactype) > getter,
+    boost::function< void (OMX_TIZONIA_AUDIO_PARAM_FLACTYPE &flactype) > getter,
     bool &need_port_settings_changed_evt)
 {
   // Retrieve the current flac settings
@@ -862,47 +862,65 @@ graph::util::set_scloud_playlist (
                            &playlisttype);
 }
 
-// OMX_ERRORTYPE
-// graph::util::set_dirble_api_key (const OMX_HANDLETYPE handle,
-//                                  const std::string &api_key)
-// {
-//   // Set the Dirble user and pass
-//   OMX_TIZONIA_AUDIO_PARAM_DIRBLESESSIONTYPE sessiontype;
-//   TIZ_INIT_OMX_STRUCT (sessiontype);
-//   tiz_check_omx (OMX_GetParameter (
-//       handle,
-//       static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioDirbleSession),
-//       &sessiontype));
-//   tiz::graph::util::copy_omx_string (sessiontype.cApiKey, api_key);
-//   return OMX_SetParameter (
-//       handle,
-//       static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioDirbleSession),
-//       &sessiontype);
-// }
+OMX_ERRORTYPE
+graph::util::set_tunein_playlist (
+    const OMX_HANDLETYPE handle, const uri_lst_t &search_keywords,
+    const OMX_TIZONIA_AUDIO_TUNEINPLAYLISTTYPE playlist_type,
+    const OMX_TIZONIA_AUDIO_TUNEINSEARCHTYPE search_type, const bool shuffle)
+{
+  // Set the Tunein playlist
+  OMX_TIZONIA_AUDIO_PARAM_TUNEINPLAYLISTTYPE playlisttype;
+  TIZ_INIT_OMX_STRUCT (playlisttype);
+  tiz_check_omx (OMX_GetParameter (
+      handle,
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioTuneinPlaylist),
+      &playlisttype));
+  assert (search_keywords.size () > 0);
+  tiz::graph::util::copy_omx_string (playlisttype.cPlaylistName,
+                                     search_keywords[0]);
+  if (search_keywords.size () > 1)
+  {
+    tiz::graph::util::copy_omx_string (playlisttype.cAdditionalKeywords1,
+                                       search_keywords[1]);
+  }
+  if (search_keywords.size () > 2)
+  {
+    tiz::graph::util::copy_omx_string (playlisttype.cAdditionalKeywords2,
+                                       search_keywords[2]);
+  }
+  if (search_keywords.size () > 3)
+  {
+    tiz::graph::util::copy_omx_string (playlisttype.cAdditionalKeywords3,
+                                       search_keywords[3]);
+  }
 
-// OMX_ERRORTYPE
-// graph::util::set_dirble_playlist (
-//     const OMX_HANDLETYPE handle, const std::string &playlist,
-//     const OMX_TIZONIA_AUDIO_DIRBLEPLAYLISTTYPE playlist_type,
-//     const bool shuffle)
-// {
-//   // Set the Dirble playlist
-//   OMX_TIZONIA_AUDIO_PARAM_DIRBLEPLAYLISTTYPE playlisttype;
-//   TIZ_INIT_OMX_STRUCT (playlisttype);
-//   tiz_check_omx (OMX_GetParameter (
-//       handle,
-//       static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioDirblePlaylist),
-//       &playlisttype));
-//   tiz::graph::util::copy_omx_string (playlisttype.cPlaylistName, playlist);
+  playlisttype.ePlaylistType = playlist_type;
+  playlisttype.eSearchType = search_type;
+  playlisttype.bShuffle = shuffle ? OMX_TRUE : OMX_FALSE;
 
-//   playlisttype.ePlaylistType = playlist_type;
-//   playlisttype.bShuffle = shuffle ? OMX_TRUE : OMX_FALSE;
+  return OMX_SetParameter (
+      handle,
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioTuneinPlaylist),
+      &playlisttype);
+}
 
-//   return OMX_SetParameter (
-//       handle,
-//       static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioDirblePlaylist),
-//       &playlisttype);
-// }
+OMX_ERRORTYPE
+graph::util::set_youtube_session (const OMX_HANDLETYPE handle,
+                                  const std::string &api_key)
+{
+  // Set the Youtube user api key
+  OMX_TIZONIA_AUDIO_PARAM_YOUTUBESESSIONTYPE sessiontype;
+  TIZ_INIT_OMX_STRUCT (sessiontype);
+  tiz_check_omx (OMX_GetParameter (
+      handle,
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioYoutubeSession),
+      &sessiontype));
+  tiz::graph::util::copy_omx_string (sessiontype.cApiKey, api_key);
+  return OMX_SetParameter (
+      handle,
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioYoutubeSession),
+      &sessiontype);
+}
 
 OMX_ERRORTYPE
 graph::util::set_youtube_playlist (
@@ -1044,7 +1062,7 @@ void graph::util::dump_graph_info (const char *ap_coding_type_str,
                                    const char *ap_graph_type_str,
                                    const std::string &uri)
 {
-  TIZ_PRINTF_GRN ("[%s] [%s] : '%s'.\n", ap_coding_type_str, ap_graph_type_str,
+  TIZ_PRINTF_C02 ("[%s] [%s] : '%s'.", ap_coding_type_str, ap_graph_type_str,
                   uri.c_str ());
 }
 
@@ -1083,6 +1101,18 @@ std::string graph::util::get_default_pcm_renderer ()
     renderer_name.assign (p_renderer_name);
   }
   return renderer_name;
+}
+
+OMX_ERRORTYPE
+graph::util::get_volume_from_audio_port (const OMX_HANDLETYPE handle,
+                                         const OMX_U32 pid, int &vol)
+{
+  OMX_ERRORTYPE rc = OMX_ErrorNone;
+  OMX_AUDIO_CONFIG_VOLUMETYPE volume;
+  TIZ_INIT_OMX_PORT_STRUCT (volume, pid);
+  tiz_check_omx (OMX_GetConfig (handle, OMX_IndexConfigAudioVolume, &volume));
+  vol = volume.sVolume.nValue;
+  return rc;
 }
 
 bool graph::util::is_mpris_enabled ()

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -214,7 +214,7 @@ imageport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
               if (OMX_COLOR_FormatUnused == p_image_format->eColorFormat)
                 {
                   /* Both Compression Format and Color can not be Unused at the
-                 * same time. */
+                * same time. */
                   return OMX_ErrorBadParameter;
                 }
 

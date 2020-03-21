@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -49,13 +50,15 @@ static void youtube_free_data (tiz_youtube_t *ap_youtube)
     }
 }
 
-static int youtube_alloc_data (tiz_youtube_t *ap_youtube)
+static int youtube_alloc_data (tiz_youtube_t *ap_youtube,
+                               const char *ap_api_key)
 {
   int rc = 0;
   assert (ap_youtube);
   try
     {
-      ap_youtube->p_proxy_ = new tizyoutube ();
+      ap_youtube->p_proxy_
+          = new tizyoutube (ap_api_key ? ap_api_key : std::string (""));
     }
   catch (...)
     {
@@ -65,7 +68,8 @@ static int youtube_alloc_data (tiz_youtube_t *ap_youtube)
   return rc;
 }
 
-extern "C" int tiz_youtube_init (tiz_youtube_ptr_t *app_youtube)
+extern "C" int tiz_youtube_init (tiz_youtube_ptr_t *app_youtube,
+                                 const char *ap_api_key)
 {
   tiz_youtube_t *p_youtube = NULL;
   int rc = 1;
@@ -74,7 +78,7 @@ extern "C" int tiz_youtube_init (tiz_youtube_ptr_t *app_youtube)
 
   if ((p_youtube = (tiz_youtube_t *)calloc (1, sizeof (tiz_youtube_t))))
     {
-      if (!youtube_alloc_data (p_youtube))
+      if (!youtube_alloc_data (p_youtube, ap_api_key))
         {
           tizyoutube *p_yt = p_youtube->p_proxy_;
           assert (p_yt);
@@ -121,7 +125,8 @@ extern "C" const char *tiz_youtube_get_current_queue_length (
   return ap_youtube->p_proxy_->get_current_queue_length ();
 }
 
-extern "C" const char *tiz_youtube_get_current_queue_progress (tiz_youtube_t *ap_youtube)
+extern "C" const char *tiz_youtube_get_current_queue_progress (
+    tiz_youtube_t *ap_youtube)
 {
   assert (ap_youtube);
   assert (ap_youtube->p_proxy_);
@@ -177,20 +182,21 @@ extern "C" int tiz_youtube_play_audio_mix_search (tiz_youtube_t *ap_youtube,
   return ap_youtube->p_proxy_->play_audio_mix_search (ap_search);
 }
 
-extern "C" int tiz_youtube_play_audio_channel_uploads (tiz_youtube_t *ap_youtube,
-                                                  const char *ap_channel)
+extern "C" int tiz_youtube_play_audio_channel_uploads (
+    tiz_youtube_t *ap_youtube, const char *ap_channel)
 {
   assert (ap_youtube);
   assert (ap_youtube->p_proxy_);
   return ap_youtube->p_proxy_->play_audio_channel_uploads (ap_channel);
 }
 
-extern "C" int tiz_youtube_play_audio_channel_playlist (tiz_youtube_t *ap_youtube,
-                                                  const char *ap_channel_and_playlist)
+extern "C" int tiz_youtube_play_audio_channel_playlist (
+    tiz_youtube_t *ap_youtube, const char *ap_channel_and_playlist)
 {
   assert (ap_youtube);
   assert (ap_youtube->p_proxy_);
-  return ap_youtube->p_proxy_->play_audio_channel_playlist (ap_channel_and_playlist);
+  return ap_youtube->p_proxy_->play_audio_channel_playlist (
+      ap_channel_and_playlist);
 }
 
 extern "C" const char *tiz_youtube_get_next_url (

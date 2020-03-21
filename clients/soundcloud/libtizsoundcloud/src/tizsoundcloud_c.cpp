@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -29,8 +30,8 @@
 #include <config.h>
 #endif
 
-#include <stdlib.h>
 #include <assert.h>
+#include <stdlib.h>
 
 #include "tizsoundcloud.hpp"
 #include "tizsoundcloud_c.h"
@@ -75,7 +76,7 @@ extern "C" int tiz_scloud_init (tiz_scloud_ptr_t *app_scloud,
   assert (app_scloud);
   assert (ap_oauth_token);
 
-  if ((p_scloud = (tiz_scloud_t *)calloc (1, sizeof(tiz_scloud_t))))
+  if ((p_scloud = (tiz_scloud_t *)calloc (1, sizeof (tiz_scloud_t))))
     {
       if (!soundcloud_alloc_data (p_scloud, ap_oauth_token))
         {
@@ -107,7 +108,7 @@ extern "C" void tiz_scloud_set_playback_mode (
   assert (ap_scloud);
   assert (ap_scloud->p_proxy_);
   return ap_scloud->p_proxy_->set_playback_mode (
-      static_cast< tizsoundcloud::playback_mode >(mode));
+      static_cast< tizsoundcloud::playback_mode > (mode));
 }
 
 extern "C" int tiz_scloud_play_user_stream (tiz_scloud_t *ap_scloud)
@@ -157,7 +158,7 @@ extern "C" int tiz_scloud_play_playlists (tiz_scloud_t *ap_scloud,
 }
 
 extern "C" int tiz_scloud_play_genres (tiz_scloud_t *ap_scloud,
-                                        const char *ap_genres)
+                                       const char *ap_genres)
 {
   assert (ap_scloud);
   assert (ap_scloud->p_proxy_);
@@ -165,7 +166,7 @@ extern "C" int tiz_scloud_play_genres (tiz_scloud_t *ap_scloud,
 }
 
 extern "C" int tiz_scloud_play_tags (tiz_scloud_t *ap_scloud,
-                                        const char *ap_tags)
+                                     const char *ap_tags)
 {
   assert (ap_scloud);
   assert (ap_scloud->p_proxy_);

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -51,7 +51,7 @@ namespace
       const std::map< std::string, std::string > &meta)
   {
     std::map< std::string, Tiz::DBus::Variant > dbus_meta;
-    TIZ_PRINTF_DBG_BLU ("meta items [%u]\n", meta.size());
+    TIZ_PRINTF_DBG_BLU ("meta items [%u]\n", meta.size ());
     typedef std::map< std::string, std::string >::value_type dbus_meta_t;
     BOOST_FOREACH (dbus_meta_t val, meta)
     {
@@ -68,7 +68,7 @@ namespace
     }
     return dbus_meta;
   }
-}
+}  // namespace
 
 // Object path, a.k.a. node
 const char *control::mprisif::TIZONIA_MPRIS_OBJECT_PATH

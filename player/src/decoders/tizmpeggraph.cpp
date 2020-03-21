@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -32,15 +32,15 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <tizplatform.h>
 
-#include "tizgraphutil.hpp"
-#include "tizgraphconfig.hpp"
 #include "tizgraphcmd.hpp"
-#include "tizprobe.hpp"
+#include "tizgraphconfig.hpp"
+#include "tizgraphutil.hpp"
 #include "tizmpeggraph.hpp"
+#include "tizprobe.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -52,8 +52,7 @@ namespace graph = tiz::graph;
 //
 // mpegdecoder
 //
-graph::mpegdecoder::mpegdecoder ()
-  : tiz::graph::decoder ("mpegdecgraph")
+graph::mpegdecoder::mpegdecoder () : tiz::graph::decoder ("mpegdecgraph")
 {
 }
 
@@ -76,8 +75,8 @@ graph::ops *graph::mpegdecoder::do_init ()
 // mpegdecops
 //
 graph::mpegdecops::mpegdecops (graph *p_graph,
-                             const omx_comp_name_lst_t &comp_lst,
-                             const omx_comp_role_lst_t &role_lst)
+                               const omx_comp_name_lst_t &comp_lst,
+                               const omx_comp_role_lst_t &role_lst)
   : tiz::graph::decops (p_graph, comp_lst, role_lst),
     need_port_settings_changed_evt_ (false)
 {

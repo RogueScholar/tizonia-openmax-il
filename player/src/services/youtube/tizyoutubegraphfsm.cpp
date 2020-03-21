@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -31,8 +31,8 @@
 
 #include "tizyoutubegraphfsm.hpp"
 
-char const* const tiz::graph::youtubefsm::pstate(tiz::graph::youtubefsm::fsm const& p)
+char const* const tiz::graph::youtubefsm::pstate (
+    tiz::graph::youtubefsm::fsm const& p)
 {
-  return tiz::graph::youtubefsm::state_names[p.current_state()[0]];
+  return tiz::graph::youtubefsm::state_names[p.current_state ()[0]];
 }
-

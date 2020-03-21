@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -29,14 +30,13 @@
 #include <config.h>
 #endif
 
-
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/join.hpp>
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/trim_all.hpp>
+#include <boost/lexical_cast.hpp>
 #include <iostream>
 #include <vector>
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string/split.hpp>
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/trim_all.hpp>
-#include <boost/algorithm/string/join.hpp>
 
 #include "tizyoutube.hpp"
 
@@ -100,8 +100,15 @@ namespace
             "if not spec:\n raise ValueError\n",
             py_global);
 
-        // Check the existence of the 'fuzzywuzzy' module
+        // Check the existence of the 'joblib' module
         bp::object ignored3 = exec (
+            "import importlib\n"
+            "spec = importlib.util.find_spec('joblib')\n"
+            "if not spec:\n raise ValueError\n",
+            py_global);
+
+        // Check the existence of the 'fuzzywuzzy' module
+        bp::object ignored4 = exec (
             "import importlib\n"
             "spec = importlib.util.find_spec('fuzzywuzzy')\n"
             "if not spec:\n raise ValueError\n",
@@ -134,15 +141,17 @@ namespace
   }
 
   void start_youtube (boost::python::object &py_global,
-                      boost::python::object &py_yt_proxy)
+                      boost::python::object &py_yt_proxy,
+                      const std::string &api_key)
   {
     bp::object pyyoutubeproxy = py_global["tizyoutubeproxy"];
-    py_yt_proxy = pyyoutubeproxy ();
+    py_yt_proxy = pyyoutubeproxy (api_key.c_str ());
   }
-}
+}  // namespace
 
-tizyoutube::tizyoutube ()
-  : current_url_ (),
+tizyoutube::tizyoutube (const std::string &api_key)
+  : api_key_ (api_key),
+    current_url_ (),
     current_stream_index_ (),
     current_queue_length_ (),
     current_stream_title_ (),
@@ -176,7 +185,7 @@ int tizyoutube::init ()
 int tizyoutube::start ()
 {
   int rc = 0;
-  try_catch_wrapper (start_youtube (py_global_, py_yt_proxy_));
+  try_catch_wrapper (start_youtube (py_global_, py_yt_proxy_, api_key_));
   return rc;
 }
 
@@ -235,8 +244,8 @@ int tizyoutube::play_audio_mix_search (const std::string &search)
 int tizyoutube::play_audio_channel_uploads (const std::string &channel)
 {
   int rc = 0;
-  try_catch_wrapper (
-      py_yt_proxy_.attr ("enqueue_audio_channel_uploads") (bp::object (channel)));
+  try_catch_wrapper (py_yt_proxy_.attr ("enqueue_audio_channel_uploads") (
+      bp::object (channel)));
   return rc;
 }
 
@@ -272,7 +281,8 @@ const char *tizyoutube::get_next_url (const bool a_remove_current_url)
         {
           py_yt_proxy_.attr ("remove_current_url") ();
         }
-      current_url_ = bp::extract< std::string > (py_yt_proxy_.attr ("next_url") ());
+      current_url_
+          = bp::extract< std::string > (py_yt_proxy_.attr ("next_url") ());
       get_current_stream ();
     }
   catch (bp::error_already_set &e)
@@ -294,7 +304,8 @@ const char *tizyoutube::get_prev_url (const bool a_remove_current_url)
         {
           py_yt_proxy_.attr ("remove_current_url") ();
         }
-      current_url_ = bp::extract< std::string > (py_yt_proxy_.attr ("prev_url") ());
+      current_url_
+          = bp::extract< std::string > (py_yt_proxy_.attr ("prev_url") ());
       get_current_stream ();
     }
   catch (bp::error_already_set &e)
@@ -458,12 +469,12 @@ void tizyoutube::get_current_stream ()
 
   std::string duration = bp::extract< std::string > (
       py_yt_proxy_.attr ("current_audio_stream_duration") ());
-  if (duration.length())
+  if (duration.length ())
     {
       std::string value = duration;
       std::vector< std::string > strs;
       boost::split (strs, value, boost::is_any_of (":"));
-      std::reverse(strs.begin(), strs.end());
+      std::reverse (strs.begin (), strs.end ());
       size_t num_non_empty = 0;
       for (size_t i = 0; i < strs.size (); ++i)
         {
@@ -493,7 +504,7 @@ void tizyoutube::get_current_stream ()
 
       for (size_t i = 0; i < num_non_empty; ++i)
         {
-          current_stream_duration_ =  strs[i] + current_stream_duration_;
+          current_stream_duration_ = strs[i] + current_stream_duration_;
           if ((num_non_empty - 1) != i)
             {
               current_stream_duration_ = ":" + current_stream_duration_;
@@ -511,7 +522,7 @@ void tizyoutube::get_current_stream ()
 
   std::string description = bp::extract< std::string > (
       py_yt_proxy_.attr ("current_audio_stream_description") ());
-  if (description.length())
+  if (description.length ())
     {
       current_stream_description_ = description;
       current_stream_description_.erase (
@@ -532,5 +543,4 @@ void tizyoutube::get_current_stream ()
 
   current_stream_published_ = bp::extract< std::string > (
       py_yt_proxy_.attr ("current_audio_stream_published") ());
-
 }

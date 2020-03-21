@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -32,16 +32,16 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <OMX_TizoniaExt.h>
 #include <tizplatform.h>
 
-#include "tizgraphutil.hpp"
-#include "tizgraphconfig.hpp"
 #include "tizgraphcmd.hpp"
-#include "tizprobe.hpp"
+#include "tizgraphconfig.hpp"
+#include "tizgraphutil.hpp"
 #include "tizopusgraph.hpp"
+#include "tizprobe.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -53,8 +53,7 @@ namespace graph = tiz::graph;
 //
 // opusdecoder
 //
-graph::opusdecoder::opusdecoder ()
-  : tiz::graph::decoder ("opusdecgraph")
+graph::opusdecoder::opusdecoder () : tiz::graph::decoder ("opusdecgraph")
 {
 }
 
@@ -84,7 +83,8 @@ graph::opusdecops::opusdecops (graph *p_graph,
 {
 }
 
-void graph::opusdecops::do_disable_comp_ports (const int comp_id, const int port_id)
+void graph::opusdecops::do_disable_comp_ports (const int comp_id,
+                                               const int port_id)
 {
   OMX_U32 demuxers_video_port = 1;
   G_OPS_BAIL_IF_ERROR (util::disable_port (handles_[0], demuxers_video_port),
@@ -134,7 +134,8 @@ graph::opusdecops::set_opus_settings ()
   TIZ_INIT_OMX_PORT_STRUCT (opustype_orig, 0 /* port id */);
 
   tiz_check_omx (OMX_GetParameter (
-      handles_[1], static_cast< OMX_INDEXTYPE >(OMX_TizoniaIndexParamAudioOpus),
+      handles_[1],
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioOpus),
       &opustype_orig));
 
   // Set the opus settings on decoder's port #0
@@ -144,7 +145,8 @@ graph::opusdecops::set_opus_settings ()
   probe_ptr_->get_opus_codec_info (opustype);
   opustype.nPortIndex = 0;
   tiz_check_omx (OMX_SetParameter (
-      handles_[1], static_cast< OMX_INDEXTYPE >(OMX_TizoniaIndexParamAudioOpus),
+      handles_[1],
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioOpus),
       &opustype));
 
   // Record whether we need to wait for a port settings change event or not

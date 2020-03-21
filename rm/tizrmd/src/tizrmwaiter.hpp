@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -78,12 +78,12 @@ public:
     return pri_;
   }
 
-  bool operator==(const tizrmwaiter &rhs) const
+  bool operator== (const tizrmwaiter &rhs) const
   {
     return ((uuid_ == rhs.uuid_) && (rid_ == rhs.rid_));
   }
 
-  bool operator<(const tizrmwaiter &rhs) const
+  bool operator< (const tizrmwaiter &rhs) const
   {
     if (rid_ < rhs.rid_)
     {
@@ -120,7 +120,7 @@ public:
   {
   }
 
-  bool operator()(const tizrmwaiter &waiter)
+  bool operator() (const tizrmwaiter &waiter)
   {
     return (uuid_ == waiter.uuid ());
   }

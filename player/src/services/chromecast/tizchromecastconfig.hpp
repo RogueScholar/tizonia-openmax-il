@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -44,15 +44,15 @@ namespace tiz
     {
     public:
       enum service_config_type_t
-        {
-         ConfigHttpStreaming,
-         ConfigGoogleMusic,
-         ConfigSoundCloud,
-//          ConfigDirble,
-         ConfigYouTube,
-         ConfigPlex,
-         ConfigUnknown
-        };
+      {
+        ConfigHttpStreaming,
+        ConfigGoogleMusic,
+        ConfigSoundCloud,
+        ConfigTunein,
+        ConfigYouTube,
+        ConfigPlex,
+        ConfigUnknown
+      };
 
     public:
       chromecastconfig (const std::string &cc_name_or_ip,
@@ -61,7 +61,7 @@ namespace tiz
         : config (service_config->get_playlist (), 0),
           name_or_ip_ (cc_name_or_ip),
           service_config_ (service_config),
-          service_config_type_(service_config_type)
+          service_config_type_ (service_config_type)
       {
       }
 

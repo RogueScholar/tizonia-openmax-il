@@ -1,5 +1,5 @@
 /**
-  * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+  * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
   *
   * This file is part of Tizonia
   *
@@ -292,8 +292,8 @@ send_port_settings_change_event (spfysrc_prc_t * ap_prc)
   tiz_srv_issue_event ((OMX_PTR) ap_prc, OMX_EventPortSettingsChanged,
                        ARATELIA_SPOTIFY_SOURCE_PORT_INDEX, /* port 0 */
                        OMX_IndexParamPortDefinition, /* the index of the */
-                                                     /* struct that has */
-                                                     /* been modififed  */
+                       /* struct that has */
+                       /* been modififed  */
                        NULL);
 }
 
@@ -382,17 +382,19 @@ store_metadata_track_name (spfysrc_prc_t * ap_prc, const char * a_track_name)
 {
   char name_str[SPFYSRC_MAX_STRING_SIZE];
   assert (a_track_name);
-  const char * p_explicitness = tiz_spotify_get_current_track_explicitness (ap_prc->p_spfy_web_);
+  const char * p_explicitness
+    = tiz_spotify_get_current_track_explicitness (ap_prc->p_spfy_web_);
   if (p_explicitness)
     {
-      snprintf (name_str, SPFYSRC_MAX_STRING_SIZE - 1, "%s  [%s]  [%s]  (%s)", a_track_name,
-                p_explicitness,
+      snprintf (name_str, SPFYSRC_MAX_STRING_SIZE - 1, "%s  [%s]  [%s]  (%s)",
+                a_track_name, p_explicitness,
                 tiz_spotify_get_current_track_uri (ap_prc->p_spfy_web_),
                 tiz_spotify_get_current_queue_progress (ap_prc->p_spfy_web_));
     }
   else
     {
-      snprintf (name_str, SPFYSRC_MAX_STRING_SIZE - 1, "%s  [%s]  (%s)", a_track_name,
+      snprintf (name_str, SPFYSRC_MAX_STRING_SIZE - 1, "%s  [%s]  (%s)",
+                a_track_name,
                 tiz_spotify_get_current_track_uri (ap_prc->p_spfy_web_),
                 tiz_spotify_get_current_queue_progress (ap_prc->p_spfy_web_));
     }
@@ -416,7 +418,8 @@ store_metadata_album (spfysrc_prc_t * ap_prc, const char * a_album_name)
   assert (a_album_name);
   if (tiz_spotify_get_current_track_album_uri (ap_prc->p_spfy_web_))
     {
-      snprintf (album_str, SPFYSRC_MAX_STRING_SIZE - 1, "%s  [%s]", a_album_name,
+      snprintf (album_str, SPFYSRC_MAX_STRING_SIZE - 1, "%s  [%s]",
+                a_album_name,
                 tiz_spotify_get_current_track_album_uri (ap_prc->p_spfy_web_));
     }
   else
@@ -480,8 +483,10 @@ store_relevant_track_metadata (spfysrc_prc_t * ap_prc)
   assert (ap_prc);
   (void) tiz_krn_clear_metadata (tiz_get_krn (handleOf (ap_prc)));
   store_metadata_track_name (ap_prc, sp_track_name (ap_prc->p_sp_track_));
-  store_metadata_artist (ap_prc, sp_artist_name (sp_track_artist (ap_prc->p_sp_track_, 0)));
-  store_metadata_album (ap_prc, sp_album_name (sp_track_album (ap_prc->p_sp_track_)));
+  store_metadata_artist (
+    ap_prc, sp_artist_name (sp_track_artist (ap_prc->p_sp_track_, 0)));
+  store_metadata_album (ap_prc,
+                        sp_album_name (sp_track_album (ap_prc->p_sp_track_)));
   (void) store_metadata (
     ap_prc, "Release Date",
     tiz_spotify_get_current_track_release_date (ap_prc->p_spfy_web_));
@@ -929,7 +934,7 @@ start_playback (spfysrc_prc_t * ap_prc)
             {
               const int ntracks = tiz_spotify_get_current_queue_length_as_int (
                 ap_prc->p_spfy_web_);
-              TIZ_PRINTF_YEL ("[Spotify] [WARN ] '%s' : track not available.\n",
+              TIZ_PRINTF_C03 ("[Spotify] [WARN ] '%s' : track not available.",
                               sp_track_name (ap_prc->p_sp_track_));
               if (ntracks > 1)
                 {
@@ -940,7 +945,8 @@ start_playback (spfysrc_prc_t * ap_prc)
                 }
               else
                 {
-                  TIZ_PRINTF_RED ("[Spotify] [FATAL] 'The playback queue is empty.'\n");
+                  TIZ_PRINTF_C01 (
+                    "[Spotify] [FATAL] 'The playback queue is empty.'");
                   (void) tiz_srv_issue_err_event (
                     (OMX_PTR) ap_prc, OMX_ErrorInsufficientResources);
                 }
@@ -961,43 +967,48 @@ login_failure_handler (OMX_PTR ap_prc, tiz_event_pluggable_t * ap_event)
       spfy_login_failure_data_t * p_data = ap_event->p_data;
       switch (p_data->login_error)
         {
-        case SP_ERROR_CLIENT_TOO_OLD:
-          {
-            TIZ_PRINTF_RED ("[Spotify] [FATAL] Login attempt failed. "
-                            "Client too old.");
-          }
-          break;
-        case SP_ERROR_UNABLE_TO_CONTACT_SERVER:
-          {
-            TIZ_PRINTF_RED ("[Spotify] [FATAL] Login attempt failed. "
-                            "Unable to contact server.");
-          }
-          break;
-        case SP_ERROR_BAD_USERNAME_OR_PASSWORD:
-          {
-            TIZ_PRINTF_RED ("[Spotify] [FATAL] Login attempt failed. "
-                            "Bad user name or password.");
-          }
-          break;
-        case SP_ERROR_USER_BANNED:
-          {
-            TIZ_PRINTF_RED ("[Spotify] [FATAL] Login attempt failed. "
-                            "User banned.");
-          }
-          break;
-        case SP_ERROR_USER_NEEDS_PREMIUM:
-          {
-            TIZ_PRINTF_RED ("[Spotify] [FATAL] Login attempt failed. "
-                            "User needs premium.");
-          }
-          break;
-        case SP_ERROR_OTHER_TRANSIENT:
-        case SP_ERROR_OTHER_PERMANENT:
-        default:
-          {
-            TIZ_PRINTF_RED ("[Spotify] [FATAL] Login attempt failed.");
-          }
-          break;
+          case SP_ERROR_CLIENT_TOO_OLD:
+            {
+              TIZ_PRINTF_C01 (
+                "[Spotify] [FATAL] Login attempt failed. "
+                "Client too old.");
+            }
+            break;
+          case SP_ERROR_UNABLE_TO_CONTACT_SERVER:
+            {
+              TIZ_PRINTF_C01 (
+                "[Spotify] [FATAL] Login attempt failed. "
+                "Unable to contact server.");
+            }
+            break;
+          case SP_ERROR_BAD_USERNAME_OR_PASSWORD:
+            {
+              TIZ_PRINTF_C01 (
+                "[Spotify] [FATAL] Login attempt failed. "
+                "Bad user name or password.");
+            }
+            break;
+          case SP_ERROR_USER_BANNED:
+            {
+              TIZ_PRINTF_C01 (
+                "[Spotify] [FATAL] Login attempt failed. "
+                "User banned.");
+            }
+            break;
+          case SP_ERROR_USER_NEEDS_PREMIUM:
+            {
+              TIZ_PRINTF_C01 (
+                "[Spotify] [FATAL] Login attempt failed. "
+                "User needs premium.");
+            }
+            break;
+          case SP_ERROR_OTHER_TRANSIENT:
+          case SP_ERROR_OTHER_PERMANENT:
+          default:
+            {
+              TIZ_PRINTF_C01 ("[Spotify] [FATAL] Login attempt failed.");
+            }
+            break;
         };
       tiz_mem_free (ap_event->p_data);
     }
@@ -1019,7 +1030,7 @@ logged_in (sp_session * sess, sp_error error)
   if (SP_ERROR_OK == error)
     {
       sp_error sp_rc = SP_ERROR_OK;
-      TIZ_PRINTF_BLU ("[Spotify] [Login] '%s' logged in.\n",
+      TIZ_PRINTF_C02 ("[Spotify] [Login] '%s' logged in.",
                       sp_user_display_name (sp_session_user (sess)));
 
       set_spotify_session_options (p_prc);
@@ -1035,7 +1046,8 @@ logged_in (sp_session * sess, sp_error error)
         {
           p_data->p_sess = sess;
           p_data->login_error = error;
-          post_spotify_event (sp_session_userdata (sess), login_failure_handler, p_data);
+          post_spotify_event (sp_session_userdata (sess), login_failure_handler,
+                              p_data);
         }
     }
 }
@@ -1157,8 +1169,8 @@ music_delivery_handler (OMX_PTR ap_prc, tiz_event_pluggable_t * ap_event)
           set_audio_coding_on_port (p_prc);
           set_pcm_audio_info_on_port (p_prc);
           /* And now trigger the OMX_EventPortFormatDetected and
-             OMX_EventPortSettingsChanged events or a
-             OMX_ErrorFormatNotDetected event */
+               OMX_EventPortSettingsChanged events or a
+               OMX_ErrorFormatNotDetected event */
           send_port_auto_detect_events (p_prc);
         }
       tiz_mem_free (p_data->p_frames);
@@ -1180,8 +1192,8 @@ music_delivery (sp_session * sess, const sp_audioformat * format,
   if (num_frames > 0)
     {
       /* We'll only send another pluggable event into the component's main
-         event queue if there are a few spaces available. Otherwise, we'll ask
-         Spotify to wait a little. */
+           event queue if there are a few spaces available. Otherwise, we'll ask
+           Spotify to wait a little. */
       if (tiz_comp_event_queue_unused_spaces (
             handleOf (sp_session_userdata (sess)))
           >= SPFYSRC_MIN_QUEUE_UNUSED_SPACES)
@@ -1236,7 +1248,8 @@ end_of_track_handler (OMX_PTR ap_prc, tiz_event_pluggable_t * ap_event)
           p_prc->p_sp_track_ = NULL;
         }
 
-      p_prc->playlist_skip_.nValue > 0 ? obtain_next_url (p_prc, 1, p_prc->need_url_removed_)
+      p_prc->playlist_skip_.nValue > 0
+        ? obtain_next_url (p_prc, 1, p_prc->need_url_removed_)
         : obtain_next_url (p_prc, -1, p_prc->need_url_removed_);
       p_prc->need_url_removed_ = false;
       p_prc->playlist_skip_.nValue = 1;
@@ -1278,10 +1291,17 @@ play_token_lost_handler (OMX_PTR ap_prc, tiz_event_pluggable_t * ap_event)
       else
         {
           stop_spotify (p_prc);
-          TIZ_PRINTF_RED ("\n[Spotify] [FATAL] The play token has been lost\n");
-          TIZ_PRINTF_YEL ("To force recovery of the token when it gets lost, add the\n");
-          TIZ_PRINTF_YEL ("'--spotify-recover-lost-token' command-line flag\n");
-          TIZ_PRINTF_YEL ("or add 'spotify.recover_lost_token = true' in 'tizonia.conf'\n");
+          printf ("\n");
+          TIZ_PRINTF_C01 ("[Spotify] [FATAL] The play token has been lost");
+          printf ("\n");
+          TIZ_PRINTF_C03 (
+            "To force recovery of the token when it gets lost, add the");
+          printf ("\n");
+          TIZ_PRINTF_C03 ("'--spotify-recover-lost-token' command-line flag");
+          printf ("\n");
+          TIZ_PRINTF_C03 (
+            "or add 'spotify.recover_lost_token = true' in 'tizonia.conf'");
+          printf ("\n");
           (void) tiz_srv_issue_err_event ((OMX_PTR) ap_prc,
                                           OMX_ErrorInsufficientResources);
         }
@@ -1297,7 +1317,8 @@ play_token_lost_handler (OMX_PTR ap_prc, tiz_event_pluggable_t * ap_event)
 static void
 play_token_lost (sp_session * sess)
 {
-  post_spotify_event (sp_session_userdata (sess), play_token_lost_handler, sess);
+  post_spotify_event (sp_session_userdata (sess), play_token_lost_handler,
+                      sess);
 }
 
 static void
@@ -1365,7 +1386,8 @@ enqueue_playlist_items (spfysrc_prc_t * ap_prc)
           break;
         case OMX_AUDIO_SpotifyPlaylistTypeArtistId:
           {
-            rc = tiz_spotify_play_artist_by_id (ap_prc->p_spfy_web_, p_playlist);
+            rc
+              = tiz_spotify_play_artist_by_id (ap_prc->p_spfy_web_, p_playlist);
           }
           break;
         case OMX_AUDIO_SpotifyPlaylistTypeAlbumId:
@@ -1381,32 +1403,38 @@ enqueue_playlist_items (spfysrc_prc_t * ap_prc)
           break;
         case OMX_AUDIO_SpotifyPlaylistTypeRelatedArtists:
           {
-            rc = tiz_spotify_play_related_artists (ap_prc->p_spfy_web_, p_playlist);
+            rc = tiz_spotify_play_related_artists (ap_prc->p_spfy_web_,
+                                                   p_playlist);
           }
           break;
         case OMX_AUDIO_SpotifyPlaylistTypeFeaturedPlaylist:
           {
-            rc = tiz_spotify_play_featured_playlist (ap_prc->p_spfy_web_, p_playlist);
+            rc = tiz_spotify_play_featured_playlist (ap_prc->p_spfy_web_,
+                                                     p_playlist);
           }
           break;
         case OMX_AUDIO_SpotifyPlaylistTypeNewReleases:
           {
-            rc = tiz_spotify_play_new_releases (ap_prc->p_spfy_web_, p_playlist);
+            rc
+              = tiz_spotify_play_new_releases (ap_prc->p_spfy_web_, p_playlist);
           }
           break;
         case OMX_AUDIO_SpotifyPlaylistTypeRecommendationsByTrackId:
           {
-            rc = tiz_spotify_play_recommendations_by_track_id (ap_prc->p_spfy_web_, p_playlist);
+            rc = tiz_spotify_play_recommendations_by_track_id (
+              ap_prc->p_spfy_web_, p_playlist);
           }
           break;
         case OMX_AUDIO_SpotifyPlaylistTypeRecommendationsByArtistId:
           {
-            rc = tiz_spotify_play_recommendations_by_artist_id (ap_prc->p_spfy_web_, p_playlist);
+            rc = tiz_spotify_play_recommendations_by_artist_id (
+              ap_prc->p_spfy_web_, p_playlist);
           }
           break;
         case OMX_AUDIO_SpotifyPlaylistTypeRecommendationsByGenre:
           {
-            rc = tiz_spotify_play_recommendations_by_genre (ap_prc->p_spfy_web_, p_playlist);
+            rc = tiz_spotify_play_recommendations_by_genre (ap_prc->p_spfy_web_,
+                                                            p_playlist);
           }
           break;
         default:
@@ -1448,29 +1476,29 @@ obtain_next_url (spfysrc_prc_t * ap_prc, int a_skip_value,
           : tiz_spotify_get_prev_uri (ap_prc->p_spfy_web_, a_need_url_removed);
 
     ap_prc->ntracks_
-        = tiz_spotify_get_current_queue_length_as_int (ap_prc->p_spfy_web_);
+      = tiz_spotify_get_current_queue_length_as_int (ap_prc->p_spfy_web_);
 
     if (p_next_url)
-    {
-      const OMX_U32 url_len = strnlen (p_next_url, pathname_max);
-      TIZ_TRACE (handleOf (ap_prc), "URL [%s]", p_next_url);
+      {
+        const OMX_U32 url_len = strnlen (p_next_url, pathname_max);
+        TIZ_TRACE (handleOf (ap_prc), "URL [%s]", p_next_url);
 
-      /* Verify we are getting an http scheme */
-      if (!p_next_url || !url_len
-          || (strncasecmp (p_next_url, "spotify", 7) != 0))
-        {
-          rc = OMX_ErrorContentURIError;
-        }
-      else
-        {
-          strncpy ((char *) ap_prc->p_uri_param_->contentURI, p_next_url,
-                   url_len);
-          ap_prc->p_uri_param_->contentURI[url_len] = '\0';
+        /* Verify we are getting an http scheme */
+        if (!p_next_url || !url_len
+            || (strncasecmp (p_next_url, "spotify", 7) != 0))
+          {
+            rc = OMX_ErrorContentURIError;
+          }
+        else
+          {
+            strncpy ((char *) ap_prc->p_uri_param_->contentURI, p_next_url,
+                     url_len);
+            ap_prc->p_uri_param_->contentURI[url_len] = '\0';
 
-          /* Song metadata is now available, update the IL client */
-          /*           rc = update_metadata (ap_prc); */
-        }
-    }
+            /* Song metadata is now available, update the IL client */
+            /*           rc = update_metadata (ap_prc); */
+          }
+      }
   }
 
   return rc;
@@ -1598,12 +1626,15 @@ spfysrc_prc_allocate_resources (void * ap_prc, OMX_U32 a_pid)
     sp_session_create (&(p_prc->sp_config_), &(p_prc->p_sp_session_)));
 
   if (p_prc->session_.cProxyServer
-      && 0 != strncmp ((char *) p_prc->session_.cProxyServer, "",
+      && 0
+           != strncmp ((char *) p_prc->session_.cProxyServer, "",
                        OMX_MAX_STRINGNAME_SIZE))
     {
-      TIZ_PRINTF_DBG_BLU("cProxyServer: %s\n", p_prc->session_.cProxyServer);
-      TIZ_PRINTF_DBG_BLU("cProxyUserName: %s\n", p_prc->session_.cProxyUserName);
-      TIZ_PRINTF_DBG_BLU("cProxyPassword: %s\n", p_prc->session_.cProxyPassword);
+      TIZ_PRINTF_DBG_BLU ("cProxyServer: %s\n", p_prc->session_.cProxyServer);
+      TIZ_PRINTF_DBG_BLU ("cProxyUserName: %s\n",
+                          p_prc->session_.cProxyUserName);
+      TIZ_PRINTF_DBG_BLU ("cProxyPassword: %s\n",
+                          p_prc->session_.cProxyPassword);
       p_prc->sp_config_.proxy = ((char *) p_prc->session_.cProxyServer);
       p_prc->sp_config_.proxy_username
         = ((char *) p_prc->session_.cProxyUserName);
@@ -1611,8 +1642,7 @@ spfysrc_prc_allocate_resources (void * ap_prc, OMX_U32 a_pid)
         = ((char *) p_prc->session_.cProxyPassword);
     }
 
-  TIZ_PRINTF_BLU ("[Spotify] [Cache]: '%s'\n",
-                  p_prc->sp_config_.cache_location);
+  TIZ_PRINTF_C02 ("[Spotify] [Cache]: '%s'", p_prc->sp_config_.cache_location);
 
   /* Initiate the spotify session */
   goto_end_on_sp_error (sp_session_login (

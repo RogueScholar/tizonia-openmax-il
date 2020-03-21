@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -31,7 +31,8 @@
 #define HTTPRPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -42,28 +43,28 @@ extern "C" {
 
 #include "httprsrv.h"
 
-typedef struct httpr_prc httpr_prc_t;
-struct httpr_prc
-{
-  /* Object */
-  const tiz_prc_t _;
-  OMX_STRING mount_name_;
-  bool port_disabled_;
-  int lstn_sockfd_;
-  httpr_server_t * p_server_;
-  OMX_BUFFERHEADERTYPE * p_inhdr_;
-  OMX_AUDIO_PARAM_MP3TYPE mp3type_;
-  OMX_TIZONIA_HTTPSERVERTYPE server_info_;
-  OMX_TIZONIA_ICECASTMOUNTPOINTTYPE mountpoint_;
-};
+  typedef struct httpr_prc httpr_prc_t;
+  struct httpr_prc
+  {
+    /* Object */
+    const tiz_prc_t _;
+    OMX_STRING mount_name_;
+    bool port_disabled_;
+    int lstn_sockfd_;
+    httpr_server_t * p_server_;
+    OMX_BUFFERHEADERTYPE * p_inhdr_;
+    OMX_AUDIO_PARAM_MP3TYPE mp3type_;
+    OMX_TIZONIA_HTTPSERVERTYPE server_info_;
+    OMX_TIZONIA_ICECASTMOUNTPOINTTYPE mountpoint_;
+  };
 
-typedef struct httpr_prc_class httpr_prc_class_t;
-struct httpr_prc_class
-{
-  /* Class */
-  const tiz_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct httpr_prc_class httpr_prc_class_t;
+  struct httpr_prc_class
+  {
+    /* Class */
+    const tiz_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

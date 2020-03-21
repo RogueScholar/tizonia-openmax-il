@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -29,8 +29,8 @@
 #ifndef TIZCHROMECASTGRAPH_HPP
 #define TIZCHROMECASTGRAPH_HPP
 
-#include <tizgraph.hpp>
 #include "tizchromecastgraphfsm.hpp"
+#include <tizgraph.hpp>
 
 namespace tiz
 {

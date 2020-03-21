@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -31,13 +31,13 @@
 
 #include <boost/make_shared.hpp>
 
-#include <tizplatform.h>
 #include <tizmacros.h>
+#include <tizplatform.h>
 
-#include "tizgraphfactory.hpp"
 #include "tizgraph.hpp"
-#include "tizgraphmgr.hpp"
 #include "tizgraphconfig.hpp"
+#include "tizgraphfactory.hpp"
+#include "tizgraphmgr.hpp"
 #include "tizgraphmgrops.hpp"
 #include "tizgraphutil.hpp"
 
@@ -179,7 +179,7 @@ void graphmgr::ops::do_load ()
 
 void graphmgr::ops::do_execute ()
 {
-  const uint32_t unused_buffer_seconds = 0; // this is not used here
+  const uint32_t unused_buffer_seconds = 0;  // this is not used here
 
   assert (playlist_);
   assert (next_playlist_);
@@ -228,14 +228,14 @@ void graphmgr::ops::do_deinit ()
     tizgraph_ptr_map_t::iterator registry_end = graph_registry_.end ();
     for (tizgraph_ptr_map_t::iterator it = graph_registry_.begin ();
          it != registry_end; ++it)
+    {
+      const tizgraph_ptr_t p_graph = (*it).second;
+      if (p_graph == p_managed_graph_)
       {
-        const tizgraph_ptr_t p_graph = (*it).second;
-        if (p_graph == p_managed_graph_)
-          {
-            graph_registry_.erase (it);
-            break;
-          }
+        graph_registry_.erase (it);
+        break;
       }
+    }
     p_managed_graph_.reset ();
   }
 }
@@ -305,33 +305,34 @@ void graphmgr::ops::do_end_of_play ()
   termination_cback_ (OMX_ErrorNone, "End of playlist.");
 }
 
-void graphmgr::ops::do_update_control_ifcs (const control::playback_status_t status)
+void graphmgr::ops::do_update_control_ifcs (
+    const control::playback_status_t status)
 {
   if (p_mgr_)
+  {
+    std::string current_stream;
+    if (next_playlist_)
     {
-      std::string current_stream;
-      if (next_playlist_)
-        {
-          current_stream = next_playlist_->get_current_uri ();
-        }
-      p_mgr_->do_update_control_ifcs (status, current_stream);
+      current_stream = next_playlist_->get_current_uri ();
     }
+    p_mgr_->do_update_control_ifcs (status, current_stream);
+  }
 }
 
 void graphmgr::ops::do_update_metadata (const track_metadata_map_t &metadata)
 {
   if (p_mgr_)
-    {
-      p_mgr_->do_update_metadata (metadata);
-    }
+  {
+    p_mgr_->do_update_metadata (metadata);
+  }
 }
 
 void graphmgr::ops::do_update_volume (const int volume)
 {
   if (p_mgr_)
-    {
-      p_mgr_->do_update_volume (volume);
-    }
+  {
+    p_mgr_->do_update_volume (volume);
+  }
 }
 
 bool graphmgr::ops::is_fatal_error (const OMX_ERRORTYPE error,
@@ -369,7 +370,7 @@ tizplaylist_ptr_t graphmgr::ops::find_next_sub_list () const
                                       : tiz::playlist::DirDown;
   }
 
-  next_lst = boost::make_shared< tiz::playlist >(
+  next_lst = boost::make_shared< tiz::playlist > (
       playlist_->obtain_next_sub_playlist (dir));
   if (next_playlist_ && next_playlist_->before_begin ())
   {

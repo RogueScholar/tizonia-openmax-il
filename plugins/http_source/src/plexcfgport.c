@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -63,12 +63,12 @@ plex_cfgport_ctor (void * ap_obj, va_list * app)
 
   /* Initialize the OMX_TIZONIA_AUDIO_PARAM_PLEXSESSIONTYPE structure */
   TIZ_INIT_OMX_STRUCT (p_obj->session_);
-  snprintf ((char *) p_obj->session_.cBaseUrl, sizeof (p_obj->session_.cBaseUrl),
-            "xyzxyzxyzxyzxyz");
-  snprintf ((char *) p_obj->session_.cAuthToken, sizeof (p_obj->session_.cAuthToken),
-            "xyzxyzxyzxyzxyz");
-  snprintf ((char *) p_obj->session_.cMusicSectionName, sizeof (p_obj->session_.cMusicSectionName),
-            "Music");
+  snprintf ((char *) p_obj->session_.cBaseUrl,
+            sizeof (p_obj->session_.cBaseUrl), "xyzxyzxyzxyzxyz");
+  snprintf ((char *) p_obj->session_.cAuthToken,
+            sizeof (p_obj->session_.cAuthToken), "xyzxyzxyzxyzxyz");
+  snprintf ((char *) p_obj->session_.cMusicSectionName,
+            sizeof (p_obj->session_.cMusicSectionName), "Music");
 
   /* Initialize the OMX_TIZONIA_AUDIO_PARAM_PLEXPLAYLISTTYPE structure */
   TIZ_INIT_OMX_STRUCT (p_obj->playlist_);
@@ -92,7 +92,7 @@ plex_cfgport_dtor (void * ap_obj)
 
 static OMX_ERRORTYPE
 plex_cfgport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
-                             OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
+                           OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
   const plex_cfgport_t * p_obj = ap_obj;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
@@ -124,7 +124,7 @@ plex_cfgport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
 
 static OMX_ERRORTYPE
 plex_cfgport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
-                             OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
+                           OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
   plex_cfgport_t * p_obj = (plex_cfgport_t *) ap_obj;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
@@ -142,7 +142,8 @@ plex_cfgport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       TIZ_TRACE (ap_hdl, "Plex Base Url [%s]...", p_obj->session_.cBaseUrl);
       p_obj->session_.cAuthToken[OMX_MAX_STRINGNAME_SIZE - 1] = '\0';
       p_obj->session_.cMusicSectionName[OMX_MAX_STRINGNAME_SIZE - 1] = '\0';
-      TIZ_TRACE (ap_hdl, "Plex Music Section [%s]...", p_obj->session_.cMusicSectionName);
+      TIZ_TRACE (ap_hdl, "Plex Music Section [%s]...",
+                 p_obj->session_.cMusicSectionName);
     }
   else if (OMX_TizoniaIndexParamAudioPlexPlaylist == a_index)
     {
@@ -196,8 +197,7 @@ plex_cfgport_init (void * ap_tos, void * ap_hdl)
   TIZ_LOG_CLASS (plexcfgport_class);
   void * plexcfgport = factory_new
     /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
-    (plexcfgport_class, "plexcfgport", tizconfigport,
-     sizeof (plex_cfgport_t),
+    (plexcfgport_class, "plexcfgport", tizconfigport, sizeof (plex_cfgport_t),
      /* TIZ_CLASS_COMMENT: class constructor */
      ap_tos, ap_hdl,
      /* TIZ_CLASS_COMMENT: class constructor */

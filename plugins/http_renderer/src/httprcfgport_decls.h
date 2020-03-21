@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,7 +30,8 @@
 #define HTTPRCFGPORT_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_Types.h>
@@ -38,21 +39,21 @@ extern "C" {
 
 #include <tizconfigport_decls.h>
 
-typedef struct httpr_cfgport httpr_cfgport_t;
-struct httpr_cfgport
-{
-  /* Object */
-  const tiz_configport_t _;
-  OMX_TIZONIA_HTTPSERVERTYPE http_conf_;
-};
+  typedef struct httpr_cfgport httpr_cfgport_t;
+  struct httpr_cfgport
+  {
+    /* Object */
+    const tiz_configport_t _;
+    OMX_TIZONIA_HTTPSERVERTYPE http_conf_;
+  };
 
-typedef struct httpr_cfgport_class httpr_cfgport_class_t;
-struct httpr_cfgport_class
-{
-  /* Class */
-  const tiz_configport_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct httpr_cfgport_class httpr_cfgport_class_t;
+  struct httpr_cfgport_class
+  {
+    /* Class */
+    const tiz_configport_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

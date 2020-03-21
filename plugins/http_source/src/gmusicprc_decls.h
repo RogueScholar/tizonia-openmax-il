@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -29,7 +29,8 @@
 #define GMUSICPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -41,40 +42,40 @@ extern "C" {
 
 #include <tizplatform.h>
 
-typedef struct gmusic_prc gmusic_prc_t;
-struct gmusic_prc
-{
-  /* Object */
-  const tiz_prc_t _;
-  OMX_BUFFERHEADERTYPE * p_outhdr_;
-  OMX_TIZONIA_AUDIO_PARAM_GMUSICSESSIONTYPE session_;
-  OMX_TIZONIA_AUDIO_PARAM_GMUSICPLAYLISTTYPE playlist_;
-  OMX_TIZONIA_PLAYLISTSKIPTYPE playlist_skip_;
-  OMX_TIZONIA_STREAMINGBUFFERTYPE buffer_size_;
-  OMX_PARAM_CONTENTURITYPE * p_uri_param_;
-  tiz_urltrans_t * p_trans_;
-  tiz_gmusic_t * p_gmusic_;
-  bool eos_;
-  bool port_disabled_;
-  bool uri_changed_;
-  OMX_S32 audio_coding_type_;
-  OMX_U32 num_channels_;
-  OMX_U32 samplerate_;
-  OMX_U32 content_length_bytes_;
-  OMX_U32 bytes_before_eos_;
-  bool auto_detect_on_;
-  int bitrate_;
-  int buffer_bytes_;
-  bool connection_closed_;
-};
+  typedef struct gmusic_prc gmusic_prc_t;
+  struct gmusic_prc
+  {
+    /* Object */
+    const tiz_prc_t _;
+    OMX_BUFFERHEADERTYPE * p_outhdr_;
+    OMX_TIZONIA_AUDIO_PARAM_GMUSICSESSIONTYPE session_;
+    OMX_TIZONIA_AUDIO_PARAM_GMUSICPLAYLISTTYPE playlist_;
+    OMX_TIZONIA_PLAYLISTSKIPTYPE playlist_skip_;
+    OMX_TIZONIA_STREAMINGBUFFERTYPE buffer_size_;
+    OMX_PARAM_CONTENTURITYPE * p_uri_param_;
+    tiz_urltrans_t * p_trans_;
+    tiz_gmusic_t * p_gmusic_;
+    bool eos_;
+    bool port_disabled_;
+    bool uri_changed_;
+    OMX_S32 audio_coding_type_;
+    OMX_U32 num_channels_;
+    OMX_U32 samplerate_;
+    OMX_U32 content_length_bytes_;
+    OMX_U32 bytes_before_eos_;
+    bool auto_detect_on_;
+    int bitrate_;
+    int buffer_bytes_;
+    bool connection_closed_;
+  };
 
-typedef struct gmusic_prc_class gmusic_prc_class_t;
-struct gmusic_prc_class
-{
-  /* Class */
-  const tiz_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct gmusic_prc_class gmusic_prc_class_t;
+  struct gmusic_prc_class
+  {
+    /* Class */
+    const tiz_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

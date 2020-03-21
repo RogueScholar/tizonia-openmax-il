@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -41,7 +41,7 @@ namespace tiz
     {
     public:
       youtubeops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-                 const omx_comp_role_lst_t &role_lst);
+                  const omx_comp_role_lst_t &role_lst);
 
     public:
       void do_enable_auto_detection (const int handle_id, const int port_id);
@@ -54,8 +54,7 @@ namespace tiz
 
       bool is_fatal_error (const OMX_ERRORTYPE error) const;
       void do_record_fatal_error (const OMX_HANDLETYPE handle,
-                                  const OMX_ERRORTYPE error,
-                                  const OMX_U32 port,
+                                  const OMX_ERRORTYPE error, const OMX_U32 port,
                                   const OMX_PTR p_eventdata = NULL);
 
     private:
@@ -92,7 +91,8 @@ namespace tiz
       OMX_AUDIO_CODINGTYPE encoding_;
       OMX_AUDIO_CODINGTYPE container_;
       OMX_AUDIO_PARAM_PCMMODETYPE renderer_pcmtype_;
-      bool inital_graph_load_;
+      bool inital_source_load_;
+      bool inital_renderer_load_;
     };
   }  // namespace graph
 }  // namespace tiz

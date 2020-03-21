@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -16,7 +16,7 @@
 # along with Tizonia.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_PREREQ([2.67])
-AC_INIT([tizonia-clients], [0.19.0], [juan.rubio@aratelia.com])
+AC_INIT([tizonia-clients], [0.21.0], [juan.rubio@aratelia.com])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE([foreign color-tests silent-rules -Wall -Werror])
 
@@ -31,5 +31,5 @@ AM_INIT_AUTOMAKE([foreign color-tests silent-rules -Wall -Werror])
 # Checks for library functions.
 
 AC_CONFIG_FILES([Makefile])
-AC_CONFIG_SUBDIRS([gmusic soundcloud youtube plex chromecast spotify])
+AC_CONFIG_SUBDIRS([gmusic soundcloud youtube plex chromecast spotify tunein])
 AC_OUTPUT

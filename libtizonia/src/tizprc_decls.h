@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,7 +30,8 @@
 #define TIZPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_Core.h>
@@ -38,30 +39,30 @@ extern "C" {
 #include "tizprc.h"
 #include "tizservant_decls.h"
 
-typedef struct tiz_prc tiz_prc_t;
-struct tiz_prc
-{
-  /* Object */
-  const tiz_srv_t _;
-};
+  typedef struct tiz_prc tiz_prc_t;
+  struct tiz_prc
+  {
+    /* Object */
+    const tiz_srv_t _;
+  };
 
-OMX_ERRORTYPE
-tiz_prc_super_buffers_ready (const void * class, const void * p_obj);
+  OMX_ERRORTYPE
+  tiz_prc_super_buffers_ready (const void * class, const void * p_obj);
 
-typedef struct tiz_prc_class tiz_prc_class_t;
-struct tiz_prc_class
-{
-  /* Class */
-  const tiz_srv_class_t _;
-  OMX_ERRORTYPE (*buffers_ready) (const void * p_obj);
-  OMX_ERRORTYPE (*pause) (const void * p_obj);
-  OMX_ERRORTYPE (*resume) (const void * p_obj);
-  OMX_ERRORTYPE (*port_flush) (const void * p_obj, OMX_U32 a_pid);
-  OMX_ERRORTYPE (*port_disable) (const void * p_obj, OMX_U32 a_pid);
-  OMX_ERRORTYPE (*port_enable) (const void * p_obj, OMX_U32 a_pid);
-  OMX_ERRORTYPE (*config_change)
-  (const void * p_obj, OMX_U32 a_pid, OMX_INDEXTYPE a_config_idx);
-};
+  typedef struct tiz_prc_class tiz_prc_class_t;
+  struct tiz_prc_class
+  {
+    /* Class */
+    const tiz_srv_class_t _;
+    OMX_ERRORTYPE (*buffers_ready) (const void * p_obj);
+    OMX_ERRORTYPE (*pause) (const void * p_obj);
+    OMX_ERRORTYPE (*resume) (const void * p_obj);
+    OMX_ERRORTYPE (*port_flush) (const void * p_obj, OMX_U32 a_pid);
+    OMX_ERRORTYPE (*port_disable) (const void * p_obj, OMX_U32 a_pid);
+    OMX_ERRORTYPE (*port_enable) (const void * p_obj, OMX_U32 a_pid);
+    OMX_ERRORTYPE (*config_change)
+    (const void * p_obj, OMX_U32 a_pid, OMX_INDEXTYPE a_config_idx);
+  };
 
 #ifdef __cplusplus
 }

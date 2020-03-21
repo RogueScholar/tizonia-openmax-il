@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -44,14 +44,13 @@ namespace tiz
 
     protected:
       ops *do_init ();
-
     };
 
     class oggopusdecops : public decops
     {
     public:
       oggopusdecops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-                  const omx_comp_role_lst_t &role_lst);
+                     const omx_comp_role_lst_t &role_lst);
 
     public:
       void do_probe ();

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -127,8 +127,8 @@ retrieve_mp3_settings (const void * ap_prc,
   /* Retrieve the mp3 settings from the input port */
   TIZ_INIT_OMX_PORT_STRUCT (*ap_mp3type, ARATELIA_HTTP_RENDERER_PORT_INDEX);
   tiz_check_omx (tiz_api_GetParameter (tiz_get_krn (handleOf (p_prc)),
-                                           handleOf (p_prc),
-                                           OMX_IndexParamAudioMp3, ap_mp3type));
+                                       handleOf (p_prc), OMX_IndexParamAudioMp3,
+                                       ap_mp3type));
   return OMX_ErrorNone;
 }
 
@@ -222,8 +222,7 @@ httpr_prc_prepare_to_transfer (void * ap_prc, OMX_U32 a_pid)
                               p_prc->mp3type_.nSampleRate);
 
   /* Obtain mount point and station-related information */
-  tiz_check_omx (
-    retrieve_mountpoint_settings (ap_prc, &(p_prc->mountpoint_)));
+  tiz_check_omx (retrieve_mountpoint_settings (ap_prc, &(p_prc->mountpoint_)));
 
   httpr_srv_set_mountpoint_settings (
     p_prc->p_server_, p_prc->mountpoint_.cMountName,

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -345,7 +345,8 @@ krn_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
 
         default:
           {
-            TIZ_ERROR (ap_hdl, "[OMX_ErrorUnsupportedIndex] : [0x%08x] = [%s]...",
+            TIZ_ERROR (ap_hdl,
+                       "[OMX_ErrorUnsupportedIndex] : [0x%08x] = [%s]...",
                        a_index, tiz_idx_to_str (a_index));
             return OMX_ErrorUnsupportedIndex;
           }
@@ -378,7 +379,8 @@ krn_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       if (OMX_ErrorNone == rc && !TIZ_PORT_IS_CONFIG_PORT (p_port))
         {
           /* Apply slaving behavior if necessary */
-          rc = apply_slaving_behaviour (p_obj, ap_hdl, a_index, ap_struct, p_port);
+          rc = apply_slaving_behaviour (p_obj, ap_hdl, a_index, ap_struct,
+                                        p_port);
         }
 
       return rc;
@@ -514,7 +516,7 @@ krn_SetConfig (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
   else
     {
       /* There has been a successful update to a config structures, so let's
-         tell the processor about it. */
+           tell the processor about it. */
       void * p_prc = tiz_get_prc (handleOf (p_obj));
       rc = tiz_api_SetConfig (p_prc, ap_hdl, a_index, ap_struct);
     }
@@ -614,8 +616,9 @@ krn_ComponentTunnelRequest (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
     }
 
   /* Delegate to the port... */
-  if (OMX_ErrorNone != (rc = tiz_api_ComponentTunnelRequest (
-                          p_port, ap_hdl, a_pid, ap_thdl, a_tpid, ap_tsetup)))
+  if (OMX_ErrorNone
+      != (rc = tiz_api_ComponentTunnelRequest (p_port, ap_hdl, a_pid, ap_thdl,
+                                               a_tpid, ap_tsetup)))
     {
       TIZ_ERROR (ap_hdl,
                  "[%s] : While delegating "
@@ -993,7 +996,7 @@ krn_allocate_resources (void * ap_obj, OMX_U32 a_pid)
       p_port = get_port (p_obj, pid);
 
       /* This function will do nothing if it doesn't have to, e.g. because the
-       * port isn't tunneled, or is disabled, etc. */
+         * port isn't tunneled, or is disabled, etc. */
       tiz_port_update_tunneled_status (p_port, OMX_PORTSTATUS_ACCEPTUSEBUFFER);
 
       TIZ_TRACE (handleOf (p_obj),
@@ -1139,7 +1142,7 @@ krn_transfer_and_process (void * ap_obj, OMX_U32 a_pid)
       p_port = get_port (p_obj, pid);
 
       /* This function will do nothing if it doesn't have to, e.g. because the
-       * port isn't tunneled, or is disabled, etc. */
+         * port isn't tunneled, or is disabled, etc. */
       tiz_port_update_tunneled_status (p_port,
                                        OMX_PORTSTATUS_ACCEPTBUFFEREXCHANGE);
       tiz_check_omx (flush_egress (p_obj, pid, OMX_FALSE));
@@ -1175,21 +1178,21 @@ krn_stop_and_return (void * ap_obj)
         }
 
       /* This will move any ETB or FTB messages currently queued in the
-         kernel's servant queue into the corresponding port ingress list. This
-         guarantees that all buffers received by the component are correctly
-         returned during stop */
+           kernel's servant queue into the corresponding port ingress list. This
+           guarantees that all buffers received by the component are correctly
+           returned during stop */
       tiz_srv_remove_from_queue (ap_obj, &process_efb_from_servant_queue,
                                  OMX_ALL, p_obj);
 
       /* This will move any processor callbacks currently queued in the
-         kernel's servant queue into the corresponding port egress list. This
-         guarantees that all buffers held by the component are correctly
-         returned during stop */
+           kernel's servant queue into the corresponding port egress list. This
+           guarantees that all buffers held by the component are correctly
+           returned during stop */
       tiz_srv_remove_from_queue (ap_obj, &process_cbacks_from_servant_queue,
                                  OMX_ALL, p_obj);
 
       /* OMX_CommandFlush is used to notify the processor servant that it has
-         to return some buffers ... */
+           to return some buffers ... */
       if (TIZ_PORT_GET_CLAIMED_COUNT (p_port) >= 0)
         {
           void * p_prc = tiz_get_prc (handleOf (p_obj));
@@ -1216,7 +1219,7 @@ krn_stop_and_return (void * ap_obj)
             }
 
           /* This function will do nothing if the port is disabled, for
-           * example */
+             * example */
           tiz_port_update_tunneled_status (
             p_port, OMX_TIZONIA_PORTSTATUS_AWAITBUFFERSRETURN);
 
@@ -1519,8 +1522,8 @@ krn_get_population_status (const void * ap_obj, const OMX_U32 a_pid,
                   && TIZ_PORT_IS_TUNNELED (p_port))
                 {
                   /* There is a non-supplier, tunneled port that is being
-                   * populated. This means we cannot be fully unpopulated
-                   * without help from the tunneled component */
+                     * populated. This means we cannot be fully unpopulated
+                     * without help from the tunneled component */
                   *ap_may_be_fully_unpopulated = OMX_FALSE;
                   break;
                 }
@@ -1686,16 +1689,16 @@ krn_claim_buffer (const void * ap_obj, const OMX_U32 a_pid, const OMX_U32 a_pos,
       if (OMX_DirOutput == pdir)
         {
           /* If it's an output port and allocator, ask the port to allocate the
-           * actual
-           * buffer, in case pre-announcements have been disabled on this port. This
-           * function call has no effect if pre-announcements are enabled on the
-           * port. */
+             * actual
+             * buffer, in case pre-announcements have been disabled on this port. This
+             * function call has no effect if pre-announcements are enabled on the
+             * port. */
           if (TIZ_PORT_IS_ALLOCATOR (p_port))
             {
               tiz_check_omx (tiz_port_populate_header (p_port, p_hdr));
             }
           /* Make sure there is no data from a previous transition into
-             OMX_StateExecuting */
+               OMX_StateExecuting */
           tiz_clear_header (p_hdr);
         }
 
@@ -1706,12 +1709,12 @@ krn_claim_buffer (const void * ap_obj, const OMX_U32 a_pid, const OMX_U32 a_pos,
       (void) TIZ_PORT_INC_CLAIMED_COUNT (p_port);
 
       /* ...and if its an input buffer, mark the header, if any marks
-       * available... */
+         * available... */
       if (OMX_DirInput == pdir)
         {
           /* NOTE: tiz_port_mark_buffer returns OMX_ErrorNone if the port marked
-           * the
-           * buffer with one of its own marks */
+             * the
+             * buffer with one of its own marks */
           if (OMX_ErrorNone == (rc = tiz_port_mark_buffer (p_port, p_hdr)))
             {
               /* Successfully complete here the OMX_CommandMarkBuffer command */
@@ -2159,7 +2162,8 @@ krn_SetParameter_internal (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       if (OMX_ErrorNone == rc && !TIZ_PORT_IS_CONFIG_PORT (p_port))
         {
           /* Apply slaving behavior if necessary */
-          rc = apply_slaving_behaviour (p_obj, ap_hdl, a_index, ap_struct, p_port);
+          rc = apply_slaving_behaviour (p_obj, ap_hdl, a_index, ap_struct,
+                                        p_port);
         }
     }
   return rc;

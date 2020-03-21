@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -36,20 +36,22 @@ extern "C"
 #include <OMX_Core.h>
 #include <OMX_Types.h>
 
-#define ARATELIA_INPROC_WRITER_AUDIO_ROLE         "audio_writer.inproc"
-#define ARATELIA_INPROC_WRITER_VIDEO_ROLE         "video_writer.binary"
-#define ARATELIA_INPROC_WRITER_IMAGE_ROLE         "image_writer.binary"
-#define ARATELIA_INPROC_WRITER_OTHER_ROLE         "other_writer.binary"
-#define ARATELIA_INPROC_WRITER_COMPONENT_NAME     "OMX.Aratelia.inproc_writer.binary"
-#define ARATELIA_INPROC_WRITER_PORT_INDEX         0 /* With libtizonia, port indexes must start at index 0 */
+#define ARATELIA_INPROC_WRITER_AUDIO_ROLE "audio_writer.inproc"
+#define ARATELIA_INPROC_WRITER_VIDEO_ROLE "video_writer.binary"
+#define ARATELIA_INPROC_WRITER_IMAGE_ROLE "image_writer.binary"
+#define ARATELIA_INPROC_WRITER_OTHER_ROLE "other_writer.binary"
+#define ARATELIA_INPROC_WRITER_COMPONENT_NAME \
+  "OMX.Aratelia.inproc_writer.binary"
+#define ARATELIA_INPROC_WRITER_PORT_INDEX \
+  0 /* With libtizonia, port indexes must start at index 0 */
 #define ARATELIA_INPROC_WRITER_PORT_MIN_BUF_COUNT 2
-#define ARATELIA_INPROC_WRITER_PORT_MIN_BUF_SIZE  8192
+#define ARATELIA_INPROC_WRITER_PORT_MIN_BUF_SIZE 8192
 #define ARATELIA_INPROC_WRITER_PORT_NONCONTIGUOUS OMX_FALSE
-#define ARATELIA_INPROC_WRITER_PORT_ALIGNMENT     0
-#define ARATELIA_INPROC_WRITER_PORT_SUPPLIERPREF  OMX_BufferSupplyInput
+#define ARATELIA_INPROC_WRITER_PORT_ALIGNMENT 0
+#define ARATELIA_INPROC_WRITER_PORT_SUPPLIERPREF OMX_BufferSupplyInput
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* INPROCRND_H */
+#endif /* INPROCRND_H */

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -58,7 +58,8 @@ namespace tiz
     };
 
     typedef class graphmgr_capabilities graphmgr_capabilities_t;
-    typedef boost::shared_ptr< graphmgr_capabilities > graphmgr_capabilities_ptr_t;
+    typedef boost::shared_ptr< graphmgr_capabilities >
+        graphmgr_capabilities_ptr_t;
 
   }  // namespace graphmgr
 }  // namespace tiz

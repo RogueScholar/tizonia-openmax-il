@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -410,8 +410,8 @@ static void
 os_map_free_func (OMX_PTR ap_key, OMX_PTR ap_value)
 {
   /* Don't bother deleting the keys here as they are allocated from the chunk
-     of memory provided by the small object allocator, which gets released when
-     the component is deinited. */
+       of memory provided by the small object allocator, which gets released when
+       the component is deinited. */
   tiz_mem_free (ap_value);
 }
 
@@ -461,9 +461,10 @@ os_register_type (tiz_os_t * ap_os, const tiz_os_type_init_f a_type_init_f,
                  "Registering type #[%d] : [%s] -> [%p] "
                  "nameOf [%s]",
                  a_type_id, a_type_name, p_obj, nameOf (p_obj));
-      rc = tiz_map_insert (ap_os->p_map, os_strndup (ap_os->p_soa, a_type_name,
-                                                     OMX_MAX_STRINGNAME_SIZE),
-                           p_obj, (OMX_U32 *) (&a_type_id));
+      rc = tiz_map_insert (
+        ap_os->p_map,
+        os_strndup (ap_os->p_soa, a_type_name, OMX_MAX_STRINGNAME_SIZE), p_obj,
+        (OMX_U32 *) (&a_type_id));
     }
 
   /*   print_types (ap_os); */
@@ -512,8 +513,9 @@ tiz_os_init (tiz_os_t ** app_os, const OMX_HANDLETYPE ap_hdl,
 
   assert (p_os);
 
-  if (OMX_ErrorNone != tiz_map_init (&(p_os->p_map), os_map_compare_func,
-                                     os_map_free_func, NULL))
+  if (OMX_ErrorNone
+      != tiz_map_init (&(p_os->p_map), os_map_compare_func, os_map_free_func,
+                       NULL))
     {
       os_free (ap_soa, p_os);
       p_os = NULL;
@@ -570,8 +572,9 @@ register_additional_type (tiz_os_t * ap_os, const char * a_type_name)
 
   for (; type_id < count && OMX_ErrorNone == rc; ++type_id)
     {
-      if (0 == strncmp (a_type_name, tiz_os_type_to_str_tbl[type_id].str,
-                        OMX_MAX_STRINGNAME_SIZE))
+      if (0
+          == strncmp (a_type_name, tiz_os_type_to_str_tbl[type_id].str,
+                      OMX_MAX_STRINGNAME_SIZE))
         {
           TIZ_TRACE (ap_os->p_hdl, "Registering additional type [%s]...",
                      a_type_name);

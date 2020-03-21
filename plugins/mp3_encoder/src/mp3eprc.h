@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -20,23 +20,24 @@
 /**
  * @file   mp3eprc.h
  * @author Juan A. Rubio <juan.rubio@aratelia.com>
- * 
+ *
  * @brief  Tizonia - Mp3 Encoder processor class
- * 
- * 
+ *
+ *
  */
 
 #ifndef MP3EPRC_H
 #define MP3EPRC_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-void *
-mp3e_prc_class_init (void * ap_tos, void * ap_hdl);
-void *
-mp3e_prc_init (void * ap_tos, void * ap_hdl);
+  void *
+  mp3e_prc_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  mp3e_prc_init (void * ap_tos, void * ap_hdl);
 
 #ifdef __cplusplus
 }

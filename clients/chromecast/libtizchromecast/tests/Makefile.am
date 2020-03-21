@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -30,4 +30,3 @@ check_tizchromecast_CFLAGS = \
 check_tizchromecast_LDADD = \
 	$(top_builddir)/src/libtizchromecast.la \
 	@CHECK_LIBS@
-

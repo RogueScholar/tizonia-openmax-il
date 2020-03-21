@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -34,11 +34,13 @@ extern "C"
 {
 #endif
 
-  void * fr_prc_class_init (void * ap_tos, void * ap_hdl);
-  void * fr_prc_init (void * ap_tos, void * ap_hdl);
+  void *
+  fr_prc_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  fr_prc_init (void * ap_tos, void * ap_hdl);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* FRPRC_H */
+#endif /* FRPRC_H */

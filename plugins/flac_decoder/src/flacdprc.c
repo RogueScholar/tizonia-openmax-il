@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -184,8 +184,9 @@ release_header (flacd_prc_t * ap_prc, const OMX_U32 a_pid)
   {
     OMX_ERRORTYPE rc = OMX_ErrorNone;
     p_hdr->nOffset = 0;
-    if (OMX_ErrorNone != (rc = tiz_krn_release_buffer (
-                            tiz_get_krn (handleOf (ap_prc)), a_pid, p_hdr)))
+    if (OMX_ErrorNone
+        != (rc = tiz_krn_release_buffer (tiz_get_krn (handleOf (ap_prc)), a_pid,
+                                         p_hdr)))
       {
         TIZ_ERROR (handleOf (ap_prc),
                    "[%s] : Releasing HEADER [%p] pid [%d] "
@@ -255,8 +256,9 @@ input_data_available (flacd_prc_t * ap_prc)
 
   if (ap_prc->store_offset_ < ARATELIA_FLAC_DECODER_BUFFER_THRESHOLD)
     {
-      while (!done && ((p_hdr = get_header (
-                          ap_prc, ARATELIA_FLAC_DECODER_INPUT_PORT_INDEX))))
+      while (!done
+             && ((p_hdr = get_header (ap_prc,
+                                      ARATELIA_FLAC_DECODER_INPUT_PORT_INDEX))))
         {
           int bytes_stored = store_data (
             ap_prc, p_hdr->pBuffer + p_hdr->nOffset, p_hdr->nFilledLen);
@@ -496,9 +498,10 @@ write_cb (const FLAC__StreamDecoder * ap_decoder, const FLAC__Frame * ap_frame,
              ap_frame->header.blocksize, ap_frame->header.channels,
              ap_frame->header.bits_per_sample);
 
-  if (p_prc->channels_ > 2 || (ap_frame->header.bits_per_sample != 8
-                               && ap_frame->header.bits_per_sample != 16
-                               && ap_frame->header.bits_per_sample != 24))
+  if (p_prc->channels_ > 2
+      || (ap_frame->header.bits_per_sample != 8
+          && ap_frame->header.bits_per_sample != 16
+          && ap_frame->header.bits_per_sample != 24))
     {
       TIZ_ERROR (handleOf (p_prc),
                  "Only stereo streams are supported"

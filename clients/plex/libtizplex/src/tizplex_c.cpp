@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -57,7 +58,8 @@ static int plex_alloc_data (tiz_plex_t *ap_plex, const char *ap_base_url,
   assert (ap_plex);
   try
     {
-      ap_plex->p_proxy_ = new tizplex (ap_base_url, ap_auth_token, ap_music_section);
+      ap_plex->p_proxy_
+          = new tizplex (ap_base_url, ap_auth_token, ap_music_section);
     }
   catch (...)
     {

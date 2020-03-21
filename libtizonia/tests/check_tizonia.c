@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -57,7 +57,7 @@
 #define TIZ_LOG_CATEGORY_NAME "tiz.tizonia.check"
 #endif
 
-char *pg_rmd_path;
+char * pg_rmd_path;
 pid_t g_rmd_pid;
 
 #define COMPONENT_NAME "OMX.Aratelia.tizonia.test_component"
@@ -71,7 +71,7 @@ pid_t g_rmd_pid;
 /* duration of event timeout in msec when we don't expect event to be set */
 #define TIMEOUT_EXPECTING_FAILURE 2000
 
-typedef void *cc_ctx_t;
+typedef void * cc_ctx_t;
 typedef struct check_common_context check_common_context_t;
 struct check_common_context
 {
@@ -81,55 +81,55 @@ struct check_common_context
   volatile OMX_STATETYPE state;
   OMX_ERRORTYPE error;
   OMX_U32 port;
-  OMX_BUFFERHEADERTYPE *p_hdr;
+  OMX_BUFFERHEADERTYPE * p_hdr;
 };
 
 static bool
 refresh_rm_db (void)
 {
   bool rv = false;
-  const char *p_rmdb_path = NULL;
-  const char *p_sqlite_path = NULL;
-  const char *p_init_path = NULL;
-  const char *p_rmd_path = NULL;
+  const char * p_rmdb_path = NULL;
+  const char * p_sqlite_path = NULL;
+  const char * p_init_path = NULL;
+  const char * p_rmd_path = NULL;
 
-  p_rmdb_path = tiz_rcfile_get_value("resource-management", "rmdb");
-  p_sqlite_path = tiz_rcfile_get_value("resource-management",
-                                       "rmdb.sqlite_script");
-  p_init_path = tiz_rcfile_get_value("resource-management",
-                                     "rmdb.init_script");
+  p_rmdb_path = tiz_rcfile_get_value ("resource-management", "rmdb");
+  p_sqlite_path
+    = tiz_rcfile_get_value ("resource-management", "rmdb.sqlite_script");
+  p_init_path
+    = tiz_rcfile_get_value ("resource-management", "rmdb.init_script");
 
-  p_rmd_path = tiz_rcfile_get_value("resource-management", "rmd.path");
+  p_rmd_path = tiz_rcfile_get_value ("resource-management", "rmd.path");
 
   if (!p_rmdb_path || !p_sqlite_path || !p_init_path || !p_rmd_path)
 
     {
-      TIZ_LOG(TIZ_PRIORITY_TRACE, "Test data not available...");
+      TIZ_LOG (TIZ_PRIORITY_TRACE, "Test data not available...");
     }
   else
     {
       pg_rmd_path = strndup (p_rmd_path, PATH_MAX);
 
-      TIZ_LOG(TIZ_PRIORITY_TRACE, "RM daemon [%s] ...", pg_rmd_path);
+      TIZ_LOG (TIZ_PRIORITY_TRACE, "RM daemon [%s] ...", pg_rmd_path);
 
       /* Re-fresh the rm db */
-      size_t total_len = strlen (p_init_path)
-        + strlen (p_sqlite_path)
-        + strlen (p_rmdb_path) + 4;
-      char *p_cmd = tiz_mem_calloc (1, total_len);
+      size_t total_len = strlen (p_init_path) + strlen (p_sqlite_path)
+                         + strlen (p_rmdb_path) + 4;
+      char * p_cmd = tiz_mem_calloc (1, total_len);
       if (p_cmd)
         {
-          snprintf(p_cmd, total_len -1, "%s %s %s",
-                  p_init_path, p_sqlite_path, p_rmdb_path);
+          snprintf (p_cmd, total_len - 1, "%s %s %s", p_init_path,
+                    p_sqlite_path, p_rmdb_path);
           if (-1 != system (p_cmd))
             {
-              TIZ_LOG(TIZ_PRIORITY_TRACE, "Successfully run [%s] script...", p_cmd);
+              TIZ_LOG (TIZ_PRIORITY_TRACE, "Successfully run [%s] script...",
+                       p_cmd);
               rv = true;
             }
           else
             {
-              TIZ_LOG(TIZ_PRIORITY_TRACE, 
-                      "Error while executing db init shell script...");
+              TIZ_LOG (TIZ_PRIORITY_TRACE,
+                       "Error while executing db init shell script...");
             }
           tiz_mem_free (p_cmd);
         }
@@ -143,7 +143,7 @@ setup (void)
 {
   int error = 0;
 
-  fail_if (!refresh_rm_db());
+  fail_if (!refresh_rm_db ());
 
   /* Start the rm daemon */
   g_rmd_pid = fork ();
@@ -156,11 +156,10 @@ setup (void)
   else
     {
       TIZ_LOG (TIZ_PRIORITY_TRACE, "Starting the RM Daemon");
-      const char *arg0 = "";
+      const char * arg0 = "";
       error = execlp (pg_rmd_path, arg0, (char *) NULL);
       fail_if (error == -1);
     }
-
 }
 
 static void
@@ -179,8 +178,8 @@ teardown (void)
 static OMX_ERRORTYPE
 _ctx_init (cc_ctx_t * app_ctx)
 {
-  check_common_context_t *p_ctx =
-    tiz_mem_alloc (sizeof (check_common_context_t));
+  check_common_context_t * p_ctx
+    = tiz_mem_alloc (sizeof (check_common_context_t));
 
   if (!p_ctx)
     {
@@ -207,18 +206,17 @@ _ctx_init (cc_ctx_t * app_ctx)
   p_ctx->port = OMX_ALL;
   p_ctx->p_hdr = NULL;
 
-  * app_ctx = p_ctx;
+  *app_ctx = p_ctx;
 
   return OMX_ErrorNone;
-
 }
 
 static OMX_ERRORTYPE
 _ctx_destroy (cc_ctx_t * app_ctx)
 {
-  check_common_context_t *p_ctx = NULL;
+  check_common_context_t * p_ctx = NULL;
   assert (app_ctx);
-  p_ctx = * app_ctx;
+  p_ctx = *app_ctx;
 
   if (tiz_mutex_lock (&p_ctx->mutex))
     {
@@ -232,15 +230,14 @@ _ctx_destroy (cc_ctx_t * app_ctx)
   tiz_mem_free (p_ctx);
 
   return OMX_ErrorNone;
-
 }
 
 static OMX_ERRORTYPE
 _ctx_signal (cc_ctx_t * app_ctx)
 {
-  check_common_context_t *p_ctx = NULL;
+  check_common_context_t * p_ctx = NULL;
   assert (app_ctx);
-  p_ctx = * app_ctx;
+  p_ctx = *app_ctx;
 
   if (tiz_mutex_lock (&p_ctx->mutex))
     {
@@ -258,13 +255,13 @@ static OMX_ERRORTYPE
 _ctx_wait (cc_ctx_t * app_ctx, OMX_U32 a_millis, OMX_BOOL * ap_has_timedout)
 {
   int retcode;
-  check_common_context_t *p_ctx = NULL;
+  check_common_context_t * p_ctx = NULL;
   assert (app_ctx);
-  p_ctx = * app_ctx;
+  p_ctx = *app_ctx;
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "a_millis [%u]", a_millis);
 
-  * ap_has_timedout = OMX_FALSE;
+  *ap_has_timedout = OMX_FALSE;
 
   if (tiz_mutex_lock (&p_ctx->mutex))
     {
@@ -275,7 +272,7 @@ _ctx_wait (cc_ctx_t * app_ctx, OMX_U32 a_millis, OMX_BOOL * ap_has_timedout)
     {
       if (!p_ctx->signaled)
         {
-          * ap_has_timedout = OMX_TRUE;
+          *ap_has_timedout = OMX_TRUE;
         }
     }
 
@@ -291,13 +288,12 @@ _ctx_wait (cc_ctx_t * app_ctx, OMX_U32 a_millis, OMX_BOOL * ap_has_timedout)
     {
       while (!p_ctx->signaled)
         {
-          retcode = tiz_cond_timedwait (&p_ctx->cond,
-                                          &p_ctx->mutex, a_millis);
+          retcode = tiz_cond_timedwait (&p_ctx->cond, &p_ctx->mutex, a_millis);
 
           /* TODO: Change this to OMX_ErrorTimeout */
           if (retcode == OMX_ErrorUndefined && !p_ctx->signaled)
             {
-              * ap_has_timedout = OMX_TRUE;
+              *ap_has_timedout = OMX_TRUE;
               break;
             }
         }
@@ -306,15 +302,14 @@ _ctx_wait (cc_ctx_t * app_ctx, OMX_U32 a_millis, OMX_BOOL * ap_has_timedout)
   tiz_mutex_unlock (&p_ctx->mutex);
 
   return OMX_ErrorNone;
-
 }
 
 static OMX_ERRORTYPE
 _ctx_reset (cc_ctx_t * app_ctx)
 {
-  check_common_context_t *p_ctx = NULL;
+  check_common_context_t * p_ctx = NULL;
   assert (app_ctx);
-  p_ctx = * app_ctx;
+  p_ctx = *app_ctx;
 
   if (tiz_mutex_lock (&p_ctx->mutex))
     {
@@ -333,13 +328,12 @@ _ctx_reset (cc_ctx_t * app_ctx)
 }
 
 OMX_ERRORTYPE
-check_EventHandler (OMX_HANDLETYPE ap_hdl,
-                    OMX_PTR ap_app_data,
-                    OMX_EVENTTYPE eEvent,
-                    OMX_U32 nData1, OMX_U32 nData2, OMX_PTR pEventData)
+check_EventHandler (OMX_HANDLETYPE ap_hdl, OMX_PTR ap_app_data,
+                    OMX_EVENTTYPE eEvent, OMX_U32 nData1, OMX_U32 nData2,
+                    OMX_PTR pEventData)
 {
-  check_common_context_t *p_ctx = NULL;
-  cc_ctx_t *pp_ctx = NULL;
+  check_common_context_t * p_ctx = NULL;
+  cc_ctx_t * pp_ctx = NULL;
   assert (ap_app_data);
   pp_ctx = (cc_ctx_t *) ap_app_data;
   p_ctx = *pp_ctx;
@@ -350,50 +344,51 @@ check_EventHandler (OMX_HANDLETYPE ap_hdl,
     {
       switch ((OMX_COMMANDTYPE) (nData1))
         {
-        case OMX_CommandStateSet:
-          {
-            p_ctx->state = (OMX_STATETYPE) (nData2);
-            p_ctx->error = (OMX_ERRORTYPE) (pEventData);
-            TIZ_LOG (TIZ_PRIORITY_TRACE, "Component transitioned to [%s] - pEventData [%s]",
-                     tiz_fsm_state_to_str ((tiz_fsm_state_id_t) (nData2)),
-                     tiz_err_to_str (p_ctx->error));
-            _ctx_signal (pp_ctx);
+          case OMX_CommandStateSet:
+            {
+              p_ctx->state = (OMX_STATETYPE) (nData2);
+              p_ctx->error = (OMX_ERRORTYPE) (pEventData);
+              TIZ_LOG (TIZ_PRIORITY_TRACE,
+                       "Component transitioned to [%s] - pEventData [%s]",
+                       tiz_fsm_state_to_str ((tiz_fsm_state_id_t) (nData2)),
+                       tiz_err_to_str (p_ctx->error));
+              _ctx_signal (pp_ctx);
+              break;
+            }
+
+          case OMX_CommandPortDisable:
+            {
+              TIZ_LOG (TIZ_PRIORITY_TRACE,
+                       "Port  [%d] transitioned to DISABLED", nData2);
+              p_ctx->port = (OMX_STATETYPE) (nData2);
+              p_ctx->error = (OMX_ERRORTYPE) (pEventData);
+              _ctx_signal (pp_ctx);
+            }
             break;
-          }
 
-        case OMX_CommandPortDisable:
-          {
-            TIZ_LOG (TIZ_PRIORITY_TRACE, "Port  [%d] transitioned to DISABLED",
-                     nData2);
-            p_ctx->port = (OMX_STATETYPE) (nData2);
-            p_ctx->error = (OMX_ERRORTYPE) (pEventData);
-            _ctx_signal (pp_ctx);
-          }
-          break;
+          case OMX_CommandPortEnable:
+            {
+              TIZ_LOG (TIZ_PRIORITY_TRACE, "Port  [%d] transitioned to ENABLED",
+                       nData2);
+              p_ctx->port = (OMX_STATETYPE) (nData2);
+              p_ctx->error = (OMX_ERRORTYPE) (pEventData);
+              _ctx_signal (pp_ctx);
+            }
+            break;
 
-        case OMX_CommandPortEnable:
-          {
-            TIZ_LOG (TIZ_PRIORITY_TRACE, "Port  [%d] transitioned to ENABLED",
-                     nData2);
-            p_ctx->port = (OMX_STATETYPE) (nData2);
-            p_ctx->error = (OMX_ERRORTYPE) (pEventData);
-            _ctx_signal (pp_ctx);
-          }
-          break;
+          default:
+            {
+              TIZ_LOG (TIZ_PRIORITY_TRACE, "[%s] received!!",
+                       tiz_cmd_to_str (nData1));
 
-        default:
-          {
-            TIZ_LOG (TIZ_PRIORITY_TRACE, "[%s] received!!",
-                     tiz_cmd_to_str (nData1));
-
-            assert (0);
-          }
-
+              assert (0);
+            }
         };
     }
   else if (OMX_EventError == eEvent)
     {
-      TIZ_LOG (TIZ_PRIORITY_TRACE, "Component reported error [%s] - Test FAILED !!!.",
+      TIZ_LOG (TIZ_PRIORITY_TRACE,
+               "Component reported error [%s] - Test FAILED !!!.",
                tiz_err_to_str ((OMX_ERRORTYPE) (nData1)));
       fail ();
     }
@@ -403,15 +398,14 @@ check_EventHandler (OMX_HANDLETYPE ap_hdl,
     }
 
   return OMX_ErrorNone;
-
 }
 
-OMX_ERRORTYPE check_EmptyBufferDone
-  (OMX_HANDLETYPE ap_hdl,
-   OMX_PTR ap_app_data, OMX_BUFFERHEADERTYPE * ap_buf)
+OMX_ERRORTYPE
+check_EmptyBufferDone (OMX_HANDLETYPE ap_hdl, OMX_PTR ap_app_data,
+                       OMX_BUFFERHEADERTYPE * ap_buf)
 {
-  check_common_context_t *p_ctx = NULL;
-  cc_ctx_t *pp_ctx = NULL;
+  check_common_context_t * p_ctx = NULL;
+  cc_ctx_t * pp_ctx = NULL;
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "EmptyBufferDone: BUFFER [%p]", ap_buf);
 
@@ -424,32 +418,27 @@ OMX_ERRORTYPE check_EmptyBufferDone
   _ctx_signal (pp_ctx);
 
   return OMX_ErrorNone;
-
 }
 
-OMX_ERRORTYPE check_FillBufferDone
-  (OMX_HANDLETYPE ap_hdl,
-   OMX_PTR ap_app_data, OMX_BUFFERHEADERTYPE * ap_buf)
+OMX_ERRORTYPE
+check_FillBufferDone (OMX_HANDLETYPE ap_hdl, OMX_PTR ap_app_data,
+                      OMX_BUFFERHEADERTYPE * ap_buf)
 {
   return OMX_ErrorNone;
 }
 
-
-static OMX_CALLBACKTYPE _check_cbacks = {
-  check_EventHandler,
-  check_EmptyBufferDone,
-  check_FillBufferDone
-};
+static OMX_CALLBACKTYPE _check_cbacks
+  = {check_EventHandler, check_EmptyBufferDone, check_FillBufferDone};
 
 static OMX_ERRORTYPE
-check_tizonia_GetParameter (OMX_HANDLETYPE ap_hdl,
-                             OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
+check_tizonia_GetParameter (OMX_HANDLETYPE ap_hdl, OMX_INDEXTYPE a_index,
+                            OMX_PTR ap_struct)
 {
-  fail_if(OMX_IndexParamPortDefinition != a_index);
+  fail_if (OMX_IndexParamPortDefinition != a_index);
 
   if (OMX_IndexParamPortDefinition == a_index)
     {
-      OMX_PARAM_PORTDEFINITIONTYPE *p_port_def = ap_struct;
+      OMX_PARAM_PORTDEFINITIONTYPE * p_port_def = ap_struct;
       p_port_def->eDir = OMX_DirOutput; /* Pretend this is an output port */
     }
 
@@ -457,21 +446,21 @@ check_tizonia_GetParameter (OMX_HANDLETYPE ap_hdl,
 }
 
 static OMX_ERRORTYPE
-check_tizonia_SetParameter(OMX_HANDLETYPE ap_hdl,
-                            OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
+check_tizonia_SetParameter (OMX_HANDLETYPE ap_hdl, OMX_INDEXTYPE a_index,
+                            OMX_PTR ap_struct)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-check_tizonia_SetConfig(OMX_HANDLETYPE ap_hdl,
-                        OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
+check_tizonia_SetConfig (OMX_HANDLETYPE ap_hdl, OMX_INDEXTYPE a_index,
+                         OMX_PTR ap_struct)
 {
   return OMX_ErrorNone;
 }
 
 static void
-init_fake_comp(OMX_COMPONENTTYPE *p_hdl)
+init_fake_comp (OMX_COMPONENTTYPE * p_hdl)
 {
   /* Init the component hdl */
   p_hdl->nVersion.s.nVersionMajor = 1;
@@ -484,7 +473,8 @@ init_fake_comp(OMX_COMPONENTTYPE *p_hdl)
   p_hdl->GetParameter = check_tizonia_GetParameter;
   p_hdl->SetParameter = check_tizonia_SetParameter;
   p_hdl->GetConfig = NULL;
-  p_hdl->SetConfig = check_tizonia_SetConfig;;
+  p_hdl->SetConfig = check_tizonia_SetConfig;
+  ;
   p_hdl->GetExtensionIndex = NULL;
   p_hdl->GetState = NULL;
   p_hdl->ComponentTunnelRequest = NULL;
@@ -497,7 +487,6 @@ init_fake_comp(OMX_COMPONENTTYPE *p_hdl)
   p_hdl->ComponentDeInit = NULL;
   p_hdl->UseEGLImage = NULL;
   p_hdl->ComponentRoleEnum = NULL;
-
 }
 
 /*
@@ -516,8 +505,8 @@ START_TEST (test_tizonia_getstate)
   fail_if (OMX_ErrorNone != error);
 
   /* Instantiate the component */
-  error = OMX_GetHandle (&p_hdl,
-                         COMPONENT_NAME, (OMX_PTR *) (&appData), &callBacks);
+  error = OMX_GetHandle (&p_hdl, COMPONENT_NAME, (OMX_PTR *) (&appData),
+                         &callBacks);
   fail_if (OMX_ErrorNone != error);
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "p_hdl [%X]", p_hdl);
@@ -544,8 +533,8 @@ START_TEST (test_tizonia_gethandle_freehandle)
   error = OMX_Init ();
   fail_if (OMX_ErrorNone != error);
 
-  error = OMX_GetHandle (&p_hdl,
-                         COMPONENT_NAME, (OMX_PTR *) (&appData), &callBacks);
+  error = OMX_GetHandle (&p_hdl, COMPONENT_NAME, (OMX_PTR *) (&appData),
+                         &callBacks);
   fail_if (OMX_ErrorNone != error);
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "p_hdl [%p]", p_hdl);
@@ -570,11 +559,11 @@ START_TEST (test_tizonia_getparameter)
   error = OMX_Init ();
   fail_if (OMX_ErrorNone != error);
 
-  error = OMX_GetHandle (&p_hdl,
-                         COMPONENT_NAME, (OMX_PTR *) (&appData), &callBacks);
+  error = OMX_GetHandle (&p_hdl, COMPONENT_NAME, (OMX_PTR *) (&appData),
+                         &callBacks);
 
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "test_tizonia_getparameter: OMX_GetHandle error [%d]",
-             error);
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "test_tizonia_getparameter: OMX_GetHandle error [%d]", error);
   fail_if (OMX_ErrorNone != error);
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "p_hdl [%p]", p_hdl);
@@ -584,25 +573,25 @@ START_TEST (test_tizonia_getparameter)
   port_def.nPortIndex = 0;
 
   error = OMX_GetParameter (p_hdl, index, &port_def);
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "test_tizonia_getparameter: OMX_GetParameter error [%d]",
-             error);
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "test_tizonia_getparameter: OMX_GetParameter error [%d]", error);
   fail_if (OMX_ErrorNone != error);
 
   error = OMX_FreeHandle (p_hdl);
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "test_tizonia_getparameter: OMX_FreeHandle error [%d]",
-             error);
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "test_tizonia_getparameter: OMX_FreeHandle error [%d]", error);
   fail_if (OMX_ErrorNone != error);
 
   error = OMX_Deinit ();
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "test_tizonia_getparameter: OMX_Deinit error [%d]",
-             error);
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "test_tizonia_getparameter: OMX_Deinit error [%d]", error);
   fail_if (OMX_ErrorNone != error);
 }
 END_TEST
 
 START_TEST (test_tizonia_roles)
 {
-  OMX_S8 role [OMX_MAX_STRINGNAME_SIZE];
+  OMX_S8 role[OMX_MAX_STRINGNAME_SIZE];
   OMX_ERRORTYPE error = OMX_ErrorNone;
   OMX_HANDLETYPE p_hdl = 0;
   OMX_U32 appData;
@@ -615,11 +604,11 @@ START_TEST (test_tizonia_roles)
   error = OMX_Init ();
   fail_if (OMX_ErrorNone != error);
 
-  error = OMX_GetHandle (&p_hdl,
-                         COMPONENT_NAME, (OMX_PTR *) (&appData), &callBacks);
+  error = OMX_GetHandle (&p_hdl, COMPONENT_NAME, (OMX_PTR *) (&appData),
+                         &callBacks);
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "test_tizonia_roles: OMX_GetHandle error [%d]",
-             error);
+           error);
   fail_if (OMX_ErrorNone != error);
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "p_hdl [%p]", p_hdl);
@@ -629,7 +618,8 @@ START_TEST (test_tizonia_roles)
       error = OMX_RoleOfComponentEnum ((OMX_STRING) role, COMPONENT_NAME, i);
       if (OMX_ErrorNone == error)
         {
-          TIZ_LOG (TIZ_PRIORITY_TRACE, "test_tizonia_roles: [%s] -> Role [%d] -> [%s]",
+          TIZ_LOG (TIZ_PRIORITY_TRACE,
+                   "test_tizonia_roles: [%s] -> Role [%d] -> [%s]",
                    tiz_err_to_str (error), i, role);
         }
     }
@@ -644,8 +634,10 @@ START_TEST (test_tizonia_roles)
   strcpy ((OMX_STRING) role_type.cRole, COMPONENT_ROLE1);
 
   /* Set role #1 */
-  error = OMX_SetParameter (p_hdl, OMX_IndexParamStandardComponentRole, &role_type);
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "test_tizonia_roles: OMX_SetParameter COMPONENT_ROLE1 [%s]",
+  error
+    = OMX_SetParameter (p_hdl, OMX_IndexParamStandardComponentRole, &role_type);
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "test_tizonia_roles: OMX_SetParameter COMPONENT_ROLE1 [%s]",
            tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
@@ -653,8 +645,9 @@ START_TEST (test_tizonia_roles)
   TIZ_INIT_OMX_PORT_STRUCT (port_def, 0);
 
   error = OMX_GetParameter (p_hdl, OMX_IndexParamPortDefinition, &port_def);
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "test_tizonia_getparameter: OMX_GetParameter [%s]",
-             tiz_err_to_str (error));
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "test_tizonia_getparameter: OMX_GetParameter [%s]",
+           tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
   bufferCountActual = port_def.nBufferCountActual;
@@ -663,21 +656,24 @@ START_TEST (test_tizonia_roles)
   port_def.nBufferCountActual = 7;
 
   error = OMX_SetParameter (p_hdl, OMX_IndexParamPortDefinition, &port_def);
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "test_tizonia_getparameter: OMX_SetParameter [%s]",
-             tiz_err_to_str (error));
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "test_tizonia_getparameter: OMX_SetParameter [%s]",
+           tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
   /* Set role #2 */
   strcpy ((OMX_STRING) role_type.cRole, COMPONENT_ROLE2);
-  error = OMX_SetParameter (p_hdl, OMX_IndexParamStandardComponentRole, &role_type);
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "test_tizonia_roles: OMX_SetParameter COMPONENT_ROLE2 [%s]",
+  error
+    = OMX_SetParameter (p_hdl, OMX_IndexParamStandardComponentRole, &role_type);
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "test_tizonia_roles: OMX_SetParameter COMPONENT_ROLE2 [%s]",
            tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
   /* Get port def */
   error = OMX_GetParameter (p_hdl, OMX_IndexParamPortDefinition, &port_def);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "test_tizonia_roles: OMX_GetParameter [%s]",
-             tiz_err_to_str (error));
+           tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
   /* Fail if nBufferCountActual differs from original */
@@ -685,8 +681,10 @@ START_TEST (test_tizonia_roles)
 
   /* Now set the "default" role */
   strcpy ((OMX_STRING) role_type.cRole, COMPONENT_DEFAULT_ROLE);
-  error = OMX_SetParameter (p_hdl, OMX_IndexParamStandardComponentRole, &role_type);
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "test_tizonia_roles: OMX_SetParameter COMPONENT_DEFAULT_ROLE [%s]",
+  error
+    = OMX_SetParameter (p_hdl, OMX_IndexParamStandardComponentRole, &role_type);
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "test_tizonia_roles: OMX_SetParameter COMPONENT_DEFAULT_ROLE [%s]",
            tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
@@ -714,22 +712,24 @@ START_TEST (test_tizonia_preannouncements_extension)
   error = OMX_Init ();
   fail_if (OMX_ErrorNone != error);
 
-  error = OMX_GetHandle (&p_hdl,
-                         COMPONENT_NAME, (OMX_PTR *) (&appData), &callBacks);
+  error = OMX_GetHandle (&p_hdl, COMPONENT_NAME, (OMX_PTR *) (&appData),
+                         &callBacks);
 
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "test_tizonia_preannouncements_extension: "
-           "OMX_GetHandle [%s]", tiz_err_to_str (error));
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "test_tizonia_preannouncements_extension: "
+           "OMX_GetHandle [%s]",
+           tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
-  error = OMX_GetExtensionIndex (p_hdl, OMX_TIZONIA_INDEX_PARAM_BUFFER_PREANNOUNCEMENTSMODE,
-                                 &ext_index);
+  error = OMX_GetExtensionIndex (
+    p_hdl, OMX_TIZONIA_INDEX_PARAM_BUFFER_PREANNOUNCEMENTSMODE, &ext_index);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "OMX_GetExtensionIndex error  [%s] index [%s]",
            tiz_err_to_str (error), tiz_idx_to_str (ext_index));
   fail_if (OMX_ErrorNone != error);
   fail_if (OMX_TizoniaIndexParamBufferPreAnnouncementsMode != ext_index);
 
   /* Get the preannouncementsmode struct and check that pre-announcements are
-     enabled */
+       enabled */
   pamode.nSize = sizeof (OMX_TIZONIA_PARAM_BUFFER_PREANNOUNCEMENTSMODETYPE);
   pamode.nVersion.nVersion = OMX_VERSION;
   pamode.nPortIndex = 0;
@@ -744,21 +744,18 @@ START_TEST (test_tizonia_preannouncements_extension)
   fail_if (OMX_ErrorNone != error);
 
   /* Get the preannouncementsmode struct and check that pre-announcements are
-     now disabled */
+       now disabled */
   error = OMX_GetParameter (p_hdl, ext_index, &pamode);
   fail_if (OMX_ErrorNone != error);
   fail_if (OMX_FALSE != pamode.bEnabled);
 
   error = OMX_FreeHandle (p_hdl);
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "OMX_FreeHandle [%s]",
-           tiz_err_to_str (error));
+  TIZ_LOG (TIZ_PRIORITY_TRACE, "OMX_FreeHandle [%s]", tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
   error = OMX_Deinit ();
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "OMX_Deinit [%s]",
-           tiz_err_to_str (error));
+  TIZ_LOG (TIZ_PRIORITY_TRACE, "OMX_Deinit [%s]", tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
-
 }
 END_TEST
 
@@ -769,11 +766,11 @@ START_TEST (test_tizonia_move_to_exe_and_transfer_with_allocbuffer)
   OMX_COMMANDTYPE cmd = OMX_CommandStateSet;
   OMX_STATETYPE state = OMX_StateIdle;
   cc_ctx_t ctx;
-  check_common_context_t *p_ctx = NULL;
+  check_common_context_t * p_ctx = NULL;
   OMX_BOOL timedout = OMX_FALSE;
   OMX_PARAM_PORTDEFINITIONTYPE port_def;
   OMX_INDEXTYPE index = OMX_IndexParamPortDefinition;
-  OMX_BUFFERHEADERTYPE *p_hdr = NULL;
+  OMX_BUFFERHEADERTYPE * p_hdr = NULL;
   OMX_U32 i;
 
   error = _ctx_init (&ctx);
@@ -800,7 +797,7 @@ START_TEST (test_tizonia_move_to_exe_and_transfer_with_allocbuffer)
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferSize [%d]", port_def.nBufferSize);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferCountActual [%d]",
-             port_def.nBufferCountActual);
+           port_def.nBufferCountActual);
 
   /* Initiate transition to IDLE */
   error = OMX_SendCommand (p_hdl, cmd, state, NULL);
@@ -809,7 +806,7 @@ START_TEST (test_tizonia_move_to_exe_and_transfer_with_allocbuffer)
   /* Allocate buffers */
   for (i = 0; i < port_def.nBufferCountActual; ++i)
     {
-      error = OMX_AllocateBuffer (p_hdl, &p_hdr, 0,  /* input port */
+      error = OMX_AllocateBuffer (p_hdl, &p_hdr, 0, /* input port */
                                   0, port_def.nBufferSize);
       fail_if (OMX_ErrorNone != error);
     }
@@ -819,7 +816,7 @@ START_TEST (test_tizonia_move_to_exe_and_transfer_with_allocbuffer)
   fail_if (OMX_ErrorNone != error);
   fail_if (OMX_TRUE == timedout);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "p_ctx->state [%s]",
-             tiz_fsm_state_to_str (p_ctx->state));
+           tiz_fsm_state_to_str (p_ctx->state));
   fail_if (OMX_StateIdle != p_ctx->state);
 
   /* Check state transition success */
@@ -839,7 +836,7 @@ START_TEST (test_tizonia_move_to_exe_and_transfer_with_allocbuffer)
   fail_if (OMX_ErrorNone != error);
   fail_if (OMX_TRUE == timedout);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "p_ctx->state [%s]",
-             tiz_fsm_state_to_str (p_ctx->state));
+           tiz_fsm_state_to_str (p_ctx->state));
   fail_if (OMX_StateExecuting != p_ctx->state);
 
   /* Transfer buffer */
@@ -865,7 +862,7 @@ START_TEST (test_tizonia_move_to_exe_and_transfer_with_allocbuffer)
   fail_if (OMX_ErrorNone != error);
   fail_if (OMX_TRUE == timedout);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "p_ctx->state [%s]",
-             tiz_fsm_state_to_str (p_ctx->state));
+           tiz_fsm_state_to_str (p_ctx->state));
   fail_if (OMX_StateIdle != p_ctx->state);
 
   /* Initiate transition to LOADED */
@@ -878,7 +875,7 @@ START_TEST (test_tizonia_move_to_exe_and_transfer_with_allocbuffer)
   fail_if (OMX_ErrorNone != error);
   for (i = 0; i < port_def.nBufferCountActual; ++i)
     {
-      error = OMX_FreeBuffer (p_hdl, 0,      /* input port */
+      error = OMX_FreeBuffer (p_hdl, 0, /* input port */
                               p_hdr);
       fail_if (OMX_ErrorNone != error);
     }
@@ -901,7 +898,7 @@ START_TEST (test_tizonia_move_to_exe_and_transfer_with_allocbuffer)
   error = OMX_Deinit ();
   fail_if (OMX_ErrorNone != error);
 
-  _ctx_destroy(&ctx);
+  _ctx_destroy (&ctx);
 }
 END_TEST
 
@@ -912,15 +909,15 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_no_buffers)
   OMX_COMMANDTYPE cmd = OMX_CommandStateSet;
   OMX_STATETYPE state = OMX_StateIdle;
   cc_ctx_t ctx;
-  check_common_context_t *p_ctx = NULL;
+  check_common_context_t * p_ctx = NULL;
   OMX_BOOL timedout = OMX_FALSE;
   OMX_PARAM_PORTDEFINITIONTYPE port_def;
   OMX_PARAM_BUFFERSUPPLIERTYPE supplier;
   OMX_INDEXTYPE index = OMX_IndexParamPortDefinition;
   OMX_COMPONENTTYPE fake_comp;
-  OMX_TUNNELSETUPTYPE tsetup = { 0, OMX_BufferSupplyUnspecified };
+  OMX_TUNNELSETUPTYPE tsetup = {0, OMX_BufferSupplyUnspecified};
 
-  init_fake_comp(&fake_comp);
+  init_fake_comp (&fake_comp);
 
   error = _ctx_init (&ctx);
   fail_if (OMX_ErrorNone != error);
@@ -950,7 +947,7 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_no_buffers)
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferSize [%d]", port_def.nBufferSize);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferCountActual [%d]",
-             port_def.nBufferCountActual);
+           port_def.nBufferCountActual);
 
   /* ----------------------------------------*/
   /* Set supplier settings to "non-supplier" */
@@ -959,20 +956,18 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_no_buffers)
   supplier.nVersion.nVersion = OMX_VERSION;
   supplier.nPortIndex = 0;
   supplier.eBufferSupplier = OMX_BufferSupplyOutput;
-  error = OMX_SetParameter (p_hdl, OMX_IndexParamCompBufferSupplier,
-                            &supplier);
+  error = OMX_SetParameter (p_hdl, OMX_IndexParamCompBufferSupplier, &supplier);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "[%s] OMX_BufferSupplyInput [%s]",
-             COMPONENT_NAME, tiz_err_to_str(error));
+           COMPONENT_NAME, tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
   /* -------------------- */
   /* Create a fake tunnel */
   /* -------------------- */
-  error = ((OMX_COMPONENTTYPE*)p_hdl)->ComponentTunnelRequest (p_hdl,
-                                                                  0, /* port index */
-                                                                  &fake_comp,
-                                                                  0, /* whatever */
-                                                                  &tsetup);
+  error = ((OMX_COMPONENTTYPE *) p_hdl)
+            ->ComponentTunnelRequest (p_hdl, 0,      /* port index */
+                                      &fake_comp, 0, /* whatever */
+                                      &tsetup);
   fail_if (OMX_ErrorNone != error);
 
   /* --------------------------- */
@@ -1023,29 +1018,30 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_no_buffers)
   error = OMX_Deinit ();
   fail_if (OMX_ErrorNone != error);
 
-  _ctx_destroy(&ctx);
+  _ctx_destroy (&ctx);
 }
 END_TEST
 
-START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_tunneled_supplied_buffers)
+START_TEST (
+  test_tizonia_command_cancellation_loaded_to_idle_with_tunneled_supplied_buffers)
 {
   OMX_ERRORTYPE error = OMX_ErrorNone;
   OMX_HANDLETYPE p_hdl = 0;
   OMX_COMMANDTYPE cmd = OMX_CommandStateSet;
   OMX_STATETYPE state = OMX_StateIdle;
   cc_ctx_t ctx;
-  check_common_context_t *p_ctx = NULL;
+  check_common_context_t * p_ctx = NULL;
   OMX_BOOL timedout = OMX_FALSE;
   OMX_PARAM_PORTDEFINITIONTYPE port_def;
   OMX_PARAM_BUFFERSUPPLIERTYPE supplier;
   OMX_INDEXTYPE index = OMX_IndexParamPortDefinition;
-  OMX_BUFFERHEADERTYPE *p_hdr = NULL;
+  OMX_BUFFERHEADERTYPE * p_hdr = NULL;
   OMX_U32 i;
-  OMX_U8 *p_buf = NULL;
+  OMX_U8 * p_buf = NULL;
   OMX_COMPONENTTYPE fake_comp;
-  OMX_TUNNELSETUPTYPE tsetup = { 0, OMX_BufferSupplyUnspecified };
+  OMX_TUNNELSETUPTYPE tsetup = {0, OMX_BufferSupplyUnspecified};
 
-  init_fake_comp(&fake_comp);
+  init_fake_comp (&fake_comp);
 
   error = _ctx_init (&ctx);
   fail_if (OMX_ErrorNone != error);
@@ -1075,7 +1071,7 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_tunneled_suppl
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferSize [%d]", port_def.nBufferSize);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferCountActual [%d]",
-             port_def.nBufferCountActual);
+           port_def.nBufferCountActual);
 
   /* ------------------------------------ */
   /* Increase the buffer count on port #0 */
@@ -1088,7 +1084,7 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_tunneled_suppl
   fail_if (OMX_ErrorNone != error);
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferCountActual [%d]",
-             port_def.nBufferCountActual);
+           port_def.nBufferCountActual);
 
   /* ----------------------------------------*/
   /* Set supplier settings to "non-supplier" */
@@ -1097,21 +1093,18 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_tunneled_suppl
   supplier.nVersion.nVersion = OMX_VERSION;
   supplier.nPortIndex = 0;
   supplier.eBufferSupplier = OMX_BufferSupplyOutput;
-  error = OMX_SetParameter (p_hdl, OMX_IndexParamCompBufferSupplier,
-                            &supplier);
+  error = OMX_SetParameter (p_hdl, OMX_IndexParamCompBufferSupplier, &supplier);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "[%s] OMX_BufferSupplyInput [%s]",
-             COMPONENT_NAME, tiz_err_to_str(error));
+           COMPONENT_NAME, tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
   /* -------------------- */
   /* Create a fake tunnel */
   /* -------------------- */
-  error = ((OMX_COMPONENTTYPE*)p_hdl)->
-    ComponentTunnelRequest (p_hdl,
-                            0, /* port index */
-                            &fake_comp,
-                            0, /* whatever */
-                            &tsetup);
+  error = ((OMX_COMPONENTTYPE *) p_hdl)
+            ->ComponentTunnelRequest (p_hdl, 0,      /* port index */
+                                      &fake_comp, 0, /* whatever */
+                                      &tsetup);
   fail_if (OMX_ErrorNone != error);
 
   /* --------------------------- */
@@ -1134,7 +1127,7 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_tunneled_suppl
   p_buf = tiz_mem_alloc (port_def.nBufferSize * sizeof (OMX_U8));
   for (i = 0; i < port_def.nBufferCountActual - 1; ++i)
     {
-      error = OMX_UseBuffer (p_hdl, &p_hdr, 0,       /* input port */
+      error = OMX_UseBuffer (p_hdl, &p_hdr, 0, /* input port */
                              0, port_def.nBufferSize, p_buf);
       fail_if (OMX_ErrorNone != error);
     }
@@ -1153,7 +1146,7 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_tunneled_suppl
   /* ---------------------- */
   for (i = 0; i < port_def.nBufferCountActual - 1; ++i)
     {
-      error = OMX_FreeBuffer (p_hdl, 0,      /* input port */
+      error = OMX_FreeBuffer (p_hdl, 0, /* input port */
                               p_hdr);
       fail_if (OMX_ErrorNone != error);
     }
@@ -1193,27 +1186,28 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_tunneled_suppl
   error = OMX_Deinit ();
   fail_if (OMX_ErrorNone != error);
 
-  _ctx_destroy(&ctx);
+  _ctx_destroy (&ctx);
 }
 END_TEST
 
-START_TEST (test_tizonia_command_cancellation_loaded_to_idle_no_buffers_port_disabled_unblocks_transition)
+START_TEST (
+  test_tizonia_command_cancellation_loaded_to_idle_no_buffers_port_disabled_unblocks_transition)
 {
   OMX_ERRORTYPE error = OMX_ErrorNone;
   OMX_HANDLETYPE p_hdl = 0;
   OMX_COMMANDTYPE cmd = OMX_CommandStateSet;
   OMX_STATETYPE state = OMX_StateIdle;
   cc_ctx_t ctx;
-  check_common_context_t *p_ctx = NULL;
+  check_common_context_t * p_ctx = NULL;
   OMX_BOOL timedout = OMX_FALSE;
   OMX_PARAM_PORTDEFINITIONTYPE port_def;
   OMX_PARAM_BUFFERSUPPLIERTYPE supplier;
   OMX_INDEXTYPE index = OMX_IndexParamPortDefinition;
   OMX_COMPONENTTYPE fake_comp;
-  OMX_TUNNELSETUPTYPE tsetup = { 0, OMX_BufferSupplyUnspecified };
+  OMX_TUNNELSETUPTYPE tsetup = {0, OMX_BufferSupplyUnspecified};
   int loop = 0;
 
-  init_fake_comp(&fake_comp);
+  init_fake_comp (&fake_comp);
 
   error = _ctx_init (&ctx);
   fail_if (OMX_ErrorNone != error);
@@ -1243,7 +1237,7 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_no_buffers_port_dis
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferSize [%d]", port_def.nBufferSize);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferCountActual [%d]",
-             port_def.nBufferCountActual);
+           port_def.nBufferCountActual);
 
   /* ------------------------------------ */
   /* Increase the buffer count on port #0 */
@@ -1256,7 +1250,7 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_no_buffers_port_dis
   fail_if (OMX_ErrorNone != error);
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferCountActual [%d]",
-             port_def.nBufferCountActual);
+           port_def.nBufferCountActual);
 
   /* ----------------------------------------*/
   /* Set supplier settings to "non-supplier" */
@@ -1265,20 +1259,18 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_no_buffers_port_dis
   supplier.nVersion.nVersion = OMX_VERSION;
   supplier.nPortIndex = 0;
   supplier.eBufferSupplier = OMX_BufferSupplyOutput;
-  error = OMX_SetParameter (p_hdl, OMX_IndexParamCompBufferSupplier,
-                            &supplier);
+  error = OMX_SetParameter (p_hdl, OMX_IndexParamCompBufferSupplier, &supplier);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "[%s] OMX_BufferSupplyInput [%s]",
-             COMPONENT_NAME, tiz_err_to_str(error));
+           COMPONENT_NAME, tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
   /* -------------------- */
   /* Create a fake tunnel */
   /* -------------------- */
-  error = ((OMX_COMPONENTTYPE*)p_hdl)->ComponentTunnelRequest (p_hdl,
-                                                                  0, /* port index */
-                                                                  &fake_comp,
-                                                                  0, /* whatever */
-                                                                  &tsetup);
+  error = ((OMX_COMPONENTTYPE *) p_hdl)
+            ->ComponentTunnelRequest (p_hdl, 0,      /* port index */
+                                      &fake_comp, 0, /* whatever */
+                                      &tsetup);
   fail_if (OMX_ErrorNone != error);
 
   /* --------------------------- */
@@ -1317,10 +1309,10 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_no_buffers_port_dis
   /* Await transition callback */
   /* ------------------------- */
   /* NOTE: Since we need to receive two consecutive callbacks, we poll for the
-     second instead of waiting */
+       second instead of waiting */
   while (OMX_StateIdle != p_ctx->state && ++loop < 5)
     {
-      tiz_sleep(10000);
+      tiz_sleep (10000);
     }
   TIZ_LOG (TIZ_PRIORITY_TRACE, "state [%s]", tiz_fsm_state_to_str (state));
   fail_if (OMX_StateIdle != p_ctx->state);
@@ -1369,30 +1361,31 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_no_buffers_port_dis
   error = OMX_Deinit ();
   fail_if (OMX_ErrorNone != error);
 
-  _ctx_destroy(&ctx);
+  _ctx_destroy (&ctx);
 }
 END_TEST
 
-START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_buffers_port_disabled_cant_unblock_transition)
+START_TEST (
+  test_tizonia_command_cancellation_loaded_to_idle_with_buffers_port_disabled_cant_unblock_transition)
 {
   OMX_ERRORTYPE error = OMX_ErrorNone;
   OMX_HANDLETYPE p_hdl = 0;
   OMX_COMMANDTYPE cmd = OMX_CommandStateSet;
   OMX_STATETYPE state = OMX_StateIdle;
   cc_ctx_t ctx;
-  check_common_context_t *p_ctx = NULL;
+  check_common_context_t * p_ctx = NULL;
   OMX_BOOL timedout = OMX_FALSE;
   OMX_PARAM_PORTDEFINITIONTYPE port_def;
   OMX_PARAM_BUFFERSUPPLIERTYPE supplier;
   OMX_INDEXTYPE index = OMX_IndexParamPortDefinition;
-  OMX_BUFFERHEADERTYPE *p_hdr = NULL;
+  OMX_BUFFERHEADERTYPE * p_hdr = NULL;
   OMX_U32 i;
-  OMX_U8 *p_buf = NULL;
+  OMX_U8 * p_buf = NULL;
   OMX_COMPONENTTYPE fake_comp;
-  OMX_TUNNELSETUPTYPE tsetup = { 0, OMX_BufferSupplyUnspecified };
+  OMX_TUNNELSETUPTYPE tsetup = {0, OMX_BufferSupplyUnspecified};
   int loop = 0;
 
-  init_fake_comp(&fake_comp);
+  init_fake_comp (&fake_comp);
 
   error = _ctx_init (&ctx);
   fail_if (OMX_ErrorNone != error);
@@ -1422,7 +1415,7 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_buffers_port_d
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferSize [%d]", port_def.nBufferSize);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferCountActual [%d]",
-             port_def.nBufferCountActual);
+           port_def.nBufferCountActual);
 
   /* ------------------------------------ */
   /* Increase the buffer count on port #0 */
@@ -1435,7 +1428,7 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_buffers_port_d
   fail_if (OMX_ErrorNone != error);
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferCountActual [%d]",
-             port_def.nBufferCountActual);
+           port_def.nBufferCountActual);
 
   /* ----------------------------------------*/
   /* Set supplier settings to "non-supplier" */
@@ -1444,20 +1437,18 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_buffers_port_d
   supplier.nVersion.nVersion = OMX_VERSION;
   supplier.nPortIndex = 0;
   supplier.eBufferSupplier = OMX_BufferSupplyOutput;
-  error = OMX_SetParameter (p_hdl, OMX_IndexParamCompBufferSupplier,
-                            &supplier);
+  error = OMX_SetParameter (p_hdl, OMX_IndexParamCompBufferSupplier, &supplier);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "[%s] OMX_BufferSupplyInput [%s]",
-             COMPONENT_NAME, tiz_err_to_str(error));
+           COMPONENT_NAME, tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
   /* -------------------- */
   /* Create a fake tunnel */
   /* -------------------- */
-  error = ((OMX_COMPONENTTYPE*)p_hdl)->ComponentTunnelRequest (p_hdl,
-                                                                  0, /* port index */
-                                                                  &fake_comp,
-                                                                  0, /* whatever */
-                                                                  &tsetup);
+  error = ((OMX_COMPONENTTYPE *) p_hdl)
+            ->ComponentTunnelRequest (p_hdl, 0,      /* port index */
+                                      &fake_comp, 0, /* whatever */
+                                      &tsetup);
   fail_if (OMX_ErrorNone != error);
 
   /* --------------------------- */
@@ -1480,7 +1471,7 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_buffers_port_d
   p_buf = tiz_mem_alloc (port_def.nBufferSize * sizeof (OMX_U8));
   for (i = 0; i < port_def.nBufferCountActual - 1; ++i)
     {
-      error = OMX_UseBuffer (p_hdl, &p_hdr, 0,       /* input port */
+      error = OMX_UseBuffer (p_hdl, &p_hdr, 0, /* input port */
                              0, port_def.nBufferSize, p_buf);
       fail_if (OMX_ErrorNone != error);
     }
@@ -1499,7 +1490,7 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_buffers_port_d
   /* ---------------------- */
   for (i = 0; i < port_def.nBufferCountActual - 1; ++i)
     {
-      error = OMX_FreeBuffer (p_hdl, 0,      /* input port */
+      error = OMX_FreeBuffer (p_hdl, 0, /* input port */
                               p_hdr);
       fail_if (OMX_ErrorNone != error);
     }
@@ -1527,10 +1518,10 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_buffers_port_d
   /* Await transition callback */
   /* ------------------------- */
   /* NOTE: Since we need to receive two consecutive callbacks, we poll for the
-     second instead of waiting */
+       second instead of waiting */
   while (OMX_StateIdle != p_ctx->state && ++loop < 5)
     {
-      tiz_sleep(10000);
+      tiz_sleep (10000);
     }
   TIZ_LOG (TIZ_PRIORITY_TRACE, "state [%s]", tiz_fsm_state_to_str (state));
   fail_if (OMX_StateIdle != p_ctx->state);
@@ -1558,7 +1549,8 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_buffers_port_d
   /* ------------------------- */
   error = _ctx_wait (&ctx, TIMEOUT_EXPECTING_SUCCESS, &timedout);
   fail_if (OMX_ErrorNone != error);
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "state [%s]", tiz_fsm_state_to_str (p_ctx->state));
+  TIZ_LOG (TIZ_PRIORITY_TRACE, "state [%s]",
+           tiz_fsm_state_to_str (p_ctx->state));
   fail_if (OMX_TRUE == timedout);
   fail_if (OMX_StateLoaded != p_ctx->state);
   fail_if (OMX_ErrorNone != p_ctx->error);
@@ -1580,7 +1572,7 @@ START_TEST (test_tizonia_command_cancellation_loaded_to_idle_with_buffers_port_d
   error = OMX_Deinit ();
   fail_if (OMX_ErrorNone != error);
 
-  _ctx_destroy(&ctx);
+  _ctx_destroy (&ctx);
 }
 END_TEST
 
@@ -1591,15 +1583,15 @@ START_TEST (test_tizonia_command_cancellation_disabled_to_enabled_no_buffers)
   OMX_COMMANDTYPE cmd = OMX_CommandStateSet;
   OMX_STATETYPE state = OMX_StateIdle;
   cc_ctx_t ctx;
-  check_common_context_t *p_ctx = NULL;
+  check_common_context_t * p_ctx = NULL;
   OMX_BOOL timedout = OMX_FALSE;
   OMX_PARAM_PORTDEFINITIONTYPE port_def;
   OMX_PARAM_BUFFERSUPPLIERTYPE supplier;
   OMX_INDEXTYPE index = OMX_IndexParamPortDefinition;
   OMX_COMPONENTTYPE fake_comp;
-  OMX_TUNNELSETUPTYPE tsetup = { 0, OMX_BufferSupplyUnspecified };
+  OMX_TUNNELSETUPTYPE tsetup = {0, OMX_BufferSupplyUnspecified};
 
-  init_fake_comp(&fake_comp);
+  init_fake_comp (&fake_comp);
 
   error = _ctx_init (&ctx);
   fail_if (OMX_ErrorNone != error);
@@ -1629,7 +1621,7 @@ START_TEST (test_tizonia_command_cancellation_disabled_to_enabled_no_buffers)
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferSize [%d]", port_def.nBufferSize);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferCountActual [%d]",
-             port_def.nBufferCountActual);
+           port_def.nBufferCountActual);
 
   /* ----------------------------------------*/
   /* Set supplier settings to "non-supplier" */
@@ -1638,20 +1630,18 @@ START_TEST (test_tizonia_command_cancellation_disabled_to_enabled_no_buffers)
   supplier.nVersion.nVersion = OMX_VERSION;
   supplier.nPortIndex = 0;
   supplier.eBufferSupplier = OMX_BufferSupplyOutput;
-  error = OMX_SetParameter (p_hdl, OMX_IndexParamCompBufferSupplier,
-                            &supplier);
+  error = OMX_SetParameter (p_hdl, OMX_IndexParamCompBufferSupplier, &supplier);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "[%s] OMX_BufferSupplyInput [%s]",
-             COMPONENT_NAME, tiz_err_to_str(error));
+           COMPONENT_NAME, tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
   /* -------------------- */
   /* Create a fake tunnel */
   /* -------------------- */
-  error = ((OMX_COMPONENTTYPE*)p_hdl)->ComponentTunnelRequest (p_hdl,
-                                                                  0, /* port index */
-                                                                  &fake_comp,
-                                                                  0, /* whatever */
-                                                                  &tsetup);
+  error = ((OMX_COMPONENTTYPE *) p_hdl)
+            ->ComponentTunnelRequest (p_hdl, 0,      /* port index */
+                                      &fake_comp, 0, /* whatever */
+                                      &tsetup);
   fail_if (OMX_ErrorNone != error);
 
   /* --------------- */
@@ -1774,29 +1764,30 @@ START_TEST (test_tizonia_command_cancellation_disabled_to_enabled_no_buffers)
   error = OMX_Deinit ();
   fail_if (OMX_ErrorNone != error);
 
-  _ctx_destroy(&ctx);
+  _ctx_destroy (&ctx);
 }
 END_TEST
 
-START_TEST (test_tizonia_command_cancellation_disabled_to_enabled_with_tunneled_supplied_buffers)
+START_TEST (
+  test_tizonia_command_cancellation_disabled_to_enabled_with_tunneled_supplied_buffers)
 {
   OMX_ERRORTYPE error = OMX_ErrorNone;
   OMX_HANDLETYPE p_hdl = 0;
   OMX_COMMANDTYPE cmd = OMX_CommandStateSet;
   OMX_STATETYPE state = OMX_StateIdle;
   cc_ctx_t ctx;
-  check_common_context_t *p_ctx = NULL;
+  check_common_context_t * p_ctx = NULL;
   OMX_BOOL timedout = OMX_FALSE;
   OMX_PARAM_PORTDEFINITIONTYPE port_def;
   OMX_PARAM_BUFFERSUPPLIERTYPE supplier;
   OMX_INDEXTYPE index = OMX_IndexParamPortDefinition;
   OMX_COMPONENTTYPE fake_comp;
-  OMX_TUNNELSETUPTYPE tsetup = { 0, OMX_BufferSupplyUnspecified };
-  OMX_U8 *p_buf = NULL;
+  OMX_TUNNELSETUPTYPE tsetup = {0, OMX_BufferSupplyUnspecified};
+  OMX_U8 * p_buf = NULL;
   OMX_U32 i;
-  OMX_BUFFERHEADERTYPE *p_hdr = NULL;
+  OMX_BUFFERHEADERTYPE * p_hdr = NULL;
 
-  init_fake_comp(&fake_comp);
+  init_fake_comp (&fake_comp);
 
   error = _ctx_init (&ctx);
   fail_if (OMX_ErrorNone != error);
@@ -1826,7 +1817,7 @@ START_TEST (test_tizonia_command_cancellation_disabled_to_enabled_with_tunneled_
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferSize [%d]", port_def.nBufferSize);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferCountActual [%d]",
-             port_def.nBufferCountActual);
+           port_def.nBufferCountActual);
 
   /* ------------------------------------ */
   /* Increase the buffer count on port #0 */
@@ -1839,7 +1830,7 @@ START_TEST (test_tizonia_command_cancellation_disabled_to_enabled_with_tunneled_
   fail_if (OMX_ErrorNone != error);
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nBufferCountActual [%d]",
-             port_def.nBufferCountActual);
+           port_def.nBufferCountActual);
 
   /* ----------------------------------------*/
   /* Set supplier settings to "non-supplier" */
@@ -1848,20 +1839,18 @@ START_TEST (test_tizonia_command_cancellation_disabled_to_enabled_with_tunneled_
   supplier.nVersion.nVersion = OMX_VERSION;
   supplier.nPortIndex = 0;
   supplier.eBufferSupplier = OMX_BufferSupplyOutput;
-  error = OMX_SetParameter (p_hdl, OMX_IndexParamCompBufferSupplier,
-                            &supplier);
+  error = OMX_SetParameter (p_hdl, OMX_IndexParamCompBufferSupplier, &supplier);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "[%s] OMX_BufferSupplyInput [%s]",
-             COMPONENT_NAME, tiz_err_to_str(error));
+           COMPONENT_NAME, tiz_err_to_str (error));
   fail_if (OMX_ErrorNone != error);
 
   /* -------------------- */
   /* Create a fake tunnel */
   /* -------------------- */
-  error = ((OMX_COMPONENTTYPE*)p_hdl)->ComponentTunnelRequest (p_hdl,
-                                                                  0, /* port index */
-                                                                  &fake_comp,
-                                                                  0, /* whatever */
-                                                                  &tsetup);
+  error = ((OMX_COMPONENTTYPE *) p_hdl)
+            ->ComponentTunnelRequest (p_hdl, 0,      /* port index */
+                                      &fake_comp, 0, /* whatever */
+                                      &tsetup);
   fail_if (OMX_ErrorNone != error);
 
   /* --------------- */
@@ -1932,14 +1921,13 @@ START_TEST (test_tizonia_command_cancellation_disabled_to_enabled_with_tunneled_
   fail_if (OMX_ErrorNone != error);
   fail_if (OMX_TRUE != timedout);
 
-
   /* ------------------------------------ */
   /* Allocate nBufferCountActual - 1 buffers */
   /* ------------------------------------ */
   p_buf = tiz_mem_alloc (port_def.nBufferSize * sizeof (OMX_U8));
   for (i = 0; i < port_def.nBufferCountActual - 1; ++i)
     {
-      error = OMX_UseBuffer (p_hdl, &p_hdr, 0,       /* input port */
+      error = OMX_UseBuffer (p_hdl, &p_hdr, 0, /* input port */
                              0, port_def.nBufferSize, p_buf);
       fail_if (OMX_ErrorNone != error);
     }
@@ -1959,7 +1947,7 @@ START_TEST (test_tizonia_command_cancellation_disabled_to_enabled_with_tunneled_
   /* ---------------------- */
   for (i = 0; i < port_def.nBufferCountActual - 1; ++i)
     {
-      error = OMX_FreeBuffer (p_hdl, 0,      /* input port */
+      error = OMX_FreeBuffer (p_hdl, 0, /* input port */
                               p_hdr);
       fail_if (OMX_ErrorNone != error);
     }
@@ -2017,34 +2005,37 @@ START_TEST (test_tizonia_command_cancellation_disabled_to_enabled_with_tunneled_
   error = OMX_Deinit ();
   fail_if (OMX_ErrorNone != error);
 
-  _ctx_destroy(&ctx);
+  _ctx_destroy (&ctx);
 }
 END_TEST
 
 Suite *
 tiz_suite (void)
 {
-  TCase *tc_tizonia;
-  Suite *s = suite_create ("libtizonia");
+  TCase * tc_tizonia;
+  Suite * s = suite_create ("libtizonia");
 
-  putenv(TIZ_PLATFORM_RC_FILE_ENV);
+  putenv (TIZ_PLATFORM_RC_FILE_ENV);
 
   /* IL Common API test cases */
   tc_tizonia = tcase_create ("tizonia");
   tcase_add_unchecked_fixture (tc_tizonia, setup, teardown);
 
-/*   (void) test_tizonia_getstate; */
-/*   (void) test_tizonia_gethandle_freehandle; */
-/*   (void) test_tizonia_getparameter; */
-/*   (void) test_tizonia_roles; */
-/*   (void) test_tizonia_preannouncements_extension; */
+  /*   (void) test_tizonia_getstate; */
+  /*   (void) test_tizonia_gethandle_freehandle; */
+  /*   (void) test_tizonia_getparameter; */
+  /*   (void) test_tizonia_roles; */
+  /*   (void) test_tizonia_preannouncements_extension; */
   (void) test_tizonia_move_to_exe_and_transfer_with_allocbuffer;
-/*   (void) test_tizonia_command_cancellation_loaded_to_idle_no_buffers; */
-  (void) test_tizonia_command_cancellation_loaded_to_idle_with_tunneled_supplied_buffers;
-/*   (void) test_tizonia_command_cancellation_loaded_to_idle_no_buffers_port_disabled_unblocks_transition; */
-  (void) test_tizonia_command_cancellation_loaded_to_idle_with_buffers_port_disabled_cant_unblock_transition;
+  /*   (void) test_tizonia_command_cancellation_loaded_to_idle_no_buffers; */
+  (void)
+    test_tizonia_command_cancellation_loaded_to_idle_with_tunneled_supplied_buffers;
+  /*   (void) test_tizonia_command_cancellation_loaded_to_idle_no_buffers_port_disabled_unblocks_transition; */
+  (void)
+    test_tizonia_command_cancellation_loaded_to_idle_with_buffers_port_disabled_cant_unblock_transition;
   (void) test_tizonia_command_cancellation_disabled_to_enabled_no_buffers;
-  (void) test_tizonia_command_cancellation_disabled_to_enabled_with_tunneled_supplied_buffers;
+  (void)
+    test_tizonia_command_cancellation_disabled_to_enabled_with_tunneled_supplied_buffers;
 
   tcase_add_test (tc_tizonia, test_tizonia_getstate);
   tcase_add_test (tc_tizonia, test_tizonia_gethandle_freehandle);
@@ -2052,15 +2043,16 @@ tiz_suite (void)
   tcase_add_test (tc_tizonia, test_tizonia_roles);
   tcase_add_test (tc_tizonia, test_tizonia_preannouncements_extension);
   /* TEST DISABLED */
-/*   tcase_add_test (tc_tizonia, */
-/*                   test_tizonia_move_to_exe_and_transfer_with_allocbuffer); */
+  /*   tcase_add_test (tc_tizonia, */
+  /*                   test_tizonia_move_to_exe_and_transfer_with_allocbuffer); */
   tcase_add_test (tc_tizonia,
                   test_tizonia_command_cancellation_loaded_to_idle_no_buffers);
   /* TEST DISABLED */
   /*   tcase_add_test (tc_tizonia, */
   /*                   test_tizonia_command_cancellation_loaded_to_idle_with_tunneled_supplied_buffers); */
-  tcase_add_test (tc_tizonia,
-                  test_tizonia_command_cancellation_loaded_to_idle_no_buffers_port_disabled_unblocks_transition);
+  tcase_add_test (
+    tc_tizonia,
+    test_tizonia_command_cancellation_loaded_to_idle_no_buffers_port_disabled_unblocks_transition);
   /* TEST DISABLED */
   /*   tcase_add_test (tc_tizonia, */
   /*                   test_tizonia_command_cancellation_loaded_to_idle_with_buffers_port_disabled_cant_unblock_transition); */
@@ -2080,9 +2072,9 @@ int
 main (void)
 {
   int number_failed;
-  SRunner *sr = srunner_create (tiz_suite ());
+  SRunner * sr = srunner_create (tiz_suite ());
 
-  tiz_log_init();
+  tiz_log_init ();
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "Tizonia OpenMAX IL - libtizonia unit tests");
 

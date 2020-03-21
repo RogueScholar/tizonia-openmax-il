@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,20 +19,23 @@
 # Simple script to kill a 'skema' instance running a suite
 #
 
-declare -ar SKEMA_KILL_DEPS=( \
-    'ps' \
-    'grep' \
-    'awk' \
-    'kill' \
+declare -ar SKEMA_KILL_DEPS=(
+  'ps'
+  'grep'
+  'awk'
+  'kill'
 )
 
 # Check dependencies
 for cmd in "${SKEMA_KILL_DEPS[@]}"; do
-    command -v "$cmd" >/dev/null 2>&1 \
-        || { echo >&2 "This program requires $cmd. Aborting."; exit 1; }
+  command -v "$cmd" >/dev/null 2>&1 ||
+    {
+      echo >&2 "This program requires $cmd. Aborting."
+      exit 1
+    }
 done
 
-kill -TERM $(ps aux | grep run_suite | grep python | awk '{ print $2 }')
+kill -TERM "$(ps aux | grep run_suite | grep python | awk '{ print $2 }')"
 if [[ $? -ne 0 ]]; then
-    kill -KILL $(ps aux | grep run_suite | grep python | awk '{ print $2 }')
+  kill -KILL "$(ps aux | grep run_suite | grep python | awk '{ print $2 }')"
 fi

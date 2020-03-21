@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -59,4 +59,4 @@ extern "C"
 }
 #endif
 
-#endif                          /* FRPRC_DECLS_H */
+#endif /* FRPRC_DECLS_H */

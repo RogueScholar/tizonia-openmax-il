@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -127,7 +128,7 @@ namespace
     bp::object pysoundcloudproxy = py_global["tizsoundcloudproxy"];
     py_gm_proxy = pysoundcloudproxy (oauth_token.c_str ());
   }
-}
+}  // namespace
 
 tizsoundcloud::tizsoundcloud (const std::string &oauth_token)
   : oauth_token_ (oauth_token)
@@ -234,7 +235,7 @@ const char *tizsoundcloud::get_next_url ()
   try
     {
       current_url_
-        = bp::extract< std::string > (py_gm_proxy_.attr ("next_url") ());
+          = bp::extract< std::string > (py_gm_proxy_.attr ("next_url") ());
       get_current_track ();
     }
   catch (bp::error_already_set &e)
@@ -253,7 +254,7 @@ const char *tizsoundcloud::get_prev_url ()
   try
     {
       current_url_
-        = bp::extract< std::string > (py_gm_proxy_.attr ("prev_url") ());
+          = bp::extract< std::string > (py_gm_proxy_.attr ("prev_url") ());
       get_current_track ();
     }
   catch (bp::error_already_set &e)

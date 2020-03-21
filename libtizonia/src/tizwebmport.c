@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -91,11 +91,12 @@ webmport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       case OMX_IndexParamActiveStream:
         {
           /* Only the processor knows about available or active streams. So lets
-           get the processor to fill this info for us. */
+         get the processor to fill this info for us. */
           void * p_prc = tiz_get_prc (ap_hdl);
           assert (p_prc);
-          if (OMX_ErrorNone != (rc = tiz_api_GetParameter (p_prc, ap_hdl,
-                                                           a_index, ap_struct)))
+          if (OMX_ErrorNone
+              != (rc
+                  = tiz_api_GetParameter (p_prc, ap_hdl, a_index, ap_struct)))
             {
               TIZ_ERROR (ap_hdl,
                          "[%s] : Error retrieving [%s] "
@@ -113,7 +114,7 @@ webmport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
           /* TODO */
         }
       /* NOTE: Fall through if GetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {
@@ -146,7 +147,7 @@ webmport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
         }
 
       /* NOTE: Fall through if GetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {
@@ -186,8 +187,7 @@ webmport_check_tunnel_compat (const void * ap_obj,
           && ap_other_def->format.video.eCompressionFormat
                != OMX_AUDIO_CodingWEBM)
       && (ap_other_def->eDomain == OMX_PortDomainOther
-          && ap_other_def->format.other.eFormat
-               != OMX_OTHER_FormatBinary))
+          && ap_other_def->format.other.eFormat != OMX_OTHER_FormatBinary))
     {
       TIZ_ERROR (handleOf (ap_obj),
                  "port [%d] check_tunnel_compat : "

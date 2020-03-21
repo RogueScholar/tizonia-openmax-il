@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -160,9 +160,10 @@ filter_prc_get_header (tiz_filter_prc_t * ap_prc, const OMX_U32 a_pid)
       OMX_BUFFERHEADERTYPE ** pp_hdr
         = tiz_filter_prc_get_header_ptr (ap_prc, a_pid);
       p_hdr = *pp_hdr;
-      if (!p_hdr && (OMX_ErrorNone
-                     == tiz_krn_claim_buffer (tiz_get_krn (handleOf (ap_prc)),
-                                              a_pid, 0, pp_hdr)))
+      if (!p_hdr
+          && (OMX_ErrorNone
+              == tiz_krn_claim_buffer (tiz_get_krn (handleOf (ap_prc)), a_pid,
+                                       0, pp_hdr)))
         {
           p_hdr = *pp_hdr;
           if (p_hdr)

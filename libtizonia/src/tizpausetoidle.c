@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -97,7 +97,7 @@ pausetoidle_trans_complete (const void * ap_obj, OMX_PTR ap_servant,
   if (2 == p_base->servants_count_ + 1)
     {
       /* Reset the OMX_TIZONIA_PORTSTATUS_AWAITBUFFERSRETURN flag in all ports
-         where this has been set */
+           where this has been set */
       tiz_krn_reset_tunneled_ports_status (
         tiz_get_krn (handleOf (ap_servant)),
         OMX_TIZONIA_PORTSTATUS_AWAITBUFFERSRETURN);
@@ -121,9 +121,9 @@ pausetoidle_tunneled_ports_status_update (void * ap_obj)
     if (TIZ_KRN_MAY_INIT_EXE_TO_IDLE (p_krn))
       {
         /* OK, at this point all the tunneled non-supplier neighboring ports
-           are ready to receive ETB/FTB calls.  NOTE: This will call the
-         * 'tiz_state_state_set' function of the tiz_state_t base class (note
-         * we are passing 'tizidle' as 1st parameter */
+               are ready to receive ETB/FTB calls.  NOTE: This will call the
+             * 'tiz_state_state_set' function of the tiz_state_t base class (note
+             * we are passing 'tizidle' as 1st parameter */
         TIZ_TRACE (p_hdl, "kernel may initiate pause to idle");
         return tiz_state_super_state_set (typeOf (ap_obj, "tizidle"), ap_obj,
                                           p_hdl, OMX_CommandStateSet,

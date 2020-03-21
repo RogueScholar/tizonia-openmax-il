@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -163,22 +163,23 @@ namespace tiz
 
       static OMX_ERRORTYPE set_pcm_mode (
           const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-          boost::function< void(OMX_AUDIO_PARAM_PCMMODETYPE &pcmmode) > getter);
+          boost::function< void (OMX_AUDIO_PARAM_PCMMODETYPE &pcmmode) >
+              getter);
 
       static OMX_ERRORTYPE set_mp3_type (
           const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-          boost::function< void(OMX_AUDIO_PARAM_MP3TYPE &mp3type) > getter,
+          boost::function< void (OMX_AUDIO_PARAM_MP3TYPE &mp3type) > getter,
           bool &need_port_settings_changed_evt);
 
       static OMX_ERRORTYPE set_aac_type (
           const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-          boost::function< void(OMX_AUDIO_PARAM_AACPROFILETYPE &aactype) >
+          boost::function< void (OMX_AUDIO_PARAM_AACPROFILETYPE &aactype) >
               getter,
           bool &need_port_settings_changed_evt);
 
       static OMX_ERRORTYPE set_flac_type (
           const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-          boost::function< void(OMX_TIZONIA_AUDIO_PARAM_FLACTYPE &flactype) >
+          boost::function< void (OMX_TIZONIA_AUDIO_PARAM_FLACTYPE &flactype) >
               getter,
           bool &need_port_settings_changed_evt);
 
@@ -203,13 +204,14 @@ namespace tiz
           const OMX_TIZONIA_AUDIO_SOUNDCLOUDPLAYLISTTYPE playlist_type,
           const bool shuffle);
 
-//       static OMX_ERRORTYPE set_dirble_api_key (const OMX_HANDLETYPE handle,
-//                                                const std::string &api_key);
+      static OMX_ERRORTYPE set_tunein_playlist (
+          const OMX_HANDLETYPE handle, const uri_lst_t &search_keywords,
+          const OMX_TIZONIA_AUDIO_TUNEINPLAYLISTTYPE playlist_type,
+          const OMX_TIZONIA_AUDIO_TUNEINSEARCHTYPE search_type,
+          const bool shuffle);
 
-//       static OMX_ERRORTYPE set_dirble_playlist (
-//           const OMX_HANDLETYPE handle, const std::string &playlist,
-//           const OMX_TIZONIA_AUDIO_DIRBLEPLAYLISTTYPE playlist_type,
-//           const bool shuffle);
+      static OMX_ERRORTYPE set_youtube_session (const OMX_HANDLETYPE handle,
+                                                const std::string &api_key);
 
       static OMX_ERRORTYPE set_youtube_playlist (
           const OMX_HANDLETYPE handle, const std::string &playlist,
@@ -242,6 +244,9 @@ namespace tiz
       static bool is_fatal_error (const OMX_ERRORTYPE error);
 
       static std::string get_default_pcm_renderer ();
+
+      static OMX_ERRORTYPE get_volume_from_audio_port (
+          const OMX_HANDLETYPE handle, const OMX_U32 port_id, int &volume);
 
       static bool is_mpris_enabled ();
 

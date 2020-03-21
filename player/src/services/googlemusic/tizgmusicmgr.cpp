@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -36,9 +36,9 @@
 
 #include <tizplatform.h>
 
-#include "tizgraphmgrcaps.hpp"
 #include "tizgmusicgraph.hpp"
 #include "tizgmusicmgr.hpp"
+#include "tizgraphmgrcaps.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -99,15 +99,14 @@ graphmgr::gmusicmgrops::gmusicmgrops (
 {
 }
 
-tizgraph_ptr_t graphmgr::gmusicmgrops::get_graph (
-    const std::string & /* uri */)
+tizgraph_ptr_t graphmgr::gmusicmgrops::get_graph (const std::string & /* uri */)
 {
   tizgraph_ptr_t g_ptr;
   std::string encoding ("pcm");
   tizgraph_ptr_map_t::const_iterator it = graph_registry_.find (encoding);
   if (it == graph_registry_.end ())
   {
-    g_ptr = boost::make_shared< tiz::graph::gmusic >();
+    g_ptr = boost::make_shared< tiz::graph::gmusic > ();
     if (g_ptr)
     {
       // TODO: Check rc
@@ -127,8 +126,9 @@ tizgraph_ptr_t graphmgr::gmusicmgrops::get_graph (
     }
     else
     {
-      GMGR_OPS_RECORD_ERROR (OMX_ErrorInsufficientResources,
-                             "Unable to create the Google Play Music client graph.");
+      GMGR_OPS_RECORD_ERROR (
+          OMX_ErrorInsufficientResources,
+          "Unable to create the Google Play Music client graph.");
     }
   }
   else
@@ -154,7 +154,7 @@ void graphmgr::gmusicmgrops::do_execute ()
   assert (playlist_);
   assert (p_mgr_);
 
-  gmusicmgr *p_clientmgr = dynamic_cast< gmusicmgr * >(p_mgr_);
+  gmusicmgr *p_clientmgr = dynamic_cast< gmusicmgr * > (p_mgr_);
   assert (p_clientmgr);
 
   graph_config_.reset ();
@@ -167,7 +167,7 @@ void graphmgr::gmusicmgrops::do_execute ()
 }
 
 bool graphmgr::gmusicmgrops::is_fatal_error (const OMX_ERRORTYPE error,
-                                              const std::string &msg)
+                                             const std::string &msg)
 {
   bool rc = false;
   TIZ_LOG (TIZ_PRIORITY_ERROR, "[%s] : %s", tiz_err_to_str (error),

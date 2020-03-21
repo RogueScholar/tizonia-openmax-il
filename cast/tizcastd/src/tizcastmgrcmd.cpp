@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -42,7 +42,7 @@ namespace
   {
     return operand.type () == typeid (T);
   }
-}
+}  // namespace
 
 namespace cast = tiz::cast;
 
@@ -51,7 +51,7 @@ cast::cmd::cmd (const std::vector< uint8_t >& uuid, boost::any any_event)
 {
 }
 
-const std::vector< uint8_t > & cast::cmd::uuid () const
+const std::vector< uint8_t >& cast::cmd::uuid () const
 {
   return uuid_;
 }
@@ -84,23 +84,9 @@ void cast::cmd::inject (fsm& machine) const
   }
 
   INJECT_EVENT (start_evt)
-  else INJECT_EVENT (quit_evt)
-    else INJECT_EVENT (connect_evt)
-      else INJECT_EVENT (disconnect_evt)
-        else INJECT_EVENT (cast_status_evt)
-          else INJECT_EVENT (load_url_evt)
-            else INJECT_EVENT (play_evt)
-              else INJECT_EVENT (stop_evt)
-                else INJECT_EVENT (pause_evt)
-                  else INJECT_EVENT (volume_evt)
-                    else INJECT_EVENT (volume_up_evt)
-                      else INJECT_EVENT (volume_down_evt)
-                        else INJECT_EVENT (mute_evt)
-                          else INJECT_EVENT (unmute_evt)
-                            else INJECT_EVENT (poll_evt)
-                              else INJECT_EVENT (err_evt)
-                                else
-                                  {
-                                    assert (0);
-                                  }
+  else INJECT_EVENT (quit_evt) else INJECT_EVENT (connect_evt) else INJECT_EVENT (disconnect_evt) else INJECT_EVENT (cast_status_evt) else INJECT_EVENT (load_url_evt) else INJECT_EVENT (play_evt) else INJECT_EVENT (
+      stop_evt) else INJECT_EVENT (pause_evt) else INJECT_EVENT (volume_evt) else INJECT_EVENT (volume_up_evt) else INJECT_EVENT (volume_down_evt) else INJECT_EVENT (mute_evt) else INJECT_EVENT (unmute_evt) else INJECT_EVENT (poll_evt) else INJECT_EVENT (err_evt) else
+  {
+    assert (0);
+  }
 }

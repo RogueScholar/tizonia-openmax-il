@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -61,26 +61,26 @@
  *@ingroup plugins
  */
 
-static OMX_VERSIONTYPE mp3_decoder_version = { { 1, 0, 0, 0 } };
+static OMX_VERSIONTYPE mp3_decoder_version = {{1, 0, 0, 0}};
 
-static OMX_PTR instantiate_mp3_port (OMX_HANDLETYPE ap_hdl)
+static OMX_PTR
+instantiate_mp3_port (OMX_HANDLETYPE ap_hdl)
 {
   OMX_AUDIO_PARAM_MP3TYPE mp3type;
-  OMX_AUDIO_CODINGTYPE encodings[]
-      = { OMX_AUDIO_CodingMP3, OMX_AUDIO_CodingMax };
-  tiz_port_options_t mp3_port_opts
-      = { OMX_PortDomainAudio,
-          OMX_DirInput,
-          ARATELIA_MPG123_DECODER_PORT_MIN_BUF_COUNT,
-          ARATELIA_MPG123_DECODER_PORT_MIN_INPUT_BUF_SIZE,
-          ARATELIA_MPG123_DECODER_PORT_NONCONTIGUOUS,
-          ARATELIA_MPG123_DECODER_PORT_ALIGNMENT,
-          ARATELIA_MPG123_DECODER_PORT_SUPPLIERPREF,
-          { ARATELIA_MPG123_DECODER_INPUT_PORT_INDEX, NULL, NULL, NULL },
-          1 /* slave port's index  */
-      };
+  OMX_AUDIO_CODINGTYPE encodings[] = {OMX_AUDIO_CodingMP3, OMX_AUDIO_CodingMax};
+  tiz_port_options_t mp3_port_opts = {
+    OMX_PortDomainAudio,
+    OMX_DirInput,
+    ARATELIA_MPG123_DECODER_PORT_MIN_BUF_COUNT,
+    ARATELIA_MPG123_DECODER_PORT_MIN_INPUT_BUF_SIZE,
+    ARATELIA_MPG123_DECODER_PORT_NONCONTIGUOUS,
+    ARATELIA_MPG123_DECODER_PORT_ALIGNMENT,
+    ARATELIA_MPG123_DECODER_PORT_SUPPLIERPREF,
+    {ARATELIA_MPG123_DECODER_INPUT_PORT_INDEX, NULL, NULL, NULL},
+    1 /* slave port's index  */
+  };
 
-  mp3type.nSize = sizeof(OMX_AUDIO_PARAM_MP3TYPE);
+  mp3type.nSize = sizeof (OMX_AUDIO_PARAM_MP3TYPE);
   mp3type.nVersion.nVersion = OMX_VERSION;
   mp3type.nPortIndex = 0;
   mp3type.nChannels = 2;
@@ -94,24 +94,24 @@ static OMX_PTR instantiate_mp3_port (OMX_HANDLETYPE ap_hdl)
                       &encodings, &mp3type);
 }
 
-static OMX_PTR instantiate_mp2_port (OMX_HANDLETYPE ap_hdl)
+static OMX_PTR
+instantiate_mp2_port (OMX_HANDLETYPE ap_hdl)
 {
   OMX_TIZONIA_AUDIO_PARAM_MP2TYPE mp2type;
-  OMX_AUDIO_CODINGTYPE encodings[]
-      = { OMX_AUDIO_CodingMP2, OMX_AUDIO_CodingMax };
-  tiz_port_options_t mp2_port_opts
-      = { OMX_PortDomainAudio,
-          OMX_DirInput,
-          ARATELIA_MPG123_DECODER_PORT_MIN_BUF_COUNT,
-          ARATELIA_MPG123_DECODER_PORT_MIN_INPUT_BUF_SIZE,
-          ARATELIA_MPG123_DECODER_PORT_NONCONTIGUOUS,
-          ARATELIA_MPG123_DECODER_PORT_ALIGNMENT,
-          ARATELIA_MPG123_DECODER_PORT_SUPPLIERPREF,
-          { ARATELIA_MPG123_DECODER_INPUT_PORT_INDEX, NULL, NULL, NULL },
-          1 /* slave port's index  */
-      };
+  OMX_AUDIO_CODINGTYPE encodings[] = {OMX_AUDIO_CodingMP2, OMX_AUDIO_CodingMax};
+  tiz_port_options_t mp2_port_opts = {
+    OMX_PortDomainAudio,
+    OMX_DirInput,
+    ARATELIA_MPG123_DECODER_PORT_MIN_BUF_COUNT,
+    ARATELIA_MPG123_DECODER_PORT_MIN_INPUT_BUF_SIZE,
+    ARATELIA_MPG123_DECODER_PORT_NONCONTIGUOUS,
+    ARATELIA_MPG123_DECODER_PORT_ALIGNMENT,
+    ARATELIA_MPG123_DECODER_PORT_SUPPLIERPREF,
+    {ARATELIA_MPG123_DECODER_INPUT_PORT_INDEX, NULL, NULL, NULL},
+    1 /* slave port's index  */
+  };
 
-  mp2type.nSize = sizeof(OMX_TIZONIA_AUDIO_PARAM_MP2TYPE);
+  mp2type.nSize = sizeof (OMX_TIZONIA_AUDIO_PARAM_MP2TYPE);
   mp2type.nVersion.nVersion = OMX_VERSION;
   mp2type.nPortIndex = 0;
   mp2type.nChannels = 2;
@@ -124,27 +124,27 @@ static OMX_PTR instantiate_mp2_port (OMX_HANDLETYPE ap_hdl)
                       &encodings, &mp2type);
 }
 
-static OMX_PTR instantiate_pcm_port (OMX_HANDLETYPE ap_hdl)
+static OMX_PTR
+instantiate_pcm_port (OMX_HANDLETYPE ap_hdl)
 {
   OMX_AUDIO_PARAM_PCMMODETYPE pcmmode;
   OMX_AUDIO_CONFIG_VOLUMETYPE volume;
   OMX_AUDIO_CONFIG_MUTETYPE mute;
-  OMX_AUDIO_CODINGTYPE encodings[]
-      = { OMX_AUDIO_CodingPCM, OMX_AUDIO_CodingMax };
-  tiz_port_options_t pcm_port_opts
-      = { OMX_PortDomainAudio,
-          OMX_DirOutput,
-          ARATELIA_MPG123_DECODER_PORT_MIN_BUF_COUNT,
-          ARATELIA_MPG123_DECODER_PORT_MIN_OUTPUT_BUF_SIZE,
-          ARATELIA_MPG123_DECODER_PORT_NONCONTIGUOUS,
-          ARATELIA_MPG123_DECODER_PORT_ALIGNMENT,
-          ARATELIA_MPG123_DECODER_PORT_SUPPLIERPREF,
-          { ARATELIA_MPG123_DECODER_OUTPUT_PORT_INDEX, NULL, NULL, NULL },
-          0 /* Master port */
-      };
+  OMX_AUDIO_CODINGTYPE encodings[] = {OMX_AUDIO_CodingPCM, OMX_AUDIO_CodingMax};
+  tiz_port_options_t pcm_port_opts = {
+    OMX_PortDomainAudio,
+    OMX_DirOutput,
+    ARATELIA_MPG123_DECODER_PORT_MIN_BUF_COUNT,
+    ARATELIA_MPG123_DECODER_PORT_MIN_OUTPUT_BUF_SIZE,
+    ARATELIA_MPG123_DECODER_PORT_NONCONTIGUOUS,
+    ARATELIA_MPG123_DECODER_PORT_ALIGNMENT,
+    ARATELIA_MPG123_DECODER_PORT_SUPPLIERPREF,
+    {ARATELIA_MPG123_DECODER_OUTPUT_PORT_INDEX, NULL, NULL, NULL},
+    0 /* Master port */
+  };
 
   /* Instantiate the pcm port */
-  pcmmode.nSize = sizeof(OMX_AUDIO_PARAM_PCMMODETYPE);
+  pcmmode.nSize = sizeof (OMX_AUDIO_PARAM_PCMMODETYPE);
   pcmmode.nVersion.nVersion = OMX_VERSION;
   pcmmode.nPortIndex = ARATELIA_MPG123_DECODER_OUTPUT_PORT_INDEX;
   pcmmode.nChannels = 2;
@@ -157,7 +157,7 @@ static OMX_PTR instantiate_pcm_port (OMX_HANDLETYPE ap_hdl)
   pcmmode.eChannelMapping[0] = OMX_AUDIO_ChannelLF;
   pcmmode.eChannelMapping[1] = OMX_AUDIO_ChannelRF;
 
-  volume.nSize = sizeof(OMX_AUDIO_CONFIG_VOLUMETYPE);
+  volume.nSize = sizeof (OMX_AUDIO_CONFIG_VOLUMETYPE);
   volume.nVersion.nVersion = OMX_VERSION;
   volume.nPortIndex = ARATELIA_MPG123_DECODER_OUTPUT_PORT_INDEX;
   volume.bLinear = OMX_FALSE;
@@ -165,7 +165,7 @@ static OMX_PTR instantiate_pcm_port (OMX_HANDLETYPE ap_hdl)
   volume.sVolume.nMin = 0;
   volume.sVolume.nMax = 100;
 
-  mute.nSize = sizeof(OMX_AUDIO_CONFIG_MUTETYPE);
+  mute.nSize = sizeof (OMX_AUDIO_CONFIG_MUTETYPE);
   mute.nVersion.nVersion = OMX_VERSION;
   mute.nPortIndex = ARATELIA_MPG123_DECODER_OUTPUT_PORT_INDEX;
   mute.bMute = OMX_FALSE;
@@ -174,7 +174,8 @@ static OMX_PTR instantiate_pcm_port (OMX_HANDLETYPE ap_hdl)
                       &encodings, &pcmmode, &volume, &mute);
 }
 
-static OMX_PTR instantiate_config_port (OMX_HANDLETYPE ap_hdl)
+static OMX_PTR
+instantiate_config_port (OMX_HANDLETYPE ap_hdl)
 {
   return factory_new (tiz_get_type (ap_hdl, "tizconfigport"),
                       NULL, /* this port does not take options */
@@ -182,7 +183,8 @@ static OMX_PTR instantiate_config_port (OMX_HANDLETYPE ap_hdl)
                       mp3_decoder_version);
 }
 
-static OMX_PTR instantiate_processor (OMX_HANDLETYPE ap_hdl)
+static OMX_PTR
+instantiate_processor (OMX_HANDLETYPE ap_hdl)
 {
   return factory_new (tiz_get_type (ap_hdl, "mpg123dprc"));
 }
@@ -192,32 +194,32 @@ OMX_ComponentInit (OMX_HANDLETYPE ap_hdl)
 {
   tiz_role_factory_t mp3_role;
   tiz_role_factory_t mp2_role;
-  const tiz_role_factory_t *rf_list[] = { &mp3_role, &mp2_role };
+  const tiz_role_factory_t * rf_list[] = {&mp3_role, &mp2_role};
   tiz_type_factory_t mpg123dprc_type;
-  const tiz_type_factory_t *tf_list[] = { &mpg123dprc_type };
+  const tiz_type_factory_t * tf_list[] = {&mpg123dprc_type};
 
-  strcpy ((OMX_STRING)mp3_role.role, ARATELIA_MPG123_DECODER_MP3_ROLE);
+  strcpy ((OMX_STRING) mp3_role.role, ARATELIA_MPG123_DECODER_MP3_ROLE);
   mp3_role.pf_cport = instantiate_config_port;
   mp3_role.pf_port[0] = instantiate_mp3_port;
   mp3_role.pf_port[1] = instantiate_pcm_port;
   mp3_role.nports = 2;
   mp3_role.pf_proc = instantiate_processor;
 
-  strcpy ((OMX_STRING)mp2_role.role, ARATELIA_MPG123_DECODER_MP2_ROLE);
+  strcpy ((OMX_STRING) mp2_role.role, ARATELIA_MPG123_DECODER_MP2_ROLE);
   mp2_role.pf_cport = instantiate_config_port;
   mp2_role.pf_port[0] = instantiate_mp2_port;
   mp2_role.pf_port[1] = instantiate_pcm_port;
   mp2_role.nports = 2;
   mp2_role.pf_proc = instantiate_processor;
 
-  strcpy ((OMX_STRING)mpg123dprc_type.class_name, "mpg123dprc_class");
+  strcpy ((OMX_STRING) mpg123dprc_type.class_name, "mpg123dprc_class");
   mpg123dprc_type.pf_class_init = mpg123d_prc_class_init;
-  strcpy ((OMX_STRING)mpg123dprc_type.object_name, "mpg123dprc");
+  strcpy ((OMX_STRING) mpg123dprc_type.object_name, "mpg123dprc");
   mpg123dprc_type.pf_object_init = mpg123d_prc_init;
 
   /* Initialize the component infrastructure */
   tiz_check_omx (
-      tiz_comp_init (ap_hdl, ARATELIA_MPG123_DECODER_COMPONENT_NAME));
+    tiz_comp_init (ap_hdl, ARATELIA_MPG123_DECODER_COMPONENT_NAME));
 
   /* Register the "mpg123dprc" class */
   tiz_check_omx (tiz_comp_register_types (ap_hdl, tf_list, 1));

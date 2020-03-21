@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -88,7 +88,7 @@ cc_youtube_cfgport_dtor (void * ap_obj)
 
 static OMX_ERRORTYPE
 cc_youtube_cfgport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
-                              OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
+                                 OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
   const cc_youtube_cfgport_t * p_obj = ap_obj;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
@@ -120,7 +120,7 @@ cc_youtube_cfgport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
 
 static OMX_ERRORTYPE
 cc_youtube_cfgport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
-                              OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
+                                 OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
   cc_youtube_cfgport_t * p_obj = (cc_youtube_cfgport_t *) ap_obj;
   OMX_ERRORTYPE rc = OMX_ErrorNone;

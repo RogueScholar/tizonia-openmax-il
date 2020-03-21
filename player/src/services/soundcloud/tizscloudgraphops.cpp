@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -34,14 +34,14 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <OMX_TizoniaExt.h>
 #include <tizplatform.h>
 
+#include "tizgraph.hpp"
 #include "tizgraphutil.hpp"
 #include "tizprobe.hpp"
-#include "tizgraph.hpp"
 #include "tizscloudconfig.hpp"
 #include "tizscloudgraphops.hpp"
 
@@ -69,18 +69,20 @@ void graph::scloudops::do_enable_auto_detection (const int handle_id,
                                                  const int port_id)
 {
   tizscloudconfig_ptr_t scloud_config
-      = boost::dynamic_pointer_cast< scloudconfig >(config_);
+      = boost::dynamic_pointer_cast< scloudconfig > (config_);
   assert (scloud_config);
   tiz::graph::ops::do_enable_auto_detection (handle_id, port_id);
-  tiz::graph::util::dump_graph_info ("SoundCloud", "Connecting",
-                                     scloud_config->get_oauth_token ().c_str ());
+  tiz::graph::util::dump_graph_info (
+      "SoundCloud", "Connecting", scloud_config->get_oauth_token ().c_str ());
 }
 
-void graph::scloudops::do_disable_comp_ports (const int comp_id, const int port_id)
+void graph::scloudops::do_disable_comp_ports (const int comp_id,
+                                              const int port_id)
 {
   OMX_U32 scloud_source_port = port_id;
-  G_OPS_BAIL_IF_ERROR (util::disable_port (handles_[comp_id], scloud_source_port),
-                       "Unable to disable scloud source's output port.");
+  G_OPS_BAIL_IF_ERROR (
+      util::disable_port (handles_[comp_id], scloud_source_port),
+      "Unable to disable scloud source's output port.");
   clear_expected_port_transitions ();
   add_expected_port_transition (handles_[comp_id], scloud_source_port,
                                 OMX_CommandPortDisable);
@@ -148,6 +150,11 @@ void graph::scloudops::do_load ()
   // Now add the new components to the base class lists
   comp_lst_.insert (comp_lst_.begin (), comp_list.begin (), comp_list.end ());
   role_lst_.insert (role_lst_.begin (), role_list.begin (), role_list.end ());
+
+  OMX_U32 input_port = 0;
+  G_OPS_BAIL_IF_ERROR (util::get_volume_from_audio_port (
+                           handles_[handles_.size () - 1], input_port, volume_),
+                       "Unable to obtain the current volume");
 }
 
 void graph::scloudops::do_configure ()
@@ -158,6 +165,9 @@ void graph::scloudops::do_configure ()
                          "Unable to override decoder/renderer sampling rates");
     G_OPS_BAIL_IF_ERROR (apply_pcm_codec_info_from_decoder (),
                          "Unable to set OMX_IndexParamAudioPcm");
+    std::string coding_type_str ("SoundCloud");
+    tiz::graph::util::dump_graph_info (coding_type_str.c_str (), "Connected",
+                                       playlist_->get_current_uri ().c_str ());
   }
 }
 
@@ -241,26 +251,29 @@ void graph::scloudops::do_retrieve_metadata ()
   const int decoder_index = 1;
   index = 0;
   const bool use_first_as_heading = false;
-  while (OMX_ErrorNone == dump_metadata_item (index++, decoder_index, use_first_as_heading))
+  while (OMX_ErrorNone
+         == dump_metadata_item (index++, decoder_index, use_first_as_heading))
   {
   };
 
   OMX_GetParameter (handles_[2], OMX_IndexParamAudioPcm, &renderer_pcmtype_);
 
   // Now print renderer metadata
-  TIZ_PRINTF_MAG (
-      "     %ld Ch, %g KHz, %lu:%s:%s \n", renderer_pcmtype_.nChannels,
+  printf ("     ");
+  TIZ_PRINTF_C05 (
+      "%ld Ch, %g KHz, %lu:%s:%s", renderer_pcmtype_.nChannels,
       ((float)renderer_pcmtype_.nSamplingRate) / 1000,
       renderer_pcmtype_.nBitPerSample,
       renderer_pcmtype_.eNumData == OMX_NumericalDataSigned ? "s" : "u",
       renderer_pcmtype_.eEndian == OMX_EndianBig ? "b" : "l");
+  printf ("\n");
 }
 
 // TODO: Move this implementation to the base class (and remove also from
 // httpservops)
 OMX_ERRORTYPE
-graph::scloudops::switch_tunnel (
-    const int tunnel_id, const OMX_COMMANDTYPE to_disabled_or_enabled)
+graph::scloudops::switch_tunnel (const int tunnel_id,
+                                 const OMX_COMMANDTYPE to_disabled_or_enabled)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
@@ -337,10 +350,10 @@ graph::scloudops::apply_pcm_codec_info_from_decoder ()
   OMX_U32 sampling_rate = 44100;
   std::string encoding_str;
 
-  tiz_check_omx (get_channels_and_rate_from_decoder (
-      channels, sampling_rate, encoding_str));
+  tiz_check_omx (get_channels_and_rate_from_decoder (channels, sampling_rate,
+                                                     encoding_str));
   tiz_check_omx (set_channels_and_rate_on_renderer (channels, sampling_rate,
-                                                        encoding_str));
+                                                    encoding_str));
   return OMX_ErrorNone;
 }
 
@@ -357,9 +370,9 @@ graph::scloudops::get_channels_and_rate_from_decoder (
     case OMX_AUDIO_CodingMP3:
     {
       encoding_str = "mp3";
-      rc = tiz::graph::util::
-          get_channels_and_rate_from_audio_port_v2< OMX_AUDIO_PARAM_PCMMODETYPE >(
-              handle, port_id, OMX_IndexParamAudioPcm, channels, sampling_rate);
+      rc = tiz::graph::util::get_channels_and_rate_from_audio_port_v2<
+          OMX_AUDIO_PARAM_PCMMODETYPE > (
+          handle, port_id, OMX_IndexParamAudioPcm, channels, sampling_rate);
     }
     break;
     default:
@@ -406,7 +419,6 @@ graph::scloudops::set_channels_and_rate_on_decoder (const OMX_U32 channels,
   return OMX_ErrorNone;
 }
 
-
 OMX_ERRORTYPE
 graph::scloudops::set_channels_and_rate_on_renderer (
     const OMX_U32 channels, const OMX_U32 sampling_rate,
@@ -434,10 +446,6 @@ graph::scloudops::set_channels_and_rate_on_renderer (
   tiz_check_omx (
       OMX_SetParameter (handle, OMX_IndexParamAudioPcm, &renderer_pcmtype_));
 
-  std::string coding_type_str ("SoundCloud");
-  tiz::graph::util::dump_graph_info (coding_type_str.c_str (), "Connected",
-                                     playlist_->get_current_uri ().c_str ());
-
   return OMX_ErrorNone;
 }
 
@@ -458,10 +466,9 @@ bool graph::scloudops::is_fatal_error (const OMX_ERRORTYPE error) const
   return rc;
 }
 
-void graph::scloudops::do_record_fatal_error (const OMX_HANDLETYPE handle,
-                                              const OMX_ERRORTYPE error,
-                                              const OMX_U32 port,
-                                              const OMX_PTR p_eventdata /* = NULL */)
+void graph::scloudops::do_record_fatal_error (
+    const OMX_HANDLETYPE handle, const OMX_ERRORTYPE error, const OMX_U32 port,
+    const OMX_PTR p_eventdata /* = NULL */)
 {
   tiz::graph::ops::do_record_fatal_error (handle, error, port, p_eventdata);
   if (error == OMX_ErrorContentURIError)
@@ -525,10 +532,12 @@ void graph::scloudops::do_reconfigure_second_tunnel ()
       OMX_SetParameter (handles_[2], OMX_IndexParamAudioPcm, &renderer_pcmtype),
       "Unable to set the PCM settings on the audio renderer");
 
-  TIZ_PRINTF_MAG (
-      "     %ld Ch, %g KHz, %lu:%s:%s\n", renderer_pcmtype.nChannels,
+  printf ("     ");
+  TIZ_PRINTF_C05 (
+      "%ld Ch, %g KHz, %lu:%s:%s", renderer_pcmtype.nChannels,
       ((float)renderer_pcmtype.nSamplingRate) / 1000,
       renderer_pcmtype.nBitPerSample,
       renderer_pcmtype.eNumData == OMX_NumericalDataSigned ? "s" : "u",
       renderer_pcmtype.eEndian == OMX_EndianBig ? "b" : "l");
+  printf ("\n");
 }

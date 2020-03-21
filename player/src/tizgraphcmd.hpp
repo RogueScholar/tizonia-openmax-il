@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -55,7 +55,7 @@ namespace tiz
       template < typename T >
       bool is_type (const boost::any& operand) const
       {
-        return operand.type () == typeid(T);
+        return operand.type () == typeid (T);
       }
 
     public:
@@ -70,48 +70,23 @@ namespace tiz
           Fsm& machine,
           boost::function< char const* const(Fsm const& machine) > pstate) const
       {
-#define INJECT_EVENT(the_evt)                                           \
-        if (is_type< the_evt >(evt_))                                   \
-          {                                                             \
-            std::string arg (#the_evt);                                 \
-            TIZ_LOG (TIZ_PRIORITY_NOTICE,                               \
-                     "GRAPH : Injecting "                               \
-                     "CMD [%s] in STATE [%s]...",                       \
-                     arg.c_str (), pstate (machine));                   \
-            machine.process_event (boost::any_cast< the_evt >(evt_));   \
-          }
+#define INJECT_EVENT(the_evt)                                  \
+  if (is_type< the_evt > (evt_))                               \
+  {                                                            \
+    std::string arg (#the_evt);                                \
+    TIZ_LOG (TIZ_PRIORITY_NOTICE,                              \
+             "GRAPH : Injecting "                              \
+             "CMD [%s] in STATE [%s]...",                      \
+             arg.c_str (), pstate (machine));                  \
+    machine.process_event (boost::any_cast< the_evt > (evt_)); \
+  }
 
         INJECT_EVENT (load_evt)
-        else INJECT_EVENT (execute_evt)
-          else INJECT_EVENT (configured_evt)
-            else INJECT_EVENT (omx_trans_evt)
-              else INJECT_EVENT (skip_evt)
-                else INJECT_EVENT (skipped_evt)
-                  else INJECT_EVENT (seek_evt)
-                    else INJECT_EVENT (volume_step_evt)
-                      else INJECT_EVENT (volume_evt)
-                        else INJECT_EVENT (mute_evt)
-                          else INJECT_EVENT (pause_evt)
-                            else INJECT_EVENT (omx_evt)
-                              else INJECT_EVENT (omx_eos_evt)
-                                else INJECT_EVENT (stop_evt)
-                                  else INJECT_EVENT (unload_evt)
-                                    else INJECT_EVENT (omx_port_disabled_evt)
-                                      else INJECT_EVENT (omx_port_enabled_evt)
-                                        else INJECT_EVENT (omx_port_settings_evt)
-                                         else INJECT_EVENT (omx_index_setting_evt)
-                                           else INJECT_EVENT (omx_format_detected_evt)
-                                             else INJECT_EVENT (omx_err_evt)
-                                               else INJECT_EVENT (err_evt)
-                                                 else INJECT_EVENT (auto_detected_evt)
-                                                   else INJECT_EVENT (graph_updated_evt)
-                                                     else INJECT_EVENT (graph_reconfigured_evt)
-                                                       else INJECT_EVENT (tunnel_reconfigured_evt)
-                                                         else INJECT_EVENT (timer_evt)
-                                                         else
-                                                           {
-                                                             assert (0);
-                                                           }
+        else INJECT_EVENT (execute_evt) else INJECT_EVENT (configured_evt) else INJECT_EVENT (omx_trans_evt) else INJECT_EVENT (skip_evt) else INJECT_EVENT (skipped_evt) else INJECT_EVENT (seek_evt) else INJECT_EVENT (volume_step_evt) else INJECT_EVENT (volume_evt) else INJECT_EVENT (mute_evt) else INJECT_EVENT (
+            pause_evt) else INJECT_EVENT (omx_evt) else INJECT_EVENT (omx_eos_evt) else INJECT_EVENT (stop_evt) else INJECT_EVENT (unload_evt) else INJECT_EVENT (omx_port_disabled_evt) else INJECT_EVENT (omx_port_enabled_evt) else INJECT_EVENT (omx_port_settings_evt) else INJECT_EVENT (omx_index_setting_evt) else INJECT_EVENT (omx_format_detected_evt) else INJECT_EVENT (omx_err_evt) else INJECT_EVENT (err_evt) else INJECT_EVENT (auto_detected_evt) else INJECT_EVENT (graph_updated_evt) else INJECT_EVENT (graph_reconfigured_evt) else INJECT_EVENT (tunnel_reconfigured_evt) else INJECT_EVENT (timer_evt) else
+        {
+          assert (0);
+        }
       }
 
     private:

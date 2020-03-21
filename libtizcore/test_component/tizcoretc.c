@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -28,7 +28,6 @@
 #include <config.h>
 #endif
 
-
 #include <assert.h>
 #include <string.h>
 
@@ -46,19 +45,16 @@
 #define TIZ_CORE_TEST_COMPONENT_ROLE "default"
 #define TIZ_CORE_TEST_COMPONENT_NAME "OMX.Aratelia.ilcore.test_component"
 
-static OMX_VERSIONTYPE tc_comp_version = { {1, 0, 0, 0} };
+static OMX_VERSIONTYPE tc_comp_version = {{1, 0, 0, 0}};
 
 static OMX_ERRORTYPE
-GetComponentVersion (OMX_HANDLETYPE ap_hdl,
-                     OMX_STRING ap_comp_name,
+GetComponentVersion (OMX_HANDLETYPE ap_hdl, OMX_STRING ap_comp_name,
                      OMX_VERSIONTYPE * ap_comp_ver,
-                     OMX_VERSIONTYPE * ap_spec_ver,
-                     OMX_UUIDTYPE * ap_comp_uuid)
+                     OMX_VERSIONTYPE * ap_spec_ver, OMX_UUIDTYPE * ap_comp_uuid)
 {
   TIZ_LOG (TIZ_PRIORITY_TRACE, "GetComponentVersion");
 
-  if (!ap_hdl
-      || !ap_comp_name || !ap_comp_ver || !ap_spec_ver || !ap_comp_uuid)
+  if (!ap_hdl || !ap_comp_name || !ap_comp_ver || !ap_spec_ver || !ap_comp_uuid)
     {
       return OMX_ErrorBadParameter;
     }
@@ -74,13 +70,12 @@ GetComponentVersion (OMX_HANDLETYPE ap_hdl,
       /* TODO: assign component UUID. */
     }
 
-
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-SendCommand (OMX_HANDLETYPE ap_hdl,
-             OMX_COMMANDTYPE a_cmd, OMX_U32 a_param1, OMX_PTR ap_cmd_data)
+SendCommand (OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd, OMX_U32 a_param1,
+             OMX_PTR ap_cmd_data)
 {
   return OMX_ErrorNone;
 }
@@ -110,8 +105,8 @@ SetConfig (OMX_HANDLETYPE ap_hdl, OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 }
 
 static OMX_ERRORTYPE
-GetExtensionIndex (OMX_HANDLETYPE ap_hdl,
-                   OMX_STRING a_param_name, OMX_INDEXTYPE * ap_index_type)
+GetExtensionIndex (OMX_HANDLETYPE ap_hdl, OMX_STRING a_param_name,
+                   OMX_INDEXTYPE * ap_index_type)
 {
   return OMX_ErrorNone;
 }
@@ -123,27 +118,23 @@ GetState (OMX_HANDLETYPE ap_hdl, OMX_STATETYPE * ap_state)
 }
 
 static OMX_ERRORTYPE
-ComponentTunnelRequest (OMX_HANDLETYPE ap_hdl,
-                        OMX_U32 a_port,
-                        OMX_HANDLETYPE ap_tunn_comp,
-                        OMX_U32 a_tunn_port,
+ComponentTunnelRequest (OMX_HANDLETYPE ap_hdl, OMX_U32 a_port,
+                        OMX_HANDLETYPE ap_tunn_comp, OMX_U32 a_tunn_port,
                         OMX_TUNNELSETUPTYPE * ap_tunn_setup)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-UseBuffer (OMX_HANDLETYPE ap_hdl,
-           OMX_BUFFERHEADERTYPE ** app_buf_hdr,
-           OMX_U32 a_port_index,
-           OMX_PTR ap_app_private, OMX_U32 a_size_bytes, OMX_U8 * ap_buf)
+UseBuffer (OMX_HANDLETYPE ap_hdl, OMX_BUFFERHEADERTYPE ** app_buf_hdr,
+           OMX_U32 a_port_index, OMX_PTR ap_app_private, OMX_U32 a_size_bytes,
+           OMX_U8 * ap_buf)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-AllocateBuffer (OMX_HANDLETYPE ap_hdl,
-                OMX_BUFFERHEADERTYPE ** pap_buf,
+AllocateBuffer (OMX_HANDLETYPE ap_hdl, OMX_BUFFERHEADERTYPE ** pap_buf,
                 OMX_U32 a_port_index, OMX_PTR ap_app_private,
                 OMX_U32 a_size_bytes)
 {
@@ -151,8 +142,8 @@ AllocateBuffer (OMX_HANDLETYPE ap_hdl,
 }
 
 static OMX_ERRORTYPE
-FreeBuffer (OMX_HANDLETYPE ap_hdl,
-            OMX_U32 a_port_index, OMX_BUFFERHEADERTYPE * ap_buf)
+FreeBuffer (OMX_HANDLETYPE ap_hdl, OMX_U32 a_port_index,
+            OMX_BUFFERHEADERTYPE * ap_buf)
 {
   return OMX_ErrorNone;
 }
@@ -170,8 +161,8 @@ FillThisBuffer (OMX_HANDLETYPE ap_hdl, OMX_BUFFERHEADERTYPE * ap_buf)
 }
 
 static OMX_ERRORTYPE
-SetCallbacks (OMX_HANDLETYPE ap_hdl,
-              OMX_CALLBACKTYPE * ap_callbacks, OMX_PTR ap_app_data)
+SetCallbacks (OMX_HANDLETYPE ap_hdl, OMX_CALLBACKTYPE * ap_callbacks,
+              OMX_PTR ap_app_data)
 {
   return OMX_ErrorNone;
 }
@@ -184,9 +175,8 @@ ComponentDeInit (OMX_HANDLETYPE ap_hdl)
 }
 
 static OMX_ERRORTYPE
-UseEGLImage (OMX_HANDLETYPE ap_hdl,
-             OMX_BUFFERHEADERTYPE ** app_buf_hdr,
-             OMX_U32 a_port_index, OMX_PTR ap_app_private, void *eglImage)
+UseEGLImage (OMX_HANDLETYPE ap_hdl, OMX_BUFFERHEADERTYPE ** app_buf_hdr,
+             OMX_U32 a_port_index, OMX_PTR ap_app_private, void * eglImage)
 {
   return OMX_ErrorNotImplemented;
 }
@@ -200,7 +190,8 @@ ComponentRoleEnum (OMX_HANDLETYPE ap_hdl, OMX_U8 * a_role, OMX_U32 a_index)
 
   if (!a_role)
     {
-      TIZ_LOG (TIZ_PRIORITY_TRACE, "ComponentRoleEnum: "
+      TIZ_LOG (TIZ_PRIORITY_TRACE,
+               "ComponentRoleEnum: "
                "NULL a_role pointer found.");
       return OMX_ErrorBadParameter;
     }
@@ -216,16 +207,16 @@ ComponentRoleEnum (OMX_HANDLETYPE ap_hdl, OMX_U8 * a_role, OMX_U32 a_index)
     }
 
   return ret_val;
-
 }
 
 OMX_ERRORTYPE
 OMX_ComponentInit (OMX_HANDLETYPE ap_hdl)
 {
 
-  OMX_COMPONENTTYPE *p_hdl = (OMX_COMPONENTTYPE *) ap_hdl;
+  OMX_COMPONENTTYPE * p_hdl = (OMX_COMPONENTTYPE *) ap_hdl;
 
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "OMX_ComponentInit: "
+  TIZ_LOG (TIZ_PRIORITY_TRACE,
+           "OMX_ComponentInit: "
            "Inititializing the test component's hdl");
 
   assert (p_hdl);
@@ -257,5 +248,4 @@ OMX_ComponentInit (OMX_HANDLETYPE ap_hdl)
   p_hdl->ComponentRoleEnum = ComponentRoleEnum;
 
   return OMX_ErrorNone;
-
 }

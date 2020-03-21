@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -59,7 +59,7 @@ alloc_pcm_port (tiz_muxerport_t * ap_obj, tiz_port_options_t * ap_opts,
   assert (ap_args);
 
   /* Register the PCM port indexes, so this port receives the get/set
-               requests */
+                 requests */
   tiz_check_omx_ret_null (
     tiz_port_register_index (ap_obj, OMX_IndexParamAudioPcm));
   tiz_check_omx_ret_null (
@@ -98,7 +98,7 @@ alloc_opus_port (tiz_muxerport_t * ap_obj, tiz_port_options_t * ap_opts,
   assert (ap_args);
 
   /* Register the OPUS port indexes, for when this port receives the get/set
-   requests */
+     requests */
   tiz_check_omx_ret_null (
     tiz_port_register_index (ap_obj, OMX_TizoniaIndexParamAudioOpus));
 
@@ -122,11 +122,11 @@ muxerport_ctor (void * ap_obj, va_list * app)
   va_list app_copy;
 
   /* Make a copy of the incoming va_list before it gets parsed by the parent
-     class:
-     The expected arguments are:
-     port_opts
+       class:
+       The expected arguments are:
+       port_opts
 
-     */
+       */
   va_copy (app_copy, *app);
 
   /* Now give the original to the base class */
@@ -183,7 +183,7 @@ muxerport_ctor (void * ap_obj, va_list * app)
               OMX_COLOR_FORMATTYPE * p_formats = NULL;
 
               /* Register the raw video port indexes, so this port receives the
-               get/set requests */
+             get/set requests */
               tiz_check_omx_ret_null (
                 tiz_port_register_index (p_obj, OMX_IndexParamVideoPortFormat));
 
@@ -257,7 +257,7 @@ muxerport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
             }
         }
       /* NOTE: Fall through if GetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {
@@ -312,7 +312,7 @@ muxerport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
         }
 
       /* NOTE: Fall through if SetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {
@@ -363,7 +363,7 @@ muxerport_GetConfig (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
         }
 
       /* NOTE: Fall through if GetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {
@@ -402,7 +402,7 @@ muxerport_SetConfig (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
         }
 
       /* NOTE: Fall through if GetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {

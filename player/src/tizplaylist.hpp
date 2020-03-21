@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -38,25 +38,27 @@ namespace tiz
 
   public:
     enum list_direction_t
-      {
-        DirUp,
-        DirDown,
-        DirMax
-      };
+    {
+      DirUp,
+      DirDown,
+      DirMax
+    };
 
   public:
-    explicit playlist (const uri_lst_t &uri_list = uri_lst_t (), const bool shuffle = false);
+    explicit playlist (const uri_lst_t &uri_list = uri_lst_t (),
+                       const bool shuffle = false);
     playlist (const playlist &playlist);
 
     static bool assemble_play_list (const std::string &base_uri,
                                     const bool shuffle_playlist,
                                     const bool recurse,
                                     const file_extension_lst_t &extension_list,
-                                    uri_lst_t &file_list, std::string &error_msg);
+                                    uri_lst_t &file_list,
+                                    std::string &error_msg);
 
     void skip (const int jump);
     playlist obtain_next_sub_playlist (const list_direction_t up_or_down);
-    const std::string & get_current_uri () const;
+    const std::string &get_current_uri () const;
     uri_lst_t get_sublist (const int from, const int to) const;
     const uri_lst_t &get_uri_list () const;
     int current_index () const;
@@ -74,16 +76,14 @@ namespace tiz
 
   private:
     enum single_format_t
-      {
-        Unknown,
-        Yes,
-        No
-      };
+    {
+      Unknown,
+      Yes,
+      No
+    };
 
   private:
-
   private:
-
     void scan_list ();
     int find_next_sub_list (const int index) const;
 
@@ -92,7 +92,7 @@ namespace tiz
     uri_lst_t uri_list_;
     int current_index_;
     bool loop_playback_;
-    std::vector<size_t> sub_list_indexes_;
+    std::vector< size_t > sub_list_indexes_;
     int current_sub_list_;
     bool shuffle_;
     mutable file_extension_lst_t extension_list_;

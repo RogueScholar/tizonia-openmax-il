@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -33,8 +33,7 @@
 
 namespace cast = tiz::cast;
 
-char const* const cast::pstate(cast::fsm const& p)
+char const* const cast::pstate (cast::fsm const& p)
 {
-  return cast::state_names[p.current_state()[0]];
+  return cast::state_names[p.current_state ()[0]];
 }
-

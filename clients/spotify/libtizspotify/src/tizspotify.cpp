@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -142,7 +143,7 @@ tizspotify::tizspotify ()
     current_track_uri_ (),
     current_track_artist_uri_ (),
     current_track_album_uri_ (),
-    current_track_explicitness_(),
+    current_track_explicitness_ (),
     current_queue_progress_ ()
 {
 }
@@ -265,32 +266,32 @@ int tizspotify::play_featured_playlist (const std::string &playlist)
 int tizspotify::play_new_releases (const std::string &album)
 {
   int rc = 0;
-  try_catch_wrapper (py_spotify_proxy_.attr ("enqueue_new_releases") (
-      bp::object (album)));
+  try_catch_wrapper (
+      py_spotify_proxy_.attr ("enqueue_new_releases") (bp::object (album)));
   return rc;
 }
 
 int tizspotify::play_recommendations_by_track_id (const std::string &track_id)
 {
   int rc = 0;
-  try_catch_wrapper (py_spotify_proxy_.attr ("enqueue_recommendations_by_track_id") (
-      bp::object (track_id)));
+  try_catch_wrapper (py_spotify_proxy_.attr (
+      "enqueue_recommendations_by_track_id") (bp::object (track_id)));
   return rc;
 }
 
 int tizspotify::play_recommendations_by_artist_id (const std::string &artist_id)
 {
   int rc = 0;
-  try_catch_wrapper (py_spotify_proxy_.attr ("enqueue_recommendations_by_artist_id") (
-      bp::object (artist_id)));
+  try_catch_wrapper (py_spotify_proxy_.attr (
+      "enqueue_recommendations_by_artist_id") (bp::object (artist_id)));
   return rc;
 }
 
 int tizspotify::play_recommendations_by_genre (const std::string &genre)
 {
   int rc = 0;
-  try_catch_wrapper (py_spotify_proxy_.attr ("enqueue_recommendations_by_genre") (
-      bp::object (genre)));
+  try_catch_wrapper (py_spotify_proxy_.attr (
+      "enqueue_recommendations_by_genre") (bp::object (genre)));
   return rc;
 }
 
@@ -423,8 +424,8 @@ void tizspotify::set_explicit_track_filter (const explicit_track_filter filter)
         break;
       case ExplicitTrackDisallow:
         {
-          try_catch_wrapper (
-              py_spotify_proxy_.attr ("set_explicit_track_filter") ("DISALLOW"));
+          try_catch_wrapper (py_spotify_proxy_.attr (
+              "set_explicit_track_filter") ("DISALLOW"));
         }
         break;
       default:
@@ -477,17 +478,22 @@ const char *tizspotify::get_current_track_uri ()
 
 const char *tizspotify::get_current_track_artist_uri ()
 {
-  return current_track_artist_uri_.empty () ? NULL : current_track_artist_uri_.c_str ();
+  return current_track_artist_uri_.empty ()
+             ? NULL
+             : current_track_artist_uri_.c_str ();
 }
 
 const char *tizspotify::get_current_track_album_uri ()
 {
-  return current_track_album_uri_.empty () ? NULL : current_track_album_uri_.c_str ();
+  return current_track_album_uri_.empty () ? NULL
+                                           : current_track_album_uri_.c_str ();
 }
 
 const char *tizspotify::get_current_track_explicitness ()
 {
-  return current_track_explicitness_.empty () ? NULL : current_track_explicitness_.c_str ();
+  return current_track_explicitness_.empty ()
+             ? NULL
+             : current_track_explicitness_.c_str ();
 }
 
 void tizspotify::get_current_track ()

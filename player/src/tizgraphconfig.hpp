@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -44,7 +44,8 @@ namespace tiz
     {
 
     public:
-      explicit config (const tizplaylist_ptr_t &playlist, const uint32_t buffer_seconds)
+      explicit config (const tizplaylist_ptr_t &playlist,
+                       const uint32_t buffer_seconds)
         : playlist_ (playlist), buffer_seconds_ (buffer_seconds)
       {
       }

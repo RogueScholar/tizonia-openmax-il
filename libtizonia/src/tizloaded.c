@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -178,8 +178,9 @@ loaded_state_set (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
     {
       OMX_ERRORTYPE rc = OMX_ErrorNone;
 
-      if (OMX_ErrorNone != (rc = tiz_fsm_set_state (tiz_get_fsm (ap_hdl),
-                                                    new_state, EStateMax)))
+      if (OMX_ErrorNone
+          != (rc
+              = tiz_fsm_set_state (tiz_get_fsm (ap_hdl), new_state, EStateMax)))
         {
           return rc;
         }

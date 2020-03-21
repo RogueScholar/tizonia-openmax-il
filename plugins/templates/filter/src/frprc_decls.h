@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -30,7 +30,8 @@
 #define FRPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -38,20 +39,20 @@ extern "C" {
 #include <tizfilterprc.h>
 #include <tizfilterprc_decls.h>
 
-typedef struct fr_prc fr_prc_t;
-struct fr_prc
-{
-  /* Object */
-  const tiz_filter_prc_t _;
-};
+  typedef struct fr_prc fr_prc_t;
+  struct fr_prc
+  {
+    /* Object */
+    const tiz_filter_prc_t _;
+  };
 
-typedef struct fr_prc_class fr_prc_class_t;
-struct fr_prc_class
-{
-  /* Class */
-  const tiz_filter_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct fr_prc_class fr_prc_class_t;
+  struct fr_prc_class
+  {
+    /* Class */
+    const tiz_filter_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

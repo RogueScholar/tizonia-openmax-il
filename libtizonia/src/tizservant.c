@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -131,11 +131,11 @@ srv_ctor (void * ap_obj, va_list * app)
 {
   tiz_srv_t * p_srv = super_ctor (typeOf (ap_obj, "tizsrv"), ap_obj, app);
   /* NOTE: The priority queue is initialised only when the allocator is set via
-   * set_allocator */
+     * set_allocator */
   p_srv->p_pq_ = NULL;
   p_srv->p_soa_ = NULL;
   /* We also lazily initialise the watchers map, when the first watcher is
-     allocated */
+       allocated */
   p_srv->p_watchers_ = NULL;
   p_srv->watcher_id_ = 0;
   p_srv->p_appdata_ = NULL;

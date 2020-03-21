@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -55,7 +55,7 @@ update_audio_coding_type (void * ap_obj, const OMX_AUDIO_CODINGTYPE a_encoding)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
   tiz_demuxerport_t * p_obj = ap_obj;
-  tiz_audioport_t *p_audio_port = NULL;
+  tiz_audioport_t * p_audio_port = NULL;
   tiz_port_t * p_base = ap_obj;
 
   assert (ap_obj);
@@ -71,7 +71,8 @@ update_audio_coding_type (void * ap_obj, const OMX_AUDIO_CODINGTYPE a_encoding)
       goto end;
     }
 
-  if (!tiz_vector_find (p_audio_port->p_encodings_, (const OMX_PTR) (&a_encoding)))
+  if (!tiz_vector_find (p_audio_port->p_encodings_,
+                        (const OMX_PTR) (&a_encoding)))
     {
       TIZ_ERROR (handleOf (ap_obj),
                  "[OMX_ErrorUnsupportedSetting] : "
@@ -116,7 +117,8 @@ update_video_coding_type (void * ap_obj, const OMX_VIDEO_CODINGTYPE a_encoding)
       goto end;
     }
 
-  if (!tiz_vector_find (p_video_port->p_video_encodings_, (const OMX_PTR) (&a_encoding)))
+  if (!tiz_vector_find (p_video_port->p_video_encodings_,
+                        (const OMX_PTR) (&a_encoding)))
     {
       TIZ_ERROR (handleOf (ap_obj),
                  "[OMX_ErrorUnsupportedSetting] : "
@@ -141,7 +143,8 @@ end:
 
 /* TODO: Remove duplicate. This function already exists in tizvideoport.c */
 static inline OMX_ERRORTYPE
-update_color_format_type (void * ap_obj, const OMX_COLOR_FORMATTYPE a_color_format)
+update_color_format_type (void * ap_obj,
+                          const OMX_COLOR_FORMATTYPE a_color_format)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
   tiz_demuxerport_t * p_obj = ap_obj;
@@ -161,7 +164,8 @@ update_color_format_type (void * ap_obj, const OMX_COLOR_FORMATTYPE a_color_form
       goto end;
     }
 
-  if (!tiz_vector_find (p_video_port->p_color_formats_, (const OMX_PTR) (&a_color_format)))
+  if (!tiz_vector_find (p_video_port->p_color_formats_,
+                        (const OMX_PTR) (&a_color_format)))
     {
       TIZ_ERROR (handleOf (ap_obj),
                  "[OMX_ErrorUnsupportedSetting] : "
@@ -196,11 +200,11 @@ demuxerport_ctor (void * ap_obj, va_list * app)
   va_list app_copy;
 
   /* Make a copy of the incoming va_list before it gets parsed by the parent
-     class:
-     The expected arguments are:
-     tiz_port_options_t
+       class:
+       The expected arguments are:
+       tiz_port_options_t
 
-     */
+       */
   va_copy (app_copy, *app);
 
   /* Now give the original to the base class */
@@ -229,9 +233,8 @@ demuxerport_ctor (void * ap_obj, va_list * app)
               p_encodings = va_arg (app_copy, OMX_AUDIO_CODINGTYPE *);
               assert (p_encodings);
 
-              p_obj->p_port_
-                = factory_new (typeOf (ap_obj, "tizaudioport"), p_opts,
-                               p_encodings);
+              p_obj->p_port_ = factory_new (typeOf (ap_obj, "tizaudioport"),
+                                            p_opts, p_encodings);
               if (!p_obj->p_port_)
                 {
                   return NULL;
@@ -246,7 +249,7 @@ demuxerport_ctor (void * ap_obj, va_list * app)
               OMX_COLOR_FORMATTYPE * p_formats = NULL;
 
               /* Register the raw video port indexes, so this port receives the
-               get/set requests */
+             get/set requests */
               tiz_check_omx_ret_null (
                 tiz_port_register_index (p_obj, OMX_IndexParamVideoPortFormat));
 
@@ -262,9 +265,10 @@ demuxerport_ctor (void * ap_obj, va_list * app)
               p_formats = va_arg (app_copy, OMX_COLOR_FORMATTYPE *);
               assert (p_formats);
 
-              if (NULL == (p_obj->p_port_ = factory_new (
-                             typeOf (ap_obj, "tizvideoport"), p_opts, p_portdef,
-                             p_encodings, p_formats)))
+              if (NULL
+                  == (p_obj->p_port_
+                      = factory_new (typeOf (ap_obj, "tizvideoport"), p_opts,
+                                     p_portdef, p_encodings, p_formats)))
                 {
                   return NULL;
                 }
@@ -309,11 +313,12 @@ demuxerport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       case OMX_IndexParamActiveStream:
         {
           /* Only the processor knows about available or active streams. So lets
-           get the processor to fill this info for us. */
+         get the processor to fill this info for us. */
           void * p_prc = tiz_get_prc (ap_hdl);
           assert (p_prc);
-          if (OMX_ErrorNone != (rc = tiz_api_GetParameter (p_prc, ap_hdl,
-                                                           a_index, ap_struct)))
+          if (OMX_ErrorNone
+              != (rc
+                  = tiz_api_GetParameter (p_prc, ap_hdl, a_index, ap_struct)))
             {
               TIZ_ERROR (ap_hdl,
                          "[%s] : Error retrieving [%s] "
@@ -336,7 +341,7 @@ demuxerport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
             }
         }
       /* NOTE: Fall through if GetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {
@@ -373,7 +378,7 @@ demuxerport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       case OMX_IndexParamActiveStream:
         {
           /* Only the processor knows about active streams. So lets
-           get the processor update this info for us. */
+         get the processor update this info for us. */
           void * p_prc = tiz_get_prc (ap_hdl);
           assert (p_prc);
           if (OMX_ErrorUnsupportedIndex
@@ -403,12 +408,12 @@ demuxerport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
         }
 
       /* NOTE: Fall through if SetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {
           /* Delegate to the base port */
-          TIZ_DEBUG(ap_hdl, "delegating to base port");
+          TIZ_DEBUG (ap_hdl, "delegating to base port");
           return super_SetParameter (typeOf (ap_obj, "tizdemuxerport"), ap_obj,
                                      ap_hdl, a_index, ap_struct);
         }
@@ -443,7 +448,7 @@ demuxerport_GetConfig (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
         }
 
       /* NOTE: Fall through if GetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {
@@ -482,7 +487,7 @@ demuxerport_SetConfig (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
         }
 
       /* NOTE: Fall through if GetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {
@@ -497,7 +502,7 @@ demuxerport_SetConfig (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
 
 static OMX_ERRORTYPE
 demuxerport_set_portdef_format (void * ap_obj,
-                              const OMX_PARAM_PORTDEFINITIONTYPE * ap_pdef)
+                                const OMX_PARAM_PORTDEFINITIONTYPE * ap_pdef)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
   tiz_demuxerport_t * p_obj = ap_obj;
@@ -508,7 +513,8 @@ demuxerport_set_portdef_format (void * ap_obj,
 
   if (OMX_PortDomainAudio == p_base->portdef_.eDomain)
     {
-      tiz_check_omx (update_audio_coding_type (p_obj, ap_pdef->format.audio.eEncoding));
+      tiz_check_omx (
+        update_audio_coding_type (p_obj, ap_pdef->format.audio.eEncoding));
       p_base->portdef_.format.audio.pNativeRender
         = ap_pdef->format.audio.pNativeRender;
       p_base->portdef_.format.audio.bFlagErrorConcealment

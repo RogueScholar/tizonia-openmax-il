@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -172,8 +172,7 @@ tiz_buffer_push (tiz_buffer_t * ap_buf, const void * ap_data,
     {
       size_t avail = 0;
 
-      if (ap_buf->seek_mode == TIZ_BUFFER_NON_SEEKABLE
-          && ap_buf->offset > 0)
+      if (ap_buf->seek_mode == TIZ_BUFFER_NON_SEEKABLE && ap_buf->offset > 0)
         {
           memmove (ap_buf->p_store, (ap_buf->p_store + ap_buf->offset),
                    ap_buf->filled_len);
@@ -196,7 +195,8 @@ tiz_buffer_push (tiz_buffer_t * ap_buf, const void * ap_data,
             }
         }
       nbytes_to_copy = MIN (avail, a_nbytes);
-      memcpy (ap_buf->p_store + ap_buf->offset + ap_buf->filled_len, ap_data, nbytes_to_copy);
+      memcpy (ap_buf->p_store + ap_buf->offset + ap_buf->filled_len, ap_data,
+              nbytes_to_copy);
       ap_buf->filled_len += nbytes_to_copy;
     }
   return nbytes_to_copy;

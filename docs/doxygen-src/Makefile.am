@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -38,7 +38,9 @@ doxyfile.stamp: doxyfile mainpage.dox plugins.dox resourcemanagement.dox footer.
 	cp doxy-boot.js html
 	echo Timestamp > doxyfile.stamp
 
-do_subst = sed -e 's,[@]abs_top_builddir[@],$(abs_top_builddir),g' \
+do_subst = sed -e 's,[@]abs_top_srcdir[@],$(abs_top_srcdir),g' \
+	-e 's,[@]abs_srcdir[@],$(abs_srcdir),g' \
+	-e 's,[@]abs_builddir[@],$(abs_builddir),g' \
 	-e 's,[@]VERSION[@],$(VERSION),g'
 
 doxyfile: doxyfile.in Makefile

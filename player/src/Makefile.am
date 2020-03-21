@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -104,6 +104,11 @@ noinst_HEADERS = \
 	services/plex/tizplexgraphops.hpp \
 	services/plex/tizplexconfig.hpp \
 	services/plex/tizplexmgr.hpp \
+	services/tunein/tiztuneingraph.hpp \
+	services/tunein/tiztuneingraphfsm.hpp \
+	services/tunein/tiztuneingraphops.hpp \
+	services/tunein/tiztuneinconfig.hpp \
+	services/tunein/tiztuneinmgr.hpp \
 	mpris/tizmpriscbacks.hpp \
 	mpris/tizmprisprops.hpp \
 	mpris/tizmprisif.hpp \
@@ -169,6 +174,10 @@ tizonia_SOURCES = \
 	services/plex/tizplexgraph.cpp \
 	services/plex/tizplexgraphops.cpp \
 	services/plex/tizplexmgr.cpp \
+	services/tunein/tiztuneingraph.cpp \
+	services/tunein/tiztuneingraphfsm.cpp \
+	services/tunein/tiztuneingraphops.cpp \
+	services/tunein/tiztuneinmgr.cpp \
 	services/chromecast/tizchromecastgraph.cpp \
 	services/chromecast/tizchromecastgraphfsm.cpp \
 	services/chromecast/tizchromecastgraphops.cpp \
@@ -190,7 +199,8 @@ tizonia_CPPFLAGS = \
 	-I$(top_srcdir)/src/services/soundcloud \
 	-I$(top_srcdir)/src/services/youtube \
 	-I$(top_srcdir)/src/services/plex \
-	-I/usr/include/taglib \
+	-I$(top_srcdir)/src/services/tunein \
+	@TAGLIB_CFLAGS@ \
 	@LIBMEDIAINFO_CFLAGS@ \
 	@TIZDBUSCPLUSPLUS_CFLAGS@ \
 	-D__STDC_CONSTANT_MACROS
@@ -200,7 +210,8 @@ tizonia_LDADD = \
 	@BOOST_SYSTEM_LIB@ \
 	@BOOST_FILESYSTEM_LIB@ \
 	@BOOST_THREAD_LIB@ \
-	-ltag \
+	@BOOST_CHRONO_LIB@ \
+	@TAGLIB_LIBS@ \
 	@LIBMEDIAINFO_LIBS@ \
 	@TIZDBUSCPLUSPLUS_LIBS@ \
 	@TIZPLATFORM_LIBS@ \

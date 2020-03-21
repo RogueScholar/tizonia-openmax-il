@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+# Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
 #
 # This file is part of Tizonia
 #
@@ -16,7 +16,7 @@
 # along with Tizonia.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_PREREQ([2.68])
-AC_INIT([tizrmd], [0.19.0],[juan.rubio@aratelia.com])
+AC_INIT([tizrmd], [0.21.0],[juan.rubio@aratelia.com])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE([foreign color-tests silent-rules -Wall -Werror])
 AC_CONFIG_SRCDIR([config.h.in])
@@ -41,7 +41,6 @@ LT_INIT
 
 PKG_PROG_PKG_CONFIG()
 
-AX_BOOST_BASE([1.46],, [AC_MSG_ERROR([tizrmd needs Boost 1.46])])
 AX_LIB_SQLITE3([3.7.1])
 
 AC_LANG_PUSH([C++])
@@ -81,8 +80,6 @@ AS_IF([test "x$tiz_found_platform_headers" == "xyes"],
 # Checks for header files.
 AC_CHECK_HEADERS([limits.h stdlib.h string.h unistd.h])
 AC_LANG_PUSH([C++])
-AC_CHECK_HEADERS([boost/foreach.hpp], [],
-    [AC_MSG_ERROR(You need the Boost libraries.)])
 AC_LANG_POP([C++])
 
 # Checks for typedefs, structures, and compiler characteristics.

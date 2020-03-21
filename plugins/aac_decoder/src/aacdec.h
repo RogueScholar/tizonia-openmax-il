@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors
  *
  * This file is part of Tizonia
  *
@@ -29,7 +29,8 @@
 #define AACDEC_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <neaacdec.h>
@@ -46,7 +47,7 @@ extern "C" {
 #define ARATELIA_AAC_DECODER_OUTPUT_PORT_INDEX 1
 #define ARATELIA_AAC_DECODER_PORT_MIN_BUF_COUNT 2
 #define ARATELIA_AAC_DECODER_PORT_MIN_INPUT_BUF_SIZE \
-  FAAD_MIN_STREAMSIZE * MAX_CHANNELS * 2
+  FAAD_MIN_STREAMSIZE * MAX_CHANNELS * 10
 #define ARATELIA_AAC_DECODER_PORT_MIN_OUTPUT_BUF_SIZE 8192
 #define ARATELIA_AAC_DECODER_PORT_NONCONTIGUOUS OMX_FALSE
 #define ARATELIA_AAC_DECODER_PORT_ALIGNMENT 0

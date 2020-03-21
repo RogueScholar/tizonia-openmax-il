@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -97,6 +97,9 @@ private:
 
   void
   unregister_client (const cast_client_id_ptr_t ap_cast_clnt);
+
+  void
+  unregister_all_clients ();
 
   // DBUS Signals
   void

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -20,10 +20,10 @@
 /**
  * @file   tizrmproxytypes.h
  * @author Juan A. Rubio <juan.rubio@aratelia.com>
- * 
+ *
  * @brief  Tizonia OpenMAX IL - Resource Manager client API types
- * 
- * 
+ *
+ *
  */
 
 #ifndef TIZRMPROXYTYPES_H
@@ -32,24 +32,24 @@
 #ifdef __cplusplus
 extern "C"
 {
-#endif                          /* __cplusplus */
+#endif /* __cplusplus */
 
 #include <OMX_Types.h>
 
-  typedef void *tiz_rm_t;
+  typedef void * tiz_rm_t;
 
   /* Callback function to signal a waiting client when a resource has become
-   * available */
+ * available */
   typedef void (*tiz_rm_proxy_wait_complete_f) (OMX_U32 rid, OMX_PTR ap_data);
 
   /* Callback function to signal a client when a previously acquired resource
-   * is being preempted */
+ * is being preempted */
   typedef void (*tiz_rm_proxy_preemption_req_f) (OMX_U32 rid, OMX_PTR ap_data);
 
   /* Callback function to signal a client when a previously requested resource
-   * has been preempted */
+ * has been preempted */
   typedef void (*tiz_rm_proxy_preemption_complete_f) (OMX_U32 rid,
-                                                     OMX_PTR ap_data);
+                                                      OMX_PTR ap_data);
 
   typedef struct tiz_rm_proxy_callbacks_t
   {
@@ -62,4 +62,4 @@ extern "C"
 }
 #endif
 
-#endif                          // TIZRMPROXYTYPES_H
+#endif  // TIZRMPROXYTYPES_H

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
  *
  * This file is part of Tizonia
  *
@@ -119,7 +119,6 @@
         };                                                                    \
     }                                                                         \
   while (0)
-
 
 static OMX_VERSIONTYPE _spec_version
   = {{(OMX_U8) OMX_VERSION_MAJOR, (OMX_U8) OMX_VERSION_MINOR,
@@ -368,7 +367,7 @@ port_ctor (void * ap_obj, va_list * app)
   p_obj->portdef_.nBufferAlignment = p_obj->opts_.alignment;
 
   /* Store here the port's preference that needs to be advertised when the
-   * component is in OMX_StateLoaded or the port is disabled. */
+     * component is in OMX_StateLoaded or the port is disabled. */
   p_obj->contiguity_pref_ = p_obj->opts_.contiguous;
 
   /* Init the OMX_PARAM_BUFFERSUPPLIERTYPE structure */
@@ -461,7 +460,7 @@ port_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
           *p_pdef = p_obj->portdef_;
 
           /* From IL 1.2, bBuffersContiguous should advertise the port's
-         * preference in OMX_StateLoaded state and port Disabled  */
+        * preference in OMX_StateLoaded state and port Disabled  */
           if (now == EStateLoaded || OMX_FALSE == p_obj->portdef_.bEnabled)
             {
               p_pdef->bBuffersContiguous = p_obj->contiguity_pref_;
@@ -529,7 +528,7 @@ port_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
             }
 
           /* Apply values to the read-write parameters only. From IL 1.2 those
-         * are: nBufferCountActual and bBuffersContiguous */
+        * are: nBufferCountActual and bBuffersContiguous */
           if (p_pdef->nBufferCountActual < p_obj->portdef_.nBufferCountMin)
             {
               return OMX_ErrorBadParameter;
@@ -538,8 +537,8 @@ port_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
           p_obj->portdef_.nBufferCountActual = p_pdef->nBufferCountActual;
 
           /* As of IL 1.2, updates to bBuffersContiguous shall only be allowed if
-         * the port is being enabled or during the transition from
-         * OMX_StateLoaded to OMX_StateIdle. Otherwise, just ignore. */
+        * the port is being enabled or during the transition from
+        * OMX_StateLoaded to OMX_StateIdle. Otherwise, just ignore. */
           if (now == ESubStateLoadedToIdle || TIZ_PORT_IS_BEING_ENABLED (p_obj))
             {
               p_obj->portdef_.bBuffersContiguous = p_pdef->bBuffersContiguous;
@@ -647,7 +646,7 @@ port_GetConfig (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
           OMX_CONFIG_TUNNELEDPORTSTATUSTYPE * p_port_status
             = (OMX_CONFIG_TUNNELEDPORTSTATUSTYPE *) ap_struct;
           /* NOTE: We return the status that we have been set to. That is, the
-           peer's port status. */
+         peer's port status. */
           *p_port_status = p_obj->peer_port_status_;
         }
         break;
@@ -709,9 +708,10 @@ port_GetExtensionIndex (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
   TIZ_TRACE (ap_hdl, "PORT [%d] GetExtensionIndex [%s]...", p_obj->pid_,
              ap_param_name);
 
-  if (0 == strncmp (
-             ap_param_name, OMX_TIZONIA_INDEX_PARAM_BUFFER_PREANNOUNCEMENTSMODE,
-             strlen (OMX_TIZONIA_INDEX_PARAM_BUFFER_PREANNOUNCEMENTSMODE)))
+  if (0
+      == strncmp (ap_param_name,
+                  OMX_TIZONIA_INDEX_PARAM_BUFFER_PREANNOUNCEMENTSMODE,
+                  strlen (OMX_TIZONIA_INDEX_PARAM_BUFFER_PREANNOUNCEMENTSMODE)))
     {
       *ap_index_type = OMX_TizoniaIndexParamBufferPreAnnouncementsMode;
       rc = OMX_ErrorNone;
@@ -747,8 +747,9 @@ port_ComponentTunnelRequest (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
 
   /* Retrieve the tunneled component's port definition ... */
   port_def.nPortIndex = a_tpid;
-  if (OMX_ErrorNone != (rc = OMX_GetParameter (
-                          ap_thdl, OMX_IndexParamPortDefinition, &port_def)))
+  if (OMX_ErrorNone
+      != (rc = OMX_GetParameter (ap_thdl, OMX_IndexParamPortDefinition,
+                                 &port_def)))
     {
       TIZ_ERROR (ap_hdl,
                  "OMX_ErrorUndefined: Tunnelled component returned [%s]",
@@ -823,9 +824,9 @@ port_ComponentTunnelRequest (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       /* Communicate the buffer supplier decision... */
       buf_supplier.nPortIndex = a_tpid;
       buf_supplier.eBufferSupplier = supplier;
-      if (OMX_ErrorNone != OMX_SetParameter (ap_thdl,
-                                             OMX_IndexParamCompBufferSupplier,
-                                             &buf_supplier))
+      if (OMX_ErrorNone
+          != OMX_SetParameter (ap_thdl, OMX_IndexParamCompBufferSupplier,
+                               &buf_supplier))
         {
           p_obj->thdl_ = NULL;
           TIZ_ERROR (ap_hdl,
@@ -966,10 +967,11 @@ port_UseEGLImage (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
   assert (a_pid == p_obj->portdef_.nPortIndex);
 
   /* Before allocating the buffer header, call the egl image validation hook
-     registered on this port */
+       registered on this port */
   assert (a_pid == p_obj->eglimage_hook_.pid);
-  if (OMX_TRUE != (validation_result = p_obj->eglimage_hook_.pf_egl_validator (
-                     ap_hdl, a_pid, ap_eglimage, p_obj->eglimage_hook_.p_args)))
+  if (OMX_TRUE
+      != (validation_result = p_obj->eglimage_hook_.pf_egl_validator (
+            ap_hdl, a_pid, ap_eglimage, p_obj->eglimage_hook_.p_args)))
     {
       assert (OMX_FALSE == validation_result || OMX_TRUE == validation_result);
       TIZ_ERROR (
@@ -1304,8 +1306,9 @@ port_set_portdef_format (void * ap_obj,
                          const OMX_PARAM_PORTDEFINITIONTYPE * ap_pdef)
 {
   /* To be implemented by derived classes */
-  TIZ_NOTICE (handleOf (ap_obj),
-              "This function should have been implemented in the derived class");
+  TIZ_NOTICE (
+    handleOf (ap_obj),
+    "This function should have been implemented in the derived class");
   assert (0);
   return OMX_ErrorNone;
 }
@@ -1681,8 +1684,8 @@ port_populate (const void * ap_obj)
   for (i = 0; i < nbufs; ++i)
     {
       /* Allocate the buffer, but only if the 1.1.2 behaviour is
-       * enabled. Otherwise, this is deferred until the component is
-       * transitioned to Exe and the buffer starts moving... */
+         * enabled. Otherwise, this is deferred until the component is
+         * transitioned to Exe and the buffer starts moving... */
       if (OMX_TRUE == p_obj->announce_bufs_
           && OMX_ErrorNone
                != (rc = alloc_buffer (p_obj, &nbytes, &p_buf, &p_port_priv)))
@@ -1811,7 +1814,7 @@ port_depopulate (const void * ap_obj)
           TIZ_TRACE (handleOf (ap_obj), "HEADER [%p]", p_hdr);
 
           /* NOTE that we don't check OMX_FreeBuffer returned error here (we don't
-             report errors coming from the tunnelled component */
+               report errors coming from the tunnelled component */
           (void) OMX_FreeBuffer (p_obj->thdl_, p_obj->tpid_, p_hdr);
 
           /* At this point, the actual buffer header should no longer exist... */
@@ -2055,7 +2058,7 @@ port_populate_header (const void * ap_obj, OMX_BUFFERHEADERTYPE * ap_hdr)
   if (OMX_TRUE == p_obj->announce_bufs_)
     {
       /* pre-announcements are enabled on this port, therefore nothing to do
-       * here. */
+         * here. */
       return OMX_ErrorNone;
     }
 
@@ -2115,7 +2118,7 @@ port_depopulate_header (const void * ap_obj, OMX_BUFFERHEADERTYPE * ap_hdr)
   if (OMX_TRUE == p_obj->announce_bufs_)
     {
       /* pre-announcements are enabled on this port, therefore nothing to do
-       * here. */
+         * here. */
       return;
     }
 
@@ -2285,7 +2288,7 @@ port_SetParameter_internal (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
                             OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
   /* Default implementation is to call the normal SetParameter. Derived classes
-     may override this behaviour. */
+       may override this behaviour. */
   return tiz_api_SetParameter (ap_obj, ap_hdl, a_index, ap_struct);
 }
 
@@ -2303,7 +2306,7 @@ port_SetConfig_internal (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
                          OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
   /* Default implementation is to call the normal SetConfig. Derived classes
-     may override this behaviour. */
+       may override this behaviour. */
   return tiz_api_SetConfig (ap_obj, ap_hdl, a_index, ap_struct);
 }
 

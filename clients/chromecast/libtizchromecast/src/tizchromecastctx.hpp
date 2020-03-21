@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2019 Aratelia Limited - Juan A. Rubio
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -42,7 +43,7 @@ public:
   boost::python::object& create_cc_proxy (const std::string& name_or_ip) const;
   void destroy_cc_proxy (const std::string& name_or_ip) const;
   boost::python::object& get_cc_proxy (const std::string& name_or_ip) const;
-  bool cc_proxy_exists(const std::string& name_or_ip) const;
+  bool cc_proxy_exists (const std::string& name_or_ip) const;
 
 private:
   typedef std::map< std::string, boost::python::object > cc_proxy_instances_t;
