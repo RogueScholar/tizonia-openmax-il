@@ -151,7 +151,7 @@ readonly TIZ_PYTHON_PROJECTS=( \
 )
 
 # dpkg-dev package is required to have dpkg-architecture available
-readonly dpkgdevinstalled=$(dpkg-query -W -f='${Status} ${Version}\n' dpkg-dev 2> /dev/null | cut -d ' ' -f3)
+readonly dpkgdevinstalled="$(dpkg-query -W -f='${Status} ${Version}\n' dpkg-dev 2> /dev/null | cut -d ' ' -f3)"
 if [[ "$dpkgdevinstalled" == "installed" ]]; then
     pretty_print "$BLU" "[dpkg-dev] : installing. 'dpkg-architecture' is required in order to run this script."
     sudo apt-get install -qq --force-yes "dpkg-dev" #> /dev/null
@@ -340,7 +340,7 @@ function usage {
     pretty_print "$BLU" "There is NO WARRANTY, to the extent permitted by law."
 
     echo
-    pretty_print "$GRN" "Usage : $(basename $0) [-n|--makenext] [-d|--alldeps] [-p|--publish] [-r|--removeall] [-s|--signdebs] [-t|--tizdeps]"
+    pretty_print "$GRN" "Usage : $(basename "$0") [-n|--makenext] [-d|--alldeps] [-p|--publish] [-r|--removeall] [-s|--signdebs] [-t|--tizdeps]"
     pretty_print "$GRN" "       -n            : Make and install all debian packages, starting from the first one not yet installed."
     pretty_print "$GRN" "       -d            : Install both Tizonia's and Debian maintainership dependencies."
     pretty_print "$GRN" "       -p            : Publish to Bintray (requires Tizonia's Bintray API_KEY and Juan's GPG passphrase)."
@@ -396,7 +396,7 @@ function do_tizonia_deps {
 
     # Install tizonia's binary dependencies
     for pkg in "${TIZ_TIZONIA_DEPS[@]}"; do
-        local result=$(dpkg-query -W -f='${Status} ${Version}\n' "$pkg" 2> /dev/null | cut -d ' ' -f3)
+        local result="$(dpkg-query -W -f='${Status} ${Version}\n' "$pkg" 2> /dev/null | cut -d ' ' -f3)"
         if [[ "$result" == "installed" ]]; then
             pretty_print "$GRN" "[$pkg] : $result."
         else
@@ -424,11 +424,11 @@ function do_tizonia_deps {
         else
             MOPRELEASE="buster"
         fi
-        sudo curl -k https://apt.mopidy.com/$MOPRELEASE.list -o /etc/apt/sources.list.d/mopidy.list
+        sudo curl -k https://apt.mopidy.com/"$MOPRELEASE".list -o /etc/apt/sources.list.d/mopidy.list
         sudo apt-get update
         pretty_print "$GRN" "[libspotify] : added Mopidy APT archive."
         for pkg in "${TIZ_LIBSPOTIFY_DEPS[@]}"; do
-            local result=$(dpkg-query -W -f='${Status} ${Version}\n' "$pkg" 2> /dev/null | cut -d ' ' -f3)
+            local result="$(dpkg-query -W -f='${Status} ${Version}\n' "$pkg" 2> /dev/null | cut -d ' ' -f3)"
             if [[ "$result" != "installed" ]]; then
                 pretty_print "$BLU" "[$pkg] : installing."
                 sudo apt-get install -qq --force-yes "$pkg" #> /dev/null
@@ -483,7 +483,7 @@ function do_all_deps {
 
     # Install debian dependencies
     for pkg in "${TIZ_DEBIAN_PKGS[@]}"; do
-        local result=$(dpkg-query -W -f='${Status} ${Version}\n' "$pkg" 2> /dev/null | cut -d ' ' -f3)
+        local result="$(dpkg-query -W -f='${Status} ${Version}\n' "$pkg" 2> /dev/null | cut -d ' ' -f3)"
         if [[ "$result" == "installed" ]]; then
             pretty_print "$GRN" "[$pkg] : $result."
         else
@@ -571,7 +571,7 @@ function cd_to_dir {
 #   None
 ##################################################################
 function print_dashes {
-    local LEN=$1
+    local LEN="$1"
     local CHAR='-'
     while (( $# > 0 ))
     do
@@ -594,7 +594,7 @@ function print_dashes {
     DASHES=""
     for ((i=0; i<LEN; i++))
     do
-        DASHES="${DASHES}${CHAR}"
+        DASHES="$DASHES$CHAR"
     done
     echo "$DASHES"
 }
@@ -741,7 +741,7 @@ function do_install_project_debs {
     # Check first for tizonia-config, this sub-project is special as it does
     # not produce any -dev or -dbg packages.
     if [[ "$pkg" == "tizonia-config" ]]; then
-        local deb=$(ls *config*.deb)
+        local deb="$(ls *config*.deb)"
         err_msg="[$deb] : Error while installing the package."
         pretty_print "$BLU" "[$deb] : installing."
         sudo dpkg -i "$deb"
@@ -768,7 +768,7 @@ function do_install_project_debs {
     fi
 
     # Install normal packages first
-    for deb in $(find . -type f -name "*.deb" -print | cut -d'/' -f2)
+    for deb in "$(find . -type f -name "*.deb" -print | cut -d'/' -f2)"
     do
         if [[ -e "$deb" ]]; then
             if [[ "$deb" = *bin*.deb ]]; then
@@ -793,7 +793,7 @@ function do_install_project_debs {
     done
 
     # Install bin packages next
-    for deb in $(find . -type f -name "*bin*.deb" -print | cut -d'/' -f2)
+    for deb in "$(find . -type f -name "*bin*.deb" -print | cut -d'/' -f2)"
     do
         if [[ -e "$deb" ]]; then
             if [[ "$deb" = *dev*.deb ]]; then
@@ -815,7 +815,7 @@ function do_install_project_debs {
     done
 
     # Install dev packages next
-    for deb in $(find . -type f -name "*dev*.deb" -print | cut -d'/' -f2)
+    for deb in "$(find . -type f -name "*dev*.deb" -print | cut -d'/' -f2)"
     do
         if [[ -e "$deb" ]]; then
             err_msg="[$pkg] : Error while installing the package."
@@ -831,7 +831,7 @@ function do_install_project_debs {
     done
 
     # Install dbg packages next
-    for deb in $(find . -type f -name "*dbg*.deb" -print | cut -d'/' -f2)
+    for deb in "$(find . -type f -name "*dbg*.deb" -print | cut -d'/' -f2)"
     do
         if [[ -e "$deb" ]]; then
             err_msg="[$pkg] : Error while installing the package."
@@ -913,14 +913,14 @@ function do_uninstall_project_debs {
     cd_to_dir "$pkg_dir"
 
     if [[ "$pkg" == "tizonia-config" ]]; then
-        local deb_all=$(ls *all*.deb)
-        local deb_all_name=$(echo "$deb_all" | cut -d'_' -f1)
+        local deb_all="$(ls *all*.deb)"
+        local deb_all_name="$(echo "$deb_all" | cut -d'_' -f1)"
         pretty_print "$BLU" "[$pkg] : uninstalling $deb_all_name."
         sudo dpkg --purge "$deb_all_name"
         pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
 
-        local deb_config=$(ls *config*.deb)
-        local deb_config_name=$(echo "$deb_config" | cut -d'_' -f1)
+        local deb_config="$(ls *config*.deb)"
+        local deb_config_name="$(echo "$deb_config" | cut -d'_' -f1)"
         pretty_print "$BLU" "[$pkg] : uninstalling $deb_config_name."
         sudo dpkg --purge "$deb_config_name"
         pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
@@ -928,10 +928,10 @@ function do_uninstall_project_debs {
     fi
 
     # Uninstall dbg packages fist, if any
-    for deb in $(find . -type f -name "*dbg*.deb" -print | cut -d'/' -f2)
+    for deb in "$(find . -type f -name "*dbg*.deb" -print | cut -d'/' -f2)"
     do
         if [[ -e "$deb" ]]; then
-            local deb_name=$(echo "$deb" | cut -d'_' -f1)
+            local deb_name="$(echo "$deb" | cut -d'_' -f1)"
             pretty_print "$BLU" "[$pkg] : uninstalling $deb_name."
             sudo dpkg --purge "$deb_name"
             pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
@@ -939,10 +939,10 @@ function do_uninstall_project_debs {
     done
 
     # Uninstall dev packages next, if any
-    for deb in $(find . -type f -name "*dev*.deb" -print | cut -d'/' -f2)
+    for deb in "$(find . -type f -name "*dev*.deb" -print | cut -d'/' -f2)"
     do
         if [[ -e "$deb" ]]; then
-            local deb_name=$(echo "$deb" | cut -d'_' -f1)
+            local deb_name="$(echo "$deb" | cut -d'_' -f1)"
             pretty_print "$BLU" "[$pkg] : uninstalling $deb_name."
             sudo dpkg --purge "$deb_name"
             pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
@@ -950,7 +950,7 @@ function do_uninstall_project_debs {
     done
 
     # Uninstall any remaining packages next
-    for deb in $(find . -type f -name "*.deb" -print | cut -d'/' -f2)
+    for deb in "$(find . -type f -name "*.deb" -print | cut -d'/' -f2)"
     do
         if [[ -e "$deb" ]]; then
             if [[ "$deb" = *dev*.deb ]]; then
@@ -959,7 +959,7 @@ function do_uninstall_project_debs {
             if [[ "$deb" = *dbg*.deb ]]; then
                 continue
             fi
-            local deb_name=$(echo "$deb" | cut -d'_' -f1)
+            local deb_name="$(echo "$deb" | cut -d'_' -f1)"
             pretty_print "$BLU" "[$pkg] : uninstalling $deb_name."
             sudo dpkg --purge "$deb_name"
             pretty_print "$GRN" "[$pkg] : uninstalled $deb_name."
@@ -1011,11 +1011,11 @@ function do_publish_project_debs {
     print_banner "Publishing debs from package: $1 [$2]" "$MAG"
     cd_to_dir "$pkg_dir"
 
-    local arch=$(dpkg --print-architecture)
-    for deb in $(find . -type f -name "*.deb" -print | cut -d'/' -f2)
+    local arch="$(dpkg --print-architecture)"
+    for deb in "$(find . -type f -name "*.deb" -print | cut -d'/' -f2)"
     do
         if [[ -e "$deb" ]]; then
-            local deb_name=$(echo "$deb" | cut -d'_' -f1)
+            local deb_name="$(echo "$deb" | cut -d'_' -f1)"
             pretty_print "$YEL" "[$pkg] : uploading $deb_name."
             curl -k -X PUT -T "$deb" -H "X-GPG-PASSPHRASE: $password" -utizonia:"$TIZONIA_BINTRAY_API_KEY" \
                 "https://api.bintray.com/content/tizonia/$DISTRO_ID/tizonia-$DISTRO_CODENAME/$TIZONIA_RELEASE_VERSION/pool/main/t/tizonia-$DISTRO_CODENAME/$deb;deb_distribution=$DISTRO_CODENAME;deb_component=main;deb_architecture=$arch"
@@ -1085,7 +1085,7 @@ function main {
     local signdebs=0
     local tizdeps=0
 
-    local progname=$(basename $0)
+    local progname="$(basename "$0")"
     CMDLINE=$(getopt -o "dnprst" --long "alldeps,makenext,publish,removeall,signdebs,tizdeps" -n "$progname" -- "$@")
     eval set -- "$CMDLINE"
     while true; do
@@ -1131,13 +1131,13 @@ function main {
     print_platform_info
 
     # Verify the existence of important environment variables
-    : ${DEBFULLNAME:?"Need to set DEBFULLNAME"}
-    : ${DEBEMAIL:?"Need to set DEBEMAIL"}
-    : ${TIZONIA_RELEASE_VERSION:?"Need to set TIZONIA_RELEASE_VERSION"}
+    : "${DEBFULLNAME:?"Need to set DEBFULLNAME"}"
+    : "${DEBEMAIL:?"Need to set DEBEMAIL"}"
+    : "${TIZONIA_RELEASE_VERSION:?"Need to set TIZONIA_RELEASE_VERSION"}"
 
     if [[ "$signdebs" == 1 ]]; then
         # Check DEB_SIGN_KEYID environment variables is set. Will exit if it isn't.
-        : ${DEB_SIGN_KEYID:?"Need to set DEB_SIGN_KEYID"}
+        : "${DEB_SIGN_KEYID:?"Need to set DEB_SIGN_KEYID"}"
         DPKG_BUILD_PKG_CMD="$TIZ_DPKG_BUILD_SIGNED_CMD"
     else
         DPKG_BUILD_PKG_CMD="$TIZ_DPKG_BUILD_UNSIGNED_CMD"
@@ -1146,7 +1146,7 @@ function main {
     # Verify that this script is being run on a supported distro
     obtain_distro_id_and_codename
     if [[ "$DISTRO_ID" == "raspbian" || "$DISTRO_ID" == "debian" ]]; then
-        local version_id=$(cat /etc/*-release | grep -E '^VERSION_ID=' | cut -d'=' -f2)
+        local version_id="$(cat /etc/*-release | grep -E '^VERSION_ID=' | cut -d'=' -f2)"
         if [[ "$version_id" == "\"11\"" ]]; then
             DISTRO_CODENAME="bullseye"
         elif [[ "$version_id" == "\"10\"" ]]; then
@@ -1186,7 +1186,7 @@ function main {
     if [[ "$exit_status" -eq 0 ]] ; then
         if [[ "$publish" == 1 ]]; then
             # Verify the existence of important environment variables
-            : ${TIZONIA_BINTRAY_API_KEY:?"Need to set TIZONIA_BINTRAY_API_KEY"}
+            : "${TIZONIA_BINTRAY_API_KEY:?"Need to set TIZONIA_BINTRAY_API_KEY"}"
             do_publish_to_bintray
             exit_status=$?
         fi
