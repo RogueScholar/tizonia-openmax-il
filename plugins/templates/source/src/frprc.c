@@ -51,21 +51,21 @@
  */
 
 static void *
-fr_prc_ctor (void *ap_obj, va_list * app)
+fr_prc_ctor (void * ap_obj, va_list * app)
 {
-  fr_prc_t *p_obj = super_ctor (typeOf (ap_obj, "frprc"), ap_obj, app);
+  fr_prc_t * p_obj = super_ctor (typeOf (ap_obj, "frprc"), ap_obj, app);
   p_obj->eos_ = false;
   return p_obj;
 }
 
 static void *
-fr_prc_dtor (void *ap_obj)
+fr_prc_dtor (void * ap_obj)
 {
   return super_dtor (typeOf (ap_obj, "frprc"), ap_obj);
 }
 
 static OMX_ERRORTYPE
-fr_prc_read_buffer (const void *ap_obj, OMX_BUFFERHEADERTYPE * p_hdr)
+fr_prc_read_buffer (const void * ap_obj, OMX_BUFFERHEADERTYPE * p_hdr)
 {
   return OMX_ErrorNone;
 }
@@ -75,31 +75,31 @@ fr_prc_read_buffer (const void *ap_obj, OMX_BUFFERHEADERTYPE * p_hdr)
  */
 
 static OMX_ERRORTYPE
-fr_prc_allocate_resources (void *ap_obj, OMX_U32 a_pid)
+fr_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-fr_prc_deallocate_resources (void *ap_obj)
+fr_prc_deallocate_resources (void * ap_obj)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-fr_prc_prepare_to_transfer (void *ap_obj, OMX_U32 a_pid)
+fr_prc_prepare_to_transfer (void * ap_obj, OMX_U32 a_pid)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-fr_prc_transfer_and_process (void *ap_obj, OMX_U32 a_pid)
+fr_prc_transfer_and_process (void * ap_obj, OMX_U32 a_pid)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-fr_prc_stop_and_return (void *ap_obj)
+fr_prc_stop_and_return (void * ap_obj)
 {
   return OMX_ErrorNone;
 }
@@ -109,7 +109,7 @@ fr_prc_stop_and_return (void *ap_obj)
  */
 
 static OMX_ERRORTYPE
-fr_prc_buffers_ready (const void *ap_obj)
+fr_prc_buffers_ready (const void * ap_obj)
 {
   return OMX_ErrorNone;
 }
@@ -119,7 +119,7 @@ fr_prc_buffers_ready (const void *ap_obj)
  */
 
 static void *
-fr_prc_class_ctor (void *ap_obj, va_list * app)
+fr_prc_class_ctor (void * ap_obj, va_list * app)
 {
   /* NOTE: Class methods might be added in the future. None for now. */
   return super_ctor (typeOf (ap_obj, "frprc_class"), ap_obj, app);

@@ -31,8 +31,8 @@
 
 #include "tiztuneingraphfsm.hpp"
 
-char const* const tiz::graph::tuneinfsm::pstate(tiz::graph::tuneinfsm::fsm const& p)
+char const* const tiz::graph::tuneinfsm::pstate (
+    tiz::graph::tuneinfsm::fsm const& p)
 {
-  return tiz::graph::tuneinfsm::state_names[p.current_state()[0]];
+  return tiz::graph::tuneinfsm::state_names[p.current_state ()[0]];
 }
-

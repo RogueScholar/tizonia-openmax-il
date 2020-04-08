@@ -32,15 +32,15 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <tizplatform.h>
 
-#include "tizgraphutil.hpp"
-#include "tizgraphconfig.hpp"
 #include "tizgraphcmd.hpp"
-#include "tizprobe.hpp"
+#include "tizgraphconfig.hpp"
+#include "tizgraphutil.hpp"
 #include "tizmp3graph.hpp"
+#include "tizprobe.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -52,8 +52,7 @@ namespace graph = tiz::graph;
 //
 // mp3decoder
 //
-graph::mp3decoder::mp3decoder ()
-  : tiz::graph::decoder ("mp3decgraph")
+graph::mp3decoder::mp3decoder () : tiz::graph::decoder ("mp3decgraph")
 {
 }
 
@@ -110,12 +109,11 @@ void graph::mp3decops::do_configure ()
         util::set_content_uri (handles_[0], probe_ptr_->get_uri ()),
         "Unable to set OMX_IndexParamContentURI");
 
-    OMX_ERRORTYPE rc = tiz::graph::util::
-        normalize_tunnel_settings< OMX_AUDIO_PARAM_PCMMODETYPE,
-                                   OMX_IndexParamAudioPcm >(
-            handles_, 1,  // tunneld id, i.e. this is decoder <-> renderer),
-            1,            // decoder's output port
-            0);           // renderer's input port
+    OMX_ERRORTYPE rc = tiz::graph::util::normalize_tunnel_settings<
+        OMX_AUDIO_PARAM_PCMMODETYPE, OMX_IndexParamAudioPcm > (
+        handles_, 1,  // tunneld id, i.e. this is decoder <-> renderer),
+        1,            // decoder's output port
+        0);           // renderer's input port
     G_OPS_BAIL_IF_ERROR (rc, "Unable to transfer OMX_IndexParamAudioPcm");
 
     G_OPS_BAIL_IF_ERROR (

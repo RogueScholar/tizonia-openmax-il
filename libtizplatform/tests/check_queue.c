@@ -26,19 +26,17 @@
  *
  */
 
-
 START_TEST (test_queue_init_and_destroy)
 {
 
   OMX_ERRORTYPE error = OMX_ErrorNone;
-  tiz_queue_t *p_queue = NULL;
+  tiz_queue_t * p_queue = NULL;
 
   error = tiz_queue_init (&p_queue, 10);
 
   fail_if (error != OMX_ErrorNone);
 
   tiz_queue_destroy (p_queue);
-
 }
 END_TEST
 
@@ -48,8 +46,9 @@ START_TEST (test_queue_send_and_receive)
   OMX_U32 i;
   OMX_PTR p_received = NULL;
   OMX_ERRORTYPE error = OMX_ErrorNone;
-  int *p_item = NULL;
-  tiz_queue_t *p_queue = NULL;;
+  int * p_item = NULL;
+  tiz_queue_t * p_queue = NULL;
+  ;
 
   error = tiz_queue_init (&p_queue, 10);
 
@@ -63,11 +62,10 @@ START_TEST (test_queue_send_and_receive)
       error = tiz_queue_send (p_queue, p_item);
       fail_if (error != OMX_ErrorNone);
       TIZ_LOG (TIZ_PRIORITY_TRACE, "queue length [%d]",
-                 tiz_queue_length (p_queue));
+               tiz_queue_length (p_queue));
     }
 
-  TIZ_LOG (TIZ_PRIORITY_TRACE, "queue length [%d]",
-             tiz_queue_length (p_queue));
+  TIZ_LOG (TIZ_PRIORITY_TRACE, "queue length [%d]", tiz_queue_length (p_queue));
   fail_if (10 != tiz_queue_length (p_queue));
 
   for (i = 0; i < 10; i++)
@@ -81,7 +79,6 @@ START_TEST (test_queue_send_and_receive)
     }
 
   tiz_queue_destroy (p_queue);
-
 }
 END_TEST
 

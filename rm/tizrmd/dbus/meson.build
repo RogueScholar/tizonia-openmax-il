@@ -33,7 +33,7 @@ tizrmproxy_dbus_hh = custom_target(
          command: [tizonia_dbusxx_xml2cpp, '@INPUT@', '--proxy=@OUTPUT@'],
          install: true,
          install_dir: tizincludedir
-)	
+)
 
 tizrmd_dbus_dep = declare_dependency(
     include_directories: include_directories('.')

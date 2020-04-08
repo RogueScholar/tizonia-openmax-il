@@ -128,8 +128,8 @@ obtain_coding_type (tunein_prc_t * ap_prc, char * ap_info)
            || strncasecmp (ap_info, "audio/ogg", 9) == 0)
     {
       /* This is for audio with ogg container (may be FLAC, Vorbis, Opus,
-         etc). We'll have to identify the actual codec when the first bytes
-         from the stream arrive */
+           etc). We'll have to identify the actual codec when the first bytes
+           from the stream arrive */
       ap_prc->audio_coding_type_ = OMX_AUDIO_CodingOGA;
     }
   else
@@ -195,8 +195,9 @@ store_metadata (tunein_prc_t * ap_prc, const char * ap_header_name,
       info_len = strnlen (ap_header_info, OMX_MAX_STRINGNAME_SIZE - 1) + 1;
       metadata_len = sizeof (OMX_CONFIG_METADATAITEMTYPE) + info_len;
 
-      if (NULL == (p_meta = (OMX_CONFIG_METADATAITEMTYPE *) tiz_mem_calloc (
-                     1, metadata_len)))
+      if (NULL
+          == (p_meta = (OMX_CONFIG_METADATAITEMTYPE *) tiz_mem_calloc (
+                1, metadata_len)))
         {
           rc = OMX_ErrorInsufficientResources;
         }
@@ -331,9 +332,8 @@ update_metadata (tunein_prc_t * ap_prc)
   tiz_krn_clear_metadata (tiz_get_krn (handleOf (ap_prc)));
 
   /* Station Name */
-  tiz_check_omx (
-    store_metadata (ap_prc, "Station",
-                    tiz_tunein_get_current_radio_name (ap_prc->p_tunein_)));
+  tiz_check_omx (store_metadata (
+    ap_prc, "Station", tiz_tunein_get_current_radio_name (ap_prc->p_tunein_)));
 
   /* Playback queue progress */
   tiz_check_omx (
@@ -341,19 +341,17 @@ update_metadata (tunein_prc_t * ap_prc)
                     tiz_tunein_get_current_queue_progress (ap_prc->p_tunein_)));
 
   /* Station Description */
-  tiz_check_omx (
-    store_metadata (ap_prc, "Description",
-                    tiz_tunein_get_current_radio_description (ap_prc->p_tunein_)));
+  tiz_check_omx (store_metadata (
+    ap_prc, "Description",
+    tiz_tunein_get_current_radio_description (ap_prc->p_tunein_)));
 
   /* Type */
-  tiz_check_omx (
-    store_metadata (ap_prc, "Type",
-                    tiz_tunein_get_current_radio_type (ap_prc->p_tunein_)));
+  tiz_check_omx (store_metadata (
+    ap_prc, "Type", tiz_tunein_get_current_radio_type (ap_prc->p_tunein_)));
 
   /* Station formats */
-  tiz_check_omx (
-    store_metadata (ap_prc, "Format",
-                    tiz_tunein_get_current_radio_format (ap_prc->p_tunein_)));
+  tiz_check_omx (store_metadata (
+    ap_prc, "Format", tiz_tunein_get_current_radio_format (ap_prc->p_tunein_)));
 
   /* Station Bitrate */
   tiz_check_omx (
@@ -418,7 +416,7 @@ obtain_next_url (tunein_prc_t * ap_prc, int a_skip_value)
       = a_skip_value > 0 ? tiz_tunein_get_next_url (ap_prc->p_tunein_,
                                                     ap_prc->remove_current_url_)
                          : tiz_tunein_get_prev_url (
-                             ap_prc->p_tunein_, ap_prc->remove_current_url_);
+                           ap_prc->p_tunein_, ap_prc->remove_current_url_);
     ap_prc->remove_current_url_ = false;
     tiz_check_null_ret_oom (p_next_url);
 
@@ -460,9 +458,9 @@ release_buffer (tunein_prc_t * ap_prc)
           ap_prc->eos_ = false;
           ap_prc->p_outhdr_->nFlags |= OMX_BUFFERFLAG_EOS;
         }
-      tiz_check_omx (tiz_krn_release_buffer (
-        tiz_get_krn (handleOf (ap_prc)), ARATELIA_HTTP_SOURCE_PORT_INDEX,
-        ap_prc->p_outhdr_));
+      tiz_check_omx (tiz_krn_release_buffer (tiz_get_krn (handleOf (ap_prc)),
+                                             ARATELIA_HTTP_SOURCE_PORT_INDEX,
+                                             ap_prc->p_outhdr_));
       ap_prc->p_outhdr_ = NULL;
     }
   return OMX_ErrorNone;
@@ -548,8 +546,8 @@ data_available (OMX_PTR ap_arg, const void * ap_ptr, const size_t a_nbytes)
       pause_needed = true;
 
       /* And now trigger the OMX_EventPortFormatDetected and
-         OMX_EventPortSettingsChanged events or a
-         OMX_ErrorFormatNotDetected event */
+           OMX_EventPortSettingsChanged events or a
+           OMX_ErrorFormatNotDetected event */
       send_port_auto_detect_events (p_prc);
     }
   return pause_needed;
@@ -565,7 +563,7 @@ connection_lost (OMX_PTR ap_arg)
   if (p_prc->auto_detect_on_)
     {
       /* Oops... unable to connect to the station */
-      TIZ_PRINTF_C01("[Tunein] Unable to connect/connection lost.");
+      TIZ_PRINTF_C01 ("[Tunein] Unable to connect/connection lost.");
       /* Make sure this url will not get processed again... */
       p_prc->remove_current_url_ = true;
 
@@ -580,7 +578,7 @@ connection_lost (OMX_PTR ap_arg)
   p_prc->connection_closed_ = true;
 
   /* Return false to indicate that there is no need to start the automatic
-     reconnection procedure */
+       reconnection procedure */
   return false;
 }
 
@@ -624,7 +622,8 @@ retrieve_playlist (tunein_prc_t * ap_prc)
 static OMX_ERRORTYPE
 retrieve_buffer_size (tunein_prc_t * ap_prc)
 {
-  TIZ_INIT_OMX_PORT_STRUCT (ap_prc->buffer_size_, ARATELIA_HTTP_SOURCE_PORT_INDEX);
+  TIZ_INIT_OMX_PORT_STRUCT (ap_prc->buffer_size_,
+                            ARATELIA_HTTP_SOURCE_PORT_INDEX);
   return tiz_api_GetParameter (
     tiz_get_krn (handleOf (ap_prc)), handleOf (ap_prc),
     OMX_TizoniaIndexParamStreamingBuffer, &(ap_prc->buffer_size_));
@@ -640,9 +639,12 @@ enqueue_playlist_items (tunein_prc_t * ap_prc)
 
   {
     const char * p_playlist = (const char *) ap_prc->playlist_.cPlaylistName;
-    const char * p_keywords1 = (const char *) ap_prc->playlist_.cAdditionalKeywords1;
-    const char * p_keywords2 = (const char *) ap_prc->playlist_.cAdditionalKeywords2;
-    const char * p_keywords3 = (const char *) ap_prc->playlist_.cAdditionalKeywords3;
+    const char * p_keywords1
+      = (const char *) ap_prc->playlist_.cAdditionalKeywords1;
+    const char * p_keywords2
+      = (const char *) ap_prc->playlist_.cAdditionalKeywords2;
+    const char * p_keywords3
+      = (const char *) ap_prc->playlist_.cAdditionalKeywords3;
     const OMX_BOOL shuffle = ap_prc->playlist_.bShuffle;
 
     tiz_tunein_set_playback_mode (
@@ -731,7 +733,7 @@ tunein_prc_ctor (void * ap_obj, va_list * app)
   p_prc->auto_detect_on_ = false;
   p_prc->bitrate_ = ARATELIA_HTTP_SOURCE_DEFAULT_BIT_RATE_KBITS;
   p_prc->buffer_bytes_ = ((p_prc->bitrate_ * 1000) / 8)
-    * ARATELIA_HTTP_SOURCE_DEFAULT_BUFFER_SECONDS_TUNEIN;
+                         * ARATELIA_HTTP_SOURCE_DEFAULT_BUFFER_SECONDS_TUNEIN;
   p_prc->remove_current_url_ = false;
   p_prc->connection_closed_ = false;
   p_prc->first_buffer_delivered_ = false;
@@ -760,12 +762,11 @@ tunein_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
   tiz_check_omx (retrieve_buffer_size (p_prc));
   if (p_prc->buffer_size_.nCapacity)
     {
-      p_prc->buffer_bytes_ = ((p_prc->bitrate_ * 1000) / 8)
-        * p_prc->buffer_size_.nCapacity;
+      p_prc->buffer_bytes_
+        = ((p_prc->bitrate_ * 1000) / 8) * p_prc->buffer_size_.nCapacity;
     }
 
-  on_tunein_error_ret_omx_oom (tiz_tunein_init (
-    &(p_prc->p_tunein_)));
+  on_tunein_error_ret_omx_oom (tiz_tunein_init (&(p_prc->p_tunein_)));
 
   tiz_check_omx (enqueue_playlist_items (p_prc));
   tiz_check_omx (obtain_next_url (p_prc, 1));
@@ -782,15 +783,14 @@ tunein_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
       = {tiz_srv_timer_watcher_init, tiz_srv_timer_watcher_destroy,
          tiz_srv_timer_watcher_start, tiz_srv_timer_watcher_stop,
          tiz_srv_timer_watcher_restart};
-    rc
-      = tiz_urltrans_init (&(p_prc->p_trans_), p_prc, p_prc->p_uri_param_,
-                           ARATELIA_HTTP_SOURCE_COMPONENT_NAME,
-                           p_prc->buffer_bytes_,
-                           ARATELIA_HTTP_SOURCE_DEFAULT_RECONNECT_TIMEOUT,
-                           buffer_cbacks, info_cbacks, io_cbacks, timer_cbacks);
+    rc = tiz_urltrans_init (
+      &(p_prc->p_trans_), p_prc, p_prc->p_uri_param_,
+      ARATELIA_HTTP_SOURCE_COMPONENT_NAME, p_prc->buffer_bytes_,
+      ARATELIA_HTTP_SOURCE_DEFAULT_RECONNECT_TIMEOUT, buffer_cbacks,
+      info_cbacks, io_cbacks, timer_cbacks);
     if (OMX_ErrorNone == rc)
       {
-        tiz_urltrans_set_connect_timeout(p_prc->p_trans_, 3L);
+        tiz_urltrans_set_connect_timeout (p_prc->p_trans_, 3L);
       }
   }
   return rc;
@@ -959,12 +959,12 @@ tunein_prc_config_change (void * ap_prc, OMX_U32 TIZ_UNUSED (a_pid),
       tiz_check_omx (obtain_next_url (p_prc, skip_value));
 
       /* Changing the URL has the side effect of halting the current
-         download */
+           download */
       tiz_urltrans_set_uri (p_prc->p_trans_, p_prc->p_uri_param_);
       if (p_prc->port_disabled_)
         {
           /* Record that the URI has changed, so that when the port is
-             re-enabled, we restart the transfer */
+               re-enabled, we restart the transfer */
           p_prc->uri_changed_ = true;
         }
 

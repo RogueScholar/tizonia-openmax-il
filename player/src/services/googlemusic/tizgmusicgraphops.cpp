@@ -34,16 +34,16 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <OMX_TizoniaExt.h>
 #include <tizplatform.h>
 
-#include "tizgraphutil.hpp"
-#include "tizprobe.hpp"
-#include "tizgraph.hpp"
 #include "tizgmusicconfig.hpp"
 #include "tizgmusicgraphops.hpp"
+#include "tizgraph.hpp"
+#include "tizgraphutil.hpp"
+#include "tizprobe.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -69,19 +69,20 @@ void graph::gmusicops::do_enable_auto_detection (const int handle_id,
                                                  const int port_id)
 {
   tizgmusicconfig_ptr_t gmusic_config
-      = boost::dynamic_pointer_cast< gmusicconfig >(config_);
+      = boost::dynamic_pointer_cast< gmusicconfig > (config_);
   assert (gmusic_config);
   tiz::graph::ops::do_enable_auto_detection (handle_id, port_id);
-  tiz::graph::util::dump_graph_info ("Google Play Music",
-                                     "Connecting",
+  tiz::graph::util::dump_graph_info ("Google Play Music", "Connecting",
                                      gmusic_config->get_user_name ().c_str ());
 }
 
-void graph::gmusicops::do_disable_comp_ports (const int comp_id, const int port_id)
+void graph::gmusicops::do_disable_comp_ports (const int comp_id,
+                                              const int port_id)
 {
   OMX_U32 gmusic_source_port = port_id;
-  G_OPS_BAIL_IF_ERROR (util::disable_port (handles_[comp_id], gmusic_source_port),
-                       "Unable to disable gmusic source's output port.");
+  G_OPS_BAIL_IF_ERROR (
+      util::disable_port (handles_[comp_id], gmusic_source_port),
+      "Unable to disable gmusic source's output port.");
   clear_expected_port_transitions ();
   add_expected_port_transition (handles_[comp_id], gmusic_source_port,
                                 OMX_CommandPortDisable);
@@ -168,12 +169,12 @@ void graph::gmusicops::do_configure ()
     G_OPS_BAIL_IF_ERROR (apply_pcm_codec_info_from_decoder (),
                          "Unable to set OMX_IndexParamAudioPcm");
     tizgmusicconfig_ptr_t gmusic_config
-      = boost::dynamic_pointer_cast< gmusicconfig >(config_);
+        = boost::dynamic_pointer_cast< gmusicconfig > (config_);
     assert (gmusic_config);
     std::string coding_type_str ("Google Play Music");
-    tiz::graph::util::dump_graph_info (coding_type_str.c_str (),
-                                       "Connected",
-                                       gmusic_config->get_user_name ().c_str ());
+    tiz::graph::util::dump_graph_info (
+        coding_type_str.c_str (), "Connected",
+        gmusic_config->get_user_name ().c_str ());
   }
 }
 
@@ -278,8 +279,8 @@ void graph::gmusicops::do_retrieve_metadata ()
 // TODO: Move this implementation to the base class (and remove also from
 // httpservops)
 OMX_ERRORTYPE
-graph::gmusicops::switch_tunnel (
-    const int tunnel_id, const OMX_COMMANDTYPE to_disabled_or_enabled)
+graph::gmusicops::switch_tunnel (const int tunnel_id,
+                                 const OMX_COMMANDTYPE to_disabled_or_enabled)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
@@ -343,8 +344,7 @@ graph::gmusicops::override_decoder_and_renderer_sampling_rates ()
 {
   OMX_U32 channels = 2;
   OMX_U32 sampling_rate = 44100;
-  tiz_check_omx (
-      set_channels_and_rate_on_decoder (channels, sampling_rate));
+  tiz_check_omx (set_channels_and_rate_on_decoder (channels, sampling_rate));
   return set_channels_and_rate_on_renderer (channels, sampling_rate);
 }
 
@@ -355,8 +355,8 @@ graph::gmusicops::apply_pcm_codec_info_from_decoder ()
   OMX_U32 sampling_rate = 44100;
   std::string encoding_str;
 
-  tiz_check_omx (get_channels_and_rate_from_decoder (
-      channels, sampling_rate, encoding_str));
+  tiz_check_omx (get_channels_and_rate_from_decoder (channels, sampling_rate,
+                                                     encoding_str));
   return set_channels_and_rate_on_renderer (channels, sampling_rate);
 }
 
@@ -373,9 +373,9 @@ graph::gmusicops::get_channels_and_rate_from_decoder (
     case OMX_AUDIO_CodingMP3:
     {
       encoding_str = "mp3";
-      rc = tiz::graph::util::
-          get_channels_and_rate_from_audio_port_v2< OMX_AUDIO_PARAM_PCMMODETYPE >(
-              handle, port_id, OMX_IndexParamAudioPcm, channels, sampling_rate);
+      rc = tiz::graph::util::get_channels_and_rate_from_audio_port_v2<
+          OMX_AUDIO_PARAM_PCMMODETYPE > (
+          handle, port_id, OMX_IndexParamAudioPcm, channels, sampling_rate);
     }
     break;
     default:
@@ -391,8 +391,8 @@ graph::gmusicops::get_channels_and_rate_from_decoder (
 }
 
 OMX_ERRORTYPE
-graph::gmusicops::set_channels_and_rate_on_decoder (
-    const OMX_U32 channels, const OMX_U32 sampling_rate)
+graph::gmusicops::set_channels_and_rate_on_decoder (const OMX_U32 channels,
+                                                    const OMX_U32 sampling_rate)
 {
   const OMX_HANDLETYPE handle = handles_[1];  // decoder's handle
   const OMX_U32 port_id = 0;                  // decoder's input port
@@ -468,10 +468,9 @@ bool graph::gmusicops::is_fatal_error (const OMX_ERRORTYPE error) const
   return rc;
 }
 
-void graph::gmusicops::do_record_fatal_error (const OMX_HANDLETYPE handle,
-                                              const OMX_ERRORTYPE error,
-                                              const OMX_U32 port,
-                                              const OMX_PTR p_eventdata /* = NULL */)
+void graph::gmusicops::do_record_fatal_error (
+    const OMX_HANDLETYPE handle, const OMX_ERRORTYPE error, const OMX_U32 port,
+    const OMX_PTR p_eventdata /* = NULL */)
 {
   tiz::graph::ops::do_record_fatal_error (handle, error, port, p_eventdata);
   if (error == OMX_ErrorContentURIError)

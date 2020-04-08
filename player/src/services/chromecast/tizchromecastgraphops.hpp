@@ -31,8 +31,8 @@
 
 #include <boost/function.hpp>
 
-#include <tizgraphtypes.hpp>
 #include <tizgraphops.hpp>
+#include <tizgraphtypes.hpp>
 
 namespace tiz
 {
@@ -44,7 +44,7 @@ namespace tiz
     {
     public:
       chromecastops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-                 const omx_comp_role_lst_t &role_lst);
+                     const omx_comp_role_lst_t &role_lst);
 
     public:
       void do_load ();
@@ -68,7 +68,7 @@ namespace tiz
       OMX_ERRORTYPE get_encoding_type_from_chromecast_source ();
 
     private:
-      typedef boost::function< void() > config_service_func_t;
+      typedef boost::function< void () > config_service_func_t;
 
     private:
       // re-implemented from the base class

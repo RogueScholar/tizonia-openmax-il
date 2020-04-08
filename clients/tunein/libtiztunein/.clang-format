@@ -69,4 +69,3 @@ SpaceBeforeAssignmentOperators: true
 ContinuationIndentWidth: 4
 SpaceBeforeParens: Always
 ...
-

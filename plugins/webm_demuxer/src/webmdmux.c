@@ -146,12 +146,12 @@ instantiate_video_output_port (OMX_HANDLETYPE ap_hdl, const OMX_U32 port_id)
   };
 
   /* The demuxer port expects to receive raw the same structures as in a normal
-     raw video port when instantiated as a video domain port */
+       raw video port when instantiated as a video domain port */
 
   /* NOTE: No defaults are defined in the standard for the video
-   * output port of the video_reader.demuxer component. So for the
-   * sake of completeness, simply provide some default values
-   * here. */
+     * output port of the video_reader.demuxer component. So for the
+     * sake of completeness, simply provide some default values
+     * here. */
 
   portdef.pNativeRender = NULL;
   portdef.nFrameWidth = 176;

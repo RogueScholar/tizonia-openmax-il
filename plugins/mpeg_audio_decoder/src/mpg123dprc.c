@@ -78,9 +78,11 @@
   while (0)
 
 /* Forward declarations */
-static OMX_ERRORTYPE mpg123d_prc_deallocate_resources (void *);
+static OMX_ERRORTYPE
+mpg123d_prc_deallocate_resources (void *);
 
-static const char *mpeg_version_to_str (enum mpg123_version version)
+static const char *
+mpeg_version_to_str (enum mpg123_version version)
 {
   switch (version)
     {
@@ -99,7 +101,8 @@ static const char *mpeg_version_to_str (enum mpg123_version version)
   return "Unknown version";
 }
 
-static const char *mpeg_audio_mode_to_str (const enum mpg123_mode mode)
+static const char *
+mpeg_audio_mode_to_str (const enum mpg123_mode mode)
 {
   switch (mode)
     {
@@ -121,7 +124,8 @@ static const char *mpeg_audio_mode_to_str (const enum mpg123_mode mode)
   return "Unknown mode";
 }
 
-static const char *mpeg_output_encoding_to_str (const int encoding)
+static const char *
+mpeg_output_encoding_to_str (const int encoding)
 {
   switch (encoding)
     {
@@ -188,10 +192,11 @@ static const char *mpeg_output_encoding_to_str (const int encoding)
   return "Unknown Encoding";
 }
 
-OMX_ERRORTYPE release_in_hdr (mpg123d_prc_t *ap_prc)
+OMX_ERRORTYPE
+release_in_hdr (mpg123d_prc_t * ap_prc)
 {
-  OMX_BUFFERHEADERTYPE *p_in = tiz_filter_prc_get_header (
-      ap_prc, ARATELIA_MPG123_DECODER_INPUT_PORT_INDEX);
+  OMX_BUFFERHEADERTYPE * p_in = tiz_filter_prc_get_header (
+    ap_prc, ARATELIA_MPG123_DECODER_INPUT_PORT_INDEX);
 
   assert (ap_prc);
 
@@ -211,20 +216,22 @@ OMX_ERRORTYPE release_in_hdr (mpg123d_prc_t *ap_prc)
   return OMX_ErrorNone;
 }
 
-static long get_mpg123_buffer_fill (mpg123d_prc_t *ap_prc)
+static long
+get_mpg123_buffer_fill (mpg123d_prc_t * ap_prc)
 {
   double fval;
   long buffer_fill;
   assert (ap_prc);
-  (void)mpg123_getstate (ap_prc->p_mpg123_, MPG123_BUFFERFILL, &buffer_fill,
-                         &fval);
+  (void) mpg123_getstate (ap_prc->p_mpg123_, MPG123_BUFFERFILL, &buffer_fill,
+                          &fval);
   return buffer_fill;
 }
 
-OMX_ERRORTYPE release_out_hdr (mpg123d_prc_t *ap_prc)
+OMX_ERRORTYPE
+release_out_hdr (mpg123d_prc_t * ap_prc)
 {
-  OMX_BUFFERHEADERTYPE *p_out = tiz_filter_prc_get_header (
-      ap_prc, ARATELIA_MPG123_DECODER_OUTPUT_PORT_INDEX);
+  OMX_BUFFERHEADERTYPE * p_out = tiz_filter_prc_get_header (
+    ap_prc, ARATELIA_MPG123_DECODER_OUTPUT_PORT_INDEX);
   if (p_out)
     {
       if (tiz_filter_prc_is_eos (ap_prc)
@@ -244,37 +251,39 @@ OMX_ERRORTYPE release_out_hdr (mpg123d_prc_t *ap_prc)
   return OMX_ErrorNone;
 }
 
-static void retrieve_stream_format (mpg123d_prc_t *ap_prc)
+static void
+retrieve_stream_format (mpg123d_prc_t * ap_prc)
 {
   struct mpg123_frameinfo mi;
   long rate;
   int channels;
   int encoding;
 
-  (void)mpg123_info (ap_prc->p_mpg123_, &mi);
+  (void) mpg123_info (ap_prc->p_mpg123_, &mi);
   TIZ_TRACE (handleOf (ap_prc),
              "stream info : version [%s] layer [%d] rate [%ld] mode [%s]",
              mpeg_version_to_str (mi.version), mi.layer, mi.rate,
              mpeg_audio_mode_to_str (mi.mode));
 
-  (void)mpg123_getformat (ap_prc->p_mpg123_, &rate, &channels, &encoding);
+  (void) mpg123_getformat (ap_prc->p_mpg123_, &rate, &channels, &encoding);
   TIZ_TRACE (handleOf (ap_prc),
              "output format : rate [%ld] channels [%d] encoding [%s]", rate,
              channels, mpeg_output_encoding_to_str (encoding));
 }
 
-static OMX_ERRORTYPE consume_decoded_data (mpg123d_prc_t *ap_prc)
+static OMX_ERRORTYPE
+consume_decoded_data (mpg123d_prc_t * ap_prc)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
-  OMX_BUFFERHEADERTYPE *p_out = tiz_filter_prc_get_header (
-      ap_prc, ARATELIA_MPG123_DECODER_OUTPUT_PORT_INDEX);
+  OMX_BUFFERHEADERTYPE * p_out = tiz_filter_prc_get_header (
+    ap_prc, ARATELIA_MPG123_DECODER_OUTPUT_PORT_INDEX);
 
   if (p_out)
     {
       size_t bytes_decoded;
       const int ret
-          = mpg123_read (ap_prc->p_mpg123_, TIZ_OMX_BUF_PTR (p_out),
-                         TIZ_OMX_BUF_ALLOC_LEN (p_out), &bytes_decoded);
+        = mpg123_read (ap_prc->p_mpg123_, TIZ_OMX_BUF_PTR (p_out),
+                       TIZ_OMX_BUF_ALLOC_LEN (p_out), &bytes_decoded);
       switch (ret)
         {
           case MPG123_OK:
@@ -306,7 +315,8 @@ static OMX_ERRORTYPE consume_decoded_data (mpg123d_prc_t *ap_prc)
   return rc;
 }
 
-static bool need_to_feed_more_data (mpg123d_prc_t *ap_prc)
+static bool
+need_to_feed_more_data (mpg123d_prc_t * ap_prc)
 {
   bool rc = false;
   if (get_mpg123_buffer_fill (ap_prc)
@@ -317,21 +327,23 @@ static bool need_to_feed_more_data (mpg123d_prc_t *ap_prc)
   return rc;
 }
 
-static bool may_consume_more_data (mpg123d_prc_t *ap_prc)
+static bool
+may_consume_more_data (mpg123d_prc_t * ap_prc)
 {
   bool rc = false;
   assert (ap_prc);
   rc = !(ap_prc->need_to_feed_more_)
        && (tiz_filter_prc_get_header (
-                       ap_prc, ARATELIA_MPG123_DECODER_OUTPUT_PORT_INDEX));
+         ap_prc, ARATELIA_MPG123_DECODER_OUTPUT_PORT_INDEX));
   return rc;
 }
 
-static OMX_ERRORTYPE feed_encoded_data (mpg123d_prc_t *ap_prc)
+static OMX_ERRORTYPE
+feed_encoded_data (mpg123d_prc_t * ap_prc)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
-  OMX_BUFFERHEADERTYPE *p_in = tiz_filter_prc_get_header (
-      ap_prc, ARATELIA_MPG123_DECODER_INPUT_PORT_INDEX);
+  OMX_BUFFERHEADERTYPE * p_in = tiz_filter_prc_get_header (
+    ap_prc, ARATELIA_MPG123_DECODER_INPUT_PORT_INDEX);
 
   assert (ap_prc);
 
@@ -342,9 +354,9 @@ static OMX_ERRORTYPE feed_encoded_data (mpg123d_prc_t *ap_prc)
       if (ret != MPG123_OK)
         {
           TIZ_ERROR (
-              handleOf (ap_prc),
-              "[OMX_ErrorInsufficientResources] : mpg123_feed error : [%s]",
-              mpg123_plain_strerror (ret));
+            handleOf (ap_prc),
+            "[OMX_ErrorInsufficientResources] : mpg123_feed error : [%s]",
+            mpg123_plain_strerror (ret));
           rc = OMX_ErrorInsufficientResources;
         }
       else
@@ -356,7 +368,8 @@ static OMX_ERRORTYPE feed_encoded_data (mpg123d_prc_t *ap_prc)
   return rc;
 }
 
-static OMX_ERRORTYPE decode_stream (mpg123d_prc_t *ap_prc)
+static OMX_ERRORTYPE
+decode_stream (mpg123d_prc_t * ap_prc)
 {
   assert (ap_prc);
   do
@@ -371,11 +384,12 @@ static OMX_ERRORTYPE decode_stream (mpg123d_prc_t *ap_prc)
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE query_format (mpg123d_prc_t *ap_prc)
+static OMX_ERRORTYPE
+query_format (mpg123d_prc_t * ap_prc)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
-  OMX_BUFFERHEADERTYPE *p_in = tiz_filter_prc_get_header (
-      ap_prc, ARATELIA_MPG123_DECODER_INPUT_PORT_INDEX);
+  OMX_BUFFERHEADERTYPE * p_in = tiz_filter_prc_get_header (
+    ap_prc, ARATELIA_MPG123_DECODER_INPUT_PORT_INDEX);
 
   if (p_in)
     {
@@ -384,9 +398,9 @@ static OMX_ERRORTYPE query_format (mpg123d_prc_t *ap_prc)
       assert (ap_prc);
       assert (ap_prc->p_mpg123_);
 
-      mpg123_ret = mpg123_decode (ap_prc->p_mpg123_, TIZ_OMX_BUF_PTR (p_in),
-                                  TIZ_OMX_BUF_FILL_LEN (p_in), NULL, 0,
-                                  &bytes_decoded);
+      mpg123_ret
+        = mpg123_decode (ap_prc->p_mpg123_, TIZ_OMX_BUF_PTR (p_in),
+                         TIZ_OMX_BUF_FILL_LEN (p_in), NULL, 0, &bytes_decoded);
       p_in->nFilledLen = 0;
 
       if (MPG123_NEW_FORMAT == mpg123_ret)
@@ -396,13 +410,14 @@ static OMX_ERRORTYPE query_format (mpg123d_prc_t *ap_prc)
           retrieve_stream_format (ap_prc);
           rc = consume_decoded_data (ap_prc);
         }
-      (void)release_in_hdr (ap_prc);
+      (void) release_in_hdr (ap_prc);
     }
 
   return rc;
 }
 
-static void reset_stream_parameters (mpg123d_prc_t *ap_prc)
+static void
+reset_stream_parameters (mpg123d_prc_t * ap_prc)
 {
   assert (ap_prc);
   ap_prc->found_format_ = false;
@@ -414,10 +429,11 @@ static void reset_stream_parameters (mpg123d_prc_t *ap_prc)
  * mpg123dprc
  */
 
-static void *mpg123d_prc_ctor (void *ap_obj, va_list *app)
+static void *
+mpg123d_prc_ctor (void * ap_obj, va_list * app)
 {
-  mpg123d_prc_t *p_prc
-      = super_ctor (typeOf (ap_obj, "mpg123dprc"), ap_obj, app);
+  mpg123d_prc_t * p_prc
+    = super_ctor (typeOf (ap_obj, "mpg123dprc"), ap_obj, app);
   assert (p_prc);
   p_prc->p_mpg123_ = NULL;
   reset_stream_parameters (p_prc);
@@ -429,9 +445,10 @@ static void *mpg123d_prc_ctor (void *ap_obj, va_list *app)
   return p_prc;
 }
 
-static void *mpg123d_prc_dtor (void *ap_obj)
+static void *
+mpg123d_prc_dtor (void * ap_obj)
 {
-  (void)mpg123d_prc_deallocate_resources (ap_obj);
+  (void) mpg123d_prc_deallocate_resources (ap_obj);
   mpg123_exit ();
   return super_dtor (typeOf (ap_obj, "mpg123dprc"), ap_obj);
 }
@@ -440,10 +457,10 @@ static void *mpg123d_prc_dtor (void *ap_obj)
  * from tizsrv class
  */
 
-static OMX_ERRORTYPE mpg123d_prc_allocate_resources (void *ap_prc,
-                                                     OMX_U32 a_pid)
+static OMX_ERRORTYPE
+mpg123d_prc_allocate_resources (void * ap_prc, OMX_U32 a_pid)
 {
-  mpg123d_prc_t *p_prc = ap_prc;
+  mpg123d_prc_t * p_prc = ap_prc;
   OMX_ERRORTYPE rc = OMX_ErrorInsufficientResources;
   int ret = 0;
 
@@ -469,31 +486,33 @@ end:
   return rc;
 }
 
-static OMX_ERRORTYPE mpg123d_prc_deallocate_resources (void *ap_obj)
+static OMX_ERRORTYPE
+mpg123d_prc_deallocate_resources (void * ap_obj)
 {
-  mpg123d_prc_t *p_prc = ap_obj;
+  mpg123d_prc_t * p_prc = ap_obj;
   assert (p_prc);
   mpg123_delete (p_prc->p_mpg123_); /* Closes, too. */
   p_prc->p_mpg123_ = NULL;
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE mpg123d_prc_prepare_to_transfer (void *ap_obj,
-                                                      OMX_U32 a_pid)
+static OMX_ERRORTYPE
+mpg123d_prc_prepare_to_transfer (void * ap_obj, OMX_U32 a_pid)
 {
-  mpg123d_prc_t *p_prc = ap_obj;
+  mpg123d_prc_t * p_prc = ap_obj;
   assert (p_prc);
   reset_stream_parameters (p_prc);
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE mpg123d_prc_transfer_and_process (void *ap_obj,
-                                                       OMX_U32 a_pid)
+static OMX_ERRORTYPE
+mpg123d_prc_transfer_and_process (void * ap_obj, OMX_U32 a_pid)
 {
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE mpg123d_prc_stop_and_return (void *ap_obj)
+static OMX_ERRORTYPE
+mpg123d_prc_stop_and_return (void * ap_obj)
 {
   return tiz_filter_prc_release_all_headers (ap_obj);
 }
@@ -502,9 +521,10 @@ static OMX_ERRORTYPE mpg123d_prc_stop_and_return (void *ap_obj)
  * from tizprc class
  */
 
-static OMX_ERRORTYPE mpg123d_prc_buffers_ready (const void *ap_prc)
+static OMX_ERRORTYPE
+mpg123d_prc_buffers_ready (const void * ap_prc)
 {
-  mpg123d_prc_t *p_prc = (mpg123d_prc_t *)ap_prc;
+  mpg123d_prc_t * p_prc = (mpg123d_prc_t *) ap_prc;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
   assert (ap_prc);
@@ -514,24 +534,26 @@ static OMX_ERRORTYPE mpg123d_prc_buffers_ready (const void *ap_prc)
   return rc;
 }
 
-static OMX_ERRORTYPE mpg123d_proc_port_flush (const void *ap_prc, OMX_U32 a_pid)
+static OMX_ERRORTYPE
+mpg123d_proc_port_flush (const void * ap_prc, OMX_U32 a_pid)
 {
-  mpg123d_prc_t *p_prc = (mpg123d_prc_t *)ap_prc;
+  mpg123d_prc_t * p_prc = (mpg123d_prc_t *) ap_prc;
   reset_stream_parameters (p_prc);
   return tiz_filter_prc_release_header (p_prc, a_pid);
 }
 
-static OMX_ERRORTYPE mpg123d_prc_port_enable (const void *ap_prc, OMX_U32 a_pid)
+static OMX_ERRORTYPE
+mpg123d_prc_port_enable (const void * ap_prc, OMX_U32 a_pid)
 {
-  mpg123d_prc_t *p_prc = (mpg123d_prc_t *)ap_prc;
+  mpg123d_prc_t * p_prc = (mpg123d_prc_t *) ap_prc;
   tiz_filter_prc_update_port_disabled_flag (p_prc, a_pid, false);
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE mpg123d_prc_port_disable (const void *ap_prc,
-                                               OMX_U32 a_pid)
+static OMX_ERRORTYPE
+mpg123d_prc_port_disable (const void * ap_prc, OMX_U32 a_pid)
 {
-  mpg123d_prc_t *p_prc = (mpg123d_prc_t *)ap_prc;
+  mpg123d_prc_t * p_prc = (mpg123d_prc_t *) ap_prc;
   OMX_ERRORTYPE rc = tiz_filter_prc_release_header (p_prc, a_pid);
   reset_stream_parameters (p_prc);
   tiz_filter_prc_update_port_disabled_flag (p_prc, a_pid, true);
@@ -542,7 +564,8 @@ static OMX_ERRORTYPE mpg123d_prc_port_disable (const void *ap_prc,
  * mpg123d_prc_class
  */
 
-static void *mpg123d_prc_class_ctor (void *ap_obj, va_list *app)
+static void *
+mpg123d_prc_class_ctor (void * ap_obj, va_list * app)
 {
   /* NOTE: Class methods might be added in the future. None for now. */
   return super_ctor (typeOf (ap_obj, "mpg123dprc_class"), ap_obj, app);
@@ -552,56 +575,58 @@ static void *mpg123d_prc_class_ctor (void *ap_obj, va_list *app)
  * initialization
  */
 
-void *mpg123d_prc_class_init (void *ap_tos, void *ap_hdl)
+void *
+mpg123d_prc_class_init (void * ap_tos, void * ap_hdl)
 {
-  void *tizfilterprc = tiz_get_type (ap_hdl, "tizfilterprc");
-  void *mpg123dprc_class = factory_new
-      /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
-      (classOf (tizfilterprc), "mpg123dprc_class", classOf (tizfilterprc),
-       sizeof(mpg123d_prc_class_t),
-       /* TIZ_CLASS_COMMENT: */
-       ap_tos, ap_hdl,
-       /* TIZ_CLASS_COMMENT: class constructor */
-       ctor, mpg123d_prc_class_ctor,
-       /* TIZ_CLASS_COMMENT: stop value*/
-       0);
+  void * tizfilterprc = tiz_get_type (ap_hdl, "tizfilterprc");
+  void * mpg123dprc_class = factory_new
+    /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
+    (classOf (tizfilterprc), "mpg123dprc_class", classOf (tizfilterprc),
+     sizeof (mpg123d_prc_class_t),
+     /* TIZ_CLASS_COMMENT: */
+     ap_tos, ap_hdl,
+     /* TIZ_CLASS_COMMENT: class constructor */
+     ctor, mpg123d_prc_class_ctor,
+     /* TIZ_CLASS_COMMENT: stop value*/
+     0);
   return mpg123dprc_class;
 }
 
-void *mpg123d_prc_init (void *ap_tos, void *ap_hdl)
+void *
+mpg123d_prc_init (void * ap_tos, void * ap_hdl)
 {
-  void *tizfilterprc = tiz_get_type (ap_hdl, "tizfilterprc");
-  void *mpg123dprc_class = tiz_get_type (ap_hdl, "mpg123dprc_class");
+  void * tizfilterprc = tiz_get_type (ap_hdl, "tizfilterprc");
+  void * mpg123dprc_class = tiz_get_type (ap_hdl, "mpg123dprc_class");
   TIZ_LOG_CLASS (mpg123dprc_class);
-  void *mpg123dprc = factory_new
-      /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
-      (mpg123dprc_class, "mpg123dprc", tizfilterprc, sizeof(mpg123d_prc_t),
-       /* TIZ_CLASS_COMMENT: */
-       ap_tos, ap_hdl,
-       /* TIZ_CLASS_COMMENT: class constructor */
-       ctor, mpg123d_prc_ctor,
-       /* TIZ_CLASS_COMMENT: class destructor */
-       dtor, mpg123d_prc_dtor,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_srv_allocate_resources, mpg123d_prc_allocate_resources,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_srv_deallocate_resources, mpg123d_prc_deallocate_resources,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_srv_prepare_to_transfer, mpg123d_prc_prepare_to_transfer,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_srv_transfer_and_process, mpg123d_prc_transfer_and_process,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_srv_stop_and_return, mpg123d_prc_stop_and_return,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_prc_buffers_ready, mpg123d_prc_buffers_ready,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_prc_port_flush, mpg123d_proc_port_flush,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_prc_port_enable, mpg123d_prc_port_enable,
-       /* TIZ_CLASS_COMMENT: */
-       tiz_prc_port_disable, mpg123d_prc_port_disable,
-       /* TIZ_CLASS_COMMENT: stop value */
-       0);
+  void * mpg123dprc = factory_new
+    /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
+    (mpg123dprc_class, "mpg123dprc", tizfilterprc, sizeof (mpg123d_prc_t),
+     /* TIZ_CLASS_COMMENT: */
+     ap_tos, ap_hdl,
+     /* TIZ_CLASS_COMMENT: class constructor */
+     ctor, mpg123d_prc_ctor,
+     /* TIZ_CLASS_COMMENT: class destructor */
+     dtor, mpg123d_prc_dtor,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_allocate_resources, mpg123d_prc_allocate_resources,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_deallocate_resources, mpg123d_prc_deallocate_resources,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_prepare_to_transfer, mpg123d_prc_prepare_to_transfer,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_transfer_and_process, mpg123d_prc_transfer_and_process,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_srv_stop_and_return, mpg123d_prc_stop_and_return,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_prc_buffers_ready, mpg123d_prc_buffers_ready,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_prc_port_flush, mpg123d_proc_port_flush,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_prc_port_enable, mpg123d_prc_port_enable,
+     /* TIZ_CLASS_COMMENT: */
+     tiz_prc_port_disable, mpg123d_prc_port_disable,
+     /* TIZ_CLASS_COMMENT: stop value */
+     0);
 
   return mpg123dprc;
 }

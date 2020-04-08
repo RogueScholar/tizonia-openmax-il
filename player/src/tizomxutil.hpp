@@ -29,8 +29,8 @@
 #ifndef TIZOMXUTIL_HPP
 #define TIZOMXUTIL_HPP
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <OMX_Core.h>
 
@@ -43,9 +43,9 @@ namespace tiz
     static void init ();
     static void deinit ();
     static OMX_ERRORTYPE list_comps (std::vector< std::string >& components);
-    static OMX_ERRORTYPE roles_of_comp (const std::string &comp,
+    static OMX_ERRORTYPE roles_of_comp (const std::string& comp,
                                         std::vector< std::string >& roles);
-    static OMX_ERRORTYPE comps_of_role (const std::string &role,
+    static OMX_ERRORTYPE comps_of_role (const std::string& role,
                                         std::vector< std::string >& components);
   };
 }  // namespace tiz

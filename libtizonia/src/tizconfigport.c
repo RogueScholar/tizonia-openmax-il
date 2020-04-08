@@ -138,7 +138,7 @@ configport_ctor (void * ap_obj, va_list * app)
   p_obj->playlist_skip_.nValue = 0;
 
   /* Clear the indexes added by the base port class. They are of no interest
-     here and won't be handled in this class.  */
+       here and won't be handled in this class.  */
   tiz_vector_clear (p_base->p_indexes_);
 
   /* Register the indexes we are interested in */

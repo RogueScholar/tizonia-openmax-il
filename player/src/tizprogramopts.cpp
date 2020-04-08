@@ -223,8 +223,8 @@ namespace
     }
   }
 
-  bool retrieve_bool_from_rc_file_if_found (const char *rc_section, const char *rc_key,
-                                            bool &flag)
+  bool retrieve_bool_from_rc_file_if_found (const char *rc_section,
+                                            const char *rc_key, bool &flag)
   {
     bool is_found = false;
     assert (rc_section);
@@ -233,17 +233,17 @@ namespace
     if (p_key)
     {
       std::string key;
-      key.assign(p_key);
-      if (0 == key.compare("true"))
-        {
-          flag = true;
-          is_found = true;
-        }
-      else if (0 == key.compare("false"))
-        {
-          flag = false;
-          is_found = true;
-        }
+      key.assign (p_key);
+      if (0 == key.compare ("true"))
+      {
+        flag = true;
+        is_found = true;
+      }
+      else if (0 == key.compare ("false"))
+      {
+        flag = false;
+        is_found = true;
+      }
     }
     return is_found;
   }
@@ -257,19 +257,19 @@ namespace
     const char *p_key = tiz_rcfile_get_value (rc_section, rc_key);
     if (p_key)
     {
-      uint_val = boost::lexical_cast< uint32_t >(p_key);
+      uint_val = boost::lexical_cast< uint32_t > (p_key);
       is_found = true;
     }
     return is_found;
   }
 
-  void retrieve_tizonia_uint_from_rc_file (const char *rc_key, uint32_t &uint_val)
+  void retrieve_tizonia_uint_from_rc_file (const char *rc_key,
+                                           uint32_t &uint_val)
   {
     if (0 == uint_val && rc_key)
     {
       uint32_t val = 0;
-      if (retrieve_uint_from_rc_file ("tizonia", rc_key, val)
-          && val > 0)
+      if (retrieve_uint_from_rc_file ("tizonia", rc_key, val) && val > 0)
       {
         uint_val = val;
       }
@@ -306,7 +306,7 @@ namespace
 #else
 #define greedy_implicit_value po::value
 #endif
-}
+}  // namespace
 
 tiz::programopts::programopts (int argc, char *argv[])
   : argc_ (argc),
@@ -333,10 +333,10 @@ tiz::programopts::programopts (int argc, char *argv[])
     shuffle_ (false),
     daemon_ (false),
     chromecast_name_or_ip_ (),
-    buffer_seconds_(0),
-    proxy_server_(),
-    proxy_user_(),
-    proxy_password_(),
+    buffer_seconds_ (0),
+    proxy_server_ (),
+    proxy_user_ (),
+    proxy_password_ (),
     log_dir_ (),
     debug_info_ (false),
     comp_name_ (),
@@ -353,8 +353,8 @@ tiz::programopts::programopts (int argc, char *argv[])
     spotify_user_ (),
     spotify_pass_ (),
     spotify_owner_ (),
-    spotify_recover_lost_token_(false),
-    spotify_allow_explicit_tracks_(false),
+    spotify_recover_lost_token_ (false),
+    spotify_allow_explicit_tracks_ (false),
     spotify_preferred_bitrate_ (0),
     spotify_tracks_ (),
     spotify_artist_ (),
@@ -364,14 +364,14 @@ tiz::programopts::programopts (int argc, char *argv[])
     spotify_artist_id_ (),
     spotify_album_id_ (),
     spotify_playlist_id_ (),
-    spotify_related_artists_(),
-    spotify_featured_playlist_(),
-    spotify_new_releases_(),
-    spotify_recommendations_by_track_id_(),
-    spotify_recommendations_by_artist_id_(),
-    spotify_recommendations_by_genre_(),
+    spotify_related_artists_ (),
+    spotify_featured_playlist_ (),
+    spotify_new_releases_ (),
+    spotify_recommendations_by_track_id_ (),
+    spotify_recommendations_by_artist_id_ (),
+    spotify_recommendations_by_genre_ (),
     spotify_playlist_container_ (),
-    spotify_playlist_type_(OMX_AUDIO_SpotifyPlaylistTypeUnknown),
+    spotify_playlist_type_ (OMX_AUDIO_SpotifyPlaylistTypeUnknown),
     gmusic_user_ (),
     gmusic_pass_ (),
     gmusic_device_id_ (),
@@ -413,7 +413,7 @@ tiz::programopts::programopts (int argc, char *argv[])
     tunein_location_ (),
     tunein_podcasts_ (),
     tunein_trending_ (),
-    tunein_search_type_filter_(),
+    tunein_search_type_filter_ (),
     tunein_keywords_ (),
     tunein_playlist_container_ (),
     tunein_playlist_type_ (OMX_AUDIO_TuneinPlaylistTypeUnknown),
@@ -428,7 +428,7 @@ tiz::programopts::programopts (int argc, char *argv[])
     youtube_audio_channel_playlist_ (),
     youtube_playlist_container_ (),
     youtube_playlist_type_ (OMX_AUDIO_YoutubePlaylistTypeUnknown),
-    youtube_api_key_(),
+    youtube_api_key_ (),
     youtube_buffer_seconds_ (0),
     plex_base_url_ (),
     plex_token_ (),
@@ -527,8 +527,9 @@ int tiz::programopts::consume ()
 
 void tiz::programopts::print_version () const
 {
-  TIZ_PRINTF_C04 ("tizonia %s. Copyright (C) 2020 Juan A. Rubio and contributors",
-                  PACKAGE_VERSION);
+  TIZ_PRINTF_C04 (
+      "tizonia %s. Copyright (C) 2020 Juan A. Rubio and contributors",
+      PACKAGE_VERSION);
   TIZ_PRINTF_C04 (
       "This software is part of the Tizonia project <https://tizonia.org>");
   printf ("\n");
@@ -622,31 +623,33 @@ void tiz::programopts::print_usage_config () const
   print_license ();
   printf ("Configuration file: 'tizonia.conf'\n\n");
   printf (
-      "Tizonia creates its config file in one of the following locations when it\n"
+      "Tizonia creates its config file in one of the following locations when "
+      "it\n"
       "first starts (add your user credentials here):\n");
   printf (
       "    - Debian or AUR packages: $HOME/.config/tizonia/tizonia.conf\n"
-      "    - Snap package: $HOME/snap/tizonia/current/.config/tizonia/tizonia.conf\n");
+      "    - Snap package: "
+      "$HOME/snap/tizonia/current/.config/tizonia/tizonia.conf\n");
   printf (
       "\nExample configuration files may also be found at \n"
       "    - /etc/xdg/tizonia/tizonia.conf or \n"
       "    - /snap/tizonia/current/etc/xdg/tizonia/tizonia.conf.\n");
 
-//
-//  TODO: Think about how the following information could be provided to the
-//  user, since it is probably more for a developer or power user.
-//
-//   printf (
-//       "Tizonia finds its config file in one of these locations (in this "
-//       "order):\n");
-//   printf (
-//       "1.   A file pointed by the $TIZONIA_RC_FILE environment "
-//       "variable.\n");
-//   printf ("2.   $HOME/.config/tizonia/tizonia.conf\n");
-//   printf (
-//       "3.   A directory in $XDG_CONFIG_DIRS + "
-//       "/tizonia/tizonia.conf\n");
-//   printf ("4.                  /etc/tizonia/tizonia.conf\n\n");
+  //
+  //  TODO: Think about how the following information could be provided to the
+  //  user, since it is probably more for a developer or power user.
+  //
+  //   printf (
+  //       "Tizonia finds its config file in one of these locations (in this "
+  //       "order):\n");
+  //   printf (
+  //       "1.   A file pointed by the $TIZONIA_RC_FILE environment "
+  //       "variable.\n");
+  //   printf ("2.   $HOME/.config/tizonia/tizonia.conf\n");
+  //   printf (
+  //       "3.   A directory in $XDG_CONFIG_DIRS + "
+  //       "/tizonia/tizonia.conf\n");
+  //   printf ("4.                  /etc/tizonia/tizonia.conf\n\n");
 }
 
 void tiz::programopts::print_usage_examples () const
@@ -855,11 +858,13 @@ const std::vector< std::string >
   }
   else if (!spotify_recommendations_by_track_id_.empty ())
   {
-    spotify_playlist_container_.push_back (spotify_recommendations_by_track_id_);
+    spotify_playlist_container_.push_back (
+        spotify_recommendations_by_track_id_);
   }
   else if (!spotify_recommendations_by_artist_id_.empty ())
   {
-    spotify_playlist_container_.push_back (spotify_recommendations_by_artist_id_);
+    spotify_playlist_container_.push_back (
+        spotify_recommendations_by_artist_id_);
   }
   else if (!spotify_recommendations_by_genre_.empty ())
   {
@@ -921,15 +926,18 @@ tiz::programopts::spotify_playlist_type ()
   }
   else if (!spotify_recommendations_by_track_id_.empty ())
   {
-    spotify_playlist_type_ = OMX_AUDIO_SpotifyPlaylistTypeRecommendationsByTrackId;
+    spotify_playlist_type_
+        = OMX_AUDIO_SpotifyPlaylistTypeRecommendationsByTrackId;
   }
   else if (!spotify_recommendations_by_artist_id_.empty ())
   {
-    spotify_playlist_type_ = OMX_AUDIO_SpotifyPlaylistTypeRecommendationsByArtistId;
+    spotify_playlist_type_
+        = OMX_AUDIO_SpotifyPlaylistTypeRecommendationsByArtistId;
   }
   else if (!spotify_recommendations_by_genre_.empty ())
   {
-    spotify_playlist_type_ = OMX_AUDIO_SpotifyPlaylistTypeRecommendationsByGenre;
+    spotify_playlist_type_
+        = OMX_AUDIO_SpotifyPlaylistTypeRecommendationsByGenre;
   }
 
   return spotify_playlist_type_;
@@ -1067,8 +1075,7 @@ tiz::programopts::gmusic_playlist_type ()
   return gmusic_playlist_type_;
 }
 
-const std::string &
-tiz::programopts::gmusic_additional_keywords () const
+const std::string &tiz::programopts::gmusic_additional_keywords () const
 {
   return gmusic_additional_keywords_;
 }
@@ -1237,7 +1244,7 @@ tiz::programopts::tunein_search_type ()
     tunein_search_type_ = OMX_AUDIO_TuneinSearchTypeAll;
   }
 
-  return tunein_search_type_ ;
+  return tunein_search_type_;
 }
 
 uint32_t tiz::programopts::tunein_buffer_seconds () const
@@ -1473,7 +1480,8 @@ void tiz::programopts::init_global_options ()
   chromecast_.add_options ()
       /* TIZ_CLASS_COMMENT: */
       ("cast,c", po::value (&chromecast_name_or_ip_),
-       "Cast to a Chromecast device (arg: device name, 'friendly' name or ip address). "
+       "Cast to a Chromecast device (arg: device name, 'friendly' name or ip "
+       "address). "
        "Available in combination with Google Play Music, SoundCloud, "
        "YouTube, Plex and HTTP radio stations.");
 
@@ -1493,7 +1501,8 @@ void tiz::programopts::init_global_options ()
        "if provided via config file).")
       /* TIZ_CLASS_COMMENT: */
       ("proxy-password", po::value (&proxy_password_),
-       "Password to be used during proxy server authentication (only works with "
+       "Password to be used during proxy server authentication (only works "
+       "with "
        "the Spotify service at the moment, not required "
        "if provided via config file).");
 }
@@ -1615,8 +1624,7 @@ void tiz::programopts::init_spotify_options ()
        po::bool_switch (&spotify_allow_explicit_tracks_)->default_value (false),
        "Allow Tizonia to play explicit tracks from Spotify (default: false).")
       /* TIZ_CLASS_COMMENT: */
-      ("spotify-preferred-bitrate",
-       po::value (&spotify_preferred_bitrate_),
+      ("spotify-preferred-bitrate", po::value (&spotify_preferred_bitrate_),
        "Preferred Spotify bitrate (kbps) (320, 160 or 96; default: 320).")
       /* TIZ_CLASS_COMMENT: */
       ("spotify-tracks", po::value (&spotify_tracks_),
@@ -1883,11 +1891,15 @@ void tiz::programopts::init_youtube_options ()
       ("youtube-audio-mix-search", po::value (&youtube_audio_mix_search_),
        "Play a YouTube mix from a search term.")
       /* TIZ_CLASS_COMMENT: */
-      ("youtube-audio-channel-uploads", po::value (&youtube_audio_channel_uploads_),
-       "Play all videos uploaded to a YouTube channel (arg = channel url or name).")
+      ("youtube-audio-channel-uploads",
+       po::value (&youtube_audio_channel_uploads_),
+       "Play all videos uploaded to a YouTube channel (arg = channel url or "
+       "name).")
       /* TIZ_CLASS_COMMENT: */
-      ("youtube-audio-channel-playlist", po::value (&youtube_audio_channel_playlist_),
-       "Play a playlist from particular YouTube channel (arg = '<channel-name[space]playlist-name>').");
+      ("youtube-audio-channel-playlist",
+       po::value (&youtube_audio_channel_playlist_),
+       "Play a playlist from particular YouTube channel (arg = "
+       "'<channel-name[space]playlist-name>').");
 
   register_consume_function (&tiz::programopts::consume_youtube_client_options);
   all_youtube_client_options_
@@ -2238,38 +2250,42 @@ int tiz::programopts::consume_spotify_client_options (bool &done,
 
     // This is to find out if the spotify-recover-lost-token flag has  been
     // provided on the command line, and the retrieve from the config file.
-    // See https://stackoverflow.com/questions/32150230/boost-program-options-bool-always-true
+    // See
+    // https://stackoverflow.com/questions/32150230/boost-program-options-bool-always-true
     bool recover_token_option_provided
         = (std::find (all_given_options_.begin (), all_given_options_.end (),
                       std::string ("spotify-recover-lost-token"))
            != all_given_options_.end ());
     if (!recover_token_option_provided)
     {
-      if (!retrieve_bool_from_rc_file_if_found ("tizonia", "spotify.recover_lost_token",
+      if (!retrieve_bool_from_rc_file_if_found ("tizonia",
+                                                "spotify.recover_lost_token",
                                                 spotify_recover_lost_token_))
-        {
-          // Just make sure we always default this to false when the flag is
-          // not configured in tizonia.conf.
-          spotify_recover_lost_token_ = false;
-        }
+      {
+        // Just make sure we always default this to false when the flag is
+        // not configured in tizonia.conf.
+        spotify_recover_lost_token_ = false;
+      }
     }
 
     // This is to find out if the spotify-allow-explicit-tracks flag has  been
     // provided on the command line, and then retrieve from the config file.
-    // See https://stackoverflow.com/questions/32150230/boost-program-options-bool-always-true
+    // See
+    // https://stackoverflow.com/questions/32150230/boost-program-options-bool-always-true
     bool allow_explicit_tracks_provided
         = (std::find (all_given_options_.begin (), all_given_options_.end (),
                       std::string ("spotify-allow-explicit-tracks"))
            != all_given_options_.end ());
     if (!allow_explicit_tracks_provided)
     {
-      if (!retrieve_bool_from_rc_file_if_found ("tizonia", "spotify.allow_explicit_tracks",
+      if (!retrieve_bool_from_rc_file_if_found ("tizonia",
+                                                "spotify.allow_explicit_tracks",
                                                 spotify_allow_explicit_tracks_))
-        {
-          // Just make sure we always default this to false when the flag is
-          // not configured in tizonia.conf.
-          spotify_allow_explicit_tracks_ = false;
-        }
+      {
+        // Just make sure we always default this to false when the flag is
+        // not configured in tizonia.conf.
+        spotify_allow_explicit_tracks_ = false;
+      }
     }
 
     if (!spotify_preferred_bitrate_)
@@ -2300,7 +2316,8 @@ int tiz::programopts::consume_spotify_client_options (bool &done,
       msg.assign (oss.str ());
     }
     else if (OMX_AUDIO_SpotifyPlaylistTypePlaylist != spotify_playlist_type ()
-             && OMX_AUDIO_SpotifyPlaylistTypePlaylistId != spotify_playlist_type ()
+             && OMX_AUDIO_SpotifyPlaylistTypePlaylistId
+                    != spotify_playlist_type ()
              && vm_.count ("spotify-owner"))
     {
       rc = EXIT_FAILURE;
@@ -2445,7 +2462,8 @@ int tiz::programopts::consume_gmusic_client_options (bool &done,
     {
       rc = EXIT_FAILURE;
       std::ostringstream oss;
-      oss << "The --gmusic-additional-keywords option can only be used in conjunction with\n"
+      oss << "The --gmusic-additional-keywords option can only be used in "
+             "conjunction with\n"
           << " --gmusic-unlimited-activity";
       msg.assign (oss.str ());
     }
@@ -2694,15 +2712,15 @@ int tiz::programopts::consume_youtube_client_options (bool &done,
   {
     done = true;
 
-    const int playlist_option_count = vm_.count ("youtube-audio-stream")
-                                      + vm_.count ("youtube-audio-playlist")
-                                      + vm_.count ("youtube-audio-mix")
-                                      + vm_.count ("youtube-audio-search")
-                                      + vm_.count ("youtube-audio-mix-search")
-                                      + vm_.count ("youtube-audio-channel-uploads")
-                                      + vm_.count ("youtube-audio-channel-playlist");
+    const int playlist_option_count
+        = vm_.count ("youtube-audio-stream")
+          + vm_.count ("youtube-audio-playlist")
+          + vm_.count ("youtube-audio-mix") + vm_.count ("youtube-audio-search")
+          + vm_.count ("youtube-audio-mix-search")
+          + vm_.count ("youtube-audio-channel-uploads")
+          + vm_.count ("youtube-audio-channel-playlist");
 
-    if (youtube_api_key_.empty())
+    if (youtube_api_key_.empty ())
     {
       retrieve_string_from_rc_file ("tizonia", "youtube.api_key",
                                     youtube_api_key_);
@@ -2768,14 +2786,12 @@ int tiz::programopts::consume_plex_client_options (bool &done, std::string &msg)
 
     if (plex_base_url_.empty ())
     {
-      retrieve_string_from_rc_file ("tizonia", "plex.base_url",
-                                    plex_base_url_);
+      retrieve_string_from_rc_file ("tizonia", "plex.base_url", plex_base_url_);
     }
 
     if (plex_token_.empty ())
     {
-      retrieve_string_from_rc_file ("tizonia", "plex.auth_token",
-                                    plex_token_);
+      retrieve_string_from_rc_file ("tizonia", "plex.auth_token", plex_token_);
     }
 
     if (plex_section_.empty ())
@@ -2889,7 +2905,7 @@ int tiz::programopts::consume_input_http_uris_option ()
     bool all_ok = true;
     BOOST_FOREACH (std::string uri, uri_list_)
     {
-      std::transform(uri.begin(), uri.end(), uri.begin(), ::tolower);
+      std::transform (uri.begin (), uri.end (), uri.begin (), ::tolower);
       boost::xpressive::sregex http_s
           = boost::xpressive::sregex::compile ("^https?://");
       boost::xpressive::smatch what;
@@ -2908,8 +2924,8 @@ bool tiz::programopts::validate_omx_options () const
 {
   bool outcome = false;
   const uint32_t omx_opts_count = vm_.count ("comp-list")
-                                      + vm_.count ("roles-of-comp")
-                                      + vm_.count ("comps-of-role");
+                                  + vm_.count ("roles-of-comp")
+                                  + vm_.count ("comps-of-role");
 
   std::vector< std::string > all_valid_options = all_omx_options_;
   concat_option_lists (all_valid_options, all_global_options_);

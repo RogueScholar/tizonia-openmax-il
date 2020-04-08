@@ -31,8 +31,8 @@
 
 #include <string>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 
 namespace tiz
 {
@@ -55,7 +55,7 @@ namespace tiz
       omx_event_info (OMX_HANDLETYPE component, OMX_U32 port_id,
                       OMX_COMMANDTYPE disable_or_enable, OMX_ERRORTYPE error);
 
-      bool operator==(const omx_event_info &b);
+      bool operator== (const omx_event_info &b);
       std::string to_string () const;
 
       OMX_HANDLETYPE component_;

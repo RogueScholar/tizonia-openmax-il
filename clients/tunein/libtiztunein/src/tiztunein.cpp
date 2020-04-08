@@ -29,8 +29,8 @@
 #include <config.h>
 #endif
 
-#include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/trim.hpp>
+#include <boost/lexical_cast.hpp>
 #include <iostream>
 
 #include "tiztunein.hpp"
@@ -122,12 +122,10 @@ namespace
     bp::object pytuneinproxy = py_global["tiztuneinproxy"];
     py_tunein_proxy = pytuneinproxy ();
   }
-}
+}  // namespace
 
 tiztunein::tiztunein ()
-  : current_url_ (),
-    current_radio_index_ (),
-    current_queue_length_ ()
+  : current_url_ (), current_radio_index_ (), current_queue_length_ ()
 {
 }
 
@@ -241,20 +239,21 @@ const char *tiztunein::get_current_radio_name ()
 
 const char *tiztunein::get_current_radio_description ()
 {
-  return current_radio_description_.empty () ? NULL : current_radio_description_.c_str ();
+  return current_radio_description_.empty ()
+             ? NULL
+             : current_radio_description_.c_str ();
 }
 
 const char *tiztunein::get_current_radio_reliability ()
 {
-  return current_radio_reliability_.empty () ? NULL
-                                           : current_radio_reliability_.c_str ();
+  return current_radio_reliability_.empty ()
+             ? NULL
+             : current_radio_reliability_.c_str ();
 }
 
 const char *tiztunein::get_current_radio_type ()
 {
-  return current_radio_type_.empty ()
-             ? NULL
-             : current_radio_type_.c_str ();
+  return current_radio_type_.empty () ? NULL : current_radio_type_.c_str ();
 }
 
 const char *tiztunein::get_current_radio_website ()
@@ -281,7 +280,9 @@ const char *tiztunein::get_current_radio_stream_url ()
 
 const char *tiztunein::get_current_radio_thumbnail_url ()
 {
-  return current_radio_thumbnail_url_.empty () ? NULL : current_radio_thumbnail_url_.c_str ();
+  return current_radio_thumbnail_url_.empty ()
+             ? NULL
+             : current_radio_thumbnail_url_.c_str ();
 }
 
 void tiztunein::clear_queue ()
@@ -306,17 +307,17 @@ const char *tiztunein::get_current_queue_length ()
 int tiztunein::get_current_queue_length_as_int ()
 {
   obtain_current_queue_progress ();
-  if (current_queue_length_.empty())
+  if (current_queue_length_.empty ())
     {
       return 0;
     }
-  boost::algorithm::trim(current_queue_length_);
+  boost::algorithm::trim (current_queue_length_);
   return boost::lexical_cast< int > (current_queue_length_);
 }
 
 const char *tiztunein::get_current_queue_progress ()
 {
-    const bp::tuple &queue_info = bp::extract< bp::tuple > (
+  const bp::tuple &queue_info = bp::extract< bp::tuple > (
       py_tunein_proxy_.attr ("current_radio_queue_index_and_queue_length") ());
   const int queue_index = bp::extract< int > (queue_info[0]);
   const int queue_length = bp::extract< int > (queue_info[1]);
@@ -364,8 +365,7 @@ void tiztunein::set_search_mode (const search_mode mode)
     {
       case SearchModeAll:
         {
-          try_catch_wrapper (
-              py_tunein_proxy_.attr ("set_search_mode") ("ALL"));
+          try_catch_wrapper (py_tunein_proxy_.attr ("set_search_mode") ("ALL"));
         }
         break;
       case SearchModeStations:
@@ -415,7 +415,6 @@ void tiztunein::get_current_radio ()
 
   current_radio_thumbnail_url_ = bp::extract< std::string > (
       py_tunein_proxy_.attr ("current_radio_thumbnail_url") ());
-
 }
 
 void tiztunein::obtain_current_queue_progress ()

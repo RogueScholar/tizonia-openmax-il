@@ -29,17 +29,17 @@
 #ifndef TIZPROBE_HPP
 #define TIZPROBE_HPP
 
-#include <string>
 #include <boost/shared_ptr.hpp>
+#include <string>
 
 #include <fileref.h>
 #include <tag.h>
 
-#include <OMX_Core.h>
-#include <OMX_Component.h>
 #include <OMX_Audio.h>
-#include <OMX_Video.h>
+#include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <OMX_TizoniaExt.h>
+#include <OMX_Video.h>
 
 namespace tiz
 {
@@ -117,9 +117,9 @@ namespace tiz
                                 const OMX_ENDIANTYPE endianness,
                                 const OMX_NUMERICALDATATYPE sign);
     std::string retrieve_meta_data_str (
-        TagLib::String (TagLib::Tag::*TagFunction)() const) const;
+        TagLib::String (TagLib::Tag::*TagFunction) () const) const;
     unsigned int retrieve_meta_data_uint (
-        TagLib::uint (TagLib::Tag::*TagFunction)() const) const;
+        TagLib::uint (TagLib::Tag::*TagFunction) () const) const;
 
   private:
     std::string uri_;

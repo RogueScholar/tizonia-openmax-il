@@ -32,15 +32,15 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <tizplatform.h>
 
-#include "tizgraphutil.hpp"
-#include "tizgraphconfig.hpp"
 #include "tizgraphcmd.hpp"
-#include "tizprobe.hpp"
+#include "tizgraphconfig.hpp"
+#include "tizgraphutil.hpp"
 #include "tizpcmgraph.hpp"
+#include "tizprobe.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -52,8 +52,7 @@ namespace graph = tiz::graph;
 //
 // pcmdecoder
 //
-graph::pcmdecoder::pcmdecoder ()
-  : tiz::graph::decoder ("pcmdecgraph")
+graph::pcmdecoder::pcmdecoder () : tiz::graph::decoder ("pcmdecgraph")
 {
 }
 
@@ -103,12 +102,11 @@ void graph::pcmdecops::do_configure ()
     G_OPS_BAIL_IF_ERROR (
         util::set_content_uri (handles_[0], probe_ptr_->get_uri ()),
         "Unable to set OMX_IndexParamContentURI");
-    OMX_ERRORTYPE rc = tiz::graph::util::
-        normalize_tunnel_settings< OMX_AUDIO_PARAM_PCMMODETYPE,
-                                   OMX_IndexParamAudioPcm >(
-            handles_, 1,  // tunneld id, i.e. this is decoder <-> renderer),
-            1,            // decoder's output port
-            0);           // renderer's input port
+    OMX_ERRORTYPE rc = tiz::graph::util::normalize_tunnel_settings<
+        OMX_AUDIO_PARAM_PCMMODETYPE, OMX_IndexParamAudioPcm > (
+        handles_, 1,  // tunneld id, i.e. this is decoder <-> renderer),
+        1,            // decoder's output port
+        0);           // renderer's input port
     G_OPS_BAIL_IF_ERROR (rc, "Unable to transfer OMX_IndexParamAudioPcm");
     G_OPS_BAIL_IF_ERROR (
         tiz::graph::util::set_pcm_mode (
@@ -131,7 +129,8 @@ void graph::pcmdecops::get_pcm_codec_info (OMX_AUDIO_PARAM_PCMMODETYPE &pcmtype)
   assert (probe_ptr_);
   probe_ptr_->get_pcm_codec_info (pcmtype);
 
-  // Ammend the endianness, sign, and interleave config as per the decoder values
+  // Ammend the endianness, sign, and interleave config as per the decoder
+  // values
   pcmtype.eEndian = dec_pcmtype.eEndian;
   pcmtype.eNumData = dec_pcmtype.eNumData;
   pcmtype.bInterleaved = dec_pcmtype.bInterleaved;

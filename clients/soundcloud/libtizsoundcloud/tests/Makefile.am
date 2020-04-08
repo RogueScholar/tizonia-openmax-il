@@ -28,4 +28,3 @@ check_tizsoundcloud_CFLAGS = \
 check_tizsoundcloud_LDADD = \
 	$(top_builddir)/src/libtizsoundcloud.la \
 	@CHECK_LIBS@
-

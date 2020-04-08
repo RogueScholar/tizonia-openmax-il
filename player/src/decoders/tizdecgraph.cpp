@@ -31,8 +31,8 @@
 #endif
 
 #include "tizgraph.hpp"
-#include "tizgraphfsm.hpp"
 #include "tizgraphcmd.hpp"
+#include "tizgraphfsm.hpp"
 #include "tizgraphops.hpp"
 
 #include "tizdecgraph.hpp"
@@ -49,16 +49,15 @@ namespace graph = tiz::graph;
 //
 graph::decoder::decoder (const std::string &graph_name)
   : graph::graph (graph_name),
-    fsm_ (new fsm (boost::msm::back::states_
-                   << tiz::graph::fsm::configuring (&p_ops_)
-                   << tiz::graph::fsm::skipping (&p_ops_),
+    fsm_ (new fsm (boost::msm::back::states_ << tiz::graph::fsm::configuring (
+                       &p_ops_) << tiz::graph::fsm::skipping (&p_ops_),
                    &p_ops_))
 {
 }
 
 graph::decoder::~decoder ()
 {
-  delete (boost::any_cast< fsm * >(fsm_));
+  delete (boost::any_cast< fsm * > (fsm_));
 }
 
 bool graph::decoder::dispatch_cmd (const tiz::graph::cmd *p_cmd)
@@ -68,10 +67,10 @@ bool graph::decoder::dispatch_cmd (const tiz::graph::cmd *p_cmd)
 
   if (!p_cmd->kill_thread ())
   {
-    fsm * p_fsm = boost::any_cast< fsm * >(fsm_);
+    fsm *p_fsm = boost::any_cast< fsm * > (fsm_);
     assert (p_fsm);
 
-    if (p_cmd->evt ().type () == typeid(tiz::graph::load_evt))
+    if (p_cmd->evt ().type () == typeid (tiz::graph::load_evt))
     {
       // Time to start the FSM
       TIZ_LOG (TIZ_PRIORITY_NOTICE, "Starting [%s] fsm...",
@@ -79,15 +78,15 @@ bool graph::decoder::dispatch_cmd (const tiz::graph::cmd *p_cmd)
       p_fsm->start ();
     }
 
-    p_cmd->inject< fsm >(*p_fsm, tiz::graph::pstate);
+    p_cmd->inject< fsm > (*p_fsm, tiz::graph::pstate);
 
     // Check for internal errors produced during the processing of the last
     // event. If any, inject an "internal" error event. This is fatal and shall
     // terminate the state machine.
     if (OMX_ErrorNone != p_ops_->internal_error ())
     {
-      p_fsm->process_event (tiz::graph::err_evt (p_ops_->internal_error (),
-                                                 p_ops_->internal_error_msg ()));
+      p_fsm->process_event (tiz::graph::err_evt (
+          p_ops_->internal_error (), p_ops_->internal_error_msg ()));
     }
 
     if (p_fsm->terminated_)
@@ -103,8 +102,7 @@ bool graph::decoder::dispatch_cmd (const tiz::graph::cmd *p_cmd)
 //
 // decops
 //
-graph::decops::decops (graph *p_graph,
-                       const omx_comp_name_lst_t &comp_lst,
+graph::decops::decops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
                        const omx_comp_role_lst_t &role_lst)
   : tiz::graph::ops (p_graph, comp_lst, role_lst)
 {

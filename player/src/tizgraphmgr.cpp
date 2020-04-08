@@ -32,23 +32,23 @@
 #include <assert.h>
 
 #include <algorithm>
-#include <boost/make_shared.hpp>
 #include <boost/chrono.hpp>
+#include <boost/make_shared.hpp>
 #include <boost/thread/thread.hpp>
 
 #include <OMX_Component.h>
 
-#include <tizplatform.h>
 #include <tizmacros.h>
+#include <tizplatform.h>
 
-#include "tizgraphmgrcmd.hpp"
-#include "tizgraph.hpp"
-#include "tizomxutil.hpp"
-#include "tizgraphutil.hpp"
-#include "mpris/tizmprisprops.hpp"
 #include "mpris/tizmpriscbacks.hpp"
-#include "tizgraphmgrcaps.hpp"
+#include "mpris/tizmprisprops.hpp"
+#include "tizgraph.hpp"
 #include "tizgraphmgr.hpp"
+#include "tizgraphmgrcaps.hpp"
+#include "tizgraphmgrcmd.hpp"
+#include "tizgraphutil.hpp"
+#include "tizomxutil.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -63,7 +63,7 @@ namespace graph = tiz::graph;
 
 void *graphmgr::thread_func (void *p_arg)
 {
-  mgr *p_mgr = static_cast< mgr * >(p_arg);
+  mgr *p_mgr = static_cast< mgr * > (p_arg);
   void *p_data = NULL;
   bool done = false;
 
@@ -78,7 +78,7 @@ void *graphmgr::thread_func (void *p_arg)
 
     assert (p_data);
 
-    cmd *p_cmd = static_cast< cmd * >(p_data);
+    cmd *p_cmd = static_cast< cmd * > (p_data);
     done = mgr::dispatch_cmd (p_mgr, p_cmd);
 
     delete p_cmd;
@@ -122,8 +122,7 @@ graphmgr::mgr::init (const tizplaylist_ptr_t &playlist,
 
   // Create the manager's thread
   tiz_check_omx_ret_oom (tiz_mutex_lock (&mutex_));
-  tiz_check_omx_ret_oom (
-      tiz_thread_create (&thread_, 0, 0, thread_func, this));
+  tiz_check_omx_ret_oom (tiz_thread_create (&thread_, 0, 0, thread_func, this));
   tiz_check_omx_ret_oom (tiz_mutex_unlock (&mutex_));
 
   graphmgr_capabilities_t graphmgr_caps;
@@ -156,9 +155,9 @@ void graphmgr::mgr::deinit ()
   (void)stop_mpris ();
 
   TIZ_LOG (TIZ_PRIORITY_NOTICE, "Waiting until stopped...");
-  static_cast< void >(tiz_sem_wait (&sem_));
+  static_cast< void > (tiz_sem_wait (&sem_));
   void *p_result = NULL;
-  static_cast< void >(tiz_thread_join (&thread_, &p_result));
+  static_cast< void > (tiz_thread_join (&thread_, &p_result));
 
   tiz::omxutil::deinit ();
   deinit_cmd_queue ();
@@ -328,13 +327,13 @@ graphmgr::mgr::start_mpris (const graphmgr_capabilities_t &graphmgr_caps)
         graphmgr_caps.has_track_list_, graphmgr_caps.identity_,
         graphmgr_caps.uri_schemes_, graphmgr_caps.mime_types_);
     control::mpris_mediaplayer2_player_props_t player_props (
-        "Stopped",                               // plaback status
-        "Playlist",                              // loop status
-        1.0,                                     // rate
-        false,                                   // shuffle
-        track_metadata_map_t(),                  // metadata
-        .80,                                     // volume
-        0,                                       // position
+        "Stopped",                // plaback status
+        "Playlist",               // loop status
+        1.0,                      // rate
+        false,                    // shuffle
+        track_metadata_map_t (),  // metadata
+        .80,                      // volume
+        0,                        // position
         graphmgr_caps.minimum_rate_, graphmgr_caps.maximum_rate_,
         graphmgr_caps.can_go_next_, graphmgr_caps.can_go_previous_,
         graphmgr_caps.can_play_, graphmgr_caps.can_pause_,
@@ -343,9 +342,9 @@ graphmgr::mgr::start_mpris (const graphmgr_capabilities_t &graphmgr_caps)
     // NOTE: Can't use make_shared here because the playback events would be
     // passed as const & which means the slots will connected to a copy of our
     // signals, not to the original signals.
-    mpris_ptr_
-        = boost::shared_ptr< tiz::control::mprismgr >(new tiz::control::mprismgr (
-            props, player_props, mpris_cbacks, playback_events_));
+    mpris_ptr_ = boost::shared_ptr< tiz::control::mprismgr > (
+        new tiz::control::mprismgr (props, player_props, mpris_cbacks,
+                                    playback_events_));
     tiz_check_null_ret_oom (mpris_ptr_);
 
     tiz_check_omx (mpris_ptr_->init ());
@@ -361,7 +360,7 @@ graphmgr::mgr::stop_mpris ()
   if (mpris_ptr_)
   {
     tiz_check_omx (mpris_ptr_->stop ());
-    boost::this_thread::sleep_for(boost::chrono::milliseconds(2000));
+    boost::this_thread::sleep_for (boost::chrono::milliseconds (2000));
     mpris_ptr_->deinit ();
   }
   return rc;
@@ -394,7 +393,8 @@ graphmgr::mgr::init_cmd_queue ()
 {
   tiz_check_omx_ret_oom (tiz_mutex_init (&mutex_));
   tiz_check_omx_ret_oom (tiz_sem_init (&sem_, 0));
-  tiz_check_omx_ret_oom (tiz_queue_init (&p_queue_, TIZ_GRAPHMGR_QUEUE_MAX_ITEMS));
+  tiz_check_omx_ret_oom (
+      tiz_queue_init (&p_queue_, TIZ_GRAPHMGR_QUEUE_MAX_ITEMS));
   return OMX_ErrorNone;
 }
 

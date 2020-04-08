@@ -139,12 +139,12 @@ instantiate_video_output_port (OMX_HANDLETYPE ap_hdl, const OMX_U32 port_id)
   };
 
   /* The demuxer port expects to receive raw the same structures as in a normal
-     raw video port when instantiated as a video domain port */
+       raw video port when instantiated as a video domain port */
 
   /* NOTE: No defaults are defined in the standard for the video
-   * output port of the video_reader.demuxer component. So for the
-   * sake of completeness, simply provide some default values
-   * here. */
+     * output port of the video_reader.demuxer component. So for the
+     * sake of completeness, simply provide some default values
+     * here. */
 
   portdef.pNativeRender = NULL;
   portdef.nFrameWidth = 176;
@@ -225,8 +225,7 @@ OMX_ComponentInit (OMX_HANDLETYPE ap_hdl)
   oggdmuxprc_type.pf_object_init = oggdmux_prc_init;
 
   /* Initialize the component infrastructure */
-  tiz_check_omx (
-    tiz_comp_init (ap_hdl, ARATELIA_OGG_DEMUXER_COMPONENT_NAME));
+  tiz_check_omx (tiz_comp_init (ap_hdl, ARATELIA_OGG_DEMUXER_COMPONENT_NAME));
 
   /* Register the "oggdmuxprc" class */
   tiz_check_omx (tiz_comp_register_types (ap_hdl, tf_list, 1));

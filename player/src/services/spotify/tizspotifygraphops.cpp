@@ -34,14 +34,14 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <OMX_TizoniaExt.h>
 #include <tizplatform.h>
 
+#include "tizgraph.hpp"
 #include "tizgraphutil.hpp"
 #include "tizprobe.hpp"
-#include "tizgraph.hpp"
 #include "tizspotifyconfig.hpp"
 #include "tizspotifygraphops.hpp"
 
@@ -68,18 +68,20 @@ void graph::spotifyops::do_enable_auto_detection (const int handle_id,
                                                   const int port_id)
 {
   tizspotifyconfig_ptr_t spotify_config
-      = boost::dynamic_pointer_cast< spotifyconfig >(config_);
+      = boost::dynamic_pointer_cast< spotifyconfig > (config_);
   assert (spotify_config);
   tiz::graph::ops::do_enable_auto_detection (handle_id, port_id);
   tiz::graph::util::dump_graph_info ("Spotify", "Connecting",
                                      spotify_config->get_user_name ().c_str ());
 }
 
-void graph::spotifyops::do_disable_comp_ports (const int comp_id, const int port_id)
+void graph::spotifyops::do_disable_comp_ports (const int comp_id,
+                                               const int port_id)
 {
   OMX_U32 spotify_source_port = port_id;
-  G_OPS_BAIL_IF_ERROR (util::disable_port (handles_[comp_id], spotify_source_port),
-                       "Unable to disable spotify source's output port.");
+  G_OPS_BAIL_IF_ERROR (
+      util::disable_port (handles_[comp_id], spotify_source_port),
+      "Unable to disable spotify source's output port.");
   clear_expected_port_transitions ();
   add_expected_port_transition (handles_[comp_id], spotify_source_port,
                                 OMX_CommandPortDisable);
@@ -189,7 +191,7 @@ void graph::spotifyops::do_reconfigure_tunnel (const int tunnel_id)
 {
   if (last_op_succeeded ())
   {
-    assert (0 == tunnel_id);    // Only one tunnel in this graph
+    assert (0 == tunnel_id);  // Only one tunnel in this graph
     // Retrieve the pcm settings from the source component
     OMX_AUDIO_PARAM_PCMMODETYPE spotify_pcmtype;
     const OMX_U32 spotify_port_id = 0;
@@ -262,8 +264,8 @@ void graph::spotifyops::do_retrieve_metadata ()
 // TODO: Move this implementation to the base class (and remove also from
 // httpservops)
 OMX_ERRORTYPE
-graph::spotifyops::switch_tunnel (
-    const int tunnel_id, const OMX_COMMANDTYPE to_disabled_or_enabled)
+graph::spotifyops::switch_tunnel (const int tunnel_id,
+                                  const OMX_COMMANDTYPE to_disabled_or_enabled)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
@@ -322,7 +324,7 @@ graph::spotifyops::apply_pcm_codec_info_from_spotify_source ()
   tiz_check_omx (get_channels_and_rate_from_spotify_source (
       channels, sampling_rate, encoding_str));
   tiz_check_omx (set_channels_and_rate_on_renderer (channels, sampling_rate,
-                                                        encoding_str));
+                                                    encoding_str));
   return OMX_ErrorNone;
 }
 
@@ -339,9 +341,9 @@ graph::spotifyops::get_channels_and_rate_from_spotify_source (
     case OMX_AUDIO_CodingPCM:
     {
       encoding_str = "pcm";
-      rc = tiz::graph::util::
-          get_channels_and_rate_from_audio_port_v2< OMX_AUDIO_PARAM_PCMMODETYPE >(
-              handle, port_id, OMX_IndexParamAudioPcm, channels, sampling_rate);
+      rc = tiz::graph::util::get_channels_and_rate_from_audio_port_v2<
+          OMX_AUDIO_PARAM_PCMMODETYPE > (
+          handle, port_id, OMX_IndexParamAudioPcm, channels, sampling_rate);
     }
     break;
     default:
@@ -382,22 +384,18 @@ graph::spotifyops::set_channels_and_rate_on_renderer (
       OMX_SetParameter (handle, OMX_IndexParamAudioPcm, &renderer_pcmtype_));
 
   std::string coding_type_str ("Spotify");
-  tiz::graph::util::dump_graph_info (coding_type_str.c_str (),
-                                     "Connected",
+  tiz::graph::util::dump_graph_info (coding_type_str.c_str (), "Connected",
                                      playlist_->get_current_uri ().c_str ());
   return OMX_ErrorNone;
 }
 
 OMX_ERRORTYPE
-graph::spotifyops::set_spotify_session (const OMX_HANDLETYPE handle,
-                                        const std::string &user,
-                                        const std::string &pass,
-                                        const std::string &proxy_server,
-                                        const std::string &proxy_user,
-                                        const std::string &proxy_password,
-                                        const bool recover_lost_token,
-                                        const bool allow_explicit_tracks,
-                                        const uint32_t preferred_bitrate)
+graph::spotifyops::set_spotify_session (
+    const OMX_HANDLETYPE handle, const std::string &user,
+    const std::string &pass, const std::string &proxy_server,
+    const std::string &proxy_user, const std::string &proxy_password,
+    const bool recover_lost_token, const bool allow_explicit_tracks,
+    const uint32_t preferred_bitrate)
 {
   // Set the Spotify user and pass
   OMX_TIZONIA_AUDIO_PARAM_SPOTIFYSESSIONTYPE sessiontype;
@@ -410,30 +408,32 @@ graph::spotifyops::set_spotify_session (const OMX_HANDLETYPE handle,
   tiz::graph::util::copy_omx_string (sessiontype.cUserPassword, pass);
   tiz::graph::util::copy_omx_string (sessiontype.cProxyServer, proxy_server);
   tiz::graph::util::copy_omx_string (sessiontype.cProxyUserName, proxy_user);
-  tiz::graph::util::copy_omx_string (sessiontype.cProxyPassword, proxy_password);
-  sessiontype.bRememberCredentials = OMX_TRUE; // default value
+  tiz::graph::util::copy_omx_string (sessiontype.cProxyPassword,
+                                     proxy_password);
+  sessiontype.bRememberCredentials = OMX_TRUE;  // default value
   sessiontype.bRecoverLostToken = (recover_lost_token ? OMX_TRUE : OMX_FALSE);
-  sessiontype.bAllowExplicitTracks = (allow_explicit_tracks ? OMX_TRUE : OMX_FALSE);
+  sessiontype.bAllowExplicitTracks
+      = (allow_explicit_tracks ? OMX_TRUE : OMX_FALSE);
   switch (preferred_bitrate)
-    {
+  {
     case 96:
-      {
-        sessiontype.ePreferredBitRate = OMX_AUDIO_SpotifyBitrate96Kbps;
-      }
-      break;
+    {
+      sessiontype.ePreferredBitRate = OMX_AUDIO_SpotifyBitrate96Kbps;
+    }
+    break;
     case 160:
-      {
-        sessiontype.ePreferredBitRate = OMX_AUDIO_SpotifyBitrate160Kbps;
-      }
-      break;
+    {
+      sessiontype.ePreferredBitRate = OMX_AUDIO_SpotifyBitrate160Kbps;
+    }
+    break;
     case 320:
-      // NOTE: fall-through
+    // NOTE: fall-through
     default:
-      {
-        sessiontype.ePreferredBitRate = OMX_AUDIO_SpotifyBitrate320Kbps;
-      }
-      break;
-    };
+    {
+      sessiontype.ePreferredBitRate = OMX_AUDIO_SpotifyBitrate320Kbps;
+    }
+    break;
+  };
 
   return OMX_SetParameter (
       handle,
@@ -452,7 +452,7 @@ graph::spotifyops::set_spotify_playlist (
   TIZ_INIT_OMX_STRUCT (param_pltype);
   tiz_check_omx (OMX_GetParameter (
       handle,
-      static_cast< OMX_INDEXTYPE >(OMX_TizoniaIndexParamAudioSpotifyPlaylist),
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioSpotifyPlaylist),
       &param_pltype));
   tiz::graph::util::copy_omx_string (param_pltype.cPlaylistName, playlist);
   tiz::graph::util::copy_omx_string (param_pltype.cPlaylistOwner, owner);
@@ -461,36 +461,34 @@ graph::spotifyops::set_spotify_playlist (
   param_pltype.ePlaylistType = playlist_type;
   return OMX_SetParameter (
       handle,
-      static_cast< OMX_INDEXTYPE >(OMX_TizoniaIndexParamAudioSpotifyPlaylist),
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioSpotifyPlaylist),
       &param_pltype);
 }
 
-bool
-graph::spotifyops::is_fatal_error (const OMX_ERRORTYPE error) const
+bool graph::spotifyops::is_fatal_error (const OMX_ERRORTYPE error) const
 {
   bool rc = false;
   TIZ_LOG (TIZ_PRIORITY_ERROR, "[%s] ", tiz_err_to_str (error));
   if (error == error_code_)
-    {
-      // if this error is already being handled, then ignore it.
-      rc = false;
-    }
+  {
+    // if this error is already being handled, then ignore it.
+    rc = false;
+  }
   else
-    {
-      rc |= tiz::graph::ops::is_fatal_error (error);
-      rc |= (OMX_ErrorContentURIError == error);
-    }
+  {
+    rc |= tiz::graph::ops::is_fatal_error (error);
+    rc |= (OMX_ErrorContentURIError == error);
+  }
   return rc;
 }
 
-void graph::spotifyops::do_record_fatal_error (const OMX_HANDLETYPE handle,
-                                               const OMX_ERRORTYPE error,
-                                               const OMX_U32 port,
-                                               const OMX_PTR p_eventdata /* = NULL */)
+void graph::spotifyops::do_record_fatal_error (
+    const OMX_HANDLETYPE handle, const OMX_ERRORTYPE error, const OMX_U32 port,
+    const OMX_PTR p_eventdata /* = NULL */)
 {
   tiz::graph::ops::do_record_fatal_error (handle, error, port, p_eventdata);
   if (error == OMX_ErrorContentURIError)
-    {
-      error_msg_.append ("\n [Playlist not found]");
-    }
+  {
+    error_msg_.append ("\n [Playlist not found]");
+  }
 }

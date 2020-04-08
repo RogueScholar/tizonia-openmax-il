@@ -30,10 +30,10 @@
 #include <config.h>
 #endif
 
-#include <stdlib.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <stdlib.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #include "tizdaemon.hpp"
@@ -47,7 +47,7 @@ namespace
   /* Maximum file descriptors to close if sysconf(_SC_OPEN_MAX) is
      indeterminate */
   const int BD_MAX_CLOSE = 8192;
-}
+}  // namespace
 
 int tiz::daemon::daemonize ()
 {
@@ -99,7 +99,7 @@ int tiz::daemon::daemonize ()
 
   umask (027);
 
-  if (-1 == chdir("/"))
+  if (-1 == chdir ("/"))
   {
     return TIZ_DAEMON_FAILURE;
   }

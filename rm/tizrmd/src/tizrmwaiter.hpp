@@ -78,12 +78,12 @@ public:
     return pri_;
   }
 
-  bool operator==(const tizrmwaiter &rhs) const
+  bool operator== (const tizrmwaiter &rhs) const
   {
     return ((uuid_ == rhs.uuid_) && (rid_ == rhs.rid_));
   }
 
-  bool operator<(const tizrmwaiter &rhs) const
+  bool operator< (const tizrmwaiter &rhs) const
   {
     if (rid_ < rhs.rid_)
     {
@@ -120,7 +120,7 @@ public:
   {
   }
 
-  bool operator()(const tizrmwaiter &waiter)
+  bool operator() (const tizrmwaiter &waiter)
   {
     return (uuid_ == waiter.uuid ());
   }

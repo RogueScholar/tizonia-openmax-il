@@ -67,7 +67,7 @@ avcport_ctor (void * ap_obj, va_list * app)
   tiz_port_register_index (p_obj, OMX_IndexParamVideoQuantization);
 
   /* Register additional indexes used when the port is instantiated as an
-   * output port during encoding */
+     * output port during encoding */
   if (OMX_DirOutput == p_base->portdef_.eDir)
     {
       tiz_port_register_index (p_obj, OMX_IndexParamVideoBitrate);
@@ -76,7 +76,7 @@ avcport_ctor (void * ap_obj, va_list * app)
     }
 
   /* Initialize the OMX_VIDEO_PARAM_AVCTYPE structure */
-  TIZ_INIT_OMX_PORT_STRUCT(p_obj->avctype_, p_base->portdef_.nPortIndex);
+  TIZ_INIT_OMX_PORT_STRUCT (p_obj->avctype_, p_base->portdef_.nPortIndex);
   if ((p_avctype = va_arg (*app, OMX_VIDEO_PARAM_AVCTYPE *)))
     {
       p_obj->avctype_ = *p_avctype;
@@ -95,7 +95,7 @@ avcport_ctor (void * ap_obj, va_list * app)
     }
 
   /* This is based on the defaults defined in the standard for the AVC decoder
-   * component */
+     * component */
   p_obj->pltype_.nSize = sizeof (OMX_VIDEO_PARAM_PROFILELEVELTYPE);
   p_obj->pltype_.nVersion.nVersion = OMX_VERSION;
   p_obj->pltype_.nPortIndex = p_base->portdef_.nPortIndex;
@@ -105,14 +105,14 @@ avcport_ctor (void * ap_obj, va_list * app)
   p_obj->pltype_.eCodecType = 0; /* Not applicable */
 
   /* Init the OMX_VIDEO_PARAM_BITRATETYPE structure, if provided */
-  TIZ_INIT_OMX_PORT_STRUCT(p_obj->pbrtype_, p_base->portdef_.nPortIndex);
-  TIZ_INIT_OMX_PORT_STRUCT(p_obj->cbrtype_, p_base->portdef_.nPortIndex);
+  TIZ_INIT_OMX_PORT_STRUCT (p_obj->pbrtype_, p_base->portdef_.nPortIndex);
+  TIZ_INIT_OMX_PORT_STRUCT (p_obj->cbrtype_, p_base->portdef_.nPortIndex);
   if ((p_pbrtype = va_arg (*app, OMX_VIDEO_PARAM_BITRATETYPE *)))
     {
       p_obj->pbrtype_ = *p_pbrtype;
 
       /* Init OMX_VIDEO_CONFIG_BITRATETYPE with the same value
-       * provided in OMX_VIDEO_PARAM_BITRATETYPE */
+         * provided in OMX_VIDEO_PARAM_BITRATETYPE */
       p_obj->cbrtype_.nSize = p_pbrtype->nSize;
       p_obj->cbrtype_.nVersion.nVersion = p_pbrtype->nVersion.nVersion;
       p_obj->cbrtype_.nPortIndex = p_base->portdef_.nPortIndex;
@@ -120,7 +120,7 @@ avcport_ctor (void * ap_obj, va_list * app)
     }
 
   /* Init the OMX_VIDEO_PARAM_QUANTIZATIONTYPE structure, if provided */
-  TIZ_INIT_OMX_PORT_STRUCT(p_obj->pqtype_, p_base->portdef_.nPortIndex);
+  TIZ_INIT_OMX_PORT_STRUCT (p_obj->pqtype_, p_base->portdef_.nPortIndex);
   if ((p_pqtype = va_arg (*app, OMX_VIDEO_PARAM_QUANTIZATIONTYPE *)))
     {
       p_obj->pqtype_ = *p_pqtype;
@@ -128,7 +128,7 @@ avcport_ctor (void * ap_obj, va_list * app)
 
   /* Init the OMX_CONFIG_FRAMERATETYPE structure */
   /* This is also based on the defaults defined in the standard for the AVC
-   * decoder component */
+     * decoder component */
   p_obj->frtype_.nSize = sizeof (OMX_CONFIG_FRAMERATETYPE);
   p_obj->frtype_.nVersion.nVersion = OMX_VERSION;
   p_obj->frtype_.nPortIndex = p_base->portdef_.nPortIndex;
@@ -255,7 +255,7 @@ avcport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       case OMX_IndexParamVideoAvc:
         {
           /* This is a read-only index when used on an input port and read-write
-         * on an output port. Just ignore when read-only. */
+        * on an output port. Just ignore when read-only. */
           const tiz_port_t * p_base = ap_obj;
           if (OMX_DirOutput == p_base->portdef_.eDir)
             {
@@ -297,8 +297,8 @@ avcport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
                 }
 
               /* All standard-compliancy checks are done. Now simply copy the
-                 received struct (the decoder/encoder processor may want to do
-                 additional checks). */
+               received struct (the decoder/encoder processor may want to do
+               additional checks). */
               p_obj->avctype_ = *p_avctype;
             }
           else
@@ -337,7 +337,7 @@ avcport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
           if (OMX_DirOutput == p_base->portdef_.eDir)
             {
               /* TODO: What to do with the profile and level values in
-             * OMX_VIDEO_PARAM_AVCTYPE  */
+            * OMX_VIDEO_PARAM_AVCTYPE  */
               p_obj->pltype_ = *p_pltype;
             }
         }
@@ -346,7 +346,7 @@ avcport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       case OMX_IndexParamVideoProfileLevelQuerySupported:
         {
           /* This is a read-only index for both input and output ports. Simply
-         * ignore it here.  */
+        * ignore it here.  */
           TIZ_NOTICE (ap_hdl, "Ignoring read-only index [%s] ",
                       tiz_idx_to_str (a_index));
         }

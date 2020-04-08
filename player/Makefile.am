@@ -21,4 +21,3 @@ SUBDIRS = tools dbus man src
 ACLOCAL_AMFLAGS = -I m4
 
 EXTRA_DIST = debian
-

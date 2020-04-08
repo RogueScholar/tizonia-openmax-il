@@ -20,23 +20,24 @@
 /**
  * @file   opusdprc.h
  * @author Juan A. Rubio <juan.rubio@aratelia.com>
- * 
+ *
  * @brief  Tizonia - Opus decoder processor class
- * 
- * 
+ *
+ *
  */
 
 #ifndef OPUSDPRC_H
 #define OPUSDPRC_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-void *
-opusd_prc_class_init (void * ap_tos, void * ap_hdl);
-void *
-opusd_prc_init (void * ap_tos, void * ap_hdl);
+  void *
+  opusd_prc_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  opusd_prc_init (void * ap_tos, void * ap_hdl);
 
 #ifdef __cplusplus
 }

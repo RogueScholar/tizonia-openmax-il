@@ -40,9 +40,9 @@ namespace
   template < typename T >
   bool is_type (const boost::any& operand)
   {
-    return operand.type () == typeid(T);
+    return operand.type () == typeid (T);
   }
-}
+}  // namespace
 
 namespace graphmgr = tiz::graphmgr;
 
@@ -57,7 +57,7 @@ const boost::any graphmgr::cmd::evt () const
 
 /*@observer@*/ const char* graphmgr::cmd::c_str () const
 {
-  if (is_type< start_evt >(evt_))
+  if (is_type< start_evt > (evt_))
   {
     return "start_evt";
   }
@@ -66,41 +66,21 @@ const boost::any graphmgr::cmd::evt () const
 
 void graphmgr::cmd::inject (fsm& machine) const
 {
-#define INJECT_EVENT(the_evt)                                 \
-  if (is_type< the_evt >(evt_))                               \
-  {                                                           \
-    std::string arg (#the_evt);                               \
-    TIZ_LOG (TIZ_PRIORITY_NOTICE,                             \
-             "GRAPH MGR : Injecting "                         \
-             "CMD [%s] in STATE [%s]...",                     \
-             arg.c_str (), tiz::graphmgr::pstate (machine));  \
-    machine.process_event (boost::any_cast< the_evt >(evt_)); \
+#define INJECT_EVENT(the_evt)                                  \
+  if (is_type< the_evt > (evt_))                               \
+  {                                                            \
+    std::string arg (#the_evt);                                \
+    TIZ_LOG (TIZ_PRIORITY_NOTICE,                              \
+             "GRAPH MGR : Injecting "                          \
+             "CMD [%s] in STATE [%s]...",                      \
+             arg.c_str (), tiz::graphmgr::pstate (machine));   \
+    machine.process_event (boost::any_cast< the_evt > (evt_)); \
   }
 
   INJECT_EVENT (start_evt)
-  else INJECT_EVENT (next_evt)
-    else INJECT_EVENT (prev_evt)
-      else INJECT_EVENT (fwd_evt)
-        else INJECT_EVENT (rwd_evt)
-          else INJECT_EVENT (vol_up_evt)
-            else INJECT_EVENT (vol_down_evt)
-              else INJECT_EVENT (vol_evt)
-                else INJECT_EVENT (mute_evt)
-                  else INJECT_EVENT (pause_evt)
-                    else INJECT_EVENT (stop_evt)
-                      else INJECT_EVENT (quit_evt)
-                        else INJECT_EVENT (graph_eop_evt)
-                          else INJECT_EVENT (err_evt)
-                            else INJECT_EVENT (graph_loaded_evt)
-                              else INJECT_EVENT (graph_execd_evt)
-                                else INJECT_EVENT (graph_stopped_evt)
-                                  else INJECT_EVENT (graph_paused_evt)
-                                    else INJECT_EVENT (graph_resumed_evt)
-                                      else INJECT_EVENT (graph_metadata_evt)
-                                        else INJECT_EVENT (graph_volume_evt)
-                                          else INJECT_EVENT (graph_unlded_evt)
-                                            else
-                                              {
-                                                assert (0);
-                                              }
+  else INJECT_EVENT (next_evt) else INJECT_EVENT (prev_evt) else INJECT_EVENT (fwd_evt) else INJECT_EVENT (rwd_evt) else INJECT_EVENT (vol_up_evt) else INJECT_EVENT (vol_down_evt) else INJECT_EVENT (vol_evt) else INJECT_EVENT (mute_evt) else INJECT_EVENT (pause_evt) else INJECT_EVENT (stop_evt) else INJECT_EVENT (
+      quit_evt) else INJECT_EVENT (graph_eop_evt) else INJECT_EVENT (err_evt) else INJECT_EVENT (graph_loaded_evt) else INJECT_EVENT (graph_execd_evt) else INJECT_EVENT (graph_stopped_evt) else INJECT_EVENT (graph_paused_evt) else INJECT_EVENT (graph_resumed_evt) else INJECT_EVENT (graph_metadata_evt) else INJECT_EVENT (graph_volume_evt) else INJECT_EVENT (graph_unlded_evt) else
+  {
+    assert (0);
+  }
 }

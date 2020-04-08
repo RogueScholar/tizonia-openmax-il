@@ -32,14 +32,14 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <OMX_TizoniaExt.h>
 
 #include <tizplatform.h>
 
-#include "tizgmusicgraphops.hpp"
 #include "tizgmusicgraph.hpp"
+#include "tizgmusicgraphops.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME

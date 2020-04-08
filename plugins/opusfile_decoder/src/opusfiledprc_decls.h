@@ -29,7 +29,8 @@
 #define OPUSDV2PRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -42,25 +43,25 @@ extern "C" {
 #include <tizfilterprc.h>
 #include <tizfilterprc_decls.h>
 
-typedef struct opusfiled_prc opusfiled_prc_t;
-struct opusfiled_prc
-{
-  /* Object */
-  const tiz_filter_prc_t _;
-  OggOpusFile * p_opus_dec_;
-  bool decoder_inited_;
-  tiz_buffer_t * p_store_;
-  OMX_U32 store_offset_;
-  OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
-};
+  typedef struct opusfiled_prc opusfiled_prc_t;
+  struct opusfiled_prc
+  {
+    /* Object */
+    const tiz_filter_prc_t _;
+    OggOpusFile * p_opus_dec_;
+    bool decoder_inited_;
+    tiz_buffer_t * p_store_;
+    OMX_U32 store_offset_;
+    OMX_AUDIO_PARAM_PCMMODETYPE pcmmode_;
+  };
 
-typedef struct opusfiled_prc_class opusfiled_prc_class_t;
-struct opusfiled_prc_class
-{
-  /* Class */
-  const tiz_filter_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct opusfiled_prc_class opusfiled_prc_class_t;
+  struct opusfiled_prc_class
+  {
+    /* Class */
+    const tiz_filter_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

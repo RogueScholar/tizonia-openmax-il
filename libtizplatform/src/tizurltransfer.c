@@ -276,8 +276,7 @@ httpsrc_curl_state_to_str (const httpsrc_curl_state_id_t a_state)
 
 #define URLTRANS_LOG_API_START(ap_trans) \
   TRANS_LOG (ap_trans, TRANS_MSG_API_START)
-#define URLTRANS_LOG_API_END(ap_trans) \
-  TRANS_LOG (ap_trans, TRANS_MSG_API_END)
+#define URLTRANS_LOG_API_END(ap_trans) TRANS_LOG (ap_trans, TRANS_MSG_API_END)
 #define URLTRANS_LOG_CBACK_START(ap_trans) \
   TRANS_LOG (ap_trans, TRANS_MSG_CBACK_START)
 #define URLTRANS_LOG_CBACK_END(ap_trans) \
@@ -381,7 +380,7 @@ start_curl (tiz_urltrans_t * ap_trans)
   bail_on_curl_multi_error (
     curl_multi_setopt (ap_trans->p_curl_multi_, CURLMOPT_SOCKETDATA, ap_trans));
   /* Set the timeout callback with CURLMOPT_TIMERFUNCTION, to get to know what
-     timeout value to use when waiting for socket activities. */
+       timeout value to use when waiting for socket activities. */
   bail_on_curl_multi_error (curl_multi_setopt (
     ap_trans->p_curl_multi_, CURLMOPT_TIMERFUNCTION, curl_timer_cback));
   bail_on_curl_multi_error (
@@ -583,17 +582,17 @@ resume_curl (tiz_urltrans_t * ap_trans)
         {
           /* USAGE WITH THE MULTI-SOCKET INTERFACE */
           /* Before libcurl 7.32.0, when a specific handle was unpaused with
-             this function, there was no particular forced rechecking or
-             similar of the socket's state, which made the continuation of the
-             transfer get delayed until next multi-socket call invoke or even
-             longer. Alternatively, the user could forcibly call for example
-             curl_multi_socket_all(3) - with a rather hefty performance
-             penalty. */
+               this function, there was no particular forced rechecking or
+               similar of the socket's state, which made the continuation of the
+               transfer get delayed until next multi-socket call invoke or even
+               longer. Alternatively, the user could forcibly call for example
+               curl_multi_socket_all(3) - with a rather hefty performance
+               penalty. */
           /* Starting in libcurl 7.32.0, unpausing a transfer will schedule a
-             timeout trigger for that handle 1 millisecond into the future, so
-             that a curl_multi_socket_action( ... CURL_SOCKET_TIMEOUT) can be
-             used immediately afterwards to get the transfer going again as
-             desired.  */
+               timeout trigger for that handle 1 millisecond into the future, so
+               that a curl_multi_socket_action( ... CURL_SOCKET_TIMEOUT) can be
+               used immediately afterwards to get the transfer going again as
+               desired.  */
           on_curl_multi_error_ret_omx_oom (
             curl_multi_socket_all (ap_trans->p_curl_multi_, &running_handles));
         }
@@ -1285,7 +1284,7 @@ tiz_urltrans_on_buffers_ready (tiz_urltrans_t * ap_trans)
     }
   URLTRANS_LOG_API_END (ap_trans);
   /* This assertion is apparently not needed. See
-     https://github.com/tizonia/tizonia-openmax-il/issues/472 */
+       https://github.com/tizonia/tizonia-openmax-il/issues/472 */
   /* ASSERT_ASYNC_EVENTS (ap_trans); */
   return rc;
 }

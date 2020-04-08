@@ -29,8 +29,8 @@
 #ifndef TIZPLEXGRAPH_HPP
 #define TIZPLEXGRAPH_HPP
 
-#include "tizservicegraph.hpp"
 #include "tizgraphops.hpp"
+#include "tizservicegraph.hpp"
 
 namespace tiz
 {

@@ -100,7 +100,7 @@ executingtoidle_trans_complete (const void * ap_obj, OMX_PTR ap_servant,
   if (2 == p_base->servants_count_ + 1)
     {
       /* Reset the OMX_TIZONIA_PORTSTATUS_AWAITBUFFERSRETURN flag in all ports
-         where this has been set */
+           where this has been set */
       tiz_krn_reset_tunneled_ports_status (
         tiz_get_krn (handleOf (ap_servant)),
         OMX_TIZONIA_PORTSTATUS_AWAITBUFFERSRETURN);
@@ -124,9 +124,9 @@ executingtoidle_tunneled_ports_status_update (void * ap_obj)
     if (TIZ_KRN_MAY_INIT_EXE_TO_IDLE (p_krn))
       {
         /* OK, at this point all the tunneled non-supplier neighboring ports
-           are ready to receive ETB/FTB calls.  NOTE: This will call the
-         * 'tiz_state_state_set' function of the tiz_state_t base class (note
-         * we are passing 'tizidle' as 1st parameter */
+               are ready to receive ETB/FTB calls.  NOTE: This will call the
+             * 'tiz_state_state_set' function of the tiz_state_t base class (note
+             * we are passing 'tizidle' as 1st parameter */
         TIZ_TRACE (p_hdl, "kernel may initiate exe to idle");
         return tiz_state_super_state_set (typeOf (ap_obj, "tizidle"), ap_obj,
                                           p_hdl, OMX_CommandStateSet,

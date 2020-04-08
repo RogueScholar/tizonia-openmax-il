@@ -22,14 +22,14 @@
 #############
 # Constants #
 #############
-readonly tizbusname=$(dbus-send --session           \
-                                --dest=org.freedesktop.DBus \
-                                --type=method_call          \
-                                --print-reply               \
-                                /org/freedesktop/DBus       \
-                                org.freedesktop.DBus.ListNames \
-                          | grep tizonia \
-                          | awk -F'"' '{ print $2 }')
+readonly tizbusname="$(dbus-send --session \
+  --dest=org.freedesktop.DBus \
+  --type=method_call \
+  --print-reply \
+  /org/freedesktop/DBus \
+  org.freedesktop.DBus.ListNames |
+  grep tizonia |
+  awk -F'"' '{ print $2 }')"
 readonly dbuscmd="dbus-send --print-reply --dest=$tizbusname /com/aratelia/tiz/tizonia"
 readonly mediaifc='org.mpris.MediaPlayer2'
 readonly playerifc='org.mpris.MediaPlayer2.Player'
@@ -66,23 +66,23 @@ readonly magenta=5
 readonly cyan=6
 readonly white=7
 
-function pretty_print {
-    echo "$(tput setaf $1)$2$(tput sgr 0)" 1>&2
+function pretty_print() {
+  echo "$(tput setaf "$1")$2$(tput sgr 0)" 1>&2
 }
 
-function usage {
-    pretty_print "$blue" "tizonia-remote @PACKAGE_VERSION@. Copyright (C) 2020 Juan A. Rubio"
-    pretty_print "$blue" "This software is part of the Tizonia project <https://tizonia.org>"
+function usage() {
+  pretty_print "$blue" "tizonia-remote @PACKAGE_VERSION@. Copyright (C) 2020 Juan A. Rubio"
+  pretty_print "$blue" "This software is part of the Tizonia project <https://tizonia.org>"
 
-    echo
-    pretty_print "$green" "GNU Lesser GPL version 3 <http://gnu.org/licenses/lgpl.html>"
-    pretty_print "$green" "This is free software: you are free to change and redistribute it."
-    pretty_print "$green" "There is NO WARRANTY, to the extent permitted by law."
+  echo
+  pretty_print "$green" "GNU Lesser GPL version 3 <http://gnu.org/licenses/lgpl.html>"
+  pretty_print "$green" "This is free software: you are free to change and redistribute it."
+  pretty_print "$green" "There is NO WARRANTY, to the extent permitted by law."
 
-    echo
+  echo
 
-tput setaf "$yellow"
-cat <<EOF
+  tput setaf "$yellow"
+  cat <<EOF
 MPRIS2 remote control for tizonia.
 http://specifications.freedesktop.org/mpris-spec/latest/
 
@@ -141,103 +141,104 @@ Usage: $0 [command]
     NOT IMPLEMENTED
 
 EOF
-tput sgr 0
+  tput sgr 0
 }
 
-function start_dbus {
-    ## test for an existing bus daemon, just to be safe
-    if test -z "$DBUS_SESSION_BUS_ADDRESS" ; then
-        ## if not found, launch a new one
-        export `dbus-launch --exit-with-session`
-        echo "D-Bus per-session daemon address is: $DBUS_SESSION_BUS_ADDRESS"
-        echo "D-Bus per-session daemon PID is    : $DBUS_SESSION_BUS_PID"
-    fi
+function start_dbus() {
+  ## test for an existing bus daemon, just to be safe
+  if test -z "$DBUS_SESSION_BUS_ADDRESS"; then
+    ## if not found, launch a new one
+    export "$(dbus-launch --exit-with-session)"
+    echo "D-Bus per-session daemon address is: $DBUS_SESSION_BUS_ADDRESS"
+    echo "D-Bus per-session daemon PID is    : $DBUS_SESSION_BUS_PID"
+  fi
 }
 
-function main {
+function main() {
 
-    if [[ ($# -gt 2) || ($# -eq 0) ]]
-    then
-        usage
-        exit 1
-    fi
+  if [[ ($# -gt 2) || ($# -eq 0) ]]; then
+    usage
+    exit 1
+  fi
 
-    start_dbus
+  start_dbus
 
-    case "$1" in
-        canquit)
-            eval "$canquitcmd"  | sed 1d | cut -c26-
-            ;;
-        canraise)
-            eval "$canraisecmd"  | sed 1d | cut -c26-
-            ;;
-        hastracklist)
-            eval "$hastracklistcmd" | sed 1d | cut -c26-
-            ;;
-        identity)
-            eval "$identitycmd" | sed 1d | cut -c25-
-            ;;
-        urischemes)
-            eval "$urischemescmd" | sed 1,2d | sed '$ d' | cut -c17-
-            ;;
-        mimetypes)
-            eval "$mimetypescmd" | sed 1,2d | sed '$ d' | cut -c17-
-            ;;
-        playstatus)
-            eval "$playstatuscmd" | sed 1d | cut -c25-
-            ;;
-        loopstatus)
-            eval "$loopstatusgetcmd" | sed 1d | cut -c25-
-            ;;
-        rate)
-            eval "$ratecmd" | sed 1d | cut -c25-
-            ;;
-        shuffle)
-            eval "$shufflecmd" | sed 1d | cut -c26-
-            ;;
-        metadata)
-            eval "$metadatacmd" #| sed 1d | cut -c26-
-            ;;
-        volume)
-            if [[ $# -eq 2 ]]
-            then
-                eval "$volumesetcmd"
-            else
-                eval "$volumegetcmd" | sed 1d | cut -c25-
-            fi
-            ;;
-        play)
-            eval "$playcmd"
-            ;;
-        pause)
-            eval "$pausecmd"
-            ;;
-        stop)
-            eval "$stopcmd"
-            ;;
-        prev)
-            eval "$prevcmd"
-            ;;
-        next)
-            eval "$nextcmd"
-            ;;
-        quit)
-            eval "$quitcmd"
-            ;;
-        kill) echo  "Sending SIGTERM signal"
-            killall -TERM tizonia
-            ;;
-        help)
-            usage
-            exit 1
-            ;;
-        *) echo; pretty_print "$red" "Unknown command"
-            usage
-            exit 1
-            ;;
-    esac
+  case "$1" in
+    canquit)
+      eval "$canquitcmd" | sed 1d | cut -c26-
+      ;;
+    canraise)
+      eval "$canraisecmd" | sed 1d | cut -c26-
+      ;;
+    hastracklist)
+      eval "$hastracklistcmd" | sed 1d | cut -c26-
+      ;;
+    identity)
+      eval "$identitycmd" | sed 1d | cut -c25-
+      ;;
+    urischemes)
+      eval "$urischemescmd" | sed 1,2d | sed '$ d' | cut -c17-
+      ;;
+    mimetypes)
+      eval "$mimetypescmd" | sed 1,2d | sed '$ d' | cut -c17-
+      ;;
+    playstatus)
+      eval "$playstatuscmd" | sed 1d | cut -c25-
+      ;;
+    loopstatus)
+      eval "$loopstatusgetcmd" | sed 1d | cut -c25-
+      ;;
+    rate)
+      eval "$ratecmd" | sed 1d | cut -c25-
+      ;;
+    shuffle)
+      eval "$shufflecmd" | sed 1d | cut -c26-
+      ;;
+    metadata)
+      eval "$metadatacmd" #| sed 1d | cut -c26-
+      ;;
+    volume)
+      if [[ $# -eq 2 ]]; then
+        eval "$volumesetcmd"
+      else
+        eval "$volumegetcmd" | sed 1d | cut -c25-
+      fi
+      ;;
+    play)
+      eval "$playcmd"
+      ;;
+    pause)
+      eval "$pausecmd"
+      ;;
+    stop)
+      eval "$stopcmd"
+      ;;
+    prev)
+      eval "$prevcmd"
+      ;;
+    next)
+      eval "$nextcmd"
+      ;;
+    quit)
+      eval "$quitcmd"
+      ;;
+    kill)
+      echo "Sending SIGTERM signal"
+      killall -TERM tizonia
+      ;;
+    help)
+      usage
+      exit 1
+      ;;
+    *)
+      echo
+      pretty_print "$red" "Unknown command"
+      usage
+      exit 1
+      ;;
+  esac
 
-    exit $$
+  exit $$
 }
 
 main "$@"

@@ -154,15 +154,17 @@ waitforresources_state_set (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
     void * p_krn = tiz_get_krn (ap_hdl);
 
     /* First notify the kernel servant */
-    if (OMX_ErrorNone != (omx_error = tiz_api_SendCommand (
-                            p_krn, ap_hdl, a_cmd, a_param1, ap_cmd_data)))
+    if (OMX_ErrorNone
+        != (omx_error = tiz_api_SendCommand (p_krn, ap_hdl, a_cmd, a_param1,
+                                             ap_cmd_data)))
       {
         return omx_error;
       }
 
     /* Now notify the processor servant */
-    if (OMX_ErrorNone != (omx_error = tiz_api_SendCommand (
-                            p_prc, ap_hdl, a_cmd, a_param1, ap_cmd_data)))
+    if (OMX_ErrorNone
+        != (omx_error = tiz_api_SendCommand (p_prc, ap_hdl, a_cmd, a_param1,
+                                             ap_cmd_data)))
       {
         return omx_error;
       }

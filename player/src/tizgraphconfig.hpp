@@ -44,7 +44,8 @@ namespace tiz
     {
 
     public:
-      explicit config (const tizplaylist_ptr_t &playlist, const uint32_t buffer_seconds)
+      explicit config (const tizplaylist_ptr_t &playlist,
+                       const uint32_t buffer_seconds)
         : playlist_ (playlist), buffer_seconds_ (buffer_seconds)
       {
       }

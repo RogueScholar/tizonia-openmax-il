@@ -30,7 +30,8 @@
 #define HTTPRMP3PORT_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_Types.h>
@@ -38,22 +39,22 @@ extern "C" {
 
 #include <tizmp3port_decls.h>
 
-typedef struct httpr_mp3port httpr_mp3port_t;
-struct httpr_mp3port
-{
-  /* Object */
-  const tiz_mp3port_t _;
-  OMX_TIZONIA_ICECASTMOUNTPOINTTYPE mountpoint_;
-  OMX_STRING p_stream_title_;
-};
+  typedef struct httpr_mp3port httpr_mp3port_t;
+  struct httpr_mp3port
+  {
+    /* Object */
+    const tiz_mp3port_t _;
+    OMX_TIZONIA_ICECASTMOUNTPOINTTYPE mountpoint_;
+    OMX_STRING p_stream_title_;
+  };
 
-typedef struct httpr_mp3port_class httpr_mp3port_class_t;
-struct httpr_mp3port_class
-{
-  /* Class */
-  const tiz_mp3port_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct httpr_mp3port_class httpr_mp3port_class_t;
+  struct httpr_mp3port_class
+  {
+    /* Class */
+    const tiz_mp3port_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

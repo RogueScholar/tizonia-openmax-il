@@ -31,8 +31,7 @@
 
 #include "tizhttpclntgraphfsm.hpp"
 
-char const* const tiz::graph::hcfsm::pstate(tiz::graph::hcfsm::fsm const& p)
+char const* const tiz::graph::hcfsm::pstate (tiz::graph::hcfsm::fsm const& p)
 {
-  return tiz::graph::hcfsm::state_names[p.current_state()[0]];
+  return tiz::graph::hcfsm::state_names[p.current_state ()[0]];
 }
-

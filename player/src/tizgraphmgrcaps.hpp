@@ -58,7 +58,8 @@ namespace tiz
     };
 
     typedef class graphmgr_capabilities graphmgr_capabilities_t;
-    typedef boost::shared_ptr< graphmgr_capabilities > graphmgr_capabilities_ptr_t;
+    typedef boost::shared_ptr< graphmgr_capabilities >
+        graphmgr_capabilities_ptr_t;
 
   }  // namespace graphmgr
 }  // namespace tiz

@@ -194,8 +194,9 @@ peek_raw_stream (vp8d_prc_t * ap_prc, const OMX_U8 * ap_buf,
 
   for (i = 0; i < sizeof (ifaces) / sizeof (ifaces[0]); i++)
     {
-      if (VPX_CODEC_OK == vpx_codec_peek_stream_info (ifaces[i].iface, ap_buf,
-                                                      a_size_bytes, &si))
+      if (VPX_CODEC_OK
+          == vpx_codec_peek_stream_info (ifaces[i].iface, ap_buf, a_size_bytes,
+                                         &si))
         {
           is_raw = 1;
           ap_prc->info_.fourcc = ifaces[i].fourcc;
@@ -301,7 +302,7 @@ update_output_port_params (vp8d_prc_t * ap_prc)
                  p_def->nFrameHeight, p_inf->height);
 
       /* Effectively disable the output port, until the stream has been
-         identified and IL client is ready to re-enable */
+           identified and IL client is ready to re-enable */
       ap_prc->out_port_disabled_ = true;
 
       p_def->nFrameHeight = p_inf->height;
@@ -414,10 +415,11 @@ get_output_buffer (vp8d_prc_t * ap_prc)
 #endif
               /* Check pBuffer nullity to know if an eglimage have been registered. */
               if (!ap_prc->p_outhdr_->pBuffer
-                  && OMX_ErrorNone == tiz_krn_claim_eglimage (
-                                        tiz_get_krn (handleOf (ap_prc)),
-                                        ARATELIA_VP8_DECODER_OUTPUT_PORT_INDEX,
-                                        ap_prc->p_outhdr_, &p_eglimage))
+                  && OMX_ErrorNone
+                       == tiz_krn_claim_eglimage (
+                         tiz_get_krn (handleOf (ap_prc)),
+                         ARATELIA_VP8_DECODER_OUTPUT_PORT_INDEX,
+                         ap_prc->p_outhdr_, &p_eglimage))
                 {
                   (void) tiz_krn_release_buffer (
                     tiz_get_krn (handleOf (ap_prc)),
@@ -466,7 +468,7 @@ buffer_filled (vp8d_prc_t * ap_prc, OMX_BUFFERHEADERTYPE * ap_hdr)
       if (ap_prc->eos_)
         {
           /* EOS has been received and all the input data has been consumed
-       * already, so its time to propagate the EOS flag */
+            * already, so its time to propagate the EOS flag */
           ap_prc->p_outhdr_->nFlags |= OMX_BUFFERFLAG_EOS;
           /* Reset the flag so we are ready to receive a new stream */
           ap_prc->eos_ = false;
@@ -494,7 +496,7 @@ obtain_stream_info (vp8d_prc_t * ap_prc, OMX_BUFFERHEADERTYPE * p_inhdr)
       if (STREAM_IVF == ap_prc->info_.type)
         {
           /* Make sure we skip the IVF header the next time we read from the
-           * buffer */
+             * buffer */
           p_inhdr->nOffset += 32;
           p_inhdr->nFilledLen -= 32;
         }
@@ -525,7 +527,8 @@ read_frame_size (vp8d_prc_t * ap_prc, const size_t a_hdr_size,
   assert (ap_inhdr->nFilledLen > 0);
   assert (ap_frame_size);
 
-  tiz_check_true_ret_val (0 != (bytes_read = read_from_omx_buffer (
+  tiz_check_true_ret_val (0
+                            != (bytes_read = read_from_omx_buffer (
                                   ap_prc, hdr, a_hdr_size, ap_inhdr)),
                           OMX_ErrorInsufficientResources);
 
@@ -730,19 +733,19 @@ decode_frame (vp8d_prc_t * ap_prc)
       uint8_t * buf = img->planes[VPX_PLANE_Y];
 
 #if 0
-      {
-        TIZ_DEBUG (handleOf (ap_prc),
-                   "d_w = %u "
-                   "d_h = %u "
-                   "stride[VPX_PLANE_Y] = %d "
-                   "stride[VPX_PLANE_U] = %d "
-                   "stride[VPX_PLANE_V] = %d "
-                   "img fmt = %0x "
-                   "color = %0x "
-                   "range = %0x",
-                   img->d_w, img->d_h, img->stride[VPX_PLANE_Y],
-                   img->stride[VPX_PLANE_U], img->stride[VPX_PLANE_V],
-                   img->fmt, img->cs, img->range);
+        {
+            TIZ_DEBUG (handleOf (ap_prc),
+                       "d_w = %u "
+                       "d_h = %u "
+                       "stride[VPX_PLANE_Y] = %d "
+                       "stride[VPX_PLANE_U] = %d "
+                       "stride[VPX_PLANE_V] = %d "
+                       "img fmt = %0x "
+                       "color = %0x "
+                       "range = %0x",
+                       img->d_w, img->d_h, img->stride[VPX_PLANE_Y],
+                       img->stride[VPX_PLANE_U], img->stride[VPX_PLANE_V],
+                       img->fmt, img->cs, img->range);
         }
 #endif
 

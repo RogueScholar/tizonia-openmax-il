@@ -29,8 +29,8 @@
 #ifndef TIZSPOTIFYGRAPH_HPP
 #define TIZSPOTIFYGRAPH_HPP
 
-#include <tizgraph.hpp>
 #include "tizspotifygraphfsm.hpp"
+#include <tizgraph.hpp>
 
 namespace tiz
 {

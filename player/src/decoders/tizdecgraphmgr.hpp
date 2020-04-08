@@ -29,8 +29,8 @@
 #ifndef TIZDECGRAPHMGR_HPP
 #define TIZDECGRAPHMGR_HPP
 
-#include "tizgraphtypes.hpp"
 #include "tizgraphmgr.hpp"
+#include "tizgraphtypes.hpp"
 
 namespace tiz
 {

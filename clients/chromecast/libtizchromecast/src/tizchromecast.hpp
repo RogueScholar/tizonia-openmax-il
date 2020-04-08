@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -57,10 +58,10 @@ namespace boost
         return typename boost::function_types::components< Signature >::type ();
       }
       // ----------------------------------------------------------------------------
-    }
-  }
-}  // namespace boost::python::detail
-   // ============================================================================
+    }  // namespace detail
+  }    // namespace python
+}  // namespace boost
+// ============================================================================
 
 #include <boost/python.hpp>
 

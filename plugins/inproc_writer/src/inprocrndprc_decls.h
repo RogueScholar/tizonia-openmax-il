@@ -47,7 +47,7 @@ extern "C"
   {
     /* Object */
     const tiz_prc_t _;
-    OMX_BUFFERHEADERTYPE *p_inhdr_;
+    OMX_BUFFERHEADERTYPE * p_inhdr_;
     bool port_disabled_;
     bool paused_;
     bool stopped_;
@@ -69,4 +69,4 @@ extern "C"
 }
 #endif
 
-#endif                          /* INPROCRNDPRC_DECLS_H */
+#endif /* INPROCRNDPRC_DECLS_H */

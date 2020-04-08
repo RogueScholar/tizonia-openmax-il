@@ -38,8 +38,7 @@
 
 namespace hsfsm = tiz::graph::hsfsm;
 
-char const* const hsfsm::pstate(hsfsm::fsm const& p)
+char const* const hsfsm::pstate (hsfsm::fsm const& p)
 {
-  return hsfsm::state_names[p.current_state()[0]];
+  return hsfsm::state_names[p.current_state ()[0]];
 }
-

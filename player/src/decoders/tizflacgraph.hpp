@@ -44,7 +44,6 @@ namespace tiz
 
     protected:
       ops *do_init ();
-
     };
 
     class flacdecops : public decops

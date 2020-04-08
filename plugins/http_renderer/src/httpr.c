@@ -142,8 +142,7 @@ OMX_ComponentInit (OMX_HANDLETYPE ap_hdl)
   httprcfgport_type.pf_object_init = httpr_cfgport_init;
 
   /* Initialize the component infrastructure */
-  tiz_check_omx (
-    tiz_comp_init (ap_hdl, ARATELIA_HTTP_RENDERER_COMPONENT_NAME));
+  tiz_check_omx (tiz_comp_init (ap_hdl, ARATELIA_HTTP_RENDERER_COMPONENT_NAME));
 
   /* Register the "httprprc", "httprmp3port" and "httprcfgport" classes */
   tiz_check_omx (tiz_comp_register_types (ap_hdl, tf_list, 3));

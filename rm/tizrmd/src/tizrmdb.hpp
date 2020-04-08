@@ -47,24 +47,24 @@ public:
   tiz_rm_error_t disconnect ();
 
   tiz_rm_error_t acquire_resource (const unsigned int &rid,
-                                  const unsigned int &quantity,
-                                  const std::string &cname,
-                                  const std::vector< unsigned char > &uuid,
-                                  const unsigned int &grpid,
-                                  const unsigned int &pri);
+                                   const unsigned int &quantity,
+                                   const std::string &cname,
+                                   const std::vector< unsigned char > &uuid,
+                                   const unsigned int &grpid,
+                                   const unsigned int &pri);
 
   tiz_rm_error_t release_resource (const unsigned int &rid,
-                                  const unsigned int &quantity,
-                                  const std::string &cname,
-                                  const std::vector< unsigned char > &uuid,
-                                  const unsigned int &grpid,
-                                  const unsigned int &pri);
+                                   const unsigned int &quantity,
+                                   const std::string &cname,
+                                   const std::vector< unsigned char > &uuid,
+                                   const unsigned int &grpid,
+                                   const unsigned int &pri);
 
   tiz_rm_error_t release_all (const std::string &cname,
-                             const std::vector< unsigned char > &uuid);
+                              const std::vector< unsigned char > &uuid);
 
   tiz_rm_error_t find_owners (const unsigned int &rid, const unsigned int &pri,
-                             tiz_rm_owners_list_t &owners) const;
+                              tiz_rm_owners_list_t &owners) const;
 
   bool resource_available (const unsigned int &rid,
                            const unsigned int &quantity) const;
@@ -82,9 +82,9 @@ public:
 
 private:
   // Disallow copy constructor
-  tizrmdb(const tizrmdb&);
+  tizrmdb (const tizrmdb &);
   // Disallow assignment operator
-  tizrmdb& operator=(tizrmdb const&);
+  tizrmdb &operator= (tizrmdb const &);
   int open (char const *ap_dbname);
   int close ();
   int reset_alloc_table ();

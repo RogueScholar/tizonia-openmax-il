@@ -30,7 +30,8 @@
 #define CC_TUNEINCFGPORT_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_TizoniaExt.h>
@@ -38,22 +39,22 @@ extern "C" {
 
 #include "cc_cfgport_decls.h"
 
-typedef struct cc_tunein_cfgport cc_tunein_cfgport_t;
-struct cc_tunein_cfgport
-{
-  /* Object */
-  const cc_cfgport_t _;
-  OMX_TIZONIA_AUDIO_PARAM_TUNEINSESSIONTYPE session_;
-  OMX_TIZONIA_AUDIO_PARAM_TUNEINPLAYLISTTYPE playlist_;
-};
+  typedef struct cc_tunein_cfgport cc_tunein_cfgport_t;
+  struct cc_tunein_cfgport
+  {
+    /* Object */
+    const cc_cfgport_t _;
+    OMX_TIZONIA_AUDIO_PARAM_TUNEINSESSIONTYPE session_;
+    OMX_TIZONIA_AUDIO_PARAM_TUNEINPLAYLISTTYPE playlist_;
+  };
 
-typedef struct cc_tunein_cfgport_class cc_tunein_cfgport_class_t;
-struct cc_tunein_cfgport_class
-{
-  /* Class */
-  const cc_cfgport_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct cc_tunein_cfgport_class cc_tunein_cfgport_class_t;
+  struct cc_tunein_cfgport_class
+  {
+    /* Class */
+    const cc_cfgport_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

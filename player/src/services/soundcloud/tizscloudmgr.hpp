@@ -29,9 +29,9 @@
 #ifndef TIZSCLOUDMGR_HPP
 #define TIZSCLOUDMGR_HPP
 
-#include "tizgraphtypes.hpp"
-#include "tizgraphmgrcaps.hpp"
 #include "tizgraphmgr.hpp"
+#include "tizgraphmgrcaps.hpp"
+#include "tizgraphtypes.hpp"
 
 namespace tiz
 {
@@ -68,14 +68,13 @@ namespace tiz
     {
     public:
       scloudmgrops (mgr *p_mgr, const tizplaylist_ptr_t &playlist,
-                      const termination_callback_t &termination_cback);
+                    const termination_callback_t &termination_cback);
 
       void do_load ();
       void do_execute ();
 
     private:
-      bool is_fatal_error (const OMX_ERRORTYPE error,
-                           const std::string &msg);
+      bool is_fatal_error (const OMX_ERRORTYPE error, const std::string &msg);
       tizgraph_ptr_t get_graph (const std::string &uri);
     };
   }  // namespace graphmgr

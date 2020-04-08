@@ -226,8 +226,9 @@ prc_DeferredResume (const void * ap_obj)
 
   TIZ_TRACE (handleOf (p_obj), "DeferredResume");
 
-  if (NULL == (p_msg = init_prc_message (p_obj, handleOf (p_obj),
-                                         ETIZPrcMsgDeferredResume)))
+  if (NULL
+      == (p_msg = init_prc_message (p_obj, handleOf (p_obj),
+                                    ETIZPrcMsgDeferredResume)))
     {
       return OMX_ErrorInsufficientResources;
     }
@@ -287,14 +288,14 @@ dispatch_br (void * ap_obj, OMX_PTR ap_msg)
   assert (p_port);
 
   /* Do not notify this buffer in the following situations:
-   *
-   * - Component in OMX_StatePause or
-   *
-   * - Component in ExeToIdle or PauseToIdle
-   *
-   * - the port is disabled or being disabled
-   *
-   * */
+     *
+     * - Component in OMX_StatePause or
+     *
+     * - Component in ExeToIdle or PauseToIdle
+     *
+     * - the port is disabled or being disabled
+     *
+     * */
   if (EStatePause != now && ESubStateExecutingToIdle != now
       && ESubStatePauseToIdle != now && !TIZ_PORT_IS_DISABLED (p_port)
       && !TIZ_PORT_IS_BEING_DISABLED (p_port))
@@ -333,14 +334,14 @@ dispatch_config (void * ap_obj, OMX_PTR ap_msg)
   /*   assert (p_port); */
 
   /* Do not notify this config change in the following situations:
-   *
-   * - Component in OMX_StatePause or
-   *
-   * - Component in ExeToIdle or PauseToIdle
-   *
-   * - the port is disabled or being disabled
-   *
-   * */
+     *
+     * - Component in OMX_StatePause or
+     *
+     * - Component in ExeToIdle or PauseToIdle
+     *
+     * - the port is disabled or being disabled
+     *
+     * */
   if (EStatePause != now && ESubStateExecutingToIdle != now
       && ESubStatePauseToIdle != now)
     /*       && !TIZ_PORT_IS_DISABLED (p_port) */
@@ -374,10 +375,10 @@ dispatch_dr (void * ap_obj, OMX_PTR ap_msg)
              tiz_fsm_state_to_str (now));
 
   /* Only notify resume in the following situation:
-   *
-   * - Component in OMX_StateExecuting
-   *
-   * */
+     *
+     * - Component in OMX_StateExecuting
+     *
+     * */
   if (EStateExecuting == now)
     {
       /* Now we can ask the processor to resume */
@@ -391,8 +392,8 @@ dispatch_dr (void * ap_obj, OMX_PTR ap_msg)
   else
     {
       /* the FSM has transitioned to some other state, so we can ignore the
-         resume request. Simply log the fact...
-      */
+           resume request. Simply log the fact...
+        */
       TIZ_DEBUG (p_msg->p_hdl,
                  "Ignoring deferred resume "
                  "command in [%s]",
@@ -457,7 +458,7 @@ dispatch_state_set (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
     }
 
   /* TODO: Move this logic to its own function in the servant class. Will also
-     be used by the kernel and fsm servants.  */
+       be used by the kernel and fsm servants.  */
   if (OMX_ErrorFormatNotDetected == rc)
     {
       TIZ_ERROR (ap_hdl, "[%s] : Signalling processor error via event handler.",
@@ -514,7 +515,7 @@ remove_buffer_from_servant_queue (OMX_PTR ap_elem, OMX_S32 a_data1,
       if (p_hdr == p_msg_br->p_buffer)
         {
           /* Found, return TRUE so this item will be removed from the servant
-           * queue */
+             * queue */
           TIZ_TRACE (p_msg->p_hdl,
                      "tiz_prc_msg_buffersready_t : Found HEADER [%p]", p_hdr);
           rc = OMX_TRUE;

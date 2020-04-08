@@ -41,7 +41,7 @@ namespace tiz
     {
     public:
       plexops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-                 const omx_comp_role_lst_t &role_lst);
+               const omx_comp_role_lst_t &role_lst);
 
     public:
       void do_enable_auto_detection (const int handle_id, const int port_id);
@@ -57,8 +57,7 @@ namespace tiz
 
       bool is_fatal_error (const OMX_ERRORTYPE error) const;
       void do_record_fatal_error (const OMX_HANDLETYPE handle,
-                                  const OMX_ERRORTYPE error,
-                                  const OMX_U32 port,
+                                  const OMX_ERRORTYPE error, const OMX_U32 port,
                                   const OMX_PTR p_eventdata = NULL);
 
     private:
@@ -69,7 +68,7 @@ namespace tiz
       // re-implemented from the base class
       bool probe_stream_hook ();
       OMX_ERRORTYPE get_encoding_type_from_plex_source ();
-      OMX_ERRORTYPE override_decoder_and_renderer_sampling_rates();
+      OMX_ERRORTYPE override_decoder_and_renderer_sampling_rates ();
       OMX_ERRORTYPE apply_pcm_codec_info_from_decoder ();
       OMX_ERRORTYPE get_channels_and_rate_from_decoder (
           OMX_U32 &channels, OMX_U32 &sampling_rate,

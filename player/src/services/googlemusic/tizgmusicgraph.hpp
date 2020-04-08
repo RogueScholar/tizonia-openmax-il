@@ -29,8 +29,8 @@
 #ifndef TIZGMUSICGRAPH_HPP
 #define TIZGMUSICGRAPH_HPP
 
-#include "tizservicegraph.hpp"
 #include "tizgraphops.hpp"
+#include "tizservicegraph.hpp"
 
 namespace tiz
 {

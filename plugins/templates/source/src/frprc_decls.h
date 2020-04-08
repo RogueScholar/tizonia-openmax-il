@@ -59,4 +59,4 @@ extern "C"
 }
 #endif
 
-#endif                          /* FRPRC_DECLS_H */
+#endif /* FRPRC_DECLS_H */

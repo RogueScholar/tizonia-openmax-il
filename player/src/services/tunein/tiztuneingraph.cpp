@@ -33,9 +33,9 @@
 #include "tizgraphcmd.hpp"
 #include "tizgraphops.hpp"
 
+#include "tiztuneingraph.hpp"
 #include "tiztuneingraphfsm.hpp"
 #include "tiztuneingraphops.hpp"
-#include "tiztuneingraph.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -52,11 +52,11 @@ graph::tunein::tunein ()
   : graph::graph ("tuneingraph"),
     fsm_ (new tiz::graph::tuneinfsm::fsm (
         boost::msm::back::states_
-        << tiz::graph::tuneinfsm::fsm::auto_detecting (&p_ops_)
-        << tiz::graph::tuneinfsm::fsm::updating_graph (&p_ops_)
-        << tiz::graph::tuneinfsm::fsm::reconfiguring_tunnel_0 (&p_ops_)
-        << tiz::graph::tuneinfsm::fsm::reconfiguring_tunnel_1 (&p_ops_)
-        << tiz::graph::tuneinfsm::fsm::skipping (&p_ops_),
+            << tiz::graph::tuneinfsm::fsm::auto_detecting (&p_ops_)
+            << tiz::graph::tuneinfsm::fsm::updating_graph (&p_ops_)
+            << tiz::graph::tuneinfsm::fsm::reconfiguring_tunnel_0 (&p_ops_)
+            << tiz::graph::tuneinfsm::fsm::reconfiguring_tunnel_1 (&p_ops_)
+            << tiz::graph::tuneinfsm::fsm::skipping (&p_ops_),
         &p_ops_))
 
 {
@@ -64,7 +64,7 @@ graph::tunein::tunein ()
 
 graph::tunein::~tunein ()
 {
-  delete (boost::any_cast< tuneinfsm::fsm * >(fsm_));
+  delete (boost::any_cast< tuneinfsm::fsm * > (fsm_));
 }
 
 graph::ops *graph::tunein::do_init ()
@@ -85,10 +85,10 @@ bool graph::tunein::dispatch_cmd (const tiz::graph::cmd *p_cmd)
 
   if (!p_cmd->kill_thread ())
   {
-    tuneinfsm::fsm *p_fsm = boost::any_cast< tuneinfsm::fsm * >(fsm_);
+    tuneinfsm::fsm *p_fsm = boost::any_cast< tuneinfsm::fsm * > (fsm_);
     assert (p_fsm);
 
-    if (p_cmd->evt ().type () == typeid(tiz::graph::load_evt))
+    if (p_cmd->evt ().type () == typeid (tiz::graph::load_evt))
     {
       // Time to start the FSM
       TIZ_LOG (TIZ_PRIORITY_NOTICE, "Starting [%s] fsm...",
@@ -96,7 +96,7 @@ bool graph::tunein::dispatch_cmd (const tiz::graph::cmd *p_cmd)
       p_fsm->start ();
     }
 
-    p_cmd->inject< tuneinfsm::fsm >(*p_fsm, tiz::graph::tuneinfsm::pstate);
+    p_cmd->inject< tuneinfsm::fsm > (*p_fsm, tiz::graph::tuneinfsm::pstate);
 
     // Check for internal errors produced during the processing of the last
     // event. If any, inject an "internal" error event. This is fatal and shall
@@ -116,4 +116,3 @@ bool graph::tunein::dispatch_cmd (const tiz::graph::cmd *p_cmd)
 
   return p_cmd->kill_thread ();
 }
-

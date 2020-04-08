@@ -179,8 +179,9 @@ store_metadata (scloud_prc_t * ap_prc, const char * ap_header_name,
       info_len = strnlen (ap_header_info, OMX_MAX_STRINGNAME_SIZE - 1) + 1;
       metadata_len = sizeof (OMX_CONFIG_METADATAITEMTYPE) + info_len;
 
-      if (NULL == (p_meta = (OMX_CONFIG_METADATAITEMTYPE *) tiz_mem_calloc (
-                     1, metadata_len)))
+      if (NULL
+          == (p_meta = (OMX_CONFIG_METADATAITEMTYPE *) tiz_mem_calloc (
+                1, metadata_len)))
         {
           rc = OMX_ErrorInsufficientResources;
         }
@@ -426,9 +427,9 @@ release_buffer (scloud_prc_t * ap_prc)
           ap_prc->eos_ = false;
           ap_prc->p_outhdr_->nFlags |= OMX_BUFFERFLAG_EOS;
         }
-      tiz_check_omx (tiz_krn_release_buffer (
-        tiz_get_krn (handleOf (ap_prc)), ARATELIA_HTTP_SOURCE_PORT_INDEX,
-        ap_prc->p_outhdr_));
+      tiz_check_omx (tiz_krn_release_buffer (tiz_get_krn (handleOf (ap_prc)),
+                                             ARATELIA_HTTP_SOURCE_PORT_INDEX,
+                                             ap_prc->p_outhdr_));
       ap_prc->p_outhdr_ = NULL;
     }
   return OMX_ErrorNone;
@@ -507,8 +508,8 @@ data_available (OMX_PTR ap_arg, const void * ap_ptr, const size_t a_nbytes)
       pause_needed = true;
 
       /* And now trigger the OMX_EventPortFormatDetected and
-         OMX_EventPortSettingsChanged events or a
-         OMX_ErrorFormatNotDetected event */
+           OMX_EventPortSettingsChanged events or a
+           OMX_ErrorFormatNotDetected event */
       send_port_auto_detect_events (p_prc);
     }
   return pause_needed;
@@ -522,7 +523,7 @@ connection_lost (OMX_PTR ap_arg)
   TIZ_PRINTF_DBG_RED ("connection_lost - bytes_before_eos_ [%d]\n",
                       p_prc->bytes_before_eos_);
   /* Return false to indicate that there is no need to start the automatic
-     reconnection procedure */
+       reconnection procedure */
   return false;
 }
 
@@ -566,7 +567,8 @@ retrieve_playlist (scloud_prc_t * ap_prc)
 static OMX_ERRORTYPE
 retrieve_buffer_size (scloud_prc_t * ap_prc)
 {
-  TIZ_INIT_OMX_PORT_STRUCT (ap_prc->buffer_size_, ARATELIA_HTTP_SOURCE_PORT_INDEX);
+  TIZ_INIT_OMX_PORT_STRUCT (ap_prc->buffer_size_,
+                            ARATELIA_HTTP_SOURCE_PORT_INDEX);
   return tiz_api_GetParameter (
     tiz_get_krn (handleOf (ap_prc)), handleOf (ap_prc),
     OMX_TizoniaIndexParamStreamingBuffer, &(ap_prc->buffer_size_));
@@ -668,7 +670,7 @@ scloud_prc_ctor (void * ap_obj, va_list * app)
   p_prc->auto_detect_on_ = false;
   p_prc->bitrate_ = ARATELIA_HTTP_SOURCE_DEFAULT_BIT_RATE_KBITS;
   p_prc->buffer_bytes_ = ((p_prc->bitrate_ * 1000) / 8)
-    * ARATELIA_HTTP_SOURCE_DEFAULT_BUFFER_SECONDS_SCLOUD;
+                         * ARATELIA_HTTP_SOURCE_DEFAULT_BUFFER_SECONDS_SCLOUD;
   return p_prc;
 }
 
@@ -694,8 +696,8 @@ scloud_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
   tiz_check_omx (retrieve_buffer_size (p_prc));
   if (p_prc->buffer_size_.nCapacity)
     {
-      p_prc->buffer_bytes_ = ((p_prc->bitrate_ * 1000) / 8)
-        * p_prc->buffer_size_.nCapacity;
+      p_prc->buffer_bytes_
+        = ((p_prc->bitrate_ * 1000) / 8) * p_prc->buffer_size_.nCapacity;
     }
 
   on_scloud_error_ret_omx_oom (tiz_scloud_init (
@@ -716,12 +718,11 @@ scloud_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
       = {tiz_srv_timer_watcher_init, tiz_srv_timer_watcher_destroy,
          tiz_srv_timer_watcher_start, tiz_srv_timer_watcher_stop,
          tiz_srv_timer_watcher_restart};
-    rc
-      = tiz_urltrans_init (&(p_prc->p_trans_), p_prc, p_prc->p_uri_param_,
-                           ARATELIA_HTTP_SOURCE_COMPONENT_NAME,
-                           p_prc->buffer_bytes_,
-                           ARATELIA_HTTP_SOURCE_DEFAULT_RECONNECT_TIMEOUT,
-                           buffer_cbacks, info_cbacks, io_cbacks, timer_cbacks);
+    rc = tiz_urltrans_init (
+      &(p_prc->p_trans_), p_prc, p_prc->p_uri_param_,
+      ARATELIA_HTTP_SOURCE_COMPONENT_NAME, p_prc->buffer_bytes_,
+      ARATELIA_HTTP_SOURCE_DEFAULT_RECONNECT_TIMEOUT, buffer_cbacks,
+      info_cbacks, io_cbacks, timer_cbacks);
   }
   return rc;
 }
@@ -884,12 +885,12 @@ scloud_prc_config_change (void * ap_prc, OMX_U32 TIZ_UNUSED (a_pid),
       p_prc->playlist_skip_.nValue > 0 ? obtain_next_url (p_prc, 1)
                                        : obtain_next_url (p_prc, -1);
       /* Changing the URL has the side effect of halting the current
-         download */
+           download */
       tiz_urltrans_set_uri (p_prc->p_trans_, p_prc->p_uri_param_);
       if (p_prc->port_disabled_)
         {
           /* Record that the URI has changed, so that when the port is
-             re-enabled, we restart the transfer */
+               re-enabled, we restart the transfer */
           p_prc->uri_changed_ = true;
         }
       else

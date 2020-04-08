@@ -36,7 +36,6 @@ START_TEST (test_mutex_init_and_destroy)
   fail_if (error != OMX_ErrorNone);
 
   tiz_mutex_destroy (&mutex);
-
 }
 END_TEST
 
@@ -53,14 +52,13 @@ START_TEST (test_mutex_lock_and_unlock)
   tiz_mutex_unlock (&mutex);
 
   tiz_mutex_destroy (&mutex);
-
 }
 END_TEST
 
 START_TEST (test_mutex_init_null)
 {
   OMX_ERRORTYPE error = tiz_mutex_init (0);
-  (void)error;
+  (void) error;
 }
 END_TEST
 
@@ -74,14 +72,14 @@ END_TEST
 START_TEST (test_mutex_lock_null)
 {
   OMX_ERRORTYPE error = tiz_mutex_lock (0);
-  (void)error;
+  (void) error;
 }
 END_TEST
 
 START_TEST (test_mutex_unlock_null)
 {
   OMX_ERRORTYPE error = tiz_mutex_unlock (0);
-  (void)error;
+  (void) error;
 }
 END_TEST
 

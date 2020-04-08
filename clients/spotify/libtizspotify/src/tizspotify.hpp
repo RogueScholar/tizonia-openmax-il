@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -104,7 +105,7 @@ public:
 
 private:
   void get_current_track ();
-  void get_current_track_queue_index_and_length(int &index, int &length);
+  void get_current_track_queue_index_and_length (int &index, int &length);
 
 private:
   std::string current_uri_;

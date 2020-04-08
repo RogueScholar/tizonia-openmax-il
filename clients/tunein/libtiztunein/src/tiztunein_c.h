@@ -172,8 +172,7 @@ extern "C"
    *
    * @param ap_tunein The tiz_tunein handle.
    */
-  const char *tiz_tunein_get_current_radio_index (
-      tiz_tunein_t *ap_tunein);
+  const char *tiz_tunein_get_current_radio_index (tiz_tunein_t *ap_tunein);
 
   /**
    * Retrieve the current length of playback queue.

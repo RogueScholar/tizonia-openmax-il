@@ -32,15 +32,15 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <tizplatform.h>
 
-#include "tizgraphutil.hpp"
-#include "tizgraphconfig.hpp"
-#include "tizgraphcmd.hpp"
-#include "tizprobe.hpp"
 #include "tizaacgraph.hpp"
+#include "tizgraphcmd.hpp"
+#include "tizgraphconfig.hpp"
+#include "tizgraphutil.hpp"
+#include "tizprobe.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -52,8 +52,7 @@ namespace graph = tiz::graph;
 //
 // aacdecoder
 //
-graph::aacdecoder::aacdecoder ()
-  : tiz::graph::decoder ("aacdecgraph")
+graph::aacdecoder::aacdecoder () : tiz::graph::decoder ("aacdecgraph")
 {
 }
 

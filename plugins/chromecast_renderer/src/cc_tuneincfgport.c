@@ -88,7 +88,7 @@ cc_tunein_cfgport_dtor (void * ap_obj)
 
 static OMX_ERRORTYPE
 cc_tunein_cfgport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
-                             OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
+                                OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
   const cc_tunein_cfgport_t * p_obj = ap_obj;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
@@ -120,7 +120,7 @@ cc_tunein_cfgport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
 
 static OMX_ERRORTYPE
 cc_tunein_cfgport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
-                             OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
+                                OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
   cc_tunein_cfgport_t * p_obj = (cc_tunein_cfgport_t *) ap_obj;
   OMX_ERRORTYPE rc = OMX_ErrorNone;

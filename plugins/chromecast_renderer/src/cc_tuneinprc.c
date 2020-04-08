@@ -93,15 +93,19 @@ enqueue_tunein_playlist_items (cc_tunein_prc_t * ap_prc)
   assert (ap_prc->p_tunein_);
 
   {
-    const char * p_playlist = (const char *) ap_prc->tunein_playlist_.cPlaylistName;
-    const char * p_keywords1 = (const char *) ap_prc->tunein_playlist_.cAdditionalKeywords1;
-    const char * p_keywords2 = (const char *) ap_prc->tunein_playlist_.cAdditionalKeywords2;
-    const char * p_keywords3 = (const char *) ap_prc->tunein_playlist_.cAdditionalKeywords3;
+    const char * p_playlist
+      = (const char *) ap_prc->tunein_playlist_.cPlaylistName;
+    const char * p_keywords1
+      = (const char *) ap_prc->tunein_playlist_.cAdditionalKeywords1;
+    const char * p_keywords2
+      = (const char *) ap_prc->tunein_playlist_.cAdditionalKeywords2;
+    const char * p_keywords3
+      = (const char *) ap_prc->tunein_playlist_.cAdditionalKeywords3;
     const OMX_BOOL shuffle = ap_prc->tunein_playlist_.bShuffle;
 
     tiz_tunein_set_playback_mode (
       ap_prc->p_tunein_, (shuffle == OMX_TRUE ? ETIZTuneinPlaybackModeShuffle
-                                          : ETIZTuneinPlaybackModeNormal));
+                                              : ETIZTuneinPlaybackModeNormal));
 
     switch (ap_prc->tunein_playlist_.eSearchType)
       {
@@ -199,8 +203,7 @@ cc_tunein_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
   tiz_check_omx (retrieve_tunein_session (p_prc));
   tiz_check_omx (retrieve_tunein_playlist (p_prc));
 
-  on_tunein_error_ret_omx_oom (tiz_tunein_init (
-    &(p_prc->p_tunein_)));
+  on_tunein_error_ret_omx_oom (tiz_tunein_init (&(p_prc->p_tunein_)));
 
   tiz_check_omx (enqueue_tunein_playlist_items (p_prc));
 
@@ -254,34 +257,32 @@ cc_tunein_prc_store_stream_metadata (cc_tunein_prc_t * ap_obj)
   assert (p_prc);
 
   /* Station Name */
-  tiz_check_omx (
-    cc_prc_store_stream_metadata_item (p_cc_prc, "Station",
-                    tiz_tunein_get_current_radio_name (p_prc->p_tunein_)));
+  tiz_check_omx (cc_prc_store_stream_metadata_item (
+    p_cc_prc, "Station", tiz_tunein_get_current_radio_name (p_prc->p_tunein_)));
 
   /* Playback queue progress */
-  tiz_check_omx (
-    cc_prc_store_stream_metadata_item (p_cc_prc, "Item #",
-                    tiz_tunein_get_current_queue_progress (p_prc->p_tunein_)));
+  tiz_check_omx (cc_prc_store_stream_metadata_item (
+    p_cc_prc, "Item #",
+    tiz_tunein_get_current_queue_progress (p_prc->p_tunein_)));
 
   /* Station Description */
-  tiz_check_omx (
-    cc_prc_store_stream_metadata_item (p_cc_prc, "Description",
-                    tiz_tunein_get_current_radio_description (p_prc->p_tunein_)));
+  tiz_check_omx (cc_prc_store_stream_metadata_item (
+    p_cc_prc, "Description",
+    tiz_tunein_get_current_radio_description (p_prc->p_tunein_)));
 
   /* Type */
-  tiz_check_omx (
-    cc_prc_store_stream_metadata_item (p_cc_prc, "Type",
-                    tiz_tunein_get_current_radio_type (p_prc->p_tunein_)));
+  tiz_check_omx (cc_prc_store_stream_metadata_item (
+    p_cc_prc, "Type", tiz_tunein_get_current_radio_type (p_prc->p_tunein_)));
 
   /* Station formats */
-  tiz_check_omx (
-    cc_prc_store_stream_metadata_item (p_cc_prc, "Format",
-                    tiz_tunein_get_current_radio_format (p_prc->p_tunein_)));
+  tiz_check_omx (cc_prc_store_stream_metadata_item (
+    p_cc_prc, "Format",
+    tiz_tunein_get_current_radio_format (p_prc->p_tunein_)));
 
   /* Station Bitrate */
-  tiz_check_omx (
-    cc_prc_store_stream_metadata_item (p_cc_prc, "Bitrate",
-                    tiz_tunein_get_current_radio_bitrate (p_prc->p_tunein_)));
+  tiz_check_omx (cc_prc_store_stream_metadata_item (
+    p_cc_prc, "Bitrate",
+    tiz_tunein_get_current_radio_bitrate (p_prc->p_tunein_)));
 
   /* Reliability */
   tiz_check_omx (cc_prc_store_stream_metadata_item (

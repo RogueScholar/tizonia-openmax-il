@@ -93,25 +93,25 @@ namespace tiz
     OMX_TIZONIA_AUDIO_GMUSICPLAYLISTTYPE gmusic_playlist_type ();
     const std::string &gmusic_additional_keywords () const;
     bool gmusic_is_unlimited_search () const;
-    uint32_t gmusic_buffer_seconds() const;
+    uint32_t gmusic_buffer_seconds () const;
     const std::string &scloud_oauth_token () const;
     const std::vector< std::string > &scloud_playlist_container ();
     OMX_TIZONIA_AUDIO_SOUNDCLOUDPLAYLISTTYPE scloud_playlist_type ();
-    uint32_t scloud_buffer_seconds() const;
+    uint32_t scloud_buffer_seconds () const;
     const std::vector< std::string > &tunein_playlist_container ();
     OMX_TIZONIA_AUDIO_TUNEINPLAYLISTTYPE tunein_playlist_type ();
     OMX_TIZONIA_AUDIO_TUNEINSEARCHTYPE tunein_search_type ();
-    uint32_t tunein_buffer_seconds() const;
+    uint32_t tunein_buffer_seconds () const;
     const std::vector< std::string > &youtube_playlist_container ();
     OMX_TIZONIA_AUDIO_YOUTUBEPLAYLISTTYPE youtube_playlist_type ();
     const std::string &youtube_api_key () const;
-    uint32_t youtube_buffer_seconds() const;
+    uint32_t youtube_buffer_seconds () const;
     const std::string &plex_base_url () const;
     const std::string &plex_token () const;
     const std::string &plex_section () const;
     const std::vector< std::string > &plex_playlist_container ();
     OMX_TIZONIA_AUDIO_PLEXPLAYLISTTYPE plex_playlist_type ();
-    uint32_t plex_buffer_seconds() const;
+    uint32_t plex_buffer_seconds () const;
 
   private:
     void print_usage_feature (
@@ -136,7 +136,7 @@ namespace tiz
     uint32_t parse_command_line (int argc, char *argv[]);
 
     typedef int (tiz::programopts::*consume_mem_fn_t) (bool &, std::string &);
-    typedef boost::function< int(bool &, std::string &) > consume_function_t;
+    typedef boost::function< int (bool &, std::string &) > consume_function_t;
 
     int consume_debug_options (bool &done, std::string &msg);
     int consume_global_options (bool &done, std::string &msg);
@@ -319,5 +319,5 @@ namespace tiz
     std::vector< std::string > all_input_uri_options_;
     std::vector< std::string > all_given_options_;
   };
-}
+}  // namespace tiz
 #endif  // TIZPROGRAMOPTS_HPP

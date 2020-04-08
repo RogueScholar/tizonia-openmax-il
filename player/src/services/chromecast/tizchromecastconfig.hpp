@@ -44,15 +44,15 @@ namespace tiz
     {
     public:
       enum service_config_type_t
-        {
-         ConfigHttpStreaming,
-         ConfigGoogleMusic,
-         ConfigSoundCloud,
-         ConfigTunein,
-         ConfigYouTube,
-         ConfigPlex,
-         ConfigUnknown
-        };
+      {
+        ConfigHttpStreaming,
+        ConfigGoogleMusic,
+        ConfigSoundCloud,
+        ConfigTunein,
+        ConfigYouTube,
+        ConfigPlex,
+        ConfigUnknown
+      };
 
     public:
       chromecastconfig (const std::string &cc_name_or_ip,
@@ -61,7 +61,7 @@ namespace tiz
         : config (service_config->get_playlist (), 0),
           name_or_ip_ (cc_name_or_ip),
           service_config_ (service_config),
-          service_config_type_(service_config_type)
+          service_config_type_ (service_config_type)
       {
       }
 

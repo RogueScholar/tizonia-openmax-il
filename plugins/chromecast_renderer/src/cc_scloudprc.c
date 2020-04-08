@@ -97,7 +97,7 @@ enqueue_gm_playlist_items (cc_scloud_prc_t * ap_prc)
 
     tiz_scloud_set_playback_mode (
       ap_prc->p_sc_, (shuffle == OMX_TRUE ? ETIZScloudPlaybackModeShuffle
-                                              : ETIZScloudPlaybackModeNormal));
+                                          : ETIZScloudPlaybackModeNormal));
 
     switch (ap_prc->sc_playlist_.ePlaylistType)
       {

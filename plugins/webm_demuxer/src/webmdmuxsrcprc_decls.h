@@ -29,7 +29,8 @@
 #define WEBMDMUXSRCPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -42,32 +43,32 @@ extern "C" {
 
 #include "nestegg.h"
 
-typedef struct webmdmuxsrc_prc webmdmuxsrc_prc_t;
-struct webmdmuxsrc_prc
-{
-  /* Object */
-  const tiz_prc_t _;
-  OMX_BUFFERHEADERTYPE * p_outhdr_;
-  OMX_PARAM_CONTENTURITYPE * p_uri_;
-  tiz_urltrans_t * p_trans_;
-  bool eos_;
-  bool port_disabled_;
-  bool uri_changed_;
-  bool auto_detect_on_;
-  OMX_S32 audio_coding_type_;
-  int bitrate_;
-  int cache_bytes_;
-  nestegg * p_ne_;
-  nestegg_io ne_io_;
-};
+  typedef struct webmdmuxsrc_prc webmdmuxsrc_prc_t;
+  struct webmdmuxsrc_prc
+  {
+    /* Object */
+    const tiz_prc_t _;
+    OMX_BUFFERHEADERTYPE * p_outhdr_;
+    OMX_PARAM_CONTENTURITYPE * p_uri_;
+    tiz_urltrans_t * p_trans_;
+    bool eos_;
+    bool port_disabled_;
+    bool uri_changed_;
+    bool auto_detect_on_;
+    OMX_S32 audio_coding_type_;
+    int bitrate_;
+    int cache_bytes_;
+    nestegg * p_ne_;
+    nestegg_io ne_io_;
+  };
 
-typedef struct webmdmuxsrc_prc_class webmdmuxsrc_prc_class_t;
-struct webmdmuxsrc_prc_class
-{
-  /* Class */
-  const tiz_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct webmdmuxsrc_prc_class webmdmuxsrc_prc_class_t;
+  struct webmdmuxsrc_prc_class
+  {
+    /* Class */
+    const tiz_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

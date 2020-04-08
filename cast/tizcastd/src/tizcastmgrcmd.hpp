@@ -29,8 +29,8 @@
 #ifndef TIZCASTMGRCMD_HPP
 #define TIZCASTMGRCMD_HPP
 
-#include <vector>
 #include <boost/any.hpp>
+#include <vector>
 
 #include "tizcastmgrfsm.hpp"
 
@@ -42,11 +42,10 @@ namespace tiz
     {
 
     public:
-      explicit cmd (const std::vector< uint8_t > &uuid,
-                    boost::any any_event);
+      explicit cmd (const std::vector< uint8_t > &uuid, boost::any any_event);
 
     public:
-      const std::vector< uint8_t > & uuid () const;
+      const std::vector< uint8_t > &uuid () const;
       const boost::any evt () const;
       const char *c_str () const;
       void inject (fsm &) const;

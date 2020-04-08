@@ -278,8 +278,10 @@ init_rm (tiz_core_t * ap_core)
 
   assert (ap_core);
 
-  if (!ap_core->rm_inited && (0 == tiz_rcfile_compare_value (
-                                     "resource-management", "enabled", "true")))
+  if (!ap_core->rm_inited
+      && (0
+          == tiz_rcfile_compare_value ("resource-management", "enabled",
+                                       "true")))
     {
       tiz_rm_error_t rm_rc = TIZ_RM_SUCCESS;
       OMX_PRIORITYMGMTTYPE primgmt;
@@ -460,8 +462,9 @@ add_to_comp_registry (const OMX_STRING ap_dl_path, const OMX_STRING ap_dl_name,
   *app_reg_item = NULL;
 
   /* Allocate new registry item */
-  if (NULL == (p_registry_new = (tiz_core_registry_item_t *) tiz_mem_calloc (
-                 1, sizeof (tiz_core_registry_item_t))))
+  if (NULL
+      == (p_registry_new = (tiz_core_registry_item_t *) tiz_mem_calloc (
+            1, sizeof (tiz_core_registry_item_t))))
     {
       TIZ_LOG (TIZ_PRIORITY_ERROR,
                "[OMX_ErrorInsufficientResources] : "
@@ -470,8 +473,9 @@ add_to_comp_registry (const OMX_STRING ap_dl_path, const OMX_STRING ap_dl_name,
     }
 
   /* Load the component */
-  if (OMX_ErrorNone != (rc = ((OMX_COMPONENTINITTYPE) ap_entry_point) (
-                          (OMX_HANDLETYPE) ap_hdl)))
+  if (OMX_ErrorNone
+      != (rc
+          = ((OMX_COMPONENTINITTYPE) ap_entry_point) ((OMX_HANDLETYPE) ap_hdl)))
     {
       rc
         = (rc == OMX_ErrorInsufficientResources ? OMX_ErrorInsufficientResources
@@ -483,9 +487,10 @@ add_to_comp_registry (const OMX_STRING ap_dl_path, const OMX_STRING ap_dl_name,
     }
 
   /* Get Component info */
-  if (OMX_ErrorNone != (rc = ap_hdl->GetComponentVersion (
-                          (OMX_HANDLETYPE) ap_hdl, (OMX_STRING) (&comp_name),
-                          &comp_ver, &spec_ver, &comp_uuid)))
+  if (OMX_ErrorNone
+      != (rc = ap_hdl->GetComponentVersion ((OMX_HANDLETYPE) ap_hdl,
+                                            (OMX_STRING) (&comp_name),
+                                            &comp_ver, &spec_ver, &comp_uuid)))
     {
       rc
         = (rc == OMX_ErrorInsufficientResources ? OMX_ErrorInsufficientResources
@@ -643,8 +648,9 @@ instantiate_comp_lib (const OMX_STRING ap_path, const OMX_STRING ap_name,
     }
   full_name[len] = 0;
 
-  if (NULL == (*app_dl_hdl = dlopen (strncat (full_name, ap_name, PATH_MAX),
-                                     RTLD_LAZY | RTLD_GLOBAL)))
+  if (NULL
+      == (*app_dl_hdl = dlopen (strncat (full_name, ap_name, PATH_MAX),
+                                RTLD_LAZY | RTLD_GLOBAL)))
     {
       TIZ_LOG (TIZ_PRIORITY_ERROR,
                "[OMX_ErrorUndefined] : "
@@ -654,8 +660,8 @@ instantiate_comp_lib (const OMX_STRING ap_path, const OMX_STRING ap_name,
     }
 
   /* TODO: OMX_ComponentInit is not a mandatory name for the component entry
-   * point. Use an IL Core extension to configure additional entry point
-   * function names. */
+     * point. Use an IL Core extension to configure additional entry point
+     * function names. */
   if (NULL == (*app_entry_point = dlsym (*app_dl_hdl, ap_entry_point_name)))
     {
       TIZ_LOG (TIZ_PRIORITY_DEBUG,
@@ -699,9 +705,10 @@ cache_comp_info (const OMX_STRING ap_dl_path, const OMX_STRING ap_dl_name)
         }
       else
         {
-          if (OMX_ErrorNone == (rc = add_to_comp_registry (
-                                  ap_dl_path, ap_dl_name, p_entry_point, NULL,
-                                  p_hdl, &p_reg_item)))
+          if (OMX_ErrorNone
+              == (rc
+                  = add_to_comp_registry (ap_dl_path, ap_dl_name, p_entry_point,
+                                          NULL, p_hdl, &p_reg_item)))
             {
               assert (p_reg_item && p_reg_item->p_hdl);
               TIZ_LOG (TIZ_PRIORITY_TRACE, "component [%s] : info cached",
@@ -843,8 +850,9 @@ find_role_in_registry (const OMX_STRING ap_role_str, OMX_U32 a_index)
       p_role = p_registry->p_roles;
       while (p_role)
         {
-          if (0 == strncmp ((OMX_STRING) p_role->role, ap_role_str,
-                            OMX_MAX_STRINGNAME_SIZE))
+          if (0
+              == strncmp ((OMX_STRING) p_role->role, ap_role_str,
+                          OMX_MAX_STRINGNAME_SIZE))
             {
               num_components_found++;
               TIZ_LOG (TIZ_PRIORITY_TRACE,
@@ -887,8 +895,9 @@ find_comp_in_registry (const OMX_STRING ap_name)
 
   while (p_registry)
     {
-      if (0 == strncmp (p_registry->p_comp_name, ap_name,
-                        OMX_MAX_STRINGNAME_SIZE))
+      if (0
+          == strncmp (p_registry->p_comp_name, ap_name,
+                      OMX_MAX_STRINGNAME_SIZE))
         {
           TIZ_LOG (TIZ_PRIORITY_TRACE, "[%s] found.", ap_name);
           return p_registry;
@@ -958,8 +967,9 @@ instantiate_component (tiz_core_msg_gethandle_t * ap_msg)
           /* in add_to_comp_registry */
 
           /*  Allocate the component hdl */
-          if (NULL == (p_hdl = (OMX_COMPONENTTYPE *) tiz_mem_calloc (
-                         1, (sizeof (OMX_COMPONENTTYPE)))))
+          if (NULL
+              == (p_hdl = (OMX_COMPONENTTYPE *) tiz_mem_calloc (
+                    1, (sizeof (OMX_COMPONENTTYPE)))))
             {
               TIZ_LOG (TIZ_PRIORITY_ERROR,
                        "[OMX_ErrorInsufficientResources] : "
@@ -969,8 +979,9 @@ instantiate_component (tiz_core_msg_gethandle_t * ap_msg)
             }
 
           /* Load the component */
-          if (OMX_ErrorNone != (rc = ((OMX_COMPONENTINITTYPE) p_entry_point) (
-                                  (OMX_HANDLETYPE) p_hdl)))
+          if (OMX_ErrorNone
+              != (rc = ((OMX_COMPONENTINITTYPE) p_entry_point) (
+                    (OMX_HANDLETYPE) p_hdl)))
             {
               TIZ_LOG (TIZ_PRIORITY_ERROR,
                        "[%s] : Call to component's entry point "
@@ -983,9 +994,10 @@ instantiate_component (tiz_core_msg_gethandle_t * ap_msg)
 
           TIZ_LOG (TIZ_PRIORITY_TRACE, "Success - component hdl [%p]", p_hdl);
 
-          if (OMX_ErrorNone != (rc = p_hdl->SetCallbacks (
-                                  (OMX_HANDLETYPE) p_hdl, ap_msg->p_callbacks,
-                                  ap_msg->p_app_data)))
+          if (OMX_ErrorNone
+              != (rc = p_hdl->SetCallbacks ((OMX_HANDLETYPE) p_hdl,
+                                            ap_msg->p_callbacks,
+                                            ap_msg->p_app_data)))
             {
               TIZ_LOG (TIZ_PRIORITY_ERROR, "[%s] : Call to SetCallbacks failed",
                        tiz_err_to_str (rc));
@@ -1062,8 +1074,9 @@ do_init (tiz_core_state_t * ap_state, tiz_core_msg_t * ap_msg)
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "ETIZCoreMsgInit received...");
   assert (p_core);
-  assert (ap_state && (ETIZCoreStateStarting == *ap_state
-                       || ETIZCoreStateStarted == *ap_state));
+  assert (ap_state
+          && (ETIZCoreStateStarting == *ap_state
+              || ETIZCoreStateStarted == *ap_state));
   assert (ETIZCoreMsgInit == ap_msg->class);
 
   if (ETIZCoreStateStarted == *ap_state)
@@ -1395,8 +1408,7 @@ get_core (void)
       pg_core = (tiz_core_t *) tiz_mem_calloc (1, sizeof (tiz_core_t));
       if (!pg_core)
         {
-          TIZ_LOG (TIZ_PRIORITY_ERROR, "Initializing core instance.",
-                   pg_core);
+          TIZ_LOG (TIZ_PRIORITY_ERROR, "Initializing core instance.", pg_core);
           return NULL;
         }
 
@@ -1408,8 +1420,9 @@ get_core (void)
           return NULL;
         }
 
-      if (OMX_ErrorNone != (rc = tiz_queue_init (&(pg_core->p_queue),
-                                                 TIZ_CORE_QUEUE_MAX_ITEMS)))
+      if (OMX_ErrorNone
+          != (rc
+              = tiz_queue_init (&(pg_core->p_queue), TIZ_CORE_QUEUE_MAX_ITEMS)))
         {
           TIZ_LOG (TIZ_PRIORITY_ERROR, "Initializing queue instance.");
           return NULL;
@@ -1452,8 +1465,9 @@ init_core_message (tiz_core_msg_class_t a_msg_class)
 
   assert (a_msg_class < ETIZCoreMsgMax);
 
-  if (NULL == (p_msg = (tiz_core_msg_t *) tiz_mem_calloc (
-                 1, sizeof (tiz_core_msg_t))))
+  if (NULL
+      == (p_msg
+          = (tiz_core_msg_t *) tiz_mem_calloc (1, sizeof (tiz_core_msg_t))))
     {
       TIZ_LOG (TIZ_PRIORITY_ERROR,
                "[OMX_ErrorInsufficientResources] : "
@@ -1578,8 +1592,9 @@ do_tunnel_requests (OMX_HANDLETYPE ap_outhdl, OMX_U32 a_outport,
           return OMX_ErrorBadParameter;
         }
 
-      if (OMX_ErrorNone != (rc = p_incmp->ComponentTunnelRequest (
-                              p_incmp, a_inport, p_outcmp, a_outport, &tsetup)))
+      if (OMX_ErrorNone
+          != (rc = p_incmp->ComponentTunnelRequest (p_incmp, a_inport, p_outcmp,
+                                                    a_outport, &tsetup)))
         {
           /* Undo the tunnel request on the component with the output port */
           if (p_outcmp)

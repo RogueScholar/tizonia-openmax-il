@@ -33,16 +33,16 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <boost/make_shared.hpp>
-#include <boost/lexical_cast.hpp>
 #include <boost/bind.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/make_shared.hpp>
 
 #include <dbus-c++/dbus.h>
 
 #include <OMX_Component.h>
 
-#include <tizplatform.h>
 #include <tizmacros.h>
+#include <tizplatform.h>
 
 #include "tizmprisif.hpp"
 #include "tizmprismgr.hpp"
@@ -61,32 +61,33 @@ namespace
   // Bus name
   const char *TIZONIA_MPRIS_BUS_NAME = "org.mpris.MediaPlayer2.tizonia";
 
-  tiz::control::mpris_mediaplayer2_player_props_t * gp_player_props = NULL;
+  tiz::control::mpris_mediaplayer2_player_props_t *gp_player_props = NULL;
 
   std::string get_unique_bus_name ()
   {
     std::string bus_name (TIZONIA_MPRIS_BUS_NAME);
     // Append the process id to make a unique bus name
     bus_name.append (".pid-");
-    bus_name.append (boost::lexical_cast< std::string >(getpid ()));
+    bus_name.append (boost::lexical_cast< std::string > (getpid ()));
     return bus_name;
   }
 
   void player_props_pipe_handler (const void *p_arg, void *p_buffer,
                                   unsigned int nbyte)
   {
-    tiz::control::mprisif * p_mif = static_cast< tiz::control::mprisif * >(const_cast<void *>(p_arg));
-    if  (p_mif && gp_player_props)
-      {
-        p_mif->UpdatePlayerProps (*gp_player_props);
-      }
+    tiz::control::mprisif *p_mif
+        = static_cast< tiz::control::mprisif * > (const_cast< void * > (p_arg));
+    if (p_mif && gp_player_props)
+    {
+      p_mif->UpdatePlayerProps (*gp_player_props);
+    }
   }
 
-}
+}  // namespace
 
 void *control::thread_func (void *p_arg)
 {
-  mprismgr *p_mgr = static_cast< mprismgr * >(p_arg);
+  mprismgr *p_mgr = static_cast< mprismgr * > (p_arg);
   void *p_data = NULL;
   bool done = false;
 
@@ -102,7 +103,7 @@ void *control::thread_func (void *p_arg)
 
     assert (p_data);
 
-    cmd *p_cmd = static_cast< cmd * >(p_data);
+    cmd *p_cmd = static_cast< cmd * > (p_data);
     done = mprismgr::dispatch_cmd (p_mgr, p_cmd);
 
     delete p_cmd;
@@ -117,10 +118,10 @@ void *control::thread_func (void *p_arg)
 //
 // mprismgr
 //
-control::mprismgr::mprismgr (const mpris_mediaplayer2_props_t &props,
-                             const mpris_mediaplayer2_player_props_t &player_props,
-                             const mpris_callbacks_t &cbacks,
-                             playback_events_t &playback_events)
+control::mprismgr::mprismgr (
+    const mpris_mediaplayer2_props_t &props,
+    const mpris_mediaplayer2_player_props_t &player_props,
+    const mpris_callbacks_t &cbacks, playback_events_t &playback_events)
   : props_ (props),
     player_props_ (player_props),
     cbacks_ (cbacks),
@@ -159,8 +160,7 @@ control::mprismgr::init ()
 
   // Create the manager's thread
   tiz_check_omx_ret_oom (tiz_mutex_lock (&mutex_));
-  tiz_check_omx_ret_oom (
-      tiz_thread_create (&thread_, 0, 0, thread_func, this));
+  tiz_check_omx_ret_oom (tiz_thread_create (&thread_, 0, 0, thread_func, this));
   tiz_check_omx_ret_oom (tiz_mutex_unlock (&mutex_));
 
   // Let's wait until the manager's thread is ready to receive requests
@@ -193,30 +193,30 @@ void control::mprismgr::deinit ()
 {
   delete p_dispatcher_;
   p_dispatcher_ = NULL;
-  static_cast< void >(tiz_sem_wait (&sem_));
+  static_cast< void > (tiz_sem_wait (&sem_));
   void *p_result = NULL;
-  static_cast< void >(tiz_thread_join (&thread_, &p_result));
+  static_cast< void > (tiz_thread_join (&thread_, &p_result));
   deinit_cmd_queue ();
 }
 
 void control::mprismgr::playback_status_changed (const playback_status_t status)
 {
   if (p_player_props_pipe_)
+  {
+    if (control::Playing == status)
     {
-      if (control::Playing == status)
-        {
-          player_props_.playback_status_ = "Playing";
-        }
-      else if (control::Paused == status)
-        {
-          player_props_.playback_status_ = "Paused";
-        }
-      else if (control::Stopped == status)
-        {
-          player_props_.playback_status_ = "Stopped";
-        }
-      p_player_props_pipe_->write(&player_props_, sizeof (player_props_));
+      player_props_.playback_status_ = "Playing";
     }
+    else if (control::Paused == status)
+    {
+      player_props_.playback_status_ = "Paused";
+    }
+    else if (control::Stopped == status)
+    {
+      player_props_.playback_status_ = "Stopped";
+    }
+    p_player_props_pipe_->write (&player_props_, sizeof (player_props_));
+  }
 }
 
 void control::mprismgr::loop_status_changed (const loop_status_t status)
@@ -234,7 +234,7 @@ void control::mprismgr::metadata_changed (const track_metadata_map_t &metadata)
 void control::mprismgr::volume_changed (const double volume)
 {
   player_props_.volume_ = volume;
-  p_player_props_pipe_->write(&player_props_, sizeof (player_props_));
+  p_player_props_pipe_->write (&player_props_, sizeof (player_props_));
 }
 
 OMX_ERRORTYPE
@@ -242,7 +242,8 @@ control::mprismgr::init_cmd_queue ()
 {
   tiz_check_omx_ret_oom (tiz_mutex_init (&mutex_));
   tiz_check_omx_ret_oom (tiz_sem_init (&sem_, 0));
-  tiz_check_omx_ret_oom (tiz_queue_init (&p_queue_, TIZ_MPRISMGR_QUEUE_MAX_ITEMS));
+  tiz_check_omx_ret_oom (
+      tiz_queue_init (&p_queue_, TIZ_MPRISMGR_QUEUE_MAX_ITEMS));
   return OMX_ErrorNone;
 }
 
@@ -304,8 +305,7 @@ bool control::mprismgr::dispatch_cmd (control::mprismgr *p_mgr,
   return terminated;
 }
 
-void control::mprismgr::connect_slots (
-    playback_events_t &playback_events)
+void control::mprismgr::connect_slots (playback_events_t &playback_events)
 {
   playback_connections_.playback_ = playback_events.playback_.connect (
       boost::bind (&tiz::control::mprismgr::playback_status_changed, this, _1));

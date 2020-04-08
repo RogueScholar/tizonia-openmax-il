@@ -135,12 +135,14 @@ enqueue_yt_playlist_items (cc_youtube_prc_t * ap_prc)
           break;
         case OMX_AUDIO_YoutubePlaylistTypeAudioChannelUploads:
           {
-            rc = tiz_youtube_play_audio_channel_uploads (ap_prc->p_yt_, p_playlist);
+            rc = tiz_youtube_play_audio_channel_uploads (ap_prc->p_yt_,
+                                                         p_playlist);
           }
           break;
         case OMX_AUDIO_YoutubePlaylistTypeAudioChannelPlaylist:
           {
-            rc = tiz_youtube_play_audio_channel_playlist (ap_prc->p_yt_, p_playlist);
+            rc = tiz_youtube_play_audio_channel_playlist (ap_prc->p_yt_,
+                                                          p_playlist);
           }
           break;
         default:

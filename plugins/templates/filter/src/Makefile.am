@@ -38,5 +38,3 @@ libtizfr_la_LDFLAGS = -version-info @SHARED_VERSION_INFO@ @SHLIB_VERSION_ARG@
 libtizfr_la_LIBADD = \
 	@TIZPLATFORM_LIBS@ \
 	@TIZONIA_LIBS@
-
-

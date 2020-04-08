@@ -800,7 +800,8 @@ tiz_dir_to_str (OMX_DIRTYPE a_dir)
 /*@observer@*/ OMX_STRING
 tiz_domain_to_str (OMX_PORTDOMAINTYPE a_domain)
 {
-  const size_t count = sizeof (tiz_domain_to_str_tbl) / sizeof (tiz_domain_str_t);
+  const size_t count
+    = sizeof (tiz_domain_to_str_tbl) / sizeof (tiz_domain_str_t);
   size_t i = 0;
 
   for (i = 0; i < count; ++i)

@@ -50,16 +50,19 @@
 #endif
 
 /* Forward declarations */
-static OMX_ERRORTYPE mp3meta_prc_deallocate_resources (void *);
+static OMX_ERRORTYPE
+mp3meta_prc_deallocate_resources (void *);
 
-static inline void delete_uri (mp3meta_prc_t *ap_prc)
+static inline void
+delete_uri (mp3meta_prc_t * ap_prc)
 {
   assert (ap_prc);
   tiz_mem_free (ap_prc->p_uri_param_);
   ap_prc->p_uri_param_ = NULL;
 }
 
-static OMX_ERRORTYPE obtain_uri (mp3meta_prc_t *ap_prc)
+static OMX_ERRORTYPE
+obtain_uri (mp3meta_prc_t * ap_prc)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
   const long pathname_max = PATH_MAX + NAME_MAX;
@@ -68,7 +71,7 @@ static OMX_ERRORTYPE obtain_uri (mp3meta_prc_t *ap_prc)
   assert (NULL == ap_prc->p_uri_param_);
 
   ap_prc->p_uri_param_
-      = tiz_mem_calloc (1, sizeof(OMX_PARAM_CONTENTURITYPE) + pathname_max + 1);
+    = tiz_mem_calloc (1, sizeof (OMX_PARAM_CONTENTURITYPE) + pathname_max + 1);
 
   if (NULL == ap_prc->p_uri_param_)
     {
@@ -78,14 +81,14 @@ static OMX_ERRORTYPE obtain_uri (mp3meta_prc_t *ap_prc)
     }
   else
     {
-      ap_prc->p_uri_param_->nSize = sizeof(OMX_PARAM_CONTENTURITYPE)
-                                    + pathname_max + 1;
+      ap_prc->p_uri_param_->nSize
+        = sizeof (OMX_PARAM_CONTENTURITYPE) + pathname_max + 1;
       ap_prc->p_uri_param_->nVersion.nVersion = OMX_VERSION;
 
       if (OMX_ErrorNone
           != (rc = tiz_api_GetParameter (
-                  tiz_get_krn (handleOf (ap_prc)), handleOf (ap_prc),
-                  OMX_IndexParamContentURI, ap_prc->p_uri_param_)))
+                tiz_get_krn (handleOf (ap_prc)), handleOf (ap_prc),
+                OMX_IndexParamContentURI, ap_prc->p_uri_param_)))
         {
           TIZ_ERROR (handleOf (ap_prc),
                      "[%s] : Error retrieving the URI param from port",
@@ -101,38 +104,41 @@ static OMX_ERRORTYPE obtain_uri (mp3meta_prc_t *ap_prc)
   return rc;
 }
 
-static OMX_ERRORTYPE release_out_buffer (mp3meta_prc_t *ap_prc)
+static OMX_ERRORTYPE
+release_out_buffer (mp3meta_prc_t * ap_prc)
 {
   assert (ap_prc);
   if (ap_prc->p_out_hdr_)
     {
       tiz_check_omx (tiz_krn_release_buffer (
-          tiz_get_krn (handleOf (ap_prc)),
-          ARATELIA_MP3_METADATA_ERASER_PORT_INDEX, ap_prc->p_out_hdr_));
+        tiz_get_krn (handleOf (ap_prc)),
+        ARATELIA_MP3_METADATA_ERASER_PORT_INDEX, ap_prc->p_out_hdr_));
       ap_prc->p_out_hdr_ = NULL;
     }
   return OMX_ErrorNone;
 }
 
-static inline OMX_BUFFERHEADERTYPE **get_header_ptr (mp3meta_prc_t *ap_prc)
+static inline OMX_BUFFERHEADERTYPE **
+get_header_ptr (mp3meta_prc_t * ap_prc)
 {
-  OMX_BUFFERHEADERTYPE **pp_hdr = NULL;
+  OMX_BUFFERHEADERTYPE ** pp_hdr = NULL;
   assert (ap_prc);
   pp_hdr = &(ap_prc->p_out_hdr_);
   assert (pp_hdr);
   return pp_hdr;
 }
 
-static OMX_BUFFERHEADERTYPE *get_header (mp3meta_prc_t *ap_prc)
+static OMX_BUFFERHEADERTYPE *
+get_header (mp3meta_prc_t * ap_prc)
 {
-  OMX_BUFFERHEADERTYPE *p_hdr = *(get_header_ptr (ap_prc));
+  OMX_BUFFERHEADERTYPE * p_hdr = *(get_header_ptr (ap_prc));
 
   if (NULL == p_hdr)
     {
       if (OMX_ErrorNone
-          == tiz_krn_claim_buffer (
-                 tiz_get_krn (handleOf (ap_prc)),
-                 ARATELIA_MP3_METADATA_ERASER_PORT_INDEX, 0, &p_hdr))
+          == tiz_krn_claim_buffer (tiz_get_krn (handleOf (ap_prc)),
+                                   ARATELIA_MP3_METADATA_ERASER_PORT_INDEX, 0,
+                                   &p_hdr))
         {
           if (p_hdr)
             {
@@ -147,15 +153,17 @@ static OMX_BUFFERHEADERTYPE *get_header (mp3meta_prc_t *ap_prc)
   return p_hdr;
 }
 
-static inline bool buffers_available (mp3meta_prc_t *ap_prc)
+static inline bool
+buffers_available (mp3meta_prc_t * ap_prc)
 {
   return (get_header (ap_prc));
 }
 
-static OMX_ERRORTYPE remove_metadata (mp3meta_prc_t *ap_prc)
+static OMX_ERRORTYPE
+remove_metadata (mp3meta_prc_t * ap_prc)
 {
   int ret = MPG123_OK;
-  OMX_BUFFERHEADERTYPE *p_out = NULL;
+  OMX_BUFFERHEADERTYPE * p_out = NULL;
 
   assert (ap_prc);
   assert (ap_prc->p_mpg123_);
@@ -169,18 +177,18 @@ static OMX_ERRORTYPE remove_metadata (mp3meta_prc_t *ap_prc)
        || MPG123_NEW_FORMAT == ret))
     {
       unsigned long header;
-      unsigned char *bodydata;
+      unsigned char * bodydata;
       size_t bodybytes;
       if (mpg123_framedata (ap_prc->p_mpg123_, &header, &bodydata, &bodybytes)
           == MPG123_OK)
         {
           /* Need to extract the 4 header bytes from the native storage in the
-           * correct order. */
+             * correct order. */
           unsigned char hbuf[4];
           int i;
           for (i = 0; i < 4; ++i)
             {
-              hbuf[i] = (unsigned char)((header >> ((3 - i) * 8)) & 0xff);
+              hbuf[i] = (unsigned char) ((header >> ((3 - i) * 8)) & 0xff);
             }
 
           /* Now write out both header and data, fire and forget. */
@@ -219,10 +227,11 @@ static OMX_ERRORTYPE remove_metadata (mp3meta_prc_t *ap_prc)
  * mp3metaprc
  */
 
-static void *mp3meta_prc_ctor (void *ap_obj, va_list *app)
+static void *
+mp3meta_prc_ctor (void * ap_obj, va_list * app)
 {
-  mp3meta_prc_t *p_prc
-      = super_ctor (typeOf (ap_obj, "mp3metaprc"), ap_obj, app);
+  mp3meta_prc_t * p_prc
+    = super_ctor (typeOf (ap_obj, "mp3metaprc"), ap_obj, app);
   assert (p_prc);
   p_prc->p_mpg123_ = NULL;
   p_prc->p_out_hdr_ = NULL;
@@ -240,9 +249,10 @@ static void *mp3meta_prc_ctor (void *ap_obj, va_list *app)
   return p_prc;
 }
 
-static void *mp3meta_prc_dtor (void *ap_obj)
+static void *
+mp3meta_prc_dtor (void * ap_obj)
 {
-  (void)mp3meta_prc_deallocate_resources (ap_obj);
+  (void) mp3meta_prc_deallocate_resources (ap_obj);
   mpg123_exit ();
   return super_dtor (typeOf (ap_obj, "mp3metaprc"), ap_obj);
 }
@@ -251,11 +261,11 @@ static void *mp3meta_prc_dtor (void *ap_obj)
  * from tizsrv class
  */
 
-static OMX_ERRORTYPE mp3meta_prc_allocate_resources (void *ap_obj,
-                                                     OMX_U32 a_pid)
+static OMX_ERRORTYPE
+mp3meta_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
 {
   OMX_ERRORTYPE rc = OMX_ErrorInsufficientResources;
-  mp3meta_prc_t *p_prc = ap_obj;
+  mp3meta_prc_t * p_prc = ap_obj;
   int ret = 0;
 
   assert (p_prc);
@@ -272,16 +282,18 @@ static OMX_ERRORTYPE mp3meta_prc_allocate_resources (void *ap_obj,
       goto end;
     }
 
-  if (MPG123_OK != mpg123_param (p_prc->p_mpg123_, MPG123_ADD_FLAGS,
-                                 MPG123_IGNORE_INFOFRAME | MPG123_SKIP_ID3V2, 0.))
+  if (MPG123_OK
+      != mpg123_param (p_prc->p_mpg123_, MPG123_ADD_FLAGS,
+                       MPG123_IGNORE_INFOFRAME | MPG123_SKIP_ID3V2, 0.))
     {
       TIZ_ERROR (handleOf (p_prc), "[%s] : setting mpg123 handle params.",
                  tiz_err_to_str (rc));
       goto end;
     }
 
-  if (MPG123_OK != mpg123_open (p_prc->p_mpg123_,
-                                (const char *)p_prc->p_uri_param_->contentURI))
+  if (MPG123_OK
+      != mpg123_open (p_prc->p_mpg123_,
+                      (const char *) p_prc->p_uri_param_->contentURI))
     {
       TIZ_ERROR (handleOf (p_prc),
                  "[%s] : opening mpg123 from filesystem path (%s).",
@@ -303,9 +315,10 @@ end:
   return rc;
 }
 
-static OMX_ERRORTYPE mp3meta_prc_deallocate_resources (void *ap_obj)
+static OMX_ERRORTYPE
+mp3meta_prc_deallocate_resources (void * ap_obj)
 {
-  mp3meta_prc_t *p_prc = ap_obj;
+  mp3meta_prc_t * p_prc = ap_obj;
   assert (p_prc);
   delete_uri (ap_obj);
   mpg123_delete (p_prc->p_mpg123_); /* Closes, too. */
@@ -313,27 +326,28 @@ static OMX_ERRORTYPE mp3meta_prc_deallocate_resources (void *ap_obj)
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE mp3meta_prc_prepare_to_transfer (void *ap_obj,
-                                                      OMX_U32 a_pid)
+static OMX_ERRORTYPE
+mp3meta_prc_prepare_to_transfer (void * ap_obj, OMX_U32 a_pid)
 {
-  mp3meta_prc_t *p_prc = ap_obj;
+  mp3meta_prc_t * p_prc = ap_obj;
   assert (p_prc);
   p_prc->counter_ = 0;
   p_prc->eos_ = false;
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE mp3meta_prc_transfer_and_process (void *ap_obj,
-                                                       OMX_U32 a_pid)
+static OMX_ERRORTYPE
+mp3meta_prc_transfer_and_process (void * ap_obj, OMX_U32 a_pid)
 {
-  mp3meta_prc_t *p_prc = ap_obj;
+  mp3meta_prc_t * p_prc = ap_obj;
   assert (p_prc);
   p_prc->counter_ = 0;
   p_prc->eos_ = false;
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE mp3meta_prc_stop_and_return (void *ap_obj)
+static OMX_ERRORTYPE
+mp3meta_prc_stop_and_return (void * ap_obj)
 {
   return release_out_buffer (ap_obj);
 }
@@ -342,9 +356,10 @@ static OMX_ERRORTYPE mp3meta_prc_stop_and_return (void *ap_obj)
  * from tizprc class
  */
 
-static OMX_ERRORTYPE mp3meta_prc_buffers_ready (const void *ap_obj)
+static OMX_ERRORTYPE
+mp3meta_prc_buffers_ready (const void * ap_obj)
 {
-  mp3meta_prc_t *p_prc = (mp3meta_prc_t *)ap_obj;
+  mp3meta_prc_t * p_prc = (mp3meta_prc_t *) ap_obj;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
   assert (p_prc);
@@ -358,23 +373,22 @@ static OMX_ERRORTYPE mp3meta_prc_buffers_ready (const void *ap_obj)
   return rc;
 }
 
-static OMX_ERRORTYPE mp3meta_prc_port_enable (const void *ap_prc, OMX_U32 a_pid)
+static OMX_ERRORTYPE
+mp3meta_prc_port_enable (const void * ap_prc, OMX_U32 a_pid)
 {
-  mp3meta_prc_t *p_prc = (mp3meta_prc_t *)ap_prc;
+  mp3meta_prc_t * p_prc = (mp3meta_prc_t *) ap_prc;
   assert (p_prc);
-  assert (ARATELIA_MP3_METADATA_ERASER_PORT_INDEX == a_pid || OMX_ALL
-                                                                     == a_pid);
+  assert (ARATELIA_MP3_METADATA_ERASER_PORT_INDEX == a_pid || OMX_ALL == a_pid);
   p_prc->out_port_disabled_ = false;
   return OMX_ErrorNone;
 }
 
-static OMX_ERRORTYPE mp3meta_prc_port_disable (const void *ap_prc,
-                                               OMX_U32 a_pid)
+static OMX_ERRORTYPE
+mp3meta_prc_port_disable (const void * ap_prc, OMX_U32 a_pid)
 {
-  mp3meta_prc_t *p_prc = (mp3meta_prc_t *)ap_prc;
+  mp3meta_prc_t * p_prc = (mp3meta_prc_t *) ap_prc;
   assert (p_prc);
-  assert (ARATELIA_MP3_METADATA_ERASER_PORT_INDEX == a_pid || OMX_ALL
-                                                                     == a_pid);
+  assert (ARATELIA_MP3_METADATA_ERASER_PORT_INDEX == a_pid || OMX_ALL == a_pid);
   p_prc->out_port_disabled_ = true;
   release_out_buffer (p_prc);
   return OMX_ErrorNone;
@@ -384,7 +398,8 @@ static OMX_ERRORTYPE mp3meta_prc_port_disable (const void *ap_prc,
  * mp3meta_prc_class
  */
 
-static void *mp3meta_prc_class_ctor (void *ap_obj, va_list *app)
+static void *
+mp3meta_prc_class_ctor (void * ap_obj, va_list * app)
 {
   /* NOTE: Class methods might be added in the future. None for now. */
   return super_ctor (typeOf (ap_obj, "mp3metaprc_class"), ap_obj, app);
@@ -394,13 +409,14 @@ static void *mp3meta_prc_class_ctor (void *ap_obj, va_list *app)
  * initialization
  */
 
-void *mp3meta_prc_class_init (void *ap_tos, void *ap_hdl)
+void *
+mp3meta_prc_class_init (void * ap_tos, void * ap_hdl)
 {
-  void *tizprc = tiz_get_type (ap_hdl, "tizprc");
-  void *mp3metaprc_class
-    = factory_new
+  void * tizprc = tiz_get_type (ap_hdl, "tizprc");
+  void * mp3metaprc_class = factory_new
     /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
-    (classOf (tizprc), "mp3metaprc_class", classOf (tizprc), sizeof(mp3meta_prc_class_t),
+    (classOf (tizprc), "mp3metaprc_class", classOf (tizprc),
+     sizeof (mp3meta_prc_class_t),
      /* TIZ_CLASS_COMMENT: */
      ap_tos, ap_hdl, ctor,
      /* TIZ_CLASS_COMMENT: class constructor */
@@ -410,14 +426,15 @@ void *mp3meta_prc_class_init (void *ap_tos, void *ap_hdl)
   return mp3metaprc_class;
 }
 
-void *mp3meta_prc_init (void *ap_tos, void *ap_hdl)
+void *
+mp3meta_prc_init (void * ap_tos, void * ap_hdl)
 {
-  void *tizprc = tiz_get_type (ap_hdl, "tizprc");
-  void *mp3metaprc_class = tiz_get_type (ap_hdl, "mp3metaprc_class");
+  void * tizprc = tiz_get_type (ap_hdl, "tizprc");
+  void * mp3metaprc_class = tiz_get_type (ap_hdl, "mp3metaprc_class");
   TIZ_LOG_CLASS (mp3metaprc_class);
-  void *mp3metaprc = factory_new
+  void * mp3metaprc = factory_new
     /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
-    (mp3metaprc_class, "mp3metaprc", tizprc, sizeof(mp3meta_prc_t),
+    (mp3metaprc_class, "mp3metaprc", tizprc, sizeof (mp3meta_prc_t),
      /* TIZ_CLASS_COMMENT: */
      ap_tos, ap_hdl,
      /* TIZ_CLASS_COMMENT: class constructor */

@@ -29,8 +29,8 @@
 #ifndef TIZCHROMECASTGRAPH_HPP
 #define TIZCHROMECASTGRAPH_HPP
 
-#include <tizgraph.hpp>
 #include "tizchromecastgraphfsm.hpp"
+#include <tizgraph.hpp>
 
 namespace tiz
 {

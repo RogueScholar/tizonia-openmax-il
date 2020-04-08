@@ -144,7 +144,8 @@ tiz_sem_timedwait (tiz_sem_t * app_sem, OMX_U32 a_millis)
         }
       else
         {
-          TIZ_LOG (TIZ_PRIORITY_ERROR, "OMX_ErrorUndefined : %s", strerror (errno));
+          TIZ_LOG (TIZ_PRIORITY_ERROR, "OMX_ErrorUndefined : %s",
+                   strerror (errno));
           rc = OMX_ErrorUndefined;
         }
     }

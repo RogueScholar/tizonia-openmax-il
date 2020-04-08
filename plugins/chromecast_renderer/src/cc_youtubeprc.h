@@ -30,13 +30,14 @@
 #define CC_YOUTUBEPRC_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-void *
-cc_youtube_prc_class_init (void * ap_tos, void * ap_hdl);
-void *
-cc_youtube_prc_init (void * ap_tos, void * ap_hdl);
+  void *
+  cc_youtube_prc_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  cc_youtube_prc_init (void * ap_tos, void * ap_hdl);
 
 #ifdef __cplusplus
 }

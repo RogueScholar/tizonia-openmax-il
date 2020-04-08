@@ -32,15 +32,15 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <tizplatform.h>
 
-#include "tizgraphutil.hpp"
-#include "tizgraphconfig.hpp"
 #include "tizgraphcmd.hpp"
-#include "tizprobe.hpp"
+#include "tizgraphconfig.hpp"
+#include "tizgraphutil.hpp"
 #include "tizhttpclntgraph.hpp"
+#include "tizprobe.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -55,9 +55,9 @@ namespace graph = tiz::graph;
 graph::httpclient::httpclient ()
   : graph::graph ("httpclntgraph"),
     fsm_ (boost::msm::back::states_
-          << tiz::graph::hcfsm::fsm::auto_detecting (&p_ops_)
-          << tiz::graph::hcfsm::fsm::updating_graph (&p_ops_)
-          << tiz::graph::hcfsm::fsm::reconfiguring_graph (&p_ops_),
+              << tiz::graph::hcfsm::fsm::auto_detecting (&p_ops_)
+              << tiz::graph::hcfsm::fsm::updating_graph (&p_ops_)
+              << tiz::graph::hcfsm::fsm::reconfiguring_graph (&p_ops_),
           &p_ops_)
 {
 }
@@ -81,7 +81,7 @@ bool graph::httpclient::dispatch_cmd (const tiz::graph::cmd *p_cmd)
 
   if (!p_cmd->kill_thread ())
   {
-    if (p_cmd->evt ().type () == typeid(tiz::graph::load_evt))
+    if (p_cmd->evt ().type () == typeid (tiz::graph::load_evt))
     {
       // Time to start the FSM
       TIZ_LOG (TIZ_PRIORITY_NOTICE, "Starting [%s] fsm...",
@@ -89,7 +89,7 @@ bool graph::httpclient::dispatch_cmd (const tiz::graph::cmd *p_cmd)
       fsm_.start ();
     }
 
-    p_cmd->inject< hcfsm::fsm >(fsm_, tiz::graph::hcfsm::pstate);
+    p_cmd->inject< hcfsm::fsm > (fsm_, tiz::graph::hcfsm::pstate);
 
     // Check for internal errors produced during the processing of the last
     // event. If any, inject an "internal" error event. This is fatal and shall

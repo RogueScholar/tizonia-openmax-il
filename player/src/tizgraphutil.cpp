@@ -92,7 +92,7 @@ namespace  // Unnamed namespace
     OMX_ERRORTYPE error_;
     bool transition_verified_;
   };
-}
+}  // namespace
 
 OMX_ERRORTYPE
 graph::util::verify_comp_list (const omx_comp_name_lst_t &comp_list)
@@ -653,7 +653,7 @@ graph::util::set_content_uri (const OMX_HANDLETYPE handle,
 OMX_ERRORTYPE
 graph::util::set_pcm_mode (
     const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-    boost::function< void(OMX_AUDIO_PARAM_PCMMODETYPE &pcmmode) > getter)
+    boost::function< void (OMX_AUDIO_PARAM_PCMMODETYPE &pcmmode) > getter)
 {
   // Set the pcm settings
   OMX_AUDIO_PARAM_PCMMODETYPE pcmtype;
@@ -666,7 +666,7 @@ graph::util::set_pcm_mode (
 OMX_ERRORTYPE
 graph::util::set_mp3_type (
     const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-    boost::function< void(OMX_AUDIO_PARAM_MP3TYPE &mp3type) > getter,
+    boost::function< void (OMX_AUDIO_PARAM_MP3TYPE &mp3type) > getter,
     bool &need_port_settings_changed_evt)
 {
   // Retrieve the current mp3 settings
@@ -695,7 +695,7 @@ graph::util::set_mp3_type (
 OMX_ERRORTYPE
 graph::util::set_aac_type (
     const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-    boost::function< void(OMX_AUDIO_PARAM_AACPROFILETYPE &aactype) > getter,
+    boost::function< void (OMX_AUDIO_PARAM_AACPROFILETYPE &aactype) > getter,
     bool &need_port_settings_changed_evt)
 {
   // Retrieve the current aac settings
@@ -724,7 +724,7 @@ graph::util::set_aac_type (
 OMX_ERRORTYPE
 graph::util::set_flac_type (
     const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-    boost::function< void(OMX_TIZONIA_AUDIO_PARAM_FLACTYPE &flactype) > getter,
+    boost::function< void (OMX_TIZONIA_AUDIO_PARAM_FLACTYPE &flactype) > getter,
     bool &need_port_settings_changed_evt)
 {
   // Retrieve the current flac settings

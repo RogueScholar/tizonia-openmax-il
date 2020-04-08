@@ -38,7 +38,7 @@ tizrm_db = custom_target(
          'tizrm.db',
          build_by_default: true,
          input: 'tizonia-rm-db-initial.sql3',
-         output: 'tizrm.db', 
+         output: 'tizrm.db',
          command: ['sh', tizonia_rm_db_generate_sh, '@INPUT@', '@OUTPUT@'],
          install: true,
          install_dir: tizdatadir

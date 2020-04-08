@@ -594,20 +594,16 @@ graph::youtubeops::apply_default_config_on_decoder ()
     OMX_U32 channels;
     OMX_U32 sampling_rate;
 
-    tiz_check_omx (
-        tiz::graph::util::
-            get_channels_and_rate_from_audio_port< OMX_AUDIO_PARAM_VORBISTYPE > (
-                handle, port_id, OMX_IndexParamAudioVorbis, channels,
-                sampling_rate));
+    tiz_check_omx (tiz::graph::util::get_channels_and_rate_from_audio_port<
+                   OMX_AUDIO_PARAM_VORBISTYPE > (
+        handle, port_id, OMX_IndexParamAudioVorbis, channels, sampling_rate));
 
     channels = 2;
     sampling_rate = 44100;
 
-    tiz_check_omx (
-        tiz::graph::util::
-            set_channels_and_rate_on_audio_port< OMX_AUDIO_PARAM_VORBISTYPE > (
-                handle, port_id, OMX_IndexParamAudioVorbis, channels,
-                sampling_rate));
+    tiz_check_omx (tiz::graph::util::set_channels_and_rate_on_audio_port<
+                   OMX_AUDIO_PARAM_VORBISTYPE > (
+        handle, port_id, OMX_IndexParamAudioVorbis, channels, sampling_rate));
   }
   return OMX_ErrorNone;
 }
@@ -675,9 +671,9 @@ graph::youtubeops::get_channels_and_rate_from_decoder (
 
   if (OMX_ErrorNone == rc)
   {
-    rc = tiz::graph::util::
-        get_channels_and_rate_from_audio_port_v2< OMX_AUDIO_PARAM_PCMMODETYPE > (
-            handle, port_id, OMX_IndexParamAudioPcm, channels, sampling_rate);
+    rc = tiz::graph::util::get_channels_and_rate_from_audio_port_v2<
+        OMX_AUDIO_PARAM_PCMMODETYPE > (handle, port_id, OMX_IndexParamAudioPcm,
+                                       channels, sampling_rate);
   }
   TIZ_LOG (TIZ_PRIORITY_TRACE, "outcome = [%s]", tiz_err_to_str (rc));
 
@@ -741,10 +737,9 @@ bool graph::youtubeops::is_fatal_error (const OMX_ERRORTYPE error) const
   return rc;
 }
 
-void graph::youtubeops::do_record_fatal_error (const OMX_HANDLETYPE handle,
-                                               const OMX_ERRORTYPE error,
-                                               const OMX_U32 port,
-                                               const OMX_PTR p_eventdata /* = NULL */)
+void graph::youtubeops::do_record_fatal_error (
+    const OMX_HANDLETYPE handle, const OMX_ERRORTYPE error, const OMX_U32 port,
+    const OMX_PTR p_eventdata /* = NULL */)
 {
   tiz::graph::ops::do_record_fatal_error (handle, error, port, p_eventdata);
   if (error == OMX_ErrorContentURIError)

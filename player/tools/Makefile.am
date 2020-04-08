@@ -62,4 +62,3 @@ distclean-local: clean-local-tools
 .PHONY: clean-local-tools
 clean-local-tools:
 	-rm -f tizonia-remote tizonia.desktop
-

@@ -213,17 +213,17 @@ get_node (const tiz_rcfile_t * ap_rc, char * str, keyval_t ** app_kv)
   TIZ_LOG (TIZ_PRIORITY_TRACE, "val : [%s]",
            trimlistseparator (trimwhitespace (value)));
 
-/*   if (strstr (value, "\"")) */
-/*     { */
-/*       char quoted[PATH_MAX]; */
-/*       printf ("vakue : %s\n", value); */
-/*       if (sscanf (str, "%*[^\"]\"%31[^\"]\"", quoted) == 1) */
-/*         { */
-/*           free (value); value = NULL; */
-/*           value = strdup (quoted); */
-/*           printf ("got '%s'\n", value); */
-/*         } */
-/*     } */
+  /*   if (strstr (value, "\"")) */
+  /*     { */
+  /*       char quoted[PATH_MAX]; */
+  /*       printf ("vakue : %s\n", value); */
+  /*       if (sscanf (str, "%*[^\"]\"%31[^\"]\"", quoted) == 1) */
+  /*         { */
+  /*           free (value); value = NULL; */
+  /*           value = strdup (quoted); */
+  /*           printf ("got '%s'\n", value); */
+  /*         } */
+  /*     } */
 
   /* Find if the key exists already */
   p_kv = find_node (ap_rc, key);
@@ -396,7 +396,7 @@ extractkeyval (FILE * ap_file, char * ap_str, keyval_t ** app_last_kv,
 static char *
 shell_expand_value (char * p_value)
 {
-  char *p_expanded = p_value;
+  char * p_expanded = p_value;
   if (p_value)
     {
       wordexp_t p;
@@ -433,7 +433,7 @@ shell_expand_value_in_place (char * p_value, value_t * p_value_list)
           tiz_mem_free (p_value_list->p_value);
           p_value_list->p_value = p_expanded;
           wordfree (&p);
-       }
+        }
     }
   return p_expanded;
 }
@@ -442,7 +442,7 @@ static int
 analyze_pattern (FILE * ap_file, char * ap_str, keyval_t ** app_last_kv,
                  tiz_rcfile_t * ap_tiz_rcfile)
 {
-  char *p_comment_ptr = NULL;
+  char * p_comment_ptr = NULL;
   if ((p_comment_ptr = strstr (ap_str, "#")))
     {
       char * str = trimcommenting (trimwhitespace (ap_str));
@@ -595,8 +595,7 @@ obtain_xdg_config_dir (void)
       while (pch != NULL && found != 0)
         {
           TIZ_LOG (TIZ_PRIORITY_TRACE, "XDG_CONFIG_DIR - [%s] ...", pch);
-          snprintf (rcfile, FILE_PATH_MAX, "%s/tizonia/tizonia.conf",
-                    pch);
+          snprintf (rcfile, FILE_PATH_MAX, "%s/tizonia/tizonia.conf", pch);
           found = try_open_file (rcfile);
           pch = strtok (NULL, ":");
         }
@@ -606,8 +605,7 @@ obtain_xdg_config_dir (void)
   if (found)
     {
       TIZ_LOG (TIZ_PRIORITY_TRACE, "Trying /etc/xdg");
-      snprintf (rcfile, FILE_PATH_MAX,
-                "/etc/xdg/tizonia/tizonia.conf");
+      snprintf (rcfile, FILE_PATH_MAX, "/etc/xdg/tizonia/tizonia.conf");
       found = try_open_file (rcfile);
     }
 
@@ -634,8 +632,8 @@ obtain_xdg_config_home (void)
   if ((p_env_str = getenv ("XDG_CONFIG_HOME")))
     {
       TIZ_LOG (TIZ_PRIORITY_TRACE, "XDG_CONFIG_HOME [%s]", p_env_str);
-      snprintf (g_rcfiles[1].name, FILE_PATH_MAX,
-                "%s/tizonia/tizonia.conf", p_env_str);
+      snprintf (g_rcfiles[1].name, FILE_PATH_MAX, "%s/tizonia/tizonia.conf",
+                p_env_str);
     }
   else
     {
@@ -803,7 +801,7 @@ tiz_rcfile_get_value_list (const char * ap_section, const char * ap_key,
         {
           if (p_next_value)
             {
-              pp_ret[i] = shell_expand_value(p_next_value->p_value);
+              pp_ret[i] = shell_expand_value (p_next_value->p_value);
               p_next_value = p_next_value->p_next;
             }
         }

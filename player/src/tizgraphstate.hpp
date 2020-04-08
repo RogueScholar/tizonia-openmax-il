@@ -37,10 +37,10 @@
 #define TIZ_LOG_CATEGORY_NAME "tiz.play.graph.state"
 #endif
 
-#define G_STATE_LOG()                                                  \
-  do                                                                   \
-  {                                                                    \
-    TIZ_LOG (TIZ_PRIORITY_TRACE, "STATE [%s]", typeid(*this).name ()); \
+#define G_STATE_LOG()                                                   \
+  do                                                                    \
+  {                                                                     \
+    TIZ_LOG (TIZ_PRIORITY_TRACE, "STATE [%s]", typeid (*this).name ()); \
   } while (0)
 
 namespace tiz
@@ -50,7 +50,7 @@ namespace tiz
 
     struct inited : public boost::msm::front::state<>
     {
-      typedef boost::mpl::vector<execute_evt> deferred_events;
+      typedef boost::mpl::vector< execute_evt > deferred_events;
       // optional entry/exit methods
       template < class Event, class FSM >
       void on_entry (Event const &evt, FSM &fsm)
@@ -59,32 +59,53 @@ namespace tiz
         fsm.terminated_ = false;
       }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
     };
 
     struct loaded : public boost::msm::front::state<>
     {
       // optional entry/exit methods
       template < class Event, class FSM >
-      void on_entry (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
     };
 
     struct configured : public boost::msm::front::state<>
     {
       template < class Event, class FSM >
-      void on_entry (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
     };
 
     struct config2idle : public boost::msm::front::state<>
     {
       template < class Event, class FSM >
-      void on_entry (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       OMX_STATETYPE target_omx_state () const
       {
         return OMX_StateIdle;
@@ -94,9 +115,15 @@ namespace tiz
     struct idle2exe : public boost::msm::front::state<>
     {
       template < class Event, class FSM >
-      void on_entry (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       OMX_STATETYPE target_omx_state () const
       {
         return OMX_StateExecuting;
@@ -106,9 +133,15 @@ namespace tiz
     struct executing : public boost::msm::front::state<>
     {
       template < class Event, class FSM >
-      void on_entry (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       OMX_STATETYPE target_omx_state () const
       {
         return OMX_StateExecuting;
@@ -118,9 +151,15 @@ namespace tiz
     struct exe2pause : public boost::msm::front::state<>
     {
       template < class Event, class FSM >
-      void on_entry (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       OMX_STATETYPE target_omx_state () const
       {
         return OMX_StatePause;
@@ -130,9 +169,15 @@ namespace tiz
     struct pause : public boost::msm::front::state<>
     {
       template < class Event, class FSM >
-      void on_entry (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       OMX_STATETYPE target_omx_state () const
       {
         return OMX_StatePause;
@@ -142,9 +187,15 @@ namespace tiz
     struct pause2exe : public boost::msm::front::state<>
     {
       template < class Event, class FSM >
-      void on_entry (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       OMX_STATETYPE target_omx_state () const
       {
         return OMX_StateExecuting;
@@ -154,9 +205,15 @@ namespace tiz
     struct pause2idle : public boost::msm::front::state<>
     {
       template < class Event, class FSM >
-      void on_entry (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       OMX_STATETYPE target_omx_state () const
       {
         return OMX_StateIdle;
@@ -166,9 +223,15 @@ namespace tiz
     struct exe2idle : public boost::msm::front::state<>
     {
       template < class Event, class FSM >
-      void on_entry (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       OMX_STATETYPE target_omx_state () const
       {
         return OMX_StateIdle;
@@ -178,9 +241,15 @@ namespace tiz
     struct idle : public boost::msm::front::state<>
     {
       template < class Event, class FSM >
-      void on_entry (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       OMX_STATETYPE target_omx_state () const
       {
         return OMX_StateIdle;
@@ -190,93 +259,150 @@ namespace tiz
     struct idle2loaded : public boost::msm::front::state<>
     {
       template < class Event, class FSM >
-      void on_entry (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
       OMX_STATETYPE target_omx_state () const
       {
         return OMX_StateLoaded;
       }
     };
 
-    template <int comp_id, int port_id>
+    template < int comp_id, int port_id >
     struct disabling_ports : public boost::msm::front::state<>
     {
-      template <class Event,class FSM>
-      void on_entry(Event const & evt, FSM & fsm)
+      template < class Event, class FSM >
+      void on_entry (Event const &evt, FSM &fsm)
       {
-        G_STATE_LOG();
+        G_STATE_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
-          {
-            (*(fsm.pp_ops_))->do_disable_comp_ports (comp_id, port_id);
-          }
+        {
+          (*(fsm.pp_ops_))->do_disable_comp_ports (comp_id, port_id);
+        }
       }
-      template <class Event,class FSM>
-      void on_exit(Event const & evt, FSM & fsm) {G_STATE_LOG();}
+      template < class Event, class FSM >
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
     };
 
     struct disabling_tunnel : public boost::msm::front::state<>
     {
-      template <class Event,class FSM>
-      void on_entry(Event const & evt, FSM & fsm) {G_STATE_LOG();}
-      template <class Event,class FSM>
-      void on_exit(Event const & evt, FSM & fsm) {G_STATE_LOG();}
+      template < class Event, class FSM >
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
+      template < class Event, class FSM >
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
     };
 
     struct disabling_2nd_tunnel : public boost::msm::front::state<>
     {
-      template <class Event,class FSM>
-      void on_entry(Event const & evt, FSM & fsm) {G_STATE_LOG();}
-      template <class Event,class FSM>
-      void on_exit(Event const & evt, FSM & fsm) {G_STATE_LOG();}
+      template < class Event, class FSM >
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
+      template < class Event, class FSM >
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
     };
 
     struct disabling_3rd_tunnel : public boost::msm::front::state<>
     {
-      template <class Event,class FSM>
-      void on_entry(Event const & evt, FSM & fsm) {G_STATE_LOG();}
-      template <class Event,class FSM>
-      void on_exit(Event const & evt, FSM & fsm) {G_STATE_LOG();}
+      template < class Event, class FSM >
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
+      template < class Event, class FSM >
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
     };
 
     struct enabling_tunnel : public boost::msm::front::state<>
     {
-      template <class Event,class FSM>
-      void on_entry(Event const & evt, FSM & fsm) {G_STATE_LOG();}
-      template <class Event,class FSM>
-      void on_exit(Event const & evt, FSM & fsm) {G_STATE_LOG();}
+      template < class Event, class FSM >
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
+      template < class Event, class FSM >
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
     };
 
     struct awaiting_port_disabled_evt : public boost::msm::front::state<>
     {
-      template <class Event,class FSM>
-      void on_entry(Event const & evt, FSM & fsm) {G_STATE_LOG();}
-      template <class Event,class FSM>
-      void on_exit(Event const & evt, FSM & fsm) {G_STATE_LOG();}
+      template < class Event, class FSM >
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
+      template < class Event, class FSM >
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
     };
 
     struct awaiting_port_enabled_evt : public boost::msm::front::state<>
     {
-      template <class Event,class FSM>
-      void on_entry(Event const & evt, FSM & fsm) {G_STATE_LOG();}
-      template <class Event,class FSM>
-      void on_exit(Event const & evt, FSM & fsm) {G_STATE_LOG();}
+      template < class Event, class FSM >
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
+      template < class Event, class FSM >
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
     };
 
     struct awaiting_port_settings_evt : public boost::msm::front::state<>
     {
-      template <class Event,class FSM>
-      void on_entry(Event const & evt, FSM & fsm) {G_STATE_LOG();}
-      template <class Event,class FSM>
-      void on_exit(Event const & evt, FSM & fsm) {G_STATE_LOG();}
+      template < class Event, class FSM >
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
+      template < class Event, class FSM >
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
     };
 
     struct awaiting_format_detected_evt : public boost::msm::front::state<>
     {
-      template <class Event,class FSM>
-      void on_entry(Event const & evt, FSM & fsm) {G_STATE_LOG();}
-      template <class Event,class FSM>
-      void on_exit(Event const & evt, FSM & fsm) {G_STATE_LOG();}
+      template < class Event, class FSM >
+      void on_entry (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
+      template < class Event, class FSM >
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
     };
 
     // terminate state
@@ -298,15 +424,24 @@ namespace tiz
         }
       }
       template < class Event, class FSM >
-      void on_exit (Event const &evt, FSM &fsm) {G_STATE_LOG ();}
+      void on_exit (Event const &evt, FSM &fsm)
+      {
+        G_STATE_LOG ();
+      }
     };
 
     struct AllOk : public boost::msm::front::state<>
     {
-      template <class Event,class FSM>
-      void on_entry(Event const&,FSM& ) {G_STATE_LOG ();}
-      template <class Event,class FSM>
-      void on_exit(Event const&,FSM& ) {G_STATE_LOG ();}
+      template < class Event, class FSM >
+      void on_entry (Event const &, FSM &)
+      {
+        G_STATE_LOG ();
+      }
+      template < class Event, class FSM >
+      void on_exit (Event const &, FSM &)
+      {
+        G_STATE_LOG ();
+      }
     };
   }  // namespace graph
 }  // namespace tiz

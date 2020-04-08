@@ -40,11 +40,11 @@ public:
    * Various playback modes that control the playback queue.
    */
   enum playback_mode
-    {
-      PlaybackModeNormal,
-      PlaybackModeShuffle,
-      PlaybackModeMax
-    };
+  {
+    PlaybackModeNormal,
+    PlaybackModeShuffle,
+    PlaybackModeMax
+  };
 
   /**
    * Various search modes to filter the contents added to the playback queue.
@@ -93,7 +93,7 @@ public:
   const char *get_current_radio_thumbnail_url ();
 
 private:
-  void obtain_current_queue_progress();
+  void obtain_current_queue_progress ();
   void get_current_radio ();
 
 private:

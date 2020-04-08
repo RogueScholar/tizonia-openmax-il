@@ -313,7 +313,8 @@ update_metadata (gmusic_prc_t * ap_prc)
 
   /* Store the genre if not NULL */
   {
-    const char * p_genre = tiz_gmusic_get_current_song_genre (ap_prc->p_gmusic_);
+    const char * p_genre
+      = tiz_gmusic_get_current_song_genre (ap_prc->p_gmusic_);
     if (p_genre)
       {
         tiz_check_omx (store_metadata (ap_prc, "Genre", p_genre));
@@ -531,8 +532,8 @@ data_available (OMX_PTR ap_arg, const void * ap_ptr, const size_t a_nbytes)
       pause_needed = true;
 
       /* And now trigger the OMX_EventPortFormatDetected and
-         OMX_EventPortSettingsChanged events or a
-         OMX_ErrorFormatNotDetected event */
+           OMX_EventPortSettingsChanged events or a
+           OMX_ErrorFormatNotDetected event */
       send_port_auto_detect_events (p_prc);
     }
   return pause_needed;
@@ -548,7 +549,7 @@ connection_lost (OMX_PTR ap_arg)
   TIZ_DEBUG (handleOf (p_prc), "connection_lost - bytes_before_eos_ [%d]",
              p_prc->bytes_before_eos_);
   /* Return false to indicate that there is no need to start the automatic
-     reconnection procedure */
+       reconnection procedure */
   return false;
 }
 
@@ -587,7 +588,8 @@ retrieve_playlist (gmusic_prc_t * ap_prc)
 static OMX_ERRORTYPE
 retrieve_buffer_size (gmusic_prc_t * ap_prc)
 {
-  TIZ_INIT_OMX_PORT_STRUCT (ap_prc->buffer_size_, ARATELIA_HTTP_SOURCE_PORT_INDEX);
+  TIZ_INIT_OMX_PORT_STRUCT (ap_prc->buffer_size_,
+                            ARATELIA_HTTP_SOURCE_PORT_INDEX);
   return tiz_api_GetParameter (
     tiz_get_krn (handleOf (ap_prc)), handleOf (ap_prc),
     OMX_TizoniaIndexParamStreamingBuffer, &(ap_prc->buffer_size_));
@@ -603,7 +605,8 @@ enqueue_playlist_items (gmusic_prc_t * ap_prc)
 
   {
     const char * p_playlist = (const char *) ap_prc->playlist_.cPlaylistName;
-    const char * p_additional_keywords = (const char *) ap_prc->playlist_.cAdditionalKeywords;
+    const char * p_additional_keywords
+      = (const char *) ap_prc->playlist_.cAdditionalKeywords;
     const OMX_BOOL is_unlimited_search = ap_prc->playlist_.bUnlimitedSearch;
     const OMX_BOOL shuffle = ap_prc->playlist_.bShuffle;
 
@@ -712,7 +715,7 @@ gmusic_prc_ctor (void * ap_obj, va_list * app)
   p_prc->auto_detect_on_ = false;
   p_prc->bitrate_ = ARATELIA_HTTP_SOURCE_DEFAULT_BIT_RATE_KBITS;
   p_prc->buffer_bytes_ = ((p_prc->bitrate_ * 1000) / 8)
-    * ARATELIA_HTTP_SOURCE_DEFAULT_BUFFER_SECONDS_GMUSIC;
+                         * ARATELIA_HTTP_SOURCE_DEFAULT_BUFFER_SECONDS_GMUSIC;
   p_prc->connection_closed_ = false;
   return p_prc;
 }
@@ -739,8 +742,8 @@ gmusic_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
   tiz_check_omx (retrieve_buffer_size (p_prc));
   if (p_prc->buffer_size_.nCapacity)
     {
-      p_prc->buffer_bytes_ = ((p_prc->bitrate_ * 1000) / 8)
-        * p_prc->buffer_size_.nCapacity;
+      p_prc->buffer_bytes_
+        = ((p_prc->bitrate_ * 1000) / 8) * p_prc->buffer_size_.nCapacity;
     }
 
   TIZ_TRACE (handleOf (p_prc), "cUserName  : [%s]", p_prc->session_.cUserName);
@@ -768,12 +771,11 @@ gmusic_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
       = {tiz_srv_timer_watcher_init, tiz_srv_timer_watcher_destroy,
          tiz_srv_timer_watcher_start, tiz_srv_timer_watcher_stop,
          tiz_srv_timer_watcher_restart};
-    rc
-      = tiz_urltrans_init (&(p_prc->p_trans_), p_prc, p_prc->p_uri_param_,
-                           ARATELIA_HTTP_SOURCE_COMPONENT_NAME,
-                           p_prc->buffer_bytes_,
-                           ARATELIA_HTTP_SOURCE_DEFAULT_RECONNECT_TIMEOUT,
-                           buffer_cbacks, info_cbacks, io_cbacks, timer_cbacks);
+    rc = tiz_urltrans_init (
+      &(p_prc->p_trans_), p_prc, p_prc->p_uri_param_,
+      ARATELIA_HTTP_SOURCE_COMPONENT_NAME, p_prc->buffer_bytes_,
+      ARATELIA_HTTP_SOURCE_DEFAULT_RECONNECT_TIMEOUT, buffer_cbacks,
+      info_cbacks, io_cbacks, timer_cbacks);
   }
   return rc;
 }
@@ -850,9 +852,9 @@ gmusic_prc_io_ready (void * ap_prc, tiz_event_io_t * ap_ev_io, int a_fd,
   assert (p_prc);
   rc = tiz_urltrans_on_io_ready (p_prc->p_trans_, ap_ev_io, a_fd, a_events);
   /* This is a workaround for the 'gnutls_handshake() failed: An unexpected TLS
-     packet was received' error. Notify the IL client with
-     OMX_ErrorDynamicResourcesUnavailable. The IL client will try to skip to
-     the next song, which seems to remove the problem. */
+       packet was received' error. Notify the IL client with
+       OMX_ErrorDynamicResourcesUnavailable. The IL client will try to skip to
+       the next song, which seems to remove the problem. */
   if (p_prc->connection_closed_
       && tiz_urltrans_handshake_error_found (p_prc->p_trans_))
     {
@@ -955,12 +957,12 @@ gmusic_prc_config_change (void * ap_prc, OMX_U32 TIZ_UNUSED (a_pid),
       p_prc->playlist_skip_.nValue > 0 ? obtain_next_url (p_prc, 1)
                                        : obtain_next_url (p_prc, -1);
       /* Changing the URL has the side effect of halting the current
-         download */
+           download */
       tiz_urltrans_set_uri (p_prc->p_trans_, p_prc->p_uri_param_);
       if (p_prc->port_disabled_)
         {
           /* Record that the URI has changed, so that when the port is
-             re-enabled, we restart the transfer */
+               re-enabled, we restart the transfer */
           p_prc->uri_changed_ = true;
         }
       else

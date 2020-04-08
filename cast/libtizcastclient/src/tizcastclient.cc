@@ -255,7 +255,7 @@ tizcastclient::register_client (const char * ap_device_name_or_ip,
 
   // NOTE: For now, we will handle just one client. In the future, this may
   // change.
-  unregister_all_clients();
+  unregister_all_clients ();
 
   tiz_uuid_str (uuid, uuid_str);
   TIZ_LOG (TIZ_PRIORITY_TRACE, "'%s' : Registering client with uuid [%s]...",
@@ -303,7 +303,7 @@ tizcastclient::unregister_client (const cast_client_id_ptr_t ap_cast_clnt)
 void
 tizcastclient::unregister_all_clients ()
 {
-  while (clients_.size() > 0)
+  while (clients_.size () > 0)
     {
       typedef std::pair< const cast_client_id_t, client_data > client_pair_t;
       BOOST_FOREACH (const client_pair_t & clnt, clients_)
@@ -312,7 +312,8 @@ tizcastclient::unregister_all_clients ()
           tiz_uuid_str (&(clnt.second.uuid_[0]), uuid_str);
           TIZ_LOG (TIZ_PRIORITY_TRACE, "unregistering uuid [%s] - ip/name [%s]",
                    uuid_str, clnt.second.cname_.c_str ());
-          const cast_client_id_ptr_t client_id = (const cast_client_id_ptr_t) &(clnt.first);
+          const cast_client_id_ptr_t client_id
+            = (const cast_client_id_ptr_t) & (clnt.first);
           unregister_client (client_id);
           break;
         }
@@ -358,9 +359,9 @@ tizcastclient::cast_status (const cast_client_id_t & uuid,
   typedef std::pair< const cast_client_id_t, client_data > client_pair_t;
   BOOST_FOREACH (const client_pair_t & clnt, clients_)
     {
-//       TIZ_LOG (TIZ_PRIORITY_TRACE, "ip/name [%s]", clnt.second.cname_.c_str ());
+      //       TIZ_LOG (TIZ_PRIORITY_TRACE, "ip/name [%s]", clnt.second.cname_.c_str ());
       tiz_uuid_str (&(clnt.second.uuid_[0]), uuid_str);
-//       TIZ_LOG (TIZ_PRIORITY_TRACE, "uuid [%s]", uuid_str);
+      //       TIZ_LOG (TIZ_PRIORITY_TRACE, "uuid [%s]", uuid_str);
     }
 
   if (clients_.count (uuid))

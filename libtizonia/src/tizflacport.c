@@ -133,7 +133,7 @@ flacport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
         }
 
       /* Do now allow changes to sampling rate or num of channels if this is
-       * a slave output port */
+         * a slave output port */
       {
         const tiz_port_t * p_base = ap_obj;
 
@@ -226,7 +226,7 @@ flacport_apply_slaving_behaviour (void * ap_obj, void * ap_mos_port,
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
   /* OpenMAX IL 1.2 Section 3.5 : Slaving behaviour for nSamplingRate and
-   * nChannels, both in OMX_TIZONIA_AUDIO_PARAM_FLACTYPE */
+     * nChannels, both in OMX_TIZONIA_AUDIO_PARAM_FLACTYPE */
 
   assert (p_obj);
   assert (ap_struct);

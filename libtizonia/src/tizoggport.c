@@ -91,11 +91,12 @@ oggport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       case OMX_IndexParamActiveStream:
         {
           /* Only the processor knows about available or active streams. So lets
-           get the processor to fill this info for us. */
+         get the processor to fill this info for us. */
           void * p_prc = tiz_get_prc (ap_hdl);
           assert (p_prc);
-          if (OMX_ErrorNone != (rc = tiz_api_GetParameter (p_prc, ap_hdl,
-                                                           a_index, ap_struct)))
+          if (OMX_ErrorNone
+              != (rc
+                  = tiz_api_GetParameter (p_prc, ap_hdl, a_index, ap_struct)))
             {
               TIZ_ERROR (ap_hdl,
                          "[%s] : Error retrieving [%s] "
@@ -113,7 +114,7 @@ oggport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
           /* TODO */
         }
       /* NOTE: Fall through if GetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {
@@ -146,7 +147,7 @@ oggport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
         }
 
       /* NOTE: Fall through if GetParameter returned
-       * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
+     * OMX_ErrorUnsupportedIndex. So that we delegate to the parent */
       /*@fallthrough@*/
       default:
         {

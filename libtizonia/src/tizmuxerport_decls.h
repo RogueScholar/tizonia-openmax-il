@@ -30,26 +30,27 @@
 #define TIZMUXERPORT_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "tizport_decls.h"
 
-typedef struct tiz_muxerport tiz_muxerport_t;
-struct tiz_muxerport
-{
-  /* Object */
-  const tiz_port_t _;
-  void * p_port_;
-};
+  typedef struct tiz_muxerport tiz_muxerport_t;
+  struct tiz_muxerport
+  {
+    /* Object */
+    const tiz_port_t _;
+    void * p_port_;
+  };
 
-typedef struct tiz_muxerport_class tiz_muxerport_class_t;
-struct tiz_muxerport_class
-{
-  /* Class */
-  const tiz_port_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct tiz_muxerport_class tiz_muxerport_class_t;
+  struct tiz_muxerport_class
+  {
+    /* Class */
+    const tiz_port_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

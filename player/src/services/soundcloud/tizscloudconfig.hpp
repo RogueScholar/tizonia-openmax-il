@@ -33,8 +33,8 @@
 
 #include <OMX_TizoniaExt.h>
 
-#include "tizgraphtypes.hpp"
 #include "tizgraphconfig.hpp"
+#include "tizgraphtypes.hpp"
 
 namespace tiz
 {

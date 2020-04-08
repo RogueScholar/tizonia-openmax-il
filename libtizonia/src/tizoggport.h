@@ -30,13 +30,14 @@
 #define TIZOGGPORT_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-void *
-tiz_oggport_class_init (void * ap_tos, void * ap_hdl);
-void *
-tiz_oggport_init (void * ap_tos, void * ap_hdl);
+  void *
+  tiz_oggport_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  tiz_oggport_init (void * ap_tos, void * ap_hdl);
 
 #ifdef __cplusplus
 }

@@ -30,7 +30,8 @@
 #define MPG123DPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -40,23 +41,23 @@ extern "C" {
 #include <tizfilterprc.h>
 #include <tizfilterprc_decls.h>
 
-typedef struct mpg123d_prc mpg123d_prc_t;
-struct mpg123d_prc
-{
-  /* Object */
-  const tiz_filter_prc_t _;
-  mpg123_handle *p_mpg123_;
-  bool found_format_;
-  bool need_to_feed_more_;
-};
+  typedef struct mpg123d_prc mpg123d_prc_t;
+  struct mpg123d_prc
+  {
+    /* Object */
+    const tiz_filter_prc_t _;
+    mpg123_handle * p_mpg123_;
+    bool found_format_;
+    bool need_to_feed_more_;
+  };
 
-typedef struct mpg123d_prc_class mpg123d_prc_class_t;
-struct mpg123d_prc_class
-{
-  /* Class */
-  const tiz_filter_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct mpg123d_prc_class mpg123d_prc_class_t;
+  struct mpg123d_prc_class
+  {
+    /* Class */
+    const tiz_filter_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

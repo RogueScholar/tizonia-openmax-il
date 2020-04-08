@@ -63,9 +63,8 @@
 static OMX_VERSIONTYPE vp8_decoder_version = {{1, 0, 0, 0}};
 
 static OMX_BOOL
-egl_image_validation_hook (const OMX_HANDLETYPE ap_hdl,
-                           OMX_U32 pid, OMX_PTR ap_eglimage,
-                           void *ap_args)
+egl_image_validation_hook (const OMX_HANDLETYPE ap_hdl, OMX_U32 pid,
+                           OMX_PTR ap_eglimage, void * ap_args)
 {
   const void * p_krn = NULL;
   const tiz_port_t * p_port = NULL;
@@ -87,15 +86,15 @@ egl_image_validation_hook (const OMX_HANDLETYPE ap_hdl,
 
   assert (p_videoport);
 
-/*   { */
-/*     const OMX_VIDEO_PORTDEFINITIONTYPE * p_video_portdef */
-/*       = &(p_port->portdef_.format.video); */
+  /*   { */
+  /*     const OMX_VIDEO_PORTDEFINITIONTYPE * p_video_portdef */
+  /*       = &(p_port->portdef_.format.video); */
 
-/*     if (!p_video_portdef->pNativeWindow) */
-/*       { */
-/*         return OMX_FALSE; */
-/*       } */
-/*   } */
+  /*     if (!p_video_portdef->pNativeWindow) */
+  /*       { */
+  /*         return OMX_FALSE; */
+  /*       } */
+  /*   } */
 
   /* This function must return true or false */
   return OMX_TRUE;
@@ -126,7 +125,7 @@ instantiate_input_port (OMX_HANDLETYPE ap_hdl)
        OMX_VIDEO_VP8LevelMax};
 
   /* This figures are based on the defaults defined in the standard for the VP8
-   * decoder component */
+     * decoder component */
   portdef.pNativeRender = NULL;
   portdef.nFrameWidth = 176;
   portdef.nFrameHeight = 144;
@@ -173,7 +172,7 @@ instantiate_output_port (OMX_HANDLETYPE ap_hdl)
   };
 
   /* This figures are based on the defaults defined in the standard for the VP8
-   * decoder component */
+     * decoder component */
   portdef.pNativeRender = NULL;
   portdef.nFrameWidth = 176;
   portdef.nFrameHeight = 144;
@@ -211,13 +210,9 @@ OMX_ComponentInit (OMX_HANDLETYPE ap_hdl)
   const tiz_role_factory_t * rf_list[] = {&role_factory};
   tiz_type_factory_t vp8d_inport_type;
   tiz_type_factory_t vp8dprc_type;
-  const tiz_type_factory_t * tf_list[] = {&vp8d_inport_type,
-                                          &vp8dprc_type};
-  const tiz_eglimage_hook_t egl_validation_hook = {
-    ARATELIA_VP8_DECODER_OUTPUT_PORT_INDEX,
-    egl_image_validation_hook,
-    NULL
-  };
+  const tiz_type_factory_t * tf_list[] = {&vp8d_inport_type, &vp8dprc_type};
+  const tiz_eglimage_hook_t egl_validation_hook
+    = {ARATELIA_VP8_DECODER_OUTPUT_PORT_INDEX, egl_image_validation_hook, NULL};
 
   strcpy ((OMX_STRING) role_factory.role, ARATELIA_VP8_DECODER_DEFAULT_ROLE);
   role_factory.pf_cport = instantiate_config_port;

@@ -35,26 +35,26 @@
 #include <boost/function.hpp>
 #include <boost/signals2/connection.hpp>
 
-#include <tizplatform.h>
 #include <OMX_Core.h>
+#include <tizplatform.h>
 
 #include <tizgraphtypes.hpp>
 
 #include "tizplaybackevents.hpp"
 
-#include "tizmprisprops.hpp"
 #include "tizmpriscbacks.hpp"
+#include "tizmprisprops.hpp"
 
 namespace Tiz
 {
-namespace DBus
-{
-  class BusDispatcher;
-  class DefaultTimeout;
-  class Connection;
-  class Pipe;
-}
-}
+  namespace DBus
+  {
+    class BusDispatcher;
+    class DefaultTimeout;
+    class Connection;
+    class Pipe;
+  }  // namespace DBus
+}  // namespace Tiz
 
 namespace tiz
 {
@@ -169,7 +169,7 @@ namespace tiz
       mpris_mediaplayer2_player_props_t player_props_;
       const mpris_callbacks_t cbacks_;
       Tiz::DBus::BusDispatcher *p_dispatcher_;
-      Tiz::DBus::Pipe *p_player_props_pipe_; // Not owned
+      Tiz::DBus::Pipe *p_player_props_pipe_;  // Not owned
       Tiz::DBus::DefaultTimeout *p_dbus_timeout_;
       Tiz::DBus::Connection *p_dbus_connection_;
 
@@ -185,12 +185,10 @@ namespace tiz
       struct playback_connections
       {
         playback_connections ()
-          :
-          playback_(),
-          loop_(),
-          metadata_(),
-          volume_ ()
-        {}
+          : playback_ (), loop_ (), metadata_ (), volume_ ()
+        {
+        }
+
       public:
         boost::signals2::connection playback_;
         boost::signals2::connection loop_;
@@ -198,6 +196,7 @@ namespace tiz
         boost::signals2::connection volume_;
       };
       typedef struct playback_connections playback_connections_t;
+
     private:
       playback_connections_t playback_connections_;
 

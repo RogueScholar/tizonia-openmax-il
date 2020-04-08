@@ -125,7 +125,7 @@ loadedtoidle_state_set (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
              tiz_fsm_state_to_str (a_param1));
 
   /* Allowed transitions are OMX_StateLoaded only (a.k.a. transition
-   * cancellation). */
+     * cancellation). */
   switch (a_param1)
     {
       case OMX_StateLoaded:
@@ -160,8 +160,8 @@ loadedtoidle_state_set (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
 
   /* IL resource deallocation should take place now */
   /* NOTE: This will call the 'tiz_state_state_set' function and not
-   * 'tizloaded_state_set' (we are passing 'tizloaded' as the 1st
-   * parameter  */
+     * 'tizloaded_state_set' (we are passing 'tizloaded' as the 1st
+     * parameter  */
   return tiz_state_super_state_set (typeOf (ap_obj, "tizloaded"), ap_obj,
                                     ap_hdl, a_cmd, a_param1, ap_cmd_data);
 }
@@ -182,7 +182,7 @@ loadedtoidle_trans_complete (const void * ap_obj, OMX_PTR ap_servant,
   if (2 == p_base->servants_count_ + 1)
     {
       /* Reset the OMX_PORTSTATUS_ACCEPTUSEBUFFER flag in all ports where this
-       * has been set */
+         * has been set */
       tiz_krn_reset_tunneled_ports_status (tiz_get_krn (handleOf (ap_servant)),
                                            OMX_PORTSTATUS_ACCEPTUSEBUFFER);
     }
@@ -205,10 +205,10 @@ loadedtoidle_tunneled_ports_status_update (void * ap_obj)
     if (TIZ_KRN_MAY_INIT_ALLOC_PHASE (p_krn))
       {
         /* OK, at this point all the tunneled non-supplier neighboring ports
-         * are ready to receive OMX_UseBuffer calls. IL resource allocation
-         * will take place now */
+             * are ready to receive OMX_UseBuffer calls. IL resource allocation
+             * will take place now */
         /* NOTE: This will call the 'tiz_state_state_set' function of the base
-         * class (we are passing 'tizloaded' as the 1st parameter */
+             * class (we are passing 'tizloaded' as the 1st parameter */
         return tiz_state_super_state_set (typeOf (ap_obj, "tizloaded"), ap_obj,
                                           p_hdl, OMX_CommandStateSet,
                                           OMX_StateIdle, NULL);

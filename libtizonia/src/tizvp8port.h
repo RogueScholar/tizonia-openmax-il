@@ -20,23 +20,24 @@
 /**
  * @file   tizvp8port.h
  * @author Juan A. Rubio <juan.rubio@aratelia.com>
- * 
+ *
  * @brief  VP8 port class
- * 
- * 
+ *
+ *
  */
 
 #ifndef TIZVP8PORT_H
 #define TIZVP8PORT_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-void *
-tiz_vp8port_class_init (void * ap_tos, void * ap_hdl);
-void *
-tiz_vp8port_init (void * ap_tos, void * ap_hdl);
+  void *
+  tiz_vp8port_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  tiz_vp8port_init (void * ap_tos, void * ap_hdl);
 
 #ifdef __cplusplus
 }

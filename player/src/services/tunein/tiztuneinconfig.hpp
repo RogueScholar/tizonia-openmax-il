@@ -33,8 +33,8 @@
 
 #include <OMX_TizoniaExt.h>
 
-#include "tizgraphtypes.hpp"
 #include "tizgraphconfig.hpp"
+#include "tizgraphtypes.hpp"
 
 namespace tiz
 {
@@ -78,7 +78,6 @@ namespace tiz
       const std::string api_key_;
       const OMX_TIZONIA_AUDIO_TUNEINPLAYLISTTYPE playlist_type_;
       const OMX_TIZONIA_AUDIO_TUNEINSEARCHTYPE search_type_;
-
     };
   }  // namespace graph
 }  // namespace tiz

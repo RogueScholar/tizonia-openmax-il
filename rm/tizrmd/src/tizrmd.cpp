@@ -29,12 +29,12 @@
 #include <config.h>
 #endif
 
-#include <unistd.h>
-#include <stdlib.h>
+#include <limits.h>
 #include <signal.h>
 #include <stdio.h>
-#include <limits.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <algorithm>
 
@@ -182,8 +182,9 @@ int32_t tizrmd::release (const uint32_t &rid, const uint32_t &quantity,
            cname.c_str (), rid, quantity);
 
   // Release the resources now...
-  if (TIZ_RM_SUCCESS != (ret_val = rmdb_.release_resource (rid, quantity, cname,
-                                                          uuid, grpid, pri)))
+  if (TIZ_RM_SUCCESS
+      != (ret_val
+          = rmdb_.release_resource (rid, quantity, cname, uuid, grpid, pri)))
   {
     TIZ_LOG (TIZ_PRIORITY_TRACE,
              "tizrmd::release : "
@@ -203,8 +204,8 @@ int32_t tizrmd::release (const uint32_t &rid, const uint32_t &quantity,
         && rmdb_.resource_available (rid, waiter.quantity ()))
     {
       ret_val = (tiz_rm_error_t)acquire (rid, quantity, waiter.cname (),
-                                        waiter.uuid (), waiter.grpid (),
-                                        waiter.pri ());
+                                         waiter.uuid (), waiter.grpid (),
+                                         waiter.pri ());
 
       if (TIZ_RM_SUCCESS == ret_val)
       {
@@ -268,8 +269,9 @@ int32_t tizrmd::wait (const uint32_t &rid, const uint32_t &quantity,
              "Enough resource [%d] already available ...",
              rid);
 
-    if (TIZ_RM_SUCCESS != (ret_val = rmdb_.acquire_resource (
-                              rid, quantity, cname, uuid, grpid, pri)))
+    if (TIZ_RM_SUCCESS
+        != (ret_val
+            = rmdb_.acquire_resource (rid, quantity, cname, uuid, grpid, pri)))
     {
       TIZ_LOG (TIZ_PRIORITY_TRACE,
                "tizrmd::wait : "
@@ -355,8 +357,9 @@ int32_t tizrmd::preemption_conf (const uint32_t &rid, const uint32_t &quantity,
     tiz_rm_owners_list_t *p_cur_owners = it->second.p_owners_;
 
     // Release the resource...
-    if (TIZ_RM_SUCCESS != (ret_val = rmdb_.release_resource (
-                              rid, quantity, cname, uuid, grpid, pri)))
+    if (TIZ_RM_SUCCESS
+        != (ret_val
+            = rmdb_.release_resource (rid, quantity, cname, uuid, grpid, pri)))
     {
       TIZ_LOG (TIZ_PRIORITY_TRACE,
                "tizrmd::preemption_conf : "
@@ -373,10 +376,11 @@ int32_t tizrmd::preemption_conf (const uint32_t &rid, const uint32_t &quantity,
 
       delete p_cur_owners;
       //... now allocate the resource on behalf of the new owner
-      if (TIZ_RM_SUCCESS != (ret_val = rmdb_.acquire_resource (
-                                future_owner.rid_, future_owner.quantity_,
-                                future_owner.cname_, future_owner.uuid_,
-                                future_owner.grpid_, future_owner.pri_)))
+      if (TIZ_RM_SUCCESS
+          != (ret_val = rmdb_.acquire_resource (
+                  future_owner.rid_, future_owner.quantity_,
+                  future_owner.cname_, future_owner.uuid_, future_owner.grpid_,
+                  future_owner.pri_)))
       {
         TIZ_LOG (TIZ_PRIORITY_TRACE,
                  "tizrmd::preemption_conf : "

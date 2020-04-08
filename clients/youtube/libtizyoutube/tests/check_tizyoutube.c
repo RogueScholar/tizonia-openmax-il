@@ -30,12 +30,12 @@
 #include <config.h>
 #endif
 
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include <stdio.h>
-#include <check.h>
 #include <assert.h>
+#include <check.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "tizyoutube_c.h"
 
@@ -44,12 +44,14 @@
 #define CMD_LEN 1000
 #define PLAYER "mpv"
 #define YOUTUBE_VIDEO_ID "y3Ca3c6J9N4"
-#define YOUTUBE_PLAYILST_URL "https://www.youtube.com/watch?v=fJ9rUzIMcZQ&list=PLqDzNilwDj_dm_BOGxoCRmvA6CheRwAiw"
+#define YOUTUBE_PLAYILST_URL \
+  "https://www.youtube.com/" \
+  "watch?v=fJ9rUzIMcZQ&list=PLqDzNilwDj_dm_BOGxoCRmvA6CheRwAiw"
 #define YOUTUBE_SEARCH_TERM "queen"
 
-static void dump_info(tiz_youtube_t *p_youtube)
+static void dump_info (tiz_youtube_t *p_youtube)
 {
-  assert(p_youtube);
+  assert (p_youtube);
 
   {
     const char *title = tiz_youtube_get_current_audio_stream_title (p_youtube);
@@ -103,7 +105,8 @@ static void dump_info(tiz_youtube_t *p_youtube)
     const char *file_extension
         = tiz_youtube_get_current_audio_stream_file_extension (p_youtube);
     ck_assert (file_extension);
-    fprintf (stderr, "current_audio_stream_file_extension = %s\n", file_extension);
+    fprintf (stderr, "current_audio_stream_file_extension = %s\n",
+             file_extension);
   }
 }
 
@@ -130,8 +133,8 @@ START_TEST (test_youtube_play_audio_stream)
     fprintf (stderr, "url = %s\n", next_url);
     ck_assert (next_url != NULL);
 
-    dump_info(p_youtube);
-    play_track(next_url);
+    dump_info (p_youtube);
+    play_track (next_url);
   }
 
   tiz_youtube_destroy (p_youtube);
@@ -150,15 +153,15 @@ START_TEST (test_youtube_play_audio_playlist)
   ck_assert (0 == rc);
 
   while (i < 5)
-  {
-    const char *next_url = tiz_youtube_get_next_url (p_youtube, false);
-    fprintf (stderr, "url = %s\n", next_url);
-    ck_assert (next_url != NULL);
+    {
+      const char *next_url = tiz_youtube_get_next_url (p_youtube, false);
+      fprintf (stderr, "url = %s\n", next_url);
+      ck_assert (next_url != NULL);
 
-    dump_info(p_youtube);
-    play_track(next_url);
-    ++i;
-  }
+      dump_info (p_youtube);
+      play_track (next_url);
+      ++i;
+    }
 
   tiz_youtube_destroy (p_youtube);
 }
@@ -176,22 +179,21 @@ START_TEST (test_youtube_play_audio_search)
   ck_assert (0 == rc);
 
   while (i < 5)
-  {
-    const char *next_url = tiz_youtube_get_next_url (p_youtube, false);
-    fprintf (stderr, "url = %s\n", next_url);
-    ck_assert (next_url != NULL);
+    {
+      const char *next_url = tiz_youtube_get_next_url (p_youtube, false);
+      fprintf (stderr, "url = %s\n", next_url);
+      ck_assert (next_url != NULL);
 
-    dump_info(p_youtube);
-    play_track(next_url);
-    ++i;
- }
+      dump_info (p_youtube);
+      play_track (next_url);
+      ++i;
+    }
 
   tiz_youtube_destroy (p_youtube);
 }
 END_TEST
 
-Suite *
-youtube_suite (void)
+Suite *youtube_suite (void)
 {
   TCase *tc_youtube;
   Suite *s = suite_create ("libtizyoutube");

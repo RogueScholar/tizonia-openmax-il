@@ -37,18 +37,19 @@ extern "C"
 #include <OMX_Core.h>
 #include <OMX_Types.h>
 
-#define ARATELIA_MP3_METADATA_ERASER_DEFAULT_ROLE       "audio_metadata_eraser.mp3"
-#define ARATELIA_MP3_METADATA_ERASER_COMPONENT_NAME     "OMX.Aratelia.audio_metadata_eraser.mp3"
-  /* With libtizonia, port indexes must start at index 0 */
-#define ARATELIA_MP3_METADATA_ERASER_PORT_INDEX         0
+#define ARATELIA_MP3_METADATA_ERASER_DEFAULT_ROLE "audio_metadata_eraser.mp3"
+#define ARATELIA_MP3_METADATA_ERASER_COMPONENT_NAME \
+  "OMX.Aratelia.audio_metadata_eraser.mp3"
+/* With libtizonia, port indexes must start at index 0 */
+#define ARATELIA_MP3_METADATA_ERASER_PORT_INDEX 0
 #define ARATELIA_MP3_METADATA_ERASER_PORT_MIN_BUF_COUNT 2
-#define ARATELIA_MP3_METADATA_ERASER_PORT_MIN_BUF_SIZE  8192
+#define ARATELIA_MP3_METADATA_ERASER_PORT_MIN_BUF_SIZE 8192
 #define ARATELIA_MP3_METADATA_ERASER_PORT_NONCONTIGUOUS OMX_FALSE
-#define ARATELIA_MP3_METADATA_ERASER_PORT_ALIGNMENT     0
-#define ARATELIA_MP3_METADATA_ERASER_PORT_SUPPLIERPREF  OMX_BufferSupplyInput
+#define ARATELIA_MP3_METADATA_ERASER_PORT_ALIGNMENT 0
+#define ARATELIA_MP3_METADATA_ERASER_PORT_SUPPLIERPREF OMX_BufferSupplyInput
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* MP3META_H */
+#endif /* MP3META_H */

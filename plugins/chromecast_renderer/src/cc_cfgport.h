@@ -30,13 +30,14 @@
 #define CC_CFGPORT_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-void *
-cc_cfgport_class_init (void * ap_tos, void * ap_hdl);
-void *
-cc_cfgport_init (void * ap_tos, void * ap_hdl);
+  void *
+  cc_cfgport_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  cc_cfgport_init (void * ap_tos, void * ap_hdl);
 
 #ifdef __cplusplus
 }

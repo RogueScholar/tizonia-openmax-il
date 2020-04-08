@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -30,53 +31,57 @@
 #define TIZCHROMECASTTYPES_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-typedef enum tiz_chromecast_error {
-  ETizCcErrorNoError = 0,
-  ETizCcErrorConnectionError = -1
-} tiz_chromecast_error_t;
+  typedef enum tiz_chromecast_error
+  {
+    ETizCcErrorNoError = 0,
+    ETizCcErrorConnectionError = -1
+  } tiz_chromecast_error_t;
 
-typedef enum tiz_chromecast_cast_status {
-  ETizCcCastStatusUnknown,
-  ETizCcCastStatusReadyToCast,
-  ETizCcCastStatusNowCasting
-} tiz_chromecast_cast_status_t;
+  typedef enum tiz_chromecast_cast_status
+  {
+    ETizCcCastStatusUnknown,
+    ETizCcCastStatusReadyToCast,
+    ETizCcCastStatusNowCasting
+  } tiz_chromecast_cast_status_t;
 
-/**
- * Callback invoked when the Chromecast device changes its device or media
- * statuses.
- *
- * @param ap_user_data Client-provided data structure.
- * @param a_status The 'cast' status.
- */
-typedef void (*tiz_chromecast_cast_status_cb_f) (
-    void *ap_user_data, tiz_chromecast_cast_status_t a_status, int a_volume);
+  /**
+   * Callback invoked when the Chromecast device changes its device or media
+   * statuses.
+   *
+   * @param ap_user_data Client-provided data structure.
+   * @param a_status The 'cast' status.
+   */
+  typedef void (*tiz_chromecast_cast_status_cb_f) (
+      void *ap_user_data, tiz_chromecast_cast_status_t a_status, int a_volume);
 
-typedef enum tiz_chromecast_media_status {
-  ETizCcMediaStatusUnknown,
-  ETizCcMediaStatusIdle,
-  ETizCcMediaStatusBuffering,
-  ETizCcMediaStatusPaused,
-  ETizCcMediaStatusPlaying
-} tiz_chromecast_media_status_t;
+  typedef enum tiz_chromecast_media_status
+  {
+    ETizCcMediaStatusUnknown,
+    ETizCcMediaStatusIdle,
+    ETizCcMediaStatusBuffering,
+    ETizCcMediaStatusPaused,
+    ETizCcMediaStatusPlaying
+  } tiz_chromecast_media_status_t;
 
-/**
- * Callback invoked when the Chromecast device changes its device or media
- * statuses.
- *
- * @param ap_user_data Client-provided data structure.
- * @param a_status The 'media' status.
- */
-typedef void (*tiz_chromecast_media_status_cb_f) (
-    void *ap_user_data, tiz_chromecast_media_status_t a_status, int a_volume);
+  /**
+   * Callback invoked when the Chromecast device changes its device or media
+   * statuses.
+   *
+   * @param ap_user_data Client-provided data structure.
+   * @param a_status The 'media' status.
+   */
+  typedef void (*tiz_chromecast_media_status_cb_f) (
+      void *ap_user_data, tiz_chromecast_media_status_t a_status, int a_volume);
 
-typedef struct tiz_chromecast_callbacks
-{
-  tiz_chromecast_cast_status_cb_f pf_cast_status;
-  tiz_chromecast_media_status_cb_f pf_media_status;
-} tiz_chromecast_callbacks_t;
+  typedef struct tiz_chromecast_callbacks
+  {
+    tiz_chromecast_cast_status_cb_f pf_cast_status;
+    tiz_chromecast_media_status_cb_f pf_media_status;
+  } tiz_chromecast_callbacks_t;
 
 #ifdef __cplusplus
 }

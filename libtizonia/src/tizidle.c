@@ -75,9 +75,10 @@ idle_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
   p_krn = tiz_get_krn (ap_hdl);
 
   /* TODO: Optimization: find_managing_port is called twice, first time here,
-   * then in the SetParameter implementation of the kernel object. */
-  if (OMX_ErrorNone != (ret_val = tiz_krn_find_managing_port (
-                          p_krn, a_index, a_struct, &p_port)))
+     * then in the SetParameter implementation of the kernel object. */
+  if (OMX_ErrorNone
+      != (ret_val
+          = tiz_krn_find_managing_port (p_krn, a_index, a_struct, &p_port)))
     {
       TIZ_ERROR (ap_hdl, "[%s] : Cannot retrieve managing port...",
                  tiz_err_to_str (ret_val));
@@ -240,8 +241,9 @@ idle_state_set (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
   if (ESubStateIdleToLoaded == new_state
       || ESubStateIdleToExecuting == new_state)
     {
-      if (OMX_ErrorNone != (rc = tiz_fsm_set_state (tiz_get_fsm (ap_hdl),
-                                                    new_state, EStateMax)))
+      if (OMX_ErrorNone
+          != (rc
+              = tiz_fsm_set_state (tiz_get_fsm (ap_hdl), new_state, EStateMax)))
         {
           return rc;
         }

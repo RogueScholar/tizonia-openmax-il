@@ -231,7 +231,8 @@ audioport_set_portdef_format (void * ap_obj,
   assert (p_obj);
   assert (ap_pdef);
 
-  tiz_check_omx (update_audio_coding_type (p_obj, ap_pdef->format.audio.eEncoding));
+  tiz_check_omx (
+    update_audio_coding_type (p_obj, ap_pdef->format.audio.eEncoding));
 
   p_base->portdef_.format.audio.pNativeRender
     = ap_pdef->format.audio.pNativeRender;

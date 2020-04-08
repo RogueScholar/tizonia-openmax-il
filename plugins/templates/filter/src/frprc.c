@@ -48,16 +48,17 @@
 #endif
 
 /* Forward declarations */
-static OMX_ERRORTYPE fr_prc_deallocate_resources (void *);
+static OMX_ERRORTYPE
+fr_prc_deallocate_resources (void *);
 
 static OMX_ERRORTYPE
-transform_buffer (fr_prc_t *ap_prc)
+transform_buffer (fr_prc_t * ap_prc)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
-  OMX_BUFFERHEADERTYPE *p_in
-      = tiz_filter_prc_get_header (ap_prc, ARATELIA_FILE_READER_INPUT_PORT_INDEX);
-  OMX_BUFFERHEADERTYPE *p_out
-      = tiz_filter_prc_get_header (ap_prc, ARATELIA_FILE_READER_OUTPUT_PORT_INDEX);
+  OMX_BUFFERHEADERTYPE * p_in
+    = tiz_filter_prc_get_header (ap_prc, ARATELIA_FILE_READER_INPUT_PORT_INDEX);
+  OMX_BUFFERHEADERTYPE * p_out = tiz_filter_prc_get_header (
+    ap_prc, ARATELIA_FILE_READER_OUTPUT_PORT_INDEX);
 
   if (NULL == p_in || NULL == p_out)
     {
@@ -75,20 +76,21 @@ transform_buffer (fr_prc_t *ap_prc)
       if ((p_in->nFlags & OMX_BUFFERFLAG_EOS) > 0)
         {
           /* Inmediately propagate EOS flag to output */
-          TIZ_TRACE (handleOf (ap_prc), "Propagate EOS flag to output HEADER [%p]",
-                     p_out);
+          TIZ_TRACE (handleOf (ap_prc),
+                     "Propagate EOS flag to output HEADER [%p]", p_out);
           p_out->nFlags |= OMX_BUFFERFLAG_EOS;
           tiz_filter_prc_update_eos_flag (ap_prc, true);
-          p_in->nFlags   = 0;
-          tiz_check_omx
-            (tiz_filter_prc_release_header (ap_prc, ARATELIA_FILE_READER_OUTPUT_PORT_INDEX));
+          p_in->nFlags = 0;
+          tiz_check_omx (tiz_filter_prc_release_header (
+            ap_prc, ARATELIA_FILE_READER_OUTPUT_PORT_INDEX));
         }
     }
 
   return rc;
 }
 
-static void reset_stream_parameters (fr_prc_t *ap_prc)
+static void
+reset_stream_parameters (fr_prc_t * ap_prc)
 {
   assert (ap_prc);
   tiz_filter_prc_update_eos_flag (ap_prc, false);
@@ -99,15 +101,15 @@ static void reset_stream_parameters (fr_prc_t *ap_prc)
  */
 
 static void *
-fr_prc_ctor (void *ap_obj, va_list * app)
+fr_prc_ctor (void * ap_obj, va_list * app)
 {
-  fr_prc_t *p_prc = super_ctor (typeOf (ap_obj, "frprc"), ap_obj, app);
+  fr_prc_t * p_prc = super_ctor (typeOf (ap_obj, "frprc"), ap_obj, app);
   assert (p_prc);
   return p_prc;
 }
 
 static void *
-fr_prc_dtor (void *ap_obj)
+fr_prc_dtor (void * ap_obj)
 {
   (void) fr_prc_deallocate_resources (ap_obj);
   return super_dtor (typeOf (ap_obj, "frprc"), ap_obj);
@@ -118,34 +120,34 @@ fr_prc_dtor (void *ap_obj)
  */
 
 static OMX_ERRORTYPE
-fr_prc_allocate_resources (void *ap_obj, OMX_U32 a_pid)
+fr_prc_allocate_resources (void * ap_obj, OMX_U32 a_pid)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-fr_prc_deallocate_resources (void *ap_obj)
+fr_prc_deallocate_resources (void * ap_obj)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-fr_prc_prepare_to_transfer (void *ap_obj, OMX_U32 a_pid)
+fr_prc_prepare_to_transfer (void * ap_obj, OMX_U32 a_pid)
 {
-  fr_prc_t *p_prc = ap_obj;
+  fr_prc_t * p_prc = ap_obj;
   assert (p_prc);
   reset_stream_parameters (p_prc);
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-fr_prc_transfer_and_process (void *ap_obj, OMX_U32 a_pid)
+fr_prc_transfer_and_process (void * ap_obj, OMX_U32 a_pid)
 {
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-fr_prc_stop_and_return (void *ap_obj)
+fr_prc_stop_and_return (void * ap_obj)
 {
   return tiz_filter_prc_release_all_headers (ap_obj);
 }
@@ -155,9 +157,9 @@ fr_prc_stop_and_return (void *ap_obj)
  */
 
 static OMX_ERRORTYPE
-fr_prc_buffers_ready (const void *ap_prc)
+fr_prc_buffers_ready (const void * ap_prc)
 {
-  fr_prc_t *p_prc = (fr_prc_t *)ap_prc;
+  fr_prc_t * p_prc = (fr_prc_t *) ap_prc;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
   assert (ap_prc);
@@ -173,17 +175,17 @@ fr_prc_buffers_ready (const void *ap_prc)
 }
 
 static OMX_ERRORTYPE
-fr_prc_port_enable (const void *ap_prc, OMX_U32 a_pid)
+fr_prc_port_enable (const void * ap_prc, OMX_U32 a_pid)
 {
-  fr_prc_t *p_prc = (fr_prc_t *)ap_prc;
+  fr_prc_t * p_prc = (fr_prc_t *) ap_prc;
   tiz_filter_prc_update_port_disabled_flag (p_prc, a_pid, false);
   return OMX_ErrorNone;
 }
 
 static OMX_ERRORTYPE
-fr_prc_port_disable (const void *ap_prc, OMX_U32 a_pid)
+fr_prc_port_disable (const void * ap_prc, OMX_U32 a_pid)
 {
-  fr_prc_t *p_prc = (fr_prc_t *)ap_prc;
+  fr_prc_t * p_prc = (fr_prc_t *) ap_prc;
   OMX_ERRORTYPE rc = tiz_filter_prc_release_header (p_prc, a_pid);
   tiz_filter_prc_update_port_disabled_flag (p_prc, a_pid, true);
   return rc;
@@ -194,7 +196,7 @@ fr_prc_port_disable (const void *ap_prc, OMX_U32 a_pid)
  */
 
 static void *
-fr_prc_class_ctor (void *ap_obj, va_list * app)
+fr_prc_class_ctor (void * ap_obj, va_list * app)
 {
   /* NOTE: Class methods might be added in the future. None for now. */
   return super_ctor (typeOf (ap_obj, "frprc_class"), ap_obj, app);
@@ -210,7 +212,8 @@ fr_prc_class_init (void * ap_tos, void * ap_hdl)
   void * tizfilterprc = tiz_get_type (ap_hdl, "tizfilterprc");
   void * frprc_class = factory_new
     /* TIZ_CLASS_COMMENT: class type, class name, parent, size */
-    (classOf (tizfilterprc), "frprc_class", classOf (tizfilterprc), sizeof (fr_prc_class_t),
+    (classOf (tizfilterprc), "frprc_class", classOf (tizfilterprc),
+     sizeof (fr_prc_class_t),
      /* TIZ_CLASS_COMMENT: */
      ap_tos, ap_hdl,
      /* TIZ_CLASS_COMMENT: class constructor */

@@ -32,14 +32,14 @@
 
 #include <string>
 
-#include <boost/algorithm/string/trim.hpp>
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string/trim.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include <ZenLib/Ztring.h>
 #include <MediaInfo/MediaInfo.h>
 #include <MediaInfo/MediaInfo_Const.h>
+#include <ZenLib/Ztring.h>
 
 #include <tizplatform.h>
 
@@ -79,15 +79,15 @@ namespace  // unnamed
     std::string str (mi_stream_audio_info_to_std_string (mi, info));
     if (!str.empty ())
     {
-      result = boost::lexical_cast< OMX_U32 >(str);
+      result = boost::lexical_cast< OMX_U32 > (str);
     }
   }
 
   bool is_pcm_codec (const OMX_AUDIO_CODINGTYPE a_codec_id)
   {
     bool rc = false;
-    if (a_codec_id == OMX_AUDIO_CodingPCM || a_codec_id
-                                             == OMX_AUDIO_CodingADPCM)
+    if (a_codec_id == OMX_AUDIO_CodingPCM
+        || a_codec_id == OMX_AUDIO_CodingADPCM)
     {
       rc = true;
     }
@@ -156,7 +156,7 @@ namespace  // unnamed
              && !profile.compare ("Layer 2"))
 
     {
-      codec = static_cast< OMX_AUDIO_CODINGTYPE >(OMX_AUDIO_CodingMP2);
+      codec = static_cast< OMX_AUDIO_CODINGTYPE > (OMX_AUDIO_CodingMP2);
     }
     else if (!format.compare ("Vorbis"))
 
@@ -171,12 +171,12 @@ namespace  // unnamed
     else if (!format.compare ("Opus"))
 
     {
-      codec = static_cast< OMX_AUDIO_CODINGTYPE >(OMX_AUDIO_CodingOPUS);
+      codec = static_cast< OMX_AUDIO_CODINGTYPE > (OMX_AUDIO_CodingOPUS);
     }
     else if (!format.compare ("FLAC"))
 
     {
-      codec = static_cast< OMX_AUDIO_CODINGTYPE >(OMX_AUDIO_CodingFLAC);
+      codec = static_cast< OMX_AUDIO_CODINGTYPE > (OMX_AUDIO_CodingFLAC);
     }
     else if (!format.compare ("PCM"))
 
@@ -235,7 +235,7 @@ namespace  // unnamed
     }
     return container_format;
   }
-}
+}  // namespace
 
 tiz::probe::probe (const std::string &uri, const bool quiet)
   : uri_ (uri),
@@ -258,7 +258,7 @@ tiz::probe::probe (const std::string &uri, const bool quiet)
     stream_is_cbr_ (false)
 {
   // Defaults are the same as in the standard pcm renderer
-  pcmtype_.nSize = sizeof(OMX_AUDIO_PARAM_PCMMODETYPE);
+  pcmtype_.nSize = sizeof (OMX_AUDIO_PARAM_PCMMODETYPE);
   pcmtype_.nVersion.nVersion = OMX_VERSION;
   pcmtype_.nPortIndex = 0;
   pcmtype_.nChannels = 2;
@@ -272,7 +272,7 @@ tiz::probe::probe (const std::string &uri, const bool quiet)
   pcmtype_.eChannelMapping[1] = OMX_AUDIO_ChannelRF;
 
   // mp2 decoding settings
-  mp2type_.nSize = sizeof(OMX_TIZONIA_AUDIO_PARAM_MP2TYPE);
+  mp2type_.nSize = sizeof (OMX_TIZONIA_AUDIO_PARAM_MP2TYPE);
   mp2type_.nVersion.nVersion = OMX_VERSION;
   mp2type_.nPortIndex = 0;
   mp2type_.nChannels = 2;
@@ -282,7 +282,7 @@ tiz::probe::probe (const std::string &uri, const bool quiet)
   mp2type_.eFormat = OMX_AUDIO_MP2StreamFormatMP2Layer2;
 
   // Defaults are the same as in the standard mp3 decoder
-  mp3type_.nSize = sizeof(OMX_AUDIO_PARAM_MP3TYPE);
+  mp3type_.nSize = sizeof (OMX_AUDIO_PARAM_MP3TYPE);
   mp3type_.nVersion.nVersion = OMX_VERSION;
   mp3type_.nPortIndex = 0;
   mp3type_.nChannels = 2;
@@ -293,7 +293,7 @@ tiz::probe::probe (const std::string &uri, const bool quiet)
   mp3type_.eFormat = OMX_AUDIO_MP3StreamFormatMP2Layer3;
 
   // Defaults for the opus decoder
-  opustype_.nSize = sizeof(OMX_TIZONIA_AUDIO_PARAM_OPUSTYPE);
+  opustype_.nSize = sizeof (OMX_TIZONIA_AUDIO_PARAM_OPUSTYPE);
   opustype_.nVersion.nVersion = OMX_VERSION;
   opustype_.nPortIndex = 0;
   opustype_.nChannels = 2;
@@ -308,7 +308,7 @@ tiz::probe::probe (const std::string &uri, const bool quiet)
   opustype_.eFormat = OMX_AUDIO_OPUSStreamFormatVBR;
 
   // Defaults for the flac decoder
-  flactype_.nSize = sizeof(OMX_TIZONIA_AUDIO_PARAM_FLACTYPE);
+  flactype_.nSize = sizeof (OMX_TIZONIA_AUDIO_PARAM_FLACTYPE);
   flactype_.nVersion.nVersion = OMX_VERSION;
   flactype_.nPortIndex = 0;
   flactype_.nChannels = 2;
@@ -320,7 +320,7 @@ tiz::probe::probe (const std::string &uri, const bool quiet)
   flactype_.eChannelMode = OMX_AUDIO_ChannelModeStereo;
 
   // Defaults for the vorbis decoder
-  vorbistype_.nSize = sizeof(OMX_AUDIO_PARAM_VORBISTYPE);
+  vorbistype_.nSize = sizeof (OMX_AUDIO_PARAM_VORBISTYPE);
   vorbistype_.nVersion.nVersion = OMX_VERSION;
   vorbistype_.nPortIndex = 0;
   vorbistype_.nPortIndex = 0;
@@ -335,7 +335,7 @@ tiz::probe::probe (const std::string &uri, const bool quiet)
   vorbistype_.bDownmix = OMX_FALSE;
 
   // Defaults for the aac decoder
-  aactype_.nSize = sizeof(OMX_AUDIO_PARAM_AACPROFILETYPE);
+  aactype_.nSize = sizeof (OMX_AUDIO_PARAM_AACPROFILETYPE);
   aactype_.nVersion.nVersion = OMX_VERSION;
   aactype_.nPortIndex = 0;
   aactype_.nChannels = 2;
@@ -468,7 +468,7 @@ void tiz::probe::probe_stream ()
     {
       domain_ = OMX_PortDomainAudio;
       audio_coding_type_
-          = static_cast< OMX_AUDIO_CODINGTYPE >(OMX_AUDIO_CodingPCM);
+          = static_cast< OMX_AUDIO_CODINGTYPE > (OMX_AUDIO_CodingPCM);
       pcmtype_.nSamplingRate = samplerate;
       pcmtype_.nChannels = nchannels;
       pcmtype_.nBitPerSample = bitdepth;
@@ -480,7 +480,8 @@ void tiz::probe::probe_stream ()
   }
   else
   {
-    TIZ_LOG (TIZ_PRIORITY_NOTICE, "Unable to open media file : %s", uri_.c_str());
+    TIZ_LOG (TIZ_PRIORITY_NOTICE, "Unable to open media file : %s",
+             uri_.c_str ());
   }
 }
 
@@ -492,7 +493,8 @@ void tiz::probe::set_mp2_codec_info (const OMX_U32 samplerate,
                                      const OMX_NUMERICALDATATYPE sign)
 {
   domain_ = OMX_PortDomainAudio;
-  audio_coding_type_ = static_cast< OMX_AUDIO_CODINGTYPE >(OMX_AUDIO_CodingMP2);
+  audio_coding_type_
+      = static_cast< OMX_AUDIO_CODINGTYPE > (OMX_AUDIO_CodingMP2);
   mp2type_.nSampleRate = pcmtype_.nSamplingRate = samplerate;
   mp2type_.nBitRate = bitrate;
   mp2type_.nChannels = pcmtype_.nChannels = nchannels;
@@ -515,7 +517,8 @@ void tiz::probe::set_mp3_codec_info (const OMX_U32 samplerate,
                                      const OMX_NUMERICALDATATYPE sign)
 {
   domain_ = OMX_PortDomainAudio;
-  audio_coding_type_ = static_cast< OMX_AUDIO_CODINGTYPE >(OMX_AUDIO_CodingMP3);
+  audio_coding_type_
+      = static_cast< OMX_AUDIO_CODINGTYPE > (OMX_AUDIO_CodingMP3);
   mp3type_.nSampleRate = pcmtype_.nSamplingRate = samplerate;
   mp3type_.nBitRate = bitrate;
   mp3type_.nChannels = pcmtype_.nChannels = nchannels;
@@ -538,7 +541,8 @@ void tiz::probe::set_aac_codec_info (const OMX_U32 samplerate,
                                      const OMX_NUMERICALDATATYPE sign)
 {
   domain_ = OMX_PortDomainAudio;
-  audio_coding_type_ = static_cast< OMX_AUDIO_CODINGTYPE >(OMX_AUDIO_CodingAAC);
+  audio_coding_type_
+      = static_cast< OMX_AUDIO_CODINGTYPE > (OMX_AUDIO_CodingAAC);
   aactype_.nSampleRate = pcmtype_.nSamplingRate = samplerate;
   aactype_.nBitRate = bitrate;
   aactype_.nChannels = pcmtype_.nChannels = nchannels;
@@ -568,7 +572,7 @@ void tiz::probe::set_opus_codec_info (const OMX_U32 samplerate,
 {
   domain_ = OMX_PortDomainAudio;
   audio_coding_type_
-      = static_cast< OMX_AUDIO_CODINGTYPE >(OMX_AUDIO_CodingOPUS);
+      = static_cast< OMX_AUDIO_CODINGTYPE > (OMX_AUDIO_CodingOPUS);
   opustype_.nSampleRate = pcmtype_.nSamplingRate = samplerate;
   opustype_.nChannels = pcmtype_.nChannels = nchannels;
 
@@ -587,7 +591,7 @@ void tiz::probe::set_flac_codec_info (const OMX_U32 samplerate,
 {
   domain_ = OMX_PortDomainAudio;
   audio_coding_type_
-      = static_cast< OMX_AUDIO_CODINGTYPE >(OMX_AUDIO_CodingFLAC);
+      = static_cast< OMX_AUDIO_CODINGTYPE > (OMX_AUDIO_CodingFLAC);
   flactype_.nSampleRate = pcmtype_.nSamplingRate = samplerate;
   flactype_.nChannels = pcmtype_.nChannels = nchannels;
 
@@ -610,7 +614,7 @@ void tiz::probe::set_vorbis_codec_info (const OMX_U32 samplerate,
 {
   domain_ = OMX_PortDomainAudio;
   audio_coding_type_
-      = static_cast< OMX_AUDIO_CODINGTYPE >(OMX_AUDIO_CodingVORBIS);
+      = static_cast< OMX_AUDIO_CODINGTYPE > (OMX_AUDIO_CodingVORBIS);
   vorbistype_.nSampleRate = pcmtype_.nSamplingRate = samplerate;
   vorbistype_.nChannels = pcmtype_.nChannels = nchannels;
 
@@ -752,25 +756,25 @@ bool tiz::probe::is_cbr_stream ()
 }
 
 std::string tiz::probe::retrieve_meta_data_str (
-    TagLib::String (TagLib::Tag::*TagFunction)() const) const
+    TagLib::String (TagLib::Tag::*TagFunction) () const) const
 {
   assert (TagFunction);
   if (!meta_file_.isNull () && meta_file_.tag ())
   {
     TagLib::Tag *tag = meta_file_.tag ();
-    return (tag->*TagFunction)().stripWhiteSpace ().to8Bit ();
+    return (tag->*TagFunction) ().stripWhiteSpace ().to8Bit ();
   }
   return std::string ();
 }
 
 unsigned int tiz::probe::retrieve_meta_data_uint (
-    TagLib::uint (TagLib::Tag::*TagFunction)() const) const
+    TagLib::uint (TagLib::Tag::*TagFunction) () const) const
 {
   assert (TagFunction);
   if (!meta_file_.isNull () && meta_file_.tag ())
   {
     TagLib::Tag *tag = meta_file_.tag ();
-    return (tag->*TagFunction)();
+    return (tag->*TagFunction) ();
   }
   return 0;
 }
@@ -792,7 +796,7 @@ std::string tiz::probe::album () const
 
 std::string tiz::probe::year () const
 {
-  return boost::lexical_cast< std::string >(
+  return boost::lexical_cast< std::string > (
       retrieve_meta_data_uint (&TagLib::Tag::year));
 }
 
@@ -803,7 +807,7 @@ std::string tiz::probe::comment () const
 
 std::string tiz::probe::track () const
 {
-  return boost::lexical_cast< std::string >(
+  return boost::lexical_cast< std::string > (
       retrieve_meta_data_uint (&TagLib::Tag::track));
 }
 
@@ -831,13 +835,13 @@ std::string tiz::probe::stream_length () const
 
     if (hours > 0)
     {
-      length_str.append (boost::lexical_cast< std::string >(hours));
+      length_str.append (boost::lexical_cast< std::string > (hours));
       length_str.append ("h:");
     }
 
     if (minutes > 0)
     {
-      length_str.append (boost::lexical_cast< std::string >(minutes));
+      length_str.append (boost::lexical_cast< std::string > (minutes));
       length_str.append ("m:");
     }
 
@@ -886,8 +890,8 @@ void tiz::probe::dump_mp2_and_pcm_info ()
   }
 
   printf ("     ");
-  TIZ_PRINTF_C05 ("%ld Ch, %g KHz, %lu Kbps, %lu:%s:%s",
-                  mp2type_.nChannels, ((float)mp2type_.nSampleRate) / 1000,
+  TIZ_PRINTF_C05 ("%ld Ch, %g KHz, %lu Kbps, %lu:%s:%s", mp2type_.nChannels,
+                  ((float)mp2type_.nSampleRate) / 1000,
                   mp2type_.nBitRate / 1000, pcmtype_.nBitPerSample,
                   pcmtype_.eNumData == OMX_NumericalDataSigned ? "s" : "u",
                   pcmtype_.eEndian == OMX_EndianBig ? "b" : "l");
@@ -901,8 +905,8 @@ void tiz::probe::dump_mp3_and_pcm_info ()
   }
 
   printf ("     ");
-  TIZ_PRINTF_C05 ("%ld Ch, %g KHz, %lu Kbps, %lu:%s:%s",
-                  mp3type_.nChannels, ((float)mp3type_.nSampleRate) / 1000,
+  TIZ_PRINTF_C05 ("%ld Ch, %g KHz, %lu Kbps, %lu:%s:%s", mp3type_.nChannels,
+                  ((float)mp3type_.nSampleRate) / 1000,
                   mp3type_.nBitRate / 1000, pcmtype_.nBitPerSample,
                   pcmtype_.eNumData == OMX_NumericalDataSigned ? "s" : "u",
                   pcmtype_.eEndian == OMX_EndianBig ? "b" : "l");
@@ -916,8 +920,8 @@ void tiz::probe::dump_aac_and_pcm_info ()
   }
 
   printf ("     ");
-  TIZ_PRINTF_C05 ("%ld Ch, %g KHz, %lu Kbps, %lu:%s:%s",
-                  aactype_.nChannels, ((float)aactype_.nSampleRate) / 1000,
+  TIZ_PRINTF_C05 ("%ld Ch, %g KHz, %lu Kbps, %lu:%s:%s", aactype_.nChannels,
+                  ((float)aactype_.nSampleRate) / 1000,
                   aactype_.nBitRate / 1000, pcmtype_.nBitPerSample,
                   pcmtype_.eNumData == OMX_NumericalDataSigned ? "s" : "u",
                   pcmtype_.eEndian == OMX_EndianBig ? "b" : "l");
@@ -953,7 +957,8 @@ void tiz::probe::dump_stream_metadata ()
   printf ("     ");
   TIZ_PRINTF_C06 ("Duration : %s", stream_length ().c_str ());
   printf ("     ");
-  TIZ_PRINTF_C06 ("Size : %.2g MiB",
+  TIZ_PRINTF_C06 (
+      "Size : %.2g MiB",
       ((float)boost::filesystem::file_size (uri_.c_str ()) / (1024 * 1024)));
   if (!genre ().empty ())
   {

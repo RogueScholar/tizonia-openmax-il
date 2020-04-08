@@ -31,8 +31,8 @@
 
 #include "tizservicegraphfsm.hpp"
 
-char const* const tiz::graph::servicefsm::pstate(tiz::graph::servicefsm::fsm const& p)
+char const* const tiz::graph::servicefsm::pstate (
+    tiz::graph::servicefsm::fsm const& p)
 {
-  return tiz::graph::servicefsm::state_names[p.current_state()[0]];
+  return tiz::graph::servicefsm::state_names[p.current_state ()[0]];
 }
-

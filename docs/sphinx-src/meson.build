@@ -27,7 +27,7 @@ conf_py_tmp = configure_file(
 #     '-e', 's|"../doxygen-src/xml/"|"@OUTDIR@/../doxygen-src/xml/"|',
 #     '-e', 's|\'_static\'|\'meson._static\'',
 #     '-e', 'w @OUTPUT@',
-#     '@INPUT@' 
+#     '@INPUT@'
 #   ]
 #)
 

@@ -29,7 +29,8 @@
 #define WEBMDMUX_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_Core.h>

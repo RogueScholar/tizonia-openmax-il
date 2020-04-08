@@ -88,7 +88,7 @@ uri_cfgport_ctor (void * ap_obj, va_list * app)
   p_obj->p_uri_ = retrieve_default_uri_from_config (p_obj);
 
   /* In addition to the indexes registered by the parent class, register here
-     this port's specific ones */
+       this port's specific ones */
   tiz_check_omx_ret_null (
     tiz_port_register_index (p_obj, OMX_IndexParamContentURI)); /* r/w */
 

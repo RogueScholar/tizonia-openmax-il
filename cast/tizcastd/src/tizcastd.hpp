@@ -56,7 +56,7 @@ namespace tiz
   {
     class worker;
   }
-}
+}  // namespace tiz
 
 class tizcastd : public com::aratelia::tiz::tizcastif_adaptor,
                  public Tiz::DBus::IntrospectableAdaptor,

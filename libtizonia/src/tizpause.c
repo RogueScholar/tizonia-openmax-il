@@ -69,7 +69,7 @@ pause_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
   /* TODO: Optimization: find_managing_port is called twice, first time here,
-   * then in the SetParameter implementation of the kernel object. */
+     * then in the SetParameter implementation of the kernel object. */
   if (OMX_ErrorNone
       != (rc = tiz_krn_find_managing_port (p_krn, a_index, a_struct, &p_port)))
     {
@@ -196,8 +196,9 @@ pause_state_set (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
   /* Move FSM to the transitional state */
   if (ESubStatePauseToIdle == new_state)
     {
-      if (OMX_ErrorNone != (rc = tiz_fsm_set_state (tiz_get_fsm (ap_hdl),
-                                                    new_state, EStateMax)))
+      if (OMX_ErrorNone
+          != (rc
+              = tiz_fsm_set_state (tiz_get_fsm (ap_hdl), new_state, EStateMax)))
         {
           return rc;
         }

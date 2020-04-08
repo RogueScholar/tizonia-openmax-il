@@ -412,9 +412,8 @@ store_chromecast_metadata (cc_prc_t * ap_prc)
     char status_line[OMX_MAX_STRINGNAME_SIZE];
     snprintf (cast_name_or_ip, OMX_MAX_STRINGNAME_SIZE + 3, "  %s",
               (char *) ap_prc->cc_session_.cNameOrIpAddr);
-    cast_name_or_ip[OMX_MAX_STRINGNAME_SIZE-1] = '\0';
-    snprintf (status_line, OMX_MAX_STRINGNAME_SIZE,
-              "(%s) (Media:%s) (Vol:%ld)",
+    cast_name_or_ip[OMX_MAX_STRINGNAME_SIZE - 1] = '\0';
+    snprintf (status_line, OMX_MAX_STRINGNAME_SIZE, "(%s) (Media:%s) (Vol:%ld)",
               tiz_cast_client_cast_status_str (ap_prc->cc_cast_status_),
               tiz_cast_client_media_status_str (ap_prc->cc_media_status_),
               ap_prc->volume_);
@@ -525,8 +524,7 @@ static OMX_ERRORTYPE
 prc_deallocate_resources (void * ap_prc)
 {
   cc_prc_t * p_prc = ap_prc;
-  TIZ_TRACE (handleOf (p_prc), "p_prc->p_cc_  : [%p]",
-             p_prc->p_cc_);
+  TIZ_TRACE (handleOf (p_prc), "p_prc->p_cc_  : [%p]", p_prc->p_cc_);
   assert (p_prc);
   delete_uri (p_prc);
   tiz_cast_client_destroy (p_prc->p_cc_);
@@ -761,8 +759,9 @@ cc_prc_store_stream_metadata (const void * ap_obj)
 }
 
 static OMX_ERRORTYPE
-prc_store_stream_metadata_item (const void * ap_obj, const char * ap_header_name,
-                              const char * ap_header_info)
+prc_store_stream_metadata_item (const void * ap_obj,
+                                const char * ap_header_name,
+                                const char * ap_header_info)
 {
   cc_prc_t * p_prc = (cc_prc_t *) ap_obj;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
@@ -812,13 +811,13 @@ prc_store_stream_metadata_item (const void * ap_obj, const char * ap_header_name
 
 OMX_ERRORTYPE
 cc_prc_store_stream_metadata_item (const void * ap_obj,
-                                 const char * ap_header_name,
-                                 const char * ap_header_info)
+                                   const char * ap_header_name,
+                                   const char * ap_header_info)
 {
   const cc_prc_class_t * class = classOf (ap_obj);
   assert (class->store_stream_metadata_item);
   return class->store_stream_metadata_item (ap_obj, ap_header_name,
-                                          ap_header_info);
+                                            ap_header_info);
 }
 
 static OMX_ERRORTYPE
@@ -961,7 +960,8 @@ cc_prc_init (void * ap_tos, void * ap_hdl)
      /* TIZ_CLASS_COMMENT: */
      cc_prc_get_prev_url, prc_get_prev_url,
      /* TIZ_CLASS_COMMENT: */
-     cc_prc_get_current_stream_album_art_url, prc_get_current_stream_album_art_url,
+     cc_prc_get_current_stream_album_art_url,
+     prc_get_current_stream_album_art_url,
      /* TIZ_CLASS_COMMENT: */
      cc_prc_store_stream_metadata, prc_store_stream_metadata,
      /* TIZ_CLASS_COMMENT: */

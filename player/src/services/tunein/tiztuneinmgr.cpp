@@ -99,15 +99,14 @@ graphmgr::tuneinmgrops::tuneinmgrops (
 {
 }
 
-tizgraph_ptr_t graphmgr::tuneinmgrops::get_graph (
-    const std::string & /* uri */)
+tizgraph_ptr_t graphmgr::tuneinmgrops::get_graph (const std::string & /* uri */)
 {
   tizgraph_ptr_t g_ptr;
   std::string encoding ("pcm");
   tizgraph_ptr_map_t::const_iterator it = graph_registry_.find (encoding);
   if (it == graph_registry_.end ())
   {
-    g_ptr = boost::make_shared< tiz::graph::tunein >();
+    g_ptr = boost::make_shared< tiz::graph::tunein > ();
     if (g_ptr)
     {
       // TODO: Check rc
@@ -154,7 +153,7 @@ void graphmgr::tuneinmgrops::do_execute ()
   assert (playlist_);
   assert (p_mgr_);
 
-  tuneinmgr *p_clientmgr = dynamic_cast< tuneinmgr * >(p_mgr_);
+  tuneinmgr *p_clientmgr = dynamic_cast< tuneinmgr * > (p_mgr_);
   assert (p_clientmgr);
 
   graph_config_.reset ();
@@ -167,7 +166,7 @@ void graphmgr::tuneinmgrops::do_execute ()
 }
 
 bool graphmgr::tuneinmgrops::is_fatal_error (const OMX_ERRORTYPE error,
-                                              const std::string &msg)
+                                             const std::string &msg)
 {
   bool rc = false;
   TIZ_LOG (TIZ_PRIORITY_ERROR, "[%s] : %s", tiz_err_to_str (error),

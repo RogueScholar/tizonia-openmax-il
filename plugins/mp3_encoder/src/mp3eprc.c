@@ -523,7 +523,7 @@ mp3e_proc_buffers_ready (const void * ap_obj)
   if (p_prc->eos_ && p_prc->lame_flushed_ && p_prc->p_outhdr_)
     {
       /* EOS has been received and all the input data has been consumed
-       * already, so its time to propagate the EOS flag */
+         * already, so its time to propagate the EOS flag */
       TIZ_TRACE (handleOf (p_prc), "p_prc->eos OUTPUT HEADER [%p]...",
                  p_prc->p_outhdr_);
       p_prc->p_outhdr_->nFlags |= OMX_BUFFERFLAG_EOS;

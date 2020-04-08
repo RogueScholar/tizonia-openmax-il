@@ -251,32 +251,32 @@ validate_stateset (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       && OMX_CommandStateSet != p_obj->in_progress_cmd_)
     {
       /* There is a command of a different type going on. Reject this
-       * operation.  */
+         * operation.  */
       return OMX_ErrorIncorrectStateOperation;
     }
 
   /* OK, at this point, we now there is a state transition in progress... By
-   * default, we do not allow the state transition command, but there are
-   * some exceptions. */
+     * default, we do not allow the state transition command, but there are
+     * some exceptions. */
 
   /* If we are is a transitional state, check if we can allow its
-   * cancellation. */
+     * cancellation. */
 
   if (p_obj->cur_state_id_ > EStateWaitForResources
       && p_obj->cur_state_id_ < EStateMax)
     {
       /* We are is a transitional state, which may or may not be
-       * cancelled. Check that. */
+         * cancelled. Check that. */
 
       if (ESubStateLoadedToIdle == p_obj->cur_state_id_
           && a_state == OMX_StateLoaded)
         {
           /* Check the population status of the kernel. We will reject the
-           * command if the kernel cannot be fully unpopulated by the IL
-           * client. In other words, there is at least a buffer header
-           * allocated that needs to be freed by a tunneled component. If
-           * that is the case, we won't allow the cancellation of the ongoing
-           * transition. */
+             * command if the kernel cannot be fully unpopulated by the IL
+             * client. In other words, there is at least a buffer header
+             * allocated that needs to be freed by a tunneled component. If
+             * that is the case, we won't allow the cancellation of the ongoing
+             * transition. */
           OMX_BOOL may_be_fully_unpopulated = OMX_FALSE;
           const tiz_krn_population_status_t kps
             = tiz_krn_get_population_status (p_krn, OMX_ALL,
@@ -312,14 +312,14 @@ validate_portdisable (const void * ap_obj, OMX_HANDLETYPE ap_hdl, OMX_U32 a_pid)
              a_pid, tiz_fsm_state_to_str (p_obj->cur_state_id_));
 
   /* If no other command is currently being processed, the go on with this
-   * one */
+     * one */
   if (OMX_CommandMax == p_obj->in_progress_cmd_)
     {
       return OMX_ErrorNone;
     }
 
   /* If OMX_ALL, then reject the command. We'll accept a "cancellation"
-   * command only if it applies to a single port. */
+     * command only if it applies to a single port. */
   if (a_pid == OMX_ALL)
     {
       return OMX_ErrorIncorrectStateOperation;
@@ -328,8 +328,8 @@ validate_portdisable (const void * ap_obj, OMX_HANDLETYPE ap_hdl, OMX_U32 a_pid)
   if (OMX_CommandStateSet == p_obj->in_progress_cmd_)
     {
       /* OK, at this point, we now there is a state transition in progress... By
-       * default, we do not allow the port disable command, but there are
-       * exceptions. */
+         * default, we do not allow the port disable command, but there are
+         * exceptions. */
 
       if (p_obj->cur_state_id_ > EStateWaitForResources
           && p_obj->cur_state_id_ < EStateMax)
@@ -399,7 +399,7 @@ validate_sendcommand (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       case OMX_CommandStateSet:
         {
           /* Verify that this state transition may be processed at this specific
-         * point in time */
+        * point in time */
           rc = validate_stateset (p_obj, ap_hdl, a_param1);
         }
         break;
@@ -407,7 +407,7 @@ validate_sendcommand (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
       case OMX_CommandPortDisable:
         {
           /* Verify that this port transition may be processed at this specific
-         * point in time */
+        * point in time */
           rc = validate_portdisable (p_obj, ap_hdl, a_param1);
         }
         break;
@@ -440,11 +440,11 @@ validate_sendcommand (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
 
           assert (p_port);
           /* Not sure whether OMX_ALL may be used with OMX_CommandMarkBuffer. For
-         * for now explicitly disallow it */
+        * for now explicitly disallow it */
           assert (OMX_ALL != a_param1);
 
           /* OMX_CommandMarkBuffer shall be allowed in Exe, Paused or port
-         * Disabled. Reject otherwise */
+        * Disabled. Reject otherwise */
           if (!(TIZ_PORT_IS_DISABLED (p_port)
                 || EStateExecuting == p_obj->cur_state_id_
                 || EStatePause == p_obj->cur_state_id_))
@@ -462,8 +462,8 @@ validate_sendcommand (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
   if (OMX_ErrorNone == rc)
     {
       /* At this point, we are accepting a command for processing. If we have
-       * an unfinished command, then the new command is interpreted as a
-       * cancellation. */
+         * an unfinished command, then the new command is interpreted as a
+         * cancellation. */
       if (p_obj->in_progress_cmd_ != OMX_CommandMax)
         {
           TIZ_TRACE (ap_hdl,
@@ -566,8 +566,9 @@ fsm_SendCommand (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
   tiz_fsm_msg_sendcommand_t * p_msg_sc = NULL;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
-  if (OMX_ErrorNone != (rc = validate_sendcommand (p_obj, ap_hdl, a_cmd,
-                                                   a_param1, ap_cmd_data)))
+  if (OMX_ErrorNone
+      != (rc
+          = validate_sendcommand (p_obj, ap_hdl, a_cmd, a_param1, ap_cmd_data)))
     {
       TIZ_ERROR (ap_hdl,
                  "[%s] : (Invalid command - "
@@ -938,7 +939,7 @@ fsm_SetCallbacks (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
     }
 
   /* We only do validation here, so no need to forward this API to the kernel
-   * of processor */
+     * of processor */
 
   return OMX_ErrorNone;
 }
@@ -965,7 +966,7 @@ fsm_dispatch_msg (const void * ap_obj, OMX_PTR ap_msg)
   rc = tiz_fsm_msg_to_fnt_tbl[p_msg->class]((OMX_PTR) ap_obj, p_msg);
 
   /* There is an error, check whether we have an ongoing command. If that's the
-   * case, this error will cancel the in-progress command. */
+     * case, this error will cancel the in-progress command. */
   if (OMX_ErrorNone != rc)
     {
       TIZ_ERROR (handleOf (p_obj), "[%s] - [%s]...", tiz_err_to_str (rc),
@@ -980,7 +981,7 @@ fsm_dispatch_msg (const void * ap_obj, OMX_PTR ap_msg)
           p_obj->in_progress_param1_ = 0;
 
           /* This is to make sure that the servant base class does not report
-           * this error twice */
+             * this error twice */
           rc = OMX_ErrorNone;
         }
     }
@@ -1038,22 +1039,24 @@ fsm_set_state (const void * ap_obj, tiz_fsm_state_id_t a_new_state,
           p_obj->in_progress_param1_ = 0;
 
           /* TODO: Perhaps implement a transitional state instead of notifying
-           * Exe twice */
+             * Exe twice */
           if (EStateExecuting == a_new_state)
             {
               OMX_ERRORTYPE rc = OMX_ErrorNone;
               /* First notify the kernel servant */
-              if (OMX_ErrorNone != (rc = tiz_api_SendCommand (
-                                      p_krn, handleOf (p_obj),
-                                      OMX_CommandStateSet, a_new_state, NULL)))
+              if (OMX_ErrorNone
+                  != (rc = tiz_api_SendCommand (p_krn, handleOf (p_obj),
+                                                OMX_CommandStateSet,
+                                                a_new_state, NULL)))
                 {
                   return rc;
                 }
 
               /* Now notify the processor servant */
-              if (OMX_ErrorNone != (rc = tiz_api_SendCommand (
-                                      p_prc, handleOf (p_obj),
-                                      OMX_CommandStateSet, a_new_state, NULL)))
+              if (OMX_ErrorNone
+                  != (rc = tiz_api_SendCommand (p_prc, handleOf (p_obj),
+                                                OMX_CommandStateSet,
+                                                a_new_state, NULL)))
                 {
                   return rc;
                 }

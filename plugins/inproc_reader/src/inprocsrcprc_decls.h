@@ -59,4 +59,4 @@ extern "C"
 }
 #endif
 
-#endif                          /* INPROCSRCPRC_DECLS_H */
+#endif /* INPROCSRCPRC_DECLS_H */

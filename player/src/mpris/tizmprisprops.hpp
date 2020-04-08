@@ -33,8 +33,8 @@
 #include <string>
 #include <vector>
 
-#include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include <tizplatform.h>
 
@@ -52,6 +52,7 @@ namespace tiz
                                 bool has_track_list, std::string identity,
                                 std::vector< std::string > uri_schemes,
                                 std::vector< std::string > mime_types);
+
     public:
       bool can_quit_;
       bool can_raise_;
@@ -73,10 +74,10 @@ namespace tiz
     public:
       mpris_mediaplayer2_player_props (
           std::string playback_status, std::string loop_status, double rate,
-          bool shuffle, const track_metadata_map_t &metadata,
-          double volume, int64_t position, double minimum_rate,
-          double maximum_rate, bool can_go_next, bool can_go_previous,
-          bool can_play, bool can_pause, bool can_seek, bool can_control);
+          bool shuffle, const track_metadata_map_t &metadata, double volume,
+          int64_t position, double minimum_rate, double maximum_rate,
+          bool can_go_next, bool can_go_previous, bool can_play, bool can_pause,
+          bool can_seek, bool can_control);
 
     public:
       std::string playback_status_;

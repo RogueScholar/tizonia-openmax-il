@@ -39,5 +39,3 @@ libtizspotify_la_LIBADD = \
 	@BOOST_PYTHON_LIB@ \
 	@PYTHON_LIBS@ \
 	-lboost_python3
-
-

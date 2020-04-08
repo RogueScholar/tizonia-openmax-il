@@ -30,7 +30,8 @@
 #define TIZOGGPORT_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_TizoniaExt.h>
@@ -38,20 +39,20 @@ extern "C" {
 
 #include <tizport_decls.h>
 
-typedef struct tiz_oggport tiz_oggport_t;
-struct tiz_oggport
-{
-  /* Object */
-  const tiz_port_t _;
-};
+  typedef struct tiz_oggport tiz_oggport_t;
+  struct tiz_oggport
+  {
+    /* Object */
+    const tiz_port_t _;
+  };
 
-typedef struct tiz_oggport_class tiz_oggport_class_t;
-struct tiz_oggport_class
-{
-  /* Class */
-  const tiz_port_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct tiz_oggport_class tiz_oggport_class_t;
+  struct tiz_oggport_class
+  {
+    /* Class */
+    const tiz_port_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

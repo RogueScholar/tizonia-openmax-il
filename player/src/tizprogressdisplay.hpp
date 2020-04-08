@@ -28,8 +28,8 @@
 #ifndef TIZPROGRESSDISPLAY_HPP
 #define TIZPROGRESSDISPLAY_HPP
 
-#include <iostream>
 #include <cmath>
+#include <iostream>
 
 #include <boost/noncopyable.hpp>
 
@@ -69,9 +69,9 @@ namespace tiz
                                  = "  \n",  // leading strings
                                  const std::string &s2 = "0s ",
                                  const std::string &s3 = "   ");
-      ~progress_display();
+      ~progress_display ();
 
-      void restart(unsigned long expected_count);
+      void restart (unsigned long expected_count);
 
       unsigned long operator+= (unsigned long increment)
       //  Effects: Display appropriate progress tic if needed.

@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -489,8 +490,7 @@ extern "C"
    *
    * @param ap_spotify The spotify handle.
    */
-  const char *tiz_spotify_get_current_track_uri (
-      tiz_spotify_t *ap_spotify);
+  const char *tiz_spotify_get_current_track_uri (tiz_spotify_t *ap_spotify);
 
   /**
    * Retrieve the current track's artist URI.
@@ -499,7 +499,8 @@ extern "C"
    *
    * @param ap_spotify The tiz_spotify handle.
    */
-  const char *tiz_spotify_get_current_track_artist_uri (tiz_spotify_t *ap_spotify);
+  const char *tiz_spotify_get_current_track_artist_uri (
+      tiz_spotify_t *ap_spotify);
 
   /**
    * Retrieve the current track's album URI.
@@ -508,7 +509,8 @@ extern "C"
    *
    * @param ap_spotify The tiz_spotify handle.
    */
-  const char *tiz_spotify_get_current_track_album_uri (tiz_spotify_t *ap_spotify);
+  const char *tiz_spotify_get_current_track_album_uri (
+      tiz_spotify_t *ap_spotify);
 
   /**
    * Return 'Explicit' if the current track is 'explicit', NULL otherwise.

@@ -139,8 +139,9 @@ fw_proc_write_buffer (const void * ap_obj, OMX_BUFFERHEADERTYPE * p_hdr)
   if (p_prc->p_file_ && !(p_prc->eos_) && p_hdr->nFilledLen > 0)
     {
       int elems_written = 0;
-      if (1 != (elems_written = fwrite (p_hdr->pBuffer + p_hdr->nOffset,
-                                        p_hdr->nFilledLen, 1, p_prc->p_file_)))
+      if (1
+          != (elems_written = fwrite (p_hdr->pBuffer + p_hdr->nOffset,
+                                      p_hdr->nFilledLen, 1, p_prc->p_file_)))
         {
           TIZ_ERROR (handleOf (p_prc),
                      "elems_written [%d] p_hdr->nFilledLen [%d]: "
@@ -242,8 +243,8 @@ fw_proc_buffers_ready (const void * ap_obj)
     {
       OMX_BUFFERHEADERTYPE * p_hdr = NULL;
       tiz_check_omx (tiz_krn_claim_buffer (tiz_get_krn (handleOf (p_prc)),
-                                               ARATELIA_FILE_WRITER_PORT_INDEX,
-                                               0, &p_hdr));
+                                           ARATELIA_FILE_WRITER_PORT_INDEX, 0,
+                                           &p_hdr));
       if (p_hdr)
         {
           TIZ_TRACE (handleOf (p_prc), "Claimed HEADER [%p]...", p_hdr);

@@ -61,7 +61,7 @@ namespace
   {
     return operand.type () == typeid (T);
   }
-}
+}  // namespace
 
 void *cast::thread_func (void *p_arg)
 {

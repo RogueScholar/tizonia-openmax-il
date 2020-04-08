@@ -176,8 +176,9 @@ store_metadata (opusd_prc_t * ap_prc, const char * ap_header_name,
       info_len = strnlen (ap_header_info, OMX_MAX_STRINGNAME_SIZE - 1) + 1;
       metadata_len = sizeof (OMX_CONFIG_METADATAITEMTYPE) + info_len;
 
-      if (NULL == (p_meta = (OMX_CONFIG_METADATAITEMTYPE *) tiz_mem_calloc (
-                     1, metadata_len)))
+      if (NULL
+          == (p_meta = (OMX_CONFIG_METADATAITEMTYPE *) tiz_mem_calloc (
+                1, metadata_len)))
         {
           rc = OMX_ErrorInsufficientResources;
         }
@@ -277,11 +278,11 @@ init_opus_decoder (opusd_prc_t * ap_prc)
     OMX_U8 * p_data = p_in->pBuffer + p_in->nOffset;
     const OMX_U32 nbytes = p_in->nFilledLen;
     /*If playing to audio out, default the rate to 48000
-     * instead of the original rate. The original rate is
-     * only important for minimizing surprise about the rate
-     * of output files and preserving length, which aren't
-     * relevant for playback. Many audio devices sound
-     * better at 48kHz and not resampling also saves CPU. */
+         * instead of the original rate. The original rate is
+         * only important for minimizing surprise about the rate
+         * of output files and preserving length, which aren't
+         * relevant for playback. Many audio devices sound
+         * better at 48kHz and not resampling also saves CPU. */
     float gain = 1;
     float manual_gain = 0;
     int streams = 0;
@@ -635,7 +636,7 @@ opusd_prc_buffers_ready (const void * ap_obj)
       if (!p_prc->opus_header_parsed_)
         {
           /* If first packet in the logical stream, process the Opus header and
-           * instantiate an opus decoder with the right settings */
+             * instantiate an opus decoder with the right settings */
           rc = init_opus_decoder (p_prc);
           tiz_check_true_ret_val (!(OMX_ErrorNoMore == rc), OMX_ErrorNone);
           tiz_check_omx (rc);

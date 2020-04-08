@@ -163,22 +163,23 @@ namespace tiz
 
       static OMX_ERRORTYPE set_pcm_mode (
           const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-          boost::function< void(OMX_AUDIO_PARAM_PCMMODETYPE &pcmmode) > getter);
+          boost::function< void (OMX_AUDIO_PARAM_PCMMODETYPE &pcmmode) >
+              getter);
 
       static OMX_ERRORTYPE set_mp3_type (
           const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-          boost::function< void(OMX_AUDIO_PARAM_MP3TYPE &mp3type) > getter,
+          boost::function< void (OMX_AUDIO_PARAM_MP3TYPE &mp3type) > getter,
           bool &need_port_settings_changed_evt);
 
       static OMX_ERRORTYPE set_aac_type (
           const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-          boost::function< void(OMX_AUDIO_PARAM_AACPROFILETYPE &aactype) >
+          boost::function< void (OMX_AUDIO_PARAM_AACPROFILETYPE &aactype) >
               getter,
           bool &need_port_settings_changed_evt);
 
       static OMX_ERRORTYPE set_flac_type (
           const OMX_HANDLETYPE handle, const OMX_U32 port_id,
-          boost::function< void(OMX_TIZONIA_AUDIO_PARAM_FLACTYPE &flactype) >
+          boost::function< void (OMX_TIZONIA_AUDIO_PARAM_FLACTYPE &flactype) >
               getter,
           bool &need_port_settings_changed_evt);
 

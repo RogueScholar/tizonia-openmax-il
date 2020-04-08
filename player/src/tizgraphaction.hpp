@@ -36,10 +36,10 @@
 #define TIZ_LOG_CATEGORY_NAME "tiz.play.graph.action"
 #endif
 
-#define G_ACTION_LOG()                                                  \
-  do                                                                    \
-  {                                                                     \
-    TIZ_LOG (TIZ_PRIORITY_TRACE, "ACTION [%s]", typeid(*this).name ()); \
+#define G_ACTION_LOG()                                                   \
+  do                                                                     \
+  {                                                                      \
+    TIZ_LOG (TIZ_PRIORITY_TRACE, "ACTION [%s]", typeid (*this).name ()); \
   } while (0)
 
 namespace tiz
@@ -50,7 +50,7 @@ namespace tiz
     struct do_probe
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -63,7 +63,7 @@ namespace tiz
     struct do_configure
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -73,24 +73,24 @@ namespace tiz
       }
     };
 
-    template<int comp_id>
+    template < int comp_id >
     struct do_configure_comp
     {
-      template <class FSM, class EVT, class SourceState, class TargetState>
-      void operator()(EVT const& evt, FSM& fsm, SourceState& , TargetState& )
+      template < class FSM, class EVT, class SourceState, class TargetState >
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
-        G_ACTION_LOG();
+        G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
-          {
-            (*(fsm.pp_ops_))->do_configure_comp (comp_id);
-          }
+        {
+          (*(fsm.pp_ops_))->do_configure_comp (comp_id);
+        }
       }
     };
 
     struct do_skip
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -103,7 +103,7 @@ namespace tiz
     struct do_load
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -113,24 +113,24 @@ namespace tiz
       }
     };
 
-    template<int comp_id>
+    template < int comp_id >
     struct do_load_comp
     {
-      template <class FSM, class EVT, class SourceState, class TargetState>
-      void operator()(EVT const& evt, FSM& fsm, SourceState& , TargetState& )
+      template < class FSM, class EVT, class SourceState, class TargetState >
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
-        G_ACTION_LOG();
+        G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
-          {
-            (*(fsm.pp_ops_))->do_load_comp (comp_id);
-          }
+        {
+          (*(fsm.pp_ops_))->do_load_comp (comp_id);
+        }
       }
     };
 
     struct do_setup
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -140,11 +140,11 @@ namespace tiz
       }
     };
 
-    template<int tunnel_id>
+    template < int tunnel_id >
     struct do_setup_tunnel
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -157,7 +157,7 @@ namespace tiz
     struct do_ack_loaded
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -170,7 +170,7 @@ namespace tiz
     struct do_store_config
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -180,11 +180,11 @@ namespace tiz
       }
     };
 
-    template<int handle_id, int port_id>
+    template < int handle_id, int port_id >
     struct do_enable_auto_detection
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -197,7 +197,7 @@ namespace tiz
     struct do_loaded2idle
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -207,11 +207,11 @@ namespace tiz
       }
     };
 
-    template<int comp_id>
+    template < int comp_id >
     struct do_loaded2idle_comp
     {
-      template <class FSM, class EVT, class SourceState, class TargetState>
-      void operator()(EVT const& evt, FSM& fsm, SourceState& , TargetState& )
+      template < class FSM, class EVT, class SourceState, class TargetState >
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -221,11 +221,11 @@ namespace tiz
       }
     };
 
-    template<int tunnel_id>
+    template < int tunnel_id >
     struct do_loaded2idle_tunnel
     {
-      template <class FSM, class EVT, class SourceState, class TargetState>
-      void operator()(EVT const& evt, FSM& fsm, SourceState& , TargetState& )
+      template < class FSM, class EVT, class SourceState, class TargetState >
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -238,7 +238,7 @@ namespace tiz
     struct do_idle2exe
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -248,11 +248,11 @@ namespace tiz
       }
     };
 
-    template<int comp_id>
+    template < int comp_id >
     struct do_idle2exe_comp
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -262,11 +262,11 @@ namespace tiz
       }
     };
 
-    template<int tunnel_id>
+    template < int tunnel_id >
     struct do_idle2exe_tunnel
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -279,7 +279,7 @@ namespace tiz
     struct do_ack_execd
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -292,7 +292,7 @@ namespace tiz
     struct do_ack_stopped
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -305,7 +305,7 @@ namespace tiz
     struct do_ack_paused
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -318,7 +318,7 @@ namespace tiz
     struct do_ack_resumed
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -331,7 +331,7 @@ namespace tiz
     struct do_seek
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -344,7 +344,7 @@ namespace tiz
     struct do_volume_step
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -357,7 +357,7 @@ namespace tiz
     struct do_volume
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -370,7 +370,7 @@ namespace tiz
     struct do_restore_volume
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -383,7 +383,7 @@ namespace tiz
     struct do_mute
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -396,7 +396,7 @@ namespace tiz
     struct do_exe2pause
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -409,7 +409,7 @@ namespace tiz
     struct do_pause2exe
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -422,7 +422,7 @@ namespace tiz
     struct do_pause2idle
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -435,7 +435,7 @@ namespace tiz
     struct do_exe2idle
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -445,11 +445,11 @@ namespace tiz
       }
     };
 
-    template<int comp_id>
+    template < int comp_id >
     struct do_exe2idle_comp
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -462,7 +462,7 @@ namespace tiz
     struct do_store_skip
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -475,7 +475,7 @@ namespace tiz
     struct do_idle2loaded
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -485,11 +485,11 @@ namespace tiz
       }
     };
 
-    template<int comp_id>
+    template < int comp_id >
     struct do_idle2loaded_comp
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -499,11 +499,11 @@ namespace tiz
       }
     };
 
-    template<int comp_id, int port_id>
+    template < int comp_id, int port_id >
     struct do_disable_comp_ports
     {
-      template <class FSM, class EVT, class SourceState, class TargetState>
-      void operator()(EVT const& evt, FSM& fsm, SourceState& , TargetState& )
+      template < class FSM, class EVT, class SourceState, class TargetState >
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -513,11 +513,11 @@ namespace tiz
       }
     };
 
-    template<int comp_id, int port_id>
+    template < int comp_id, int port_id >
     struct do_enable_comp_ports
     {
-      template <class FSM, class EVT, class SourceState, class TargetState>
-      void operator()(EVT const& evt, FSM& fsm, SourceState& , TargetState& )
+      template < class FSM, class EVT, class SourceState, class TargetState >
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -527,11 +527,11 @@ namespace tiz
       }
     };
 
-    template<int tunnel_id>
+    template < int tunnel_id >
     struct do_disable_tunnel
     {
-      template <class FSM, class EVT, class SourceState, class TargetState>
-      void operator()(EVT const& evt, FSM& fsm, SourceState& , TargetState& )
+      template < class FSM, class EVT, class SourceState, class TargetState >
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -541,25 +541,25 @@ namespace tiz
       }
     };
 
-    template<int tunnel_id>
+    template < int tunnel_id >
     struct do_enable_tunnel
     {
-      template <class FSM, class EVT, class SourceState, class TargetState>
-      void operator()(EVT const& evt, FSM& fsm, SourceState& , TargetState& )
+      template < class FSM, class EVT, class SourceState, class TargetState >
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
-        G_ACTION_LOG();
+        G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
-          {
-            (*(fsm.pp_ops_))->do_enable_tunnel (tunnel_id);
-          }
+        {
+          (*(fsm.pp_ops_))->do_enable_tunnel (tunnel_id);
+        }
       }
     };
 
-    template<int tunnel_id>
+    template < int tunnel_id >
     struct do_flush_tunnel
     {
-      template <class FSM, class EVT, class SourceState, class TargetState>
-      void operator()(EVT const& evt, FSM& fsm, SourceState& , TargetState& )
+      template < class FSM, class EVT, class SourceState, class TargetState >
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -569,24 +569,24 @@ namespace tiz
       }
     };
 
-    template<int tunnel_id>
+    template < int tunnel_id >
     struct do_reconfigure_tunnel
     {
-      template <class FSM, class EVT, class SourceState, class TargetState>
-      void operator()(EVT const& evt, FSM& fsm, SourceState& , TargetState& )
+      template < class FSM, class EVT, class SourceState, class TargetState >
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
-        G_ACTION_LOG();
+        G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
-          {
-            (*(fsm.pp_ops_))->do_reconfigure_tunnel (tunnel_id);
-          }
+        {
+          (*(fsm.pp_ops_))->do_reconfigure_tunnel (tunnel_id);
+        }
       }
     };
 
     struct do_end_of_play
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -599,7 +599,7 @@ namespace tiz
     struct do_error
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -612,7 +612,7 @@ namespace tiz
     struct do_tear_down_tunnels
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -625,7 +625,7 @@ namespace tiz
     struct do_destroy_graph
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -635,11 +635,11 @@ namespace tiz
       }
     };
 
-    template<int handle_id>
+    template < int handle_id >
     struct do_destroy_comp
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -652,13 +652,14 @@ namespace tiz
     struct do_record_fatal_error
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
         {
           (*(fsm.pp_ops_))
-            ->do_record_fatal_error (evt.handle_, evt.error_, evt.port_, evt.p_eventdata_);
+              ->do_record_fatal_error (evt.handle_, evt.error_, evt.port_,
+                                       evt.p_eventdata_);
         }
       }
     };
@@ -666,7 +667,7 @@ namespace tiz
     struct do_reset_internal_error
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -676,24 +677,24 @@ namespace tiz
       }
     };
 
-    template<OMX_STATETYPE state_id>
+    template < OMX_STATETYPE state_id >
     struct do_record_destination
     {
-      template <class FSM, class EVT, class SourceState, class TargetState>
-      void operator()(EVT const& evt, FSM& fsm, SourceState& , TargetState& )
+      template < class FSM, class EVT, class SourceState, class TargetState >
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
-        G_ACTION_LOG();
+        G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
-          {
-            (*(fsm.pp_ops_))->do_record_destination (state_id);
-          }
+        {
+          (*(fsm.pp_ops_))->do_record_destination (state_id);
+        }
       }
     };
 
     struct do_retrieve_metadata
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -706,7 +707,7 @@ namespace tiz
     struct do_start_progress_display
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -719,7 +720,7 @@ namespace tiz
     struct do_stop_progress_display
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -732,7 +733,7 @@ namespace tiz
     struct do_pause_progress_display
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -745,7 +746,7 @@ namespace tiz
     struct do_resume_progress_display
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const&, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -758,7 +759,7 @@ namespace tiz
     struct do_increase_progress_display
     {
       template < class FSM, class EVT, class SourceState, class TargetState >
-      void operator()(EVT const& evt, FSM& fsm, SourceState&, TargetState&)
+      void operator() (EVT const& evt, FSM& fsm, SourceState&, TargetState&)
       {
         G_ACTION_LOG ();
         if (fsm.pp_ops_ && *(fsm.pp_ops_))
@@ -767,7 +768,6 @@ namespace tiz
         }
       }
     };
-
 
   }  // namespace graph
 }  // namespace tiz

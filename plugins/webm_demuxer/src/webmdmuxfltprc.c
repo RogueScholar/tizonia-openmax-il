@@ -556,7 +556,7 @@ extract_track_data (webmdmuxflt_prc_t * ap_prc, const unsigned int a_track,
       ap_prc->p_ne_pkt_ = NULL;
       ap_prc->ne_chunk_ = 0;
       /* Return ErrorNone. This is an indication that we will need to keep
-         reading data from the internal data store */
+           reading data from the internal data store */
       rc = OMX_ErrorNone;
     }
 
@@ -963,7 +963,7 @@ read_video_codec_metadata (webmdmuxflt_prc_t * ap_prc,
         ap_prc->p_ne_, a_track_idx, &ap_prc->ne_video_params_));
 
       /* Retrieve the number of codec specific metadata items. NOTE: ignore
-         return code as there might not be any. */
+           return code as there might not be any. */
       (void) nestegg_track_codec_data_count (ap_prc->p_ne_, a_track_idx,
                                              &nheaders);
 
@@ -1087,8 +1087,8 @@ alloc_nestegg (webmdmuxflt_prc_t * ap_prc)
   if (0 != nestegg_rc)
     {
       /* We'll assume nestegg has not initialised correctly because there is
-         not enough input data yet... we'll wait for more data to arrive, but
-         we'll also give up after the max number of failed attempts. */
+           not enough input data yet... we'll wait for more data to arrive, but
+           we'll also give up after the max number of failed attempts. */
       dealloc_nestegg (ap_prc);
       reset_nestegg_members (ap_prc);
       tiz_buffer_seek (ap_prc->p_webm_store_, 0, TIZ_BUFFER_SEEK_SET);
@@ -1188,7 +1188,7 @@ static OMX_ERRORTYPE
 webmdmuxflt_prc_stop_and_return (void * ap_prc)
 {
   /* Do flush on all ports; this will reset the stream parameters and release
-     any buffers held */
+       any buffers held */
   return do_flush (ap_prc, OMX_ALL);
 }
 
@@ -1214,7 +1214,7 @@ webmdmuxflt_prc_buffers_ready (const void * ap_prc)
           if (NESTEGG_INT_MAX_FAILED_ATTEMPTS > p_prc->ne_failed_init_count_)
             {
               /* Need to wait for more stream data to be able to initialise the
-                 nestegg object */
+                   nestegg object */
               rc = OMX_ErrorNone;
             }
           else
@@ -1234,10 +1234,10 @@ webmdmuxflt_prc_buffers_ready (const void * ap_prc)
 
       if ((p_prc->audio_metadata_delivered_
            || tiz_filter_prc_is_port_disabled (
-                p_prc, ARATELIA_WEBM_DEMUXER_FILTER_PORT_1_INDEX))
+             p_prc, ARATELIA_WEBM_DEMUXER_FILTER_PORT_1_INDEX))
           && (p_prc->video_metadata_delivered_
               || tiz_filter_prc_is_port_disabled (
-                   p_prc, ARATELIA_WEBM_DEMUXER_FILTER_PORT_2_INDEX)))
+                p_prc, ARATELIA_WEBM_DEMUXER_FILTER_PORT_2_INDEX)))
         {
           rc = demux_stream (p_prc);
           if (OMX_ErrorNotReady == rc)

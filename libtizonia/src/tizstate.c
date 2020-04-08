@@ -243,7 +243,7 @@ state_flush (const void * ap_obj, OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
              OMX_U32 a_param1, OMX_PTR ap_cmd_data)
 {
   /* Notify the kernel servant, which will in turn notify the processor
-   * servant, if needed */
+     * servant, if needed */
   return tiz_api_SendCommand (tiz_get_krn (ap_hdl), ap_hdl, a_cmd, a_param1,
                               ap_cmd_data);
 }
@@ -284,7 +284,7 @@ state_enable (const void * ap_obj, OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
               OMX_U32 a_param1, OMX_PTR ap_cmd_data)
 {
   /* Notify the kernel servant, which will in turn notify the processor
-   * servant, if needed */
+     * servant, if needed */
   return tiz_api_SendCommand (tiz_get_krn (ap_hdl), ap_hdl, a_cmd, a_param1,
                               ap_cmd_data);
 }
@@ -303,7 +303,7 @@ state_mark (const void * ap_obj, OMX_HANDLETYPE ap_hdl, OMX_COMMANDTYPE a_cmd,
             OMX_U32 a_param1, OMX_PTR ap_cmd_data)
 {
   /* This is the default implementation for states in which this command is not
-   * allowed */
+     * allowed */
   void * p_krn = tiz_get_krn (ap_hdl);
 
   /* The port must be disabled at this point */
@@ -345,7 +345,7 @@ state_trans_complete (const void * ap_obj, OMX_PTR ap_servant,
       if (OMX_StateExecuting == a_new_state)
         {
           /* Reset the OMX_PORTSTATUS_ACCEPTBUFFEREXCHANGE flag in all ports where this
-           * has been set */
+             * has been set */
           tiz_krn_reset_tunneled_ports_status (
             tiz_get_krn (handleOf (ap_obj)),
             OMX_PORTSTATUS_ACCEPTBUFFEREXCHANGE);

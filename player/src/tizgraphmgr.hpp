@@ -29,16 +29,16 @@
 #ifndef TIZGRAPHMGR_HPP
 #define TIZGRAPHMGR_HPP
 
-#include <string>
 #include <boost/function.hpp>
+#include <string>
 
-#include <tizplatform.h>
 #include <OMX_Core.h>
+#include <tizplatform.h>
 
-#include "tizgraphtypes.hpp"
-#include "tizplaybackstatus.hpp"
 #include "mpris/tizmprismgr.hpp"
 #include "tizgraphmgrfsm.hpp"
+#include "tizgraphtypes.hpp"
+#include "tizplaybackstatus.hpp"
 
 namespace tiz
 {
@@ -67,7 +67,8 @@ namespace tiz
       friend void *thread_func (void *);
 
     public:
-      typedef boost::function< void(const OMX_ERRORTYPE error_code, const std::string error_msg) >
+      typedef boost::function< void (const OMX_ERRORTYPE error_code,
+                                     const std::string error_msg) >
           termination_callback_t;
 
     public:
@@ -161,7 +162,8 @@ namespace tiz
       OMX_ERRORTYPE volume_step (const int step);
 
       /**
-       * Changes the volume to the specified value. 1.0 is maximum volume and 0.0 means mute.
+       * Changes the volume to the specified value. 1.0 is maximum volume and
+       * 0.0 means mute.
        *
        * @pre init() has been called on this manager.
        *
@@ -213,7 +215,8 @@ namespace tiz
     protected:
       virtual ops *do_init (const tizplaylist_ptr_t &playlist,
                             const termination_callback_t &termination_cback,
-                            graphmgr_capabilities &graphmgr_caps) = 0;
+                            graphmgr_capabilities &graphmgr_caps)
+          = 0;
 
     protected:
       OMX_ERRORTYPE graph_loaded ();
@@ -230,8 +233,9 @@ namespace tiz
 
       OMX_ERRORTYPE start_mpris (const graphmgr_capabilities &graphmgr_caps);
       OMX_ERRORTYPE stop_mpris ();
-      OMX_ERRORTYPE do_update_control_ifcs (const control::playback_status_t status,
-                                            const std::string &current_song = std::string ());
+      OMX_ERRORTYPE do_update_control_ifcs (
+          const control::playback_status_t status,
+          const std::string &current_song = std::string ());
       OMX_ERRORTYPE do_update_metadata (const track_metadata_map_t &metadata);
       OMX_ERRORTYPE do_update_volume (const int volume);
 

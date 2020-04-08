@@ -178,8 +178,9 @@ loaded_state_set (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
     {
       OMX_ERRORTYPE rc = OMX_ErrorNone;
 
-      if (OMX_ErrorNone != (rc = tiz_fsm_set_state (tiz_get_fsm (ap_hdl),
-                                                    new_state, EStateMax)))
+      if (OMX_ErrorNone
+          != (rc
+              = tiz_fsm_set_state (tiz_get_fsm (ap_hdl), new_state, EStateMax)))
         {
           return rc;
         }

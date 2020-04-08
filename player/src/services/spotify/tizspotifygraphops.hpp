@@ -57,22 +57,18 @@ namespace tiz
 
       bool is_fatal_error (const OMX_ERRORTYPE error) const;
       void do_record_fatal_error (const OMX_HANDLETYPE handle,
-                                  const OMX_ERRORTYPE error,
-                                  const OMX_U32 port,
+                                  const OMX_ERRORTYPE error, const OMX_U32 port,
                                   const OMX_PTR p_eventdata = NULL);
 
     private:
       OMX_ERRORTYPE switch_tunnel (
           const int tunnel_id, const OMX_COMMANDTYPE to_disabled_or_enabled);
-      OMX_ERRORTYPE set_spotify_session (const OMX_HANDLETYPE handle,
-                                         const std::string &user,
-                                         const std::string &pass,
-                                         const std::string &proxy_server,
-                                         const std::string &proxy_password,
-                                         const std::string &proxy_user,
-                                         const bool recover_lost_token,
-                                         const bool allow_explicit_tracks,
-                                         const uint32_t preferred_bitrate);
+      OMX_ERRORTYPE set_spotify_session (
+          const OMX_HANDLETYPE handle, const std::string &user,
+          const std::string &pass, const std::string &proxy_server,
+          const std::string &proxy_password, const std::string &proxy_user,
+          const bool recover_lost_token, const bool allow_explicit_tracks,
+          const uint32_t preferred_bitrate);
       OMX_ERRORTYPE set_spotify_playlist (
           const OMX_HANDLETYPE handle, const std::string &playlist,
           const OMX_TIZONIA_AUDIO_SPOTIFYPLAYLISTTYPE playlist_type,

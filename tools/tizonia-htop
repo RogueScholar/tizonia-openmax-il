@@ -19,21 +19,24 @@
 # Simple htop wrapper for the tizonia process
 #
 
-declare -ar TIZONIA_HTOP_DEPS=( \
-    'htop' \
-    'pstree' \
-    'pidof' \
-    'cut' \
-    'sed' \
+declare -ar TIZONIA_HTOP_DEPS=(
+  'htop'
+  'pstree'
+  'pidof'
+  'cut'
+  'sed'
 )
 
 # Check dependencies
 for cmd in "${TIZONIA_HTOP_DEPS[@]}"; do
-    command -v "$cmd" >/dev/null 2>&1 \
-        || { echo >&2 "This program requires $cmd. Aborting."; exit 1; }
+  command -v "$cmd" >/dev/null 2>&1 ||
+    {
+      echo >&2 "This program requires $cmd. Aborting."
+      exit 1
+    }
 done
 
 PROCNAME=tizonia
 [[ -n "$1" ]] && { PROCNAME=$1; }
 
-htop $(echo $(pstree -A -p $(pidof "$PROCNAME") | cut -d'(' -f2 | cut -d')' -f1) | sed 's/ /\ -p\ /g' | sed 's/^/-p\ /g')
+htop "$(echo "$(pstree -A -p "$(pidof "$PROCNAME")" | cut -d'(' -f2 | cut -d')' -f1)" | sed 's/ /\ -p\ /g' | sed 's/^/-p\ /g')"

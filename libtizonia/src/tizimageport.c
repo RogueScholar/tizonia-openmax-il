@@ -214,7 +214,7 @@ imageport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
               if (OMX_COLOR_FormatUnused == p_image_format->eColorFormat)
                 {
                   /* Both Compression Format and Color can not be Unused at the
-                 * same time. */
+                * same time. */
                   return OMX_ErrorBadParameter;
                 }
 

@@ -31,7 +31,7 @@
 
 #include "tizgraphfsm.hpp"
 
-char const* const tiz::graph::pstate(tiz::graph::fsm const& p)
+char const* const tiz::graph::pstate (tiz::graph::fsm const& p)
 {
-  return tiz::graph::state_names[p.current_state()[0]];
+  return tiz::graph::state_names[p.current_state ()[0]];
 }

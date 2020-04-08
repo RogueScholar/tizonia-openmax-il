@@ -50,7 +50,7 @@
 #define TIZ_LOG_CATEGORY_NAME "tiz.inproc_writer"
 #endif
 
-static OMX_VERSIONTYPE inproc_writer_version = { {1, 0, 0, 0} };
+static OMX_VERSIONTYPE inproc_writer_version = {{1, 0, 0, 0}};
 
 static OMX_PTR
 instantiate_audio_port (OMX_HANDLETYPE ap_hdl)
@@ -64,7 +64,7 @@ instantiate_audio_port (OMX_HANDLETYPE ap_hdl)
     ARATELIA_INPROC_WRITER_PORT_ALIGNMENT,
     ARATELIA_INPROC_WRITER_PORT_SUPPLIERPREF,
     {ARATELIA_INPROC_WRITER_PORT_INDEX, NULL, NULL, NULL},
-    -1                          /* use -1 for now */
+    -1 /* use -1 for now */
   };
 
   return factory_new (tiz_get_type (ap_hdl, "tizbinaryport"), &port_opts);
@@ -82,7 +82,7 @@ instantiate_video_port (OMX_HANDLETYPE ap_hdl)
     ARATELIA_INPROC_WRITER_PORT_ALIGNMENT,
     ARATELIA_INPROC_WRITER_PORT_SUPPLIERPREF,
     {ARATELIA_INPROC_WRITER_PORT_INDEX, NULL, NULL, NULL},
-    -1                          /* use -1 for now */
+    -1 /* use -1 for now */
   };
 
   return factory_new (tiz_get_type (ap_hdl, "tizbinaryport"), &port_opts);
@@ -100,7 +100,7 @@ instantiate_image_port (OMX_HANDLETYPE ap_hdl)
     ARATELIA_INPROC_WRITER_PORT_ALIGNMENT,
     ARATELIA_INPROC_WRITER_PORT_SUPPLIERPREF,
     {ARATELIA_INPROC_WRITER_PORT_INDEX, NULL, NULL, NULL},
-    -1                          /* use -1 for now */
+    -1 /* use -1 for now */
   };
 
   return factory_new (tiz_get_type (ap_hdl, "tizbinaryport"), &port_opts);
@@ -118,7 +118,7 @@ instantiate_other_port (OMX_HANDLETYPE ap_hdl)
     ARATELIA_INPROC_WRITER_PORT_ALIGNMENT,
     ARATELIA_INPROC_WRITER_PORT_SUPPLIERPREF,
     {ARATELIA_INPROC_WRITER_PORT_INDEX, NULL, NULL, NULL},
-    -1                          /* use -1 for now */
+    -1 /* use -1 for now */
   };
 
   return factory_new (tiz_get_type (ap_hdl, "tizbinaryport"), &port_opts);
@@ -128,7 +128,7 @@ static OMX_PTR
 instantiate_config_port (OMX_HANDLETYPE ap_hdl)
 {
   return factory_new (tiz_get_type (ap_hdl, "tizuricfgport"),
-                      NULL,       /* this port does not take options */
+                      NULL, /* this port does not take options */
                       ARATELIA_INPROC_WRITER_COMPONENT_NAME,
                       inproc_writer_version);
 }
@@ -146,42 +146,37 @@ OMX_ComponentInit (OMX_HANDLETYPE ap_hdl)
   tiz_role_factory_t video_role;
   tiz_role_factory_t image_role;
   tiz_role_factory_t other_role;
-  const tiz_role_factory_t *rf_list[] = { &audio_role, &video_role,
-    &image_role, &other_role
-  };
+  const tiz_role_factory_t * rf_list[]
+    = {&audio_role, &video_role, &image_role, &other_role};
   tiz_type_factory_t inprocrnd_prc_type;
-  const tiz_type_factory_t *tf_list[] = { &inprocrnd_prc_type };
+  const tiz_type_factory_t * tf_list[] = {&inprocrnd_prc_type};
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "OMX_ComponentInit: [%s]",
            ARATELIA_INPROC_WRITER_COMPONENT_NAME);
 
-  strcpy ((OMX_STRING) audio_role.role,
-          ARATELIA_INPROC_WRITER_AUDIO_ROLE);
-  audio_role.pf_cport   = instantiate_config_port;
+  strcpy ((OMX_STRING) audio_role.role, ARATELIA_INPROC_WRITER_AUDIO_ROLE);
+  audio_role.pf_cport = instantiate_config_port;
   audio_role.pf_port[0] = instantiate_audio_port;
-  audio_role.nports     = 1;
-  audio_role.pf_proc    = instantiate_processor;
+  audio_role.nports = 1;
+  audio_role.pf_proc = instantiate_processor;
 
-  strcpy ((OMX_STRING) video_role.role,
-          ARATELIA_INPROC_WRITER_VIDEO_ROLE);
-  video_role.pf_cport   = instantiate_config_port;
+  strcpy ((OMX_STRING) video_role.role, ARATELIA_INPROC_WRITER_VIDEO_ROLE);
+  video_role.pf_cport = instantiate_config_port;
   video_role.pf_port[0] = instantiate_video_port;
-  video_role.nports     = 1;
-  video_role.pf_proc    = instantiate_processor;
+  video_role.nports = 1;
+  video_role.pf_proc = instantiate_processor;
 
-  strcpy ((OMX_STRING) image_role.role,
-          ARATELIA_INPROC_WRITER_IMAGE_ROLE);
-  image_role.pf_cport   = instantiate_config_port;
+  strcpy ((OMX_STRING) image_role.role, ARATELIA_INPROC_WRITER_IMAGE_ROLE);
+  image_role.pf_cport = instantiate_config_port;
   image_role.pf_port[0] = instantiate_image_port;
-  image_role.nports     = 1;
-  image_role.pf_proc    = instantiate_processor;
+  image_role.nports = 1;
+  image_role.pf_proc = instantiate_processor;
 
-  strcpy ((OMX_STRING) other_role.role,
-          ARATELIA_INPROC_WRITER_OTHER_ROLE);
-  other_role.pf_cport   = instantiate_config_port;
+  strcpy ((OMX_STRING) other_role.role, ARATELIA_INPROC_WRITER_OTHER_ROLE);
+  other_role.pf_cport = instantiate_config_port;
   other_role.pf_port[0] = instantiate_other_port;
-  other_role.nports     = 1;
-  other_role.pf_proc    = instantiate_processor;
+  other_role.nports = 1;
+  other_role.pf_proc = instantiate_processor;
 
   strcpy ((OMX_STRING) inprocrnd_prc_type.class_name, "inprocrnd_prc_class");
   inprocrnd_prc_type.pf_class_init = inprocrnd_prc_class_init;

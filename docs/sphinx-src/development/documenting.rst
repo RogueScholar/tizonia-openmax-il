@@ -39,4 +39,3 @@ The documentation is built in 2 steps:
    # and the man page
    $ cd sphinx-src
    $ make html && make man
-

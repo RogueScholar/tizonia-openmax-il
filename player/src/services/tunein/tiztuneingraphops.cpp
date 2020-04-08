@@ -39,11 +39,11 @@
 #include <OMX_TizoniaExt.h>
 #include <tizplatform.h>
 
-#include "tiztuneinconfig.hpp"
-#include "tiztuneingraphops.hpp"
 #include "tizgraph.hpp"
 #include "tizgraphutil.hpp"
 #include "tizprobe.hpp"
+#include "tiztuneinconfig.hpp"
+#include "tiztuneingraphops.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -99,8 +99,7 @@ void graph::tuneinops::do_configure_comp (const int comp_id)
         tiz::graph::util::set_tunein_playlist (
             handles_[0], playlist_->get_uri_list (),
             tunein_config->get_playlist_type (),
-            tunein_config->get_search_type (),
-            playlist_->shuffle ()),
+            tunein_config->get_search_type (), playlist_->shuffle ()),
         "Unable to set OMX_TizoniaIndexParamAudioTuneinPlaylist");
 
     const OMX_U32 port_id = 0;
@@ -468,9 +467,9 @@ graph::tuneinops::get_channels_and_rate_from_decoder (
 
   if (OMX_ErrorNone == rc)
   {
-    rc = tiz::graph::util::
-        get_channels_and_rate_from_audio_port_v2< OMX_AUDIO_PARAM_PCMMODETYPE > (
-            handle, port_id, OMX_IndexParamAudioPcm, channels, sampling_rate);
+    rc = tiz::graph::util::get_channels_and_rate_from_audio_port_v2<
+        OMX_AUDIO_PARAM_PCMMODETYPE > (handle, port_id, OMX_IndexParamAudioPcm,
+                                       channels, sampling_rate);
   }
   TIZ_LOG (TIZ_PRIORITY_TRACE, "outcome = [%s]", tiz_err_to_str (rc));
 
@@ -493,15 +492,15 @@ graph::tuneinops::set_channels_and_rate_on_decoder (const OMX_U32 channels,
     case OMX_AUDIO_CodingMP3:
     {
       tiz::graph::util::set_channels_and_rate_on_audio_port<
-        OMX_AUDIO_PARAM_MP3TYPE > (handle, port_id, OMX_IndexParamAudioMp3,
-                                   channels, sampling_rate);
+          OMX_AUDIO_PARAM_MP3TYPE > (handle, port_id, OMX_IndexParamAudioMp3,
+                                     channels, sampling_rate);
     }
     break;
     case OMX_AUDIO_CodingAAC:
     {
       tiz::graph::util::set_channels_and_rate_on_audio_port<
-        OMX_AUDIO_PARAM_AACPROFILETYPE > (handle, port_id, OMX_IndexParamAudioAac,
-                                          channels, sampling_rate);
+          OMX_AUDIO_PARAM_AACPROFILETYPE > (
+          handle, port_id, OMX_IndexParamAudioAac, channels, sampling_rate);
     }
     break;
     case OMX_AUDIO_CodingVORBIS:
@@ -587,10 +586,9 @@ bool graph::tuneinops::is_fatal_error (const OMX_ERRORTYPE error) const
   return rc;
 }
 
-void graph::tuneinops::do_record_fatal_error (const OMX_HANDLETYPE handle,
-                                              const OMX_ERRORTYPE error,
-                                              const OMX_U32 port,
-                                              const OMX_PTR p_eventdata /* = NULL */)
+void graph::tuneinops::do_record_fatal_error (
+    const OMX_HANDLETYPE handle, const OMX_ERRORTYPE error, const OMX_U32 port,
+    const OMX_PTR p_eventdata /* = NULL */)
 {
   tiz::graph::ops::do_record_fatal_error (handle, error, port, p_eventdata);
   if (error == OMX_ErrorContentURIError)

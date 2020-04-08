@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -30,15 +31,16 @@
 #define TIZCHROMECASTCTXTYPES_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-class tizchromecastctx;
+  class tizchromecastctx;
 
-struct tiz_chromecast_ctx
-{
-  tizchromecastctx *p_ctx_;
-};
+  struct tiz_chromecast_ctx
+  {
+    tizchromecastctx *p_ctx_;
+  };
 
 #ifdef __cplusplus
 }

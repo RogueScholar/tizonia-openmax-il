@@ -30,17 +30,17 @@
 #define TIZRMD_HPP
 
 /**
-* @defgroup tizrmd 'tizrmd' : Tizonia's OpenMAX IL Resource Manager
-* daemon process.
-*
-* This module implements an OpenMAX IL Resource Manager D-Bus-based daemon.
-*
-* @ingroup rm
-*/
+ * @defgroup tizrmd 'tizrmd' : Tizonia's OpenMAX IL Resource Manager
+ * daemon process.
+ *
+ * This module implements an OpenMAX IL Resource Manager D-Bus-based daemon.
+ *
+ * @ingroup rm
+ */
 
-#include <string.h>
 #include <deque>
 #include <map>
+#include <string.h>
 #include <string>
 
 #include <dbus-c++/dbus.h>
@@ -48,9 +48,9 @@
 #include <tizrmd-dbus.hh>
 
 #include "tizrmdb.hpp"
-#include "tizrmwaiter.hpp"
-#include "tizrmpreemptor.hpp"
 #include "tizrmowner.hpp"
+#include "tizrmpreemptor.hpp"
+#include "tizrmwaiter.hpp"
 
 class tizrmd : public com::aratelia::tiz::tizrmif_adaptor,
                public Tiz::DBus::IntrospectableAdaptor,

@@ -107,7 +107,7 @@ tizgraph_ptr_t graphmgr::youtubemgrops::get_graph (
   tizgraph_ptr_map_t::const_iterator it = graph_registry_.find (encoding);
   if (it == graph_registry_.end ())
   {
-    g_ptr = boost::make_shared< tiz::graph::youtube >();
+    g_ptr = boost::make_shared< tiz::graph::youtube > ();
     if (g_ptr)
     {
       // TODO: Check rc
@@ -154,7 +154,7 @@ void graphmgr::youtubemgrops::do_execute ()
   assert (playlist_);
   assert (p_mgr_);
 
-  youtubemgr *p_clientmgr = dynamic_cast< youtubemgr * >(p_mgr_);
+  youtubemgr *p_clientmgr = dynamic_cast< youtubemgr * > (p_mgr_);
   assert (p_clientmgr);
 
   graph_config_.reset ();

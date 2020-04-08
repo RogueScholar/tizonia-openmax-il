@@ -29,7 +29,8 @@
 #define CC_TUNEINPRC_DECLS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdbool.h>
@@ -43,24 +44,24 @@ extern "C" {
 #include "cc_prc_decls.h"
 #include "cc_prc.h"
 
-typedef struct cc_tunein_prc cc_tunein_prc_t;
-struct cc_tunein_prc
-{
-  /* Object */
-  const cc_prc_t _;
-  OMX_TIZONIA_AUDIO_PARAM_TUNEINSESSIONTYPE tunein_session_;
-  OMX_TIZONIA_AUDIO_PARAM_TUNEINPLAYLISTTYPE tunein_playlist_;
-  tiz_tunein_t * p_tunein_;
-  bool remove_current_url_;
-};
+  typedef struct cc_tunein_prc cc_tunein_prc_t;
+  struct cc_tunein_prc
+  {
+    /* Object */
+    const cc_prc_t _;
+    OMX_TIZONIA_AUDIO_PARAM_TUNEINSESSIONTYPE tunein_session_;
+    OMX_TIZONIA_AUDIO_PARAM_TUNEINPLAYLISTTYPE tunein_playlist_;
+    tiz_tunein_t * p_tunein_;
+    bool remove_current_url_;
+  };
 
-typedef struct cc_tunein_prc_class cc_tunein_prc_class_t;
-struct cc_tunein_prc_class
-{
-  /* Class */
-  const cc_prc_class_t _;
-  /* NOTE: Class methods might be added in the future */
-};
+  typedef struct cc_tunein_prc_class cc_tunein_prc_class_t;
+  struct cc_tunein_prc_class
+  {
+    /* Class */
+    const cc_prc_class_t _;
+    /* NOTE: Class methods might be added in the future */
+  };
 
 #ifdef __cplusplus
 }

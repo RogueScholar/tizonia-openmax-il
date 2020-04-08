@@ -5,5 +5,3 @@ subdir('tools')
 subdir('dbus')
 subdir('man')
 subdir('src')
-
-

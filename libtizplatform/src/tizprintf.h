@@ -30,7 +30,8 @@
 #define TIZPRINTF_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #define KNRM "\x1B[0m"
@@ -62,7 +63,6 @@ extern "C" {
 
 #define TIZ_PRINTF_WHT(format, args...) \
   tiz_printf (KWHT, NULL, -1, NULL, format, ##args);
-
 
 #define TIZ_COLOR_01 1
 #define TIZ_COLOR_02 2
@@ -114,7 +114,7 @@ extern "C" {
 #define TIZ_PRINTF_C11(format, args...) \
   tiz_printf_c (TIZ_COLOR_11, format, ##args);
 
-#define TIZ_PRINTF_C12(format, args...)                 \
+#define TIZ_PRINTF_C12(format, args...) \
   tiz_printf_c (TIZ_COLOR_12, format, ##args);
 
 #define TIZ_PRINTF_C13(format, args...) \
@@ -126,9 +126,8 @@ extern "C" {
 #define TIZ_PRINTF_C15(format, args...) \
   tiz_printf_c (TIZ_COLOR_15, format, ##args);
 
-#define TIZ_PRINTF_C16(format, args...)                 \
+#define TIZ_PRINTF_C16(format, args...) \
   tiz_printf_c (TIZ_COLOR_16, format, ##args);
-
 
 #ifdef NDEBUG
 

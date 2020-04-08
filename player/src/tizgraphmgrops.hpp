@@ -29,8 +29,8 @@
 #ifndef TIZGRAPHMGROPS_HPP
 #define TIZGRAPHMGROPS_HPP
 
-#include <string>
 #include <boost/function.hpp>
+#include <string>
 
 #include <OMX_Core.h>
 
@@ -76,7 +76,7 @@ namespace tiz
     {
 
     public:
-      typedef boost::function< void(OMX_ERRORTYPE, std::string) >
+      typedef boost::function< void (OMX_ERRORTYPE, std::string) >
           termination_callback_t;
 
     public:
@@ -104,7 +104,8 @@ namespace tiz
       virtual void do_report_fatal_error (const OMX_ERRORTYPE error,
                                           const std::string &msg);
       virtual void do_end_of_play ();
-      virtual void do_update_control_ifcs (const control::playback_status_t status);
+      virtual void do_update_control_ifcs (
+          const control::playback_status_t status);
       virtual void do_update_metadata (const track_metadata_map_t &metadata);
       virtual void do_update_volume (const int volume);
       virtual bool is_fatal_error (const OMX_ERRORTYPE error,
@@ -119,7 +120,7 @@ namespace tiz
       virtual tizgraph_ptr_t get_graph (const std::string &uri);
 
     protected:
-      mgr *p_mgr_;              // Not owned
+      mgr *p_mgr_;  // Not owned
       tizplaylist_ptr_t playlist_;
       tizplaylist_ptr_t next_playlist_;
       tizgraphconfig_ptr_t graph_config_;

@@ -163,8 +163,8 @@ obtain_coding_type (httpsrc_prc_t * ap_prc, char * ap_info)
            || strncasecmp (ap_info, "audio/ogg", 9) == 0)
     {
       /* This is for audio with ogg container (may be FLAC, Vorbis, Opus,
-         etc). We'll have to identify the actual codec when the first bytes
-         from the stream arrive */
+           etc). We'll have to identify the actual codec when the first bytes
+           from the stream arrive */
       ap_prc->audio_coding_type_ = OMX_AUDIO_CodingOGA;
     }
   else
@@ -280,8 +280,8 @@ set_mp3_audio_info_on_port (httpsrc_prc_t * ap_prc)
 
   TIZ_INIT_OMX_PORT_STRUCT (mp3type, ARATELIA_HTTP_SOURCE_PORT_INDEX);
   tiz_check_omx (tiz_api_GetParameter (tiz_get_krn (handleOf (ap_prc)),
-                                           handleOf (ap_prc),
-                                           OMX_IndexParamAudioMp3, &mp3type));
+                                       handleOf (ap_prc),
+                                       OMX_IndexParamAudioMp3, &mp3type));
 
   /* Set the new values */
   mp3type.nChannels = ap_prc->num_channels_;
@@ -301,8 +301,8 @@ set_aac_audio_info_on_port (httpsrc_prc_t * ap_prc)
 
   TIZ_INIT_OMX_PORT_STRUCT (aactype, ARATELIA_HTTP_SOURCE_PORT_INDEX);
   tiz_check_omx (tiz_api_GetParameter (tiz_get_krn (handleOf (ap_prc)),
-                                           handleOf (ap_prc),
-                                           OMX_IndexParamAudioAac, &aactype));
+                                       handleOf (ap_prc),
+                                       OMX_IndexParamAudioAac, &aactype));
 
   /* Set the new values */
   aactype.nChannels = ap_prc->num_channels_;
@@ -385,7 +385,7 @@ update_cache_size (httpsrc_prc_t * ap_prc)
   assert (ap_prc);
   assert (ap_prc->bitrate_ > 0);
   ap_prc->buffer_bytes_ = ((ap_prc->bitrate_ * 1000) / 8)
-                         * ARATELIA_HTTP_SOURCE_DEFAULT_BUFFER_SECONDS;
+                          * ARATELIA_HTTP_SOURCE_DEFAULT_BUFFER_SECONDS;
   if (ap_prc->p_trans_)
     {
       tiz_urltrans_set_internal_buffer_size (ap_prc->p_trans_,
@@ -493,7 +493,7 @@ obtain_audio_encoding_from_headers (httpsrc_prc_t * ap_prc,
               /* Now set the pcm info on the output port */
               (void) set_audio_info_on_port (ap_prc);
               /* Sometimes, the bitrate is provided in the ice-audio-info
-                 header */
+                       header */
               update_cache_size (ap_prc);
             }
           else if (strncasecmp (name, "icy-br", 6) == 0)
@@ -594,9 +594,9 @@ release_buffer (httpsrc_prc_t * ap_prc)
     {
       TIZ_NOTICE (handleOf (ap_prc), "releasing HEADER [%p] nFilledLen [%d]",
                   ap_prc->p_outhdr_, ap_prc->p_outhdr_->nFilledLen);
-      tiz_check_omx (tiz_krn_release_buffer (
-        tiz_get_krn (handleOf (ap_prc)), ARATELIA_HTTP_SOURCE_PORT_INDEX,
-        ap_prc->p_outhdr_));
+      tiz_check_omx (tiz_krn_release_buffer (tiz_get_krn (handleOf (ap_prc)),
+                                             ARATELIA_HTTP_SOURCE_PORT_INDEX,
+                                             ap_prc->p_outhdr_));
       ap_prc->p_outhdr_ = NULL;
     }
   return OMX_ErrorNone;
@@ -657,7 +657,7 @@ header_available (OMX_PTR ap_arg, const void * ap_ptr, const size_t a_nbytes)
   assert (p_prc);
   assert (ap_ptr);
 
-  TIZ_PRINTF_DBG_CYN("[%s]\n", ap_ptr);
+  TIZ_PRINTF_DBG_CYN ("[%s]\n", ap_ptr);
 
   if (p_prc->auto_detect_on_)
     {
@@ -692,8 +692,8 @@ data_available (OMX_PTR ap_arg, const void * ap_ptr, const size_t a_nbytes)
             }
         }
       /* And now trigger the OMX_EventPortFormatDetected and
-         OMX_EventPortSettingsChanged events or a
-         OMX_ErrorFormatNotDetected event */
+           OMX_EventPortSettingsChanged events or a
+           OMX_ErrorFormatNotDetected event */
       send_port_auto_detect_events (p_prc);
     }
   return pause_needed;
@@ -707,7 +707,7 @@ connection_lost (OMX_PTR ap_arg)
   prepare_for_port_auto_detection (p_prc);
   p_prc->connection_closed_ = true;
   /* Return true to indicate that the automatic reconnection procedure needs to
-     be started */
+       be started */
   return true;
 }
 

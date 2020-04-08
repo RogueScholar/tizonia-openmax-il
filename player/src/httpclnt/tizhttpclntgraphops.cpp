@@ -34,14 +34,14 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <OMX_TizoniaExt.h>
 #include <tizplatform.h>
 
+#include "tizgraph.hpp"
 #include "tizgraphutil.hpp"
 #include "tizprobe.hpp"
-#include "tizgraph.hpp"
 // #include "tizhttpclntconfig.hpp"
 #include "tizhttpclntgraphops.hpp"
 
@@ -63,14 +63,16 @@ graph::httpclntops::httpclntops (graph *p_graph,
 {
 }
 
-void graph::httpclntops::do_enable_auto_detection (const int handle_id, const int port_id)
+void graph::httpclntops::do_enable_auto_detection (const int handle_id,
+                                                   const int port_id)
 {
   tiz::graph::ops::do_enable_auto_detection (handle_id, port_id);
   tiz::graph::util::dump_graph_info ("http", "Connecting to radio station",
                                      playlist_->get_current_uri ().c_str ());
 }
 
-void graph::httpclntops::do_disable_comp_ports (const int comp_id, const int port_id)
+void graph::httpclntops::do_disable_comp_ports (const int comp_id,
+                                                const int port_id)
 {
   OMX_U32 http_source_port = port_id;
   G_OPS_BAIL_IF_ERROR (util::disable_port (handles_[comp_id], http_source_port),
@@ -185,7 +187,8 @@ void graph::httpclntops::do_reconfigure_tunnel (const int tunnel_id)
 {
   if (last_op_succeeded ())
   {
-    assert (1 == tunnel_id);     // We only expect tunnel reconfiguration in tunnel 1
+    assert (1 == tunnel_id);  // We only expect tunnel reconfiguration in tunnel
+                              // 1
     // Retrieve the pcm settings from the decoder component
     OMX_AUDIO_PARAM_PCMMODETYPE decoder_pcmtype;
     const OMX_U32 decoder_port_id = 1;
@@ -228,8 +231,8 @@ void graph::httpclntops::do_reconfigure_tunnel (const int tunnel_id)
 // TODO: Move this implementation to the base class (and remove also from
 // httpservops)
 OMX_ERRORTYPE
-graph::httpclntops::switch_tunnel (
-    const int tunnel_id, const OMX_COMMANDTYPE to_disabled_or_enabled)
+graph::httpclntops::switch_tunnel (const int tunnel_id,
+                                   const OMX_COMMANDTYPE to_disabled_or_enabled)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
@@ -299,26 +302,27 @@ graph::httpclntops::add_decoder_to_component_list (
     }
     break;
     default:
-      {
+    {
       if (OMX_AUDIO_CodingOPUS == encoding_)
-        {
-          comp_list.push_back ("OMX.Aratelia.audio_decoder.opusfile.opus");
-          role_list.push_back ("audio_decoder.opus");
-        }
-      else if (OMX_AUDIO_CodingFLAC == encoding_)
-        {
-          comp_list.push_back ("OMX.Aratelia.audio_decoder.flac");
-          role_list.push_back ("audio_decoder.flac");
-        }
-      else
-        {
-          TIZ_LOG (TIZ_PRIORITY_ERROR,
-                   "[OMX_ErrorFormatNotDetected] : Unhandled encoding type [%d]...",
-                   encoding_);
-          rc = OMX_ErrorFormatNotDetected;
-        }
+      {
+        comp_list.push_back ("OMX.Aratelia.audio_decoder.opusfile.opus");
+        role_list.push_back ("audio_decoder.opus");
       }
-      break;
+      else if (OMX_AUDIO_CodingFLAC == encoding_)
+      {
+        comp_list.push_back ("OMX.Aratelia.audio_decoder.flac");
+        role_list.push_back ("audio_decoder.flac");
+      }
+      else
+      {
+        TIZ_LOG (
+            TIZ_PRIORITY_ERROR,
+            "[OMX_ErrorFormatNotDetected] : Unhandled encoding type [%d]...",
+            encoding_);
+        rc = OMX_ErrorFormatNotDetected;
+      }
+    }
+    break;
   };
   return rc;
 }
@@ -333,8 +337,9 @@ void graph::httpclntops::dump_stream_metadata ()
   OMX_U32 index = 0;
   const int http_source_index = 0;
   const bool use_first_as_heading = false;
-  while (OMX_ErrorNone == dump_metadata_item (index++, http_source_index,
-                                              use_first_as_heading))
+  while (
+      OMX_ErrorNone
+      == dump_metadata_item (index++, http_source_index, use_first_as_heading))
   {
   };
 }
@@ -359,10 +364,9 @@ graph::httpclntops::apply_pcm_codec_info_from_http_source ()
 
   tiz_check_omx (get_channels_and_rate_from_http_source (
       channels, sampling_rate, encoding_str));
-  tiz_check_omx (
-      set_channels_and_rate_on_decoder (channels, sampling_rate));
+  tiz_check_omx (set_channels_and_rate_on_decoder (channels, sampling_rate));
   tiz_check_omx (set_channels_and_rate_on_renderer (channels, sampling_rate,
-                                                        encoding_str));
+                                                    encoding_str));
 
   return OMX_ErrorNone;
 }
@@ -380,26 +384,25 @@ graph::httpclntops::get_channels_and_rate_from_http_source (
     case OMX_AUDIO_CodingMP3:
     {
       encoding_str = "mp3";
-      rc = tiz::graph::util::
-          get_channels_and_rate_from_audio_port< OMX_AUDIO_PARAM_MP3TYPE >(
-              handle, port_id, OMX_IndexParamAudioMp3, channels, sampling_rate);
+      rc = tiz::graph::util::get_channels_and_rate_from_audio_port<
+          OMX_AUDIO_PARAM_MP3TYPE > (handle, port_id, OMX_IndexParamAudioMp3,
+                                     channels, sampling_rate);
     }
     break;
     case OMX_AUDIO_CodingAAC:
     {
       encoding_str = "aac";
-      rc = tiz::graph::util::
-          get_channels_and_rate_from_audio_port< OMX_AUDIO_PARAM_AACPROFILETYPE >(
-              handle, port_id, OMX_IndexParamAudioAac, channels, sampling_rate);
+      rc = tiz::graph::util::get_channels_and_rate_from_audio_port<
+          OMX_AUDIO_PARAM_AACPROFILETYPE > (
+          handle, port_id, OMX_IndexParamAudioAac, channels, sampling_rate);
     }
     break;
     case OMX_AUDIO_CodingVORBIS:
     {
       encoding_str = "vorbis";
-      rc = tiz::graph::util::
-          get_channels_and_rate_from_audio_port< OMX_AUDIO_PARAM_VORBISTYPE >(
-              handle, port_id, OMX_IndexParamAudioVorbis, channels,
-              sampling_rate);
+      rc = tiz::graph::util::get_channels_and_rate_from_audio_port<
+          OMX_AUDIO_PARAM_VORBISTYPE > (
+          handle, port_id, OMX_IndexParamAudioVorbis, channels, sampling_rate);
     }
     break;
     default:
@@ -407,20 +410,20 @@ graph::httpclntops::get_channels_and_rate_from_http_source (
       if (OMX_AUDIO_CodingOPUS == encoding_)
       {
         encoding_str = "opus";
-        rc = tiz::graph::util::
-            get_channels_and_rate_from_audio_port< OMX_TIZONIA_AUDIO_PARAM_OPUSTYPE >(
-                handle, port_id,
-                static_cast< OMX_INDEXTYPE >(OMX_TizoniaIndexParamAudioOpus),
-                channels, sampling_rate);
+        rc = tiz::graph::util::get_channels_and_rate_from_audio_port<
+            OMX_TIZONIA_AUDIO_PARAM_OPUSTYPE > (
+            handle, port_id,
+            static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioOpus),
+            channels, sampling_rate);
       }
       else if (OMX_AUDIO_CodingFLAC == encoding_)
       {
         encoding_str = "flac";
-        rc = tiz::graph::util::
-            get_channels_and_rate_from_audio_port< OMX_TIZONIA_AUDIO_PARAM_FLACTYPE >(
-                handle, port_id,
-                static_cast< OMX_INDEXTYPE >(OMX_TizoniaIndexParamAudioFlac),
-                channels, sampling_rate);
+        rc = tiz::graph::util::get_channels_and_rate_from_audio_port<
+            OMX_TIZONIA_AUDIO_PARAM_FLACTYPE > (
+            handle, port_id,
+            static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioFlac),
+            channels, sampling_rate);
       }
       else
       {
@@ -452,53 +455,53 @@ graph::httpclntops::set_channels_and_rate_on_decoder (
   {
     case OMX_AUDIO_CodingMP3:
     {
-      rc = tiz::graph::util::
-          set_channels_and_rate_on_audio_port< OMX_AUDIO_PARAM_MP3TYPE >(
-              handle, port_id, OMX_IndexParamAudioMp3, channels, sampling_rate);
+      rc = tiz::graph::util::set_channels_and_rate_on_audio_port<
+          OMX_AUDIO_PARAM_MP3TYPE > (handle, port_id, OMX_IndexParamAudioMp3,
+                                     channels, sampling_rate);
     }
     break;
     case OMX_AUDIO_CodingAAC:
     {
-      rc = tiz::graph::util::
-          set_channels_and_rate_on_audio_port< OMX_AUDIO_PARAM_AACPROFILETYPE >(
-              handle, port_id, OMX_IndexParamAudioAac, channels, sampling_rate);
+      rc = tiz::graph::util::set_channels_and_rate_on_audio_port<
+          OMX_AUDIO_PARAM_AACPROFILETYPE > (
+          handle, port_id, OMX_IndexParamAudioAac, channels, sampling_rate);
     }
     break;
     case OMX_AUDIO_CodingVORBIS:
     {
-      rc = tiz::graph::util::
-          set_channels_and_rate_on_audio_port< OMX_AUDIO_PARAM_VORBISTYPE >(
-              handle, port_id, OMX_IndexParamAudioVorbis, channels,
-              sampling_rate);
+      rc = tiz::graph::util::set_channels_and_rate_on_audio_port<
+          OMX_AUDIO_PARAM_VORBISTYPE > (
+          handle, port_id, OMX_IndexParamAudioVorbis, channels, sampling_rate);
     }
     break;
     default:
+    {
+      if (OMX_AUDIO_CodingOPUS == encoding_)
       {
-        if (OMX_AUDIO_CodingOPUS == encoding_)
-          {
-            rc = tiz::graph::util::
-              set_channels_and_rate_on_audio_port< OMX_TIZONIA_AUDIO_PARAM_OPUSTYPE >(
-              handle, port_id,
-              static_cast< OMX_INDEXTYPE >(OMX_TizoniaIndexParamAudioOpus),
-              channels, sampling_rate);
-          }
-        else if (OMX_AUDIO_CodingFLAC == encoding_)
-          {
-            rc = tiz::graph::util::
-              set_channels_and_rate_on_audio_port< OMX_TIZONIA_AUDIO_PARAM_FLACTYPE >(
-              handle, port_id,
-              static_cast< OMX_INDEXTYPE >(OMX_TizoniaIndexParamAudioFlac),
-              channels, sampling_rate);
-          }
-        else
-          {
-            TIZ_LOG (TIZ_PRIORITY_ERROR,
-                     "[OMX_ErrorFormatNotDetected] : Unhandled encoding type [%d]...",
-                     encoding_);
-            rc = OMX_ErrorFormatNotDetected;
-          }
+        rc = tiz::graph::util::set_channels_and_rate_on_audio_port<
+            OMX_TIZONIA_AUDIO_PARAM_OPUSTYPE > (
+            handle, port_id,
+            static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioOpus),
+            channels, sampling_rate);
       }
-      break;
+      else if (OMX_AUDIO_CodingFLAC == encoding_)
+      {
+        rc = tiz::graph::util::set_channels_and_rate_on_audio_port<
+            OMX_TIZONIA_AUDIO_PARAM_FLACTYPE > (
+            handle, port_id,
+            static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioFlac),
+            channels, sampling_rate);
+      }
+      else
+      {
+        TIZ_LOG (
+            TIZ_PRIORITY_ERROR,
+            "[OMX_ErrorFormatNotDetected] : Unhandled encoding type [%d]...",
+            encoding_);
+        rc = OMX_ErrorFormatNotDetected;
+      }
+    }
+    break;
   };
 
   return rc;

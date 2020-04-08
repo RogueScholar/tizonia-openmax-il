@@ -77,5 +77,5 @@ namespace tiz
   private:
     programopts popts_;
   };
-}
+}  // namespace tiz
 #endif  // TIZPLAYAPP_HPP

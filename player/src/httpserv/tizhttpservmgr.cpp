@@ -31,14 +31,14 @@
 
 #include <assert.h>
 
-#include <boost/assign/list_of.hpp> // for 'list_of()'
+#include <boost/assign/list_of.hpp>  // for 'list_of()'
 #include <boost/make_shared.hpp>
 
 #include <tizplatform.h>
 
-#include <tizgraphmgrcaps.hpp>
 #include "tizhttpservgraph.hpp"
 #include "tizhttpservmgr.hpp"
+#include <tizgraphmgrcaps.hpp>
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -61,7 +61,8 @@ graphmgr::httpservmgr::~httpservmgr ()
 }
 
 graphmgr::ops *graphmgr::httpservmgr::do_init (
-    const tizplaylist_ptr_t &playlist, const termination_callback_t &termination_cback,
+    const tizplaylist_ptr_t &playlist,
+    const termination_callback_t &termination_cback,
     graphmgr_capabilities_t &graphmgr_caps)
 {
   // Fill this graph manager capabilities
@@ -91,9 +92,9 @@ graphmgr::ops *graphmgr::httpservmgr::do_init (
 //
 // decodemgrops
 //
-graphmgr::httpservmgrops::httpservmgrops (mgr *p_mgr,
-                                          const tizplaylist_ptr_t &playlist,
-                                          const termination_callback_t &termination_cback)
+graphmgr::httpservmgrops::httpservmgrops (
+    mgr *p_mgr, const tizplaylist_ptr_t &playlist,
+    const termination_callback_t &termination_cback)
   : tiz::graphmgr::ops (p_mgr, playlist, termination_cback)
 {
 }
@@ -106,7 +107,7 @@ tizgraph_ptr_t graphmgr::httpservmgrops::get_graph (
   tizgraph_ptr_map_t::const_iterator it = graph_registry_.find (encoding);
   if (it == graph_registry_.end ())
   {
-    g_ptr = boost::make_shared< tiz::graph::httpserver >();
+    g_ptr = boost::make_shared< tiz::graph::httpserver > ();
     if (g_ptr)
     {
       // TODO: Check rc
@@ -153,7 +154,7 @@ void graphmgr::httpservmgrops::do_execute ()
   assert (playlist_);
   assert (p_mgr_);
 
-  httpservmgr *p_servermgr = dynamic_cast< httpservmgr * >(p_mgr_);
+  httpservmgr *p_servermgr = dynamic_cast< httpservmgr * > (p_mgr_);
   assert (p_servermgr);
 
   graph_config_.reset ();

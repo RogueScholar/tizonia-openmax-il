@@ -165,7 +165,6 @@ void graph::plexops::do_configure ()
     std::string coding_type_str ("Plex");
     tiz::graph::util::dump_graph_info (coding_type_str.c_str (), "Connected",
                                        playlist_->get_current_uri ().c_str ());
-
   }
 }
 

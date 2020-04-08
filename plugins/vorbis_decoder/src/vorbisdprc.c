@@ -306,9 +306,9 @@ fishsound_decoded_callback (FishSound * ap_fsound, float * app_pcm[],
 
   /* FISH_SOUND_CONTINUE Continue decoding */
   /* FISH_SOUND_STOP_OK Stop decoding immediately and return control to the
-     fish_sound_decode() caller */
+       fish_sound_decode() caller */
   /* FISH_SOUND_STOP_ERR Stop decoding immediately, purge buffered data, and
-     return control to the fish_sound_decode() caller */
+       return control to the fish_sound_decode() caller */
 
   if (!p_prc->started_)
     {
@@ -366,7 +366,7 @@ fishsound_decoded_callback (FishSound * ap_fsound, float * app_pcm[],
     if (frames_to_write < frames)
       {
         /* Temporarily store the data until an omx buffer is
-         * available */
+             * available */
         OMX_U32 nbytes_remaining = (frames - frames_to_write) * frame_len;
         TIZ_TRACE (handleOf (p_prc), "Need to store [%d] bytes",
                    nbytes_remaining);
@@ -483,9 +483,9 @@ transform_buffer (vorbisd_prc_t * ap_prc)
                 {
                   /* Decoding was stopped by a FishSoundDecode* */
                   /* callback returning FISH_SOUND_STOP_ERR before any input
-                   * bytes were consumed. */
+                 * bytes were consumed. */
                   /* This will occur when PCM is decoded from previously
-                   * buffered input, and */
+                 * buffered input, and */
                   /* stopping is immediately requested. */
                   TIZ_ERROR (handleOf (ap_prc),
                              "[FISH_SOUND_ERR_STOP_ERR] : "

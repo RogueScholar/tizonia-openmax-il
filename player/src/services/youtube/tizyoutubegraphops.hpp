@@ -41,7 +41,7 @@ namespace tiz
     {
     public:
       youtubeops (graph *p_graph, const omx_comp_name_lst_t &comp_lst,
-                 const omx_comp_role_lst_t &role_lst);
+                  const omx_comp_role_lst_t &role_lst);
 
     public:
       void do_enable_auto_detection (const int handle_id, const int port_id);
@@ -54,8 +54,7 @@ namespace tiz
 
       bool is_fatal_error (const OMX_ERRORTYPE error) const;
       void do_record_fatal_error (const OMX_HANDLETYPE handle,
-                                  const OMX_ERRORTYPE error,
-                                  const OMX_U32 port,
+                                  const OMX_ERRORTYPE error, const OMX_U32 port,
                                   const OMX_PTR p_eventdata = NULL);
 
     private:

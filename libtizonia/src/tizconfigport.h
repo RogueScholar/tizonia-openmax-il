@@ -30,21 +30,22 @@
 #define TIZCONFIGPORT_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_Component.h>
 
-void *
-tiz_configport_class_init (void * ap_tos, void * ap_hdl);
-void *
-tiz_configport_init (void * ap_tos, void * ap_hdl);
+  void *
+  tiz_configport_class_init (void * ap_tos, void * ap_hdl);
+  void *
+  tiz_configport_init (void * ap_tos, void * ap_hdl);
 
-void
-tiz_configport_clear_metadata (void * ap_obj);
-OMX_ERRORTYPE
-tiz_configport_store_metadata (
-  void * ap_obj, const OMX_CONFIG_METADATAITEMTYPE * ap_meta_item);
+  void
+  tiz_configport_clear_metadata (void * ap_obj);
+  OMX_ERRORTYPE
+  tiz_configport_store_metadata (
+    void * ap_obj, const OMX_CONFIG_METADATAITEMTYPE * ap_meta_item);
 
 #ifdef __cplusplus
 }

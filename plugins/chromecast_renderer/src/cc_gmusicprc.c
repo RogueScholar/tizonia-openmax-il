@@ -94,7 +94,8 @@ enqueue_gm_playlist_items (cc_gmusic_prc_t * ap_prc)
 
   {
     const char * p_playlist = (const char *) ap_prc->gm_playlist_.cPlaylistName;
-    const char * p_additional_keywords = (const char *) ap_prc->gm_playlist_.cAdditionalKeywords;
+    const char * p_additional_keywords
+      = (const char *) ap_prc->gm_playlist_.cAdditionalKeywords;
     const OMX_BOOL is_unlimited_search = ap_prc->gm_playlist_.bUnlimitedSearch;
     const OMX_BOOL shuffle = ap_prc->gm_playlist_.bShuffle;
 
@@ -316,8 +317,8 @@ cc_gmusic_prc_store_stream_metadata (const void * p_obj)
       = tiz_gmusic_get_current_song_album_art (p_prc->p_gm_);
     if (p_album_art && strnlen (p_album_art, OMX_MAX_STRINGNAME_SIZE) > 0)
       {
-        tiz_check_omx (
-          cc_prc_store_stream_metadata_item (p_cc_prc, "Album Art", p_album_art));
+        tiz_check_omx (cc_prc_store_stream_metadata_item (p_cc_prc, "Album Art",
+                                                          p_album_art));
       }
   }
 

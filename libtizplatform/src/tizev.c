@@ -358,7 +358,7 @@ enqueue_io_msg (tiz_event_io_t * ap_ev_io, const uint32_t a_id,
   /* All good */
   rc = OMX_ErrorNone;
 
- end:
+end:
 
   if (OMX_ErrorNone != rc)
     {
@@ -400,7 +400,7 @@ enqueue_timer_msg (tiz_event_timer_t * ap_ev_timer, const uint32_t a_id,
   /* All good */
   rc = OMX_ErrorNone;
 
- end:
+end:
 
   if (OMX_ErrorNone != rc)
     {
@@ -424,8 +424,9 @@ enqueue_stat_msg (tiz_event_stat_t * ap_ev_stat, const uint32_t a_id,
           || ETIZEventLoopMsgStatDestroy == a_class);
 
   tiz_check_omx (tiz_mutex_lock (&(gp_event_loop->mutex)));
-  tiz_goto_end_on_null ((p_msg = init_event_loop_msg (gp_event_loop, (a_class))),
-                        "Failed to initialise the event loop");
+  tiz_goto_end_on_null (
+    (p_msg = init_event_loop_msg (gp_event_loop, (a_class))),
+    "Failed to initialise the event loop");
 
   assert (p_msg);
   p_msg_stat = &(p_msg->stat);
@@ -440,7 +441,7 @@ enqueue_stat_msg (tiz_event_stat_t * ap_ev_stat, const uint32_t a_id,
   /* All good */
   rc = OMX_ErrorNone;
 
- end:
+end:
 
   if (OMX_ErrorNone != rc)
     {
@@ -502,7 +503,7 @@ ev_io_msg_dequeue (void * ap_elem, OMX_S32 a_data1, void * ap_data2)
           if (p_ev_io_needle->id == p_msg_io->id)
             {
               /* Found, return TRUE so that the msg will be removed from the
-                 queue */
+                   queue */
               rc = OMX_TRUE;
             }
         }
@@ -530,9 +531,8 @@ ev_timer_msg_dequeue (void * ap_elem, OMX_S32 a_data1, void * ap_data2)
                          || ETIZEventLoopMsgTimerStop == elem_class
                          || ETIZEventLoopMsgTimerDestroy == elem_class);
 
-  if (class_to_delete == p_msg->class || (elem_class_is_timer
-                                          && class_to_delete
-                                               == ETIZEventLoopMsgTimerAny))
+  if (class_to_delete == p_msg->class
+      || (elem_class_is_timer && class_to_delete == ETIZEventLoopMsgTimerAny))
     {
       tiz_event_loop_msg_timer_t * p_msg_timer = NULL;
       tiz_event_timer_t * p_ev_timer = NULL;
@@ -546,7 +546,7 @@ ev_timer_msg_dequeue (void * ap_elem, OMX_S32 a_data1, void * ap_data2)
           if (p_ev_timer_needle->id == p_msg_timer->id)
             {
               /* Found, return TRUE so that the msg will be removed from the
-                 queue */
+                   queue */
               rc = OMX_TRUE;
             }
         }
@@ -574,9 +574,8 @@ ev_stat_msg_dequeue (void * ap_elem, OMX_S32 a_data1, void * ap_data2)
                         || ETIZEventLoopMsgStatStop == elem_class
                         || ETIZEventLoopMsgStatDestroy == elem_class);
 
-  if (class_to_delete == p_msg->class || (elem_class_is_stat
-                                          && class_to_delete
-                                               == ETIZEventLoopMsgStatAny))
+  if (class_to_delete == p_msg->class
+      || (elem_class_is_stat && class_to_delete == ETIZEventLoopMsgStatAny))
     {
       tiz_event_loop_msg_stat_t * p_msg_stat = NULL;
       tiz_event_stat_t * p_ev_stat = NULL;
@@ -590,7 +589,7 @@ ev_stat_msg_dequeue (void * ap_elem, OMX_S32 a_data1, void * ap_data2)
           if (p_ev_stat_needle->id == p_msg_stat->id)
             {
               /* Found, return TRUE so that the msg will be removed from the
-                 queue */
+                   queue */
               rc = OMX_TRUE;
             }
         }
@@ -652,7 +651,7 @@ do_io_stop (tiz_event_loop_msg_t * ap_msg)
   else
     {
       /* This io watcher hasn't been started, let's make sure there are no
-         start requests left behind in the queue */
+           start requests left behind in the queue */
       const tiz_event_loop_msg_class_t class_to_be_deleted
         = ETIZEventLoopMsgIoStart;
       tiz_pqueue_remove_func (gp_event_loop->p_pq, ev_io_msg_dequeue,
@@ -683,7 +682,7 @@ do_io_destroy (tiz_event_loop_msg_t * ap_msg)
 
   {
     /* Now remove any references to this watcher that might be present in the
-       queue */
+           queue */
     tiz_event_loop_msg_class_t class_to_be_deleted = ETIZEventLoopMsgIoAny;
     tiz_pqueue_remove_func (gp_event_loop->p_pq, ev_io_msg_dequeue,
                             (OMX_S32) class_to_be_deleted, p_ev_io);
@@ -771,8 +770,8 @@ do_timer_stop (tiz_event_loop_msg_t * ap_msg)
   else
     {
       /* The timer watcher hasn't been started, let's make sure there are no
-         start
-         requests in the queue */
+           start
+           requests in the queue */
       const tiz_event_loop_msg_class_t class_to_be_deleted
         = ETIZEventLoopMsgTimerStart;
       tiz_pqueue_remove_func (gp_event_loop->p_pq, ev_timer_msg_dequeue,
@@ -803,7 +802,7 @@ do_timer_destroy (tiz_event_loop_msg_t * ap_msg)
     }
   {
     /* Now remove any references to this watcher that might be present in the
-       queue */
+           queue */
     tiz_event_loop_msg_class_t class_to_be_deleted = ETIZEventLoopMsgTimerAny;
     tiz_pqueue_remove_func (gp_event_loop->p_pq, ev_timer_msg_dequeue,
                             (OMX_S32) class_to_be_deleted, p_ev_timer);
@@ -870,8 +869,8 @@ do_stat_stop (tiz_event_loop_msg_t * ap_msg)
   else
     {
       /* The stat watcher hasn't been started, let's make sure there are no
-         start
-         requests in the queue */
+           start
+           requests in the queue */
       const tiz_event_loop_msg_class_t class_to_be_deleted
         = ETIZEventLoopMsgStatStart;
       tiz_pqueue_remove_func (gp_event_loop->p_pq, ev_stat_msg_dequeue,
@@ -902,7 +901,7 @@ do_stat_destroy (tiz_event_loop_msg_t * ap_msg)
 
   {
     /* Now remove any references to this watcher that might be present in the
-       queue */
+           queue */
     tiz_event_loop_msg_class_t class_to_be_deleted = ETIZEventLoopMsgStatAny;
     tiz_pqueue_remove_func (gp_event_loop->p_pq, ev_stat_msg_dequeue,
                             (OMX_S32) class_to_be_deleted, p_ev_stat);
@@ -1097,9 +1096,9 @@ init_event_loop_thread (void)
       rc = OMX_ErrorInsufficientResources;
 
       /* Register a handler to reset the pthread_once_t global variable to try
-         to cope with the scenario of a process forking without exec. The idea
-         is to make sure that the loop thread is re-created in the child
-         process */
+           to cope with the scenario of a process forking without exec. The idea
+           is to make sure that the loop thread is re-created in the child
+           process */
       pthread_atfork (NULL, NULL, child_event_loop_reset);
 
       tiz_goto_end_on_null (
@@ -1110,24 +1109,26 @@ init_event_loop_thread (void)
       gp_event_loop->state = ETIZEventLoopStateStarting;
 
       tiz_goto_end_on_omx_err (tiz_rcfile_init (&(gp_event_loop->p_rcfile)),
-                           "Error opening configuration file.");
+                               "Error opening configuration file.");
 
       tiz_goto_end_on_null ((gp_event_loop->p_loop = ev_loop_new (EVFLAG_AUTO)),
                             "Error instantiating ev_loop.");
 
-      tiz_goto_end_on_null ((gp_event_loop->p_async_watcher
-                            = (ev_async *) tiz_mem_calloc (1, sizeof (ev_async))),
-                           "Error initializing async watcher.");
+      tiz_goto_end_on_null (
+        (gp_event_loop->p_async_watcher
+         = (ev_async *) tiz_mem_calloc (1, sizeof (ev_async))),
+        "Error initializing async watcher.");
 
       tiz_goto_end_on_omx_err (tiz_mutex_init (&(gp_event_loop->mutex)),
-                           "Error initializing mutex.");
+                               "Error initializing mutex.");
 
       tiz_goto_end_on_omx_err (tiz_sem_init (&(gp_event_loop->sem), 0),
-                           "Error initializing sem.");
+                               "Error initializing sem.");
 
       /* Init the small object allocator */
-      tiz_goto_end_on_omx_err (tiz_soa_init (&(gp_event_loop->p_soa)),
-                           "Error initializing the small object allocator.");
+      tiz_goto_end_on_omx_err (
+        tiz_soa_init (&(gp_event_loop->p_soa)),
+        "Error initializing the small object allocator.");
 
       /* Init the priority queue */
       tiz_goto_end_on_omx_err (
@@ -1156,7 +1157,7 @@ end:
 
       (void) tiz_mutex_lock (&(p_lp->mutex));
       /* This is to prevent the event loop from exiting when there are no
-       * more active events */
+         * more active events */
       ev_ref (p_lp->p_loop);
       (void) tiz_mutex_unlock (&(p_lp->mutex));
       tiz_sem_wait (&(p_lp->sem));
@@ -1186,7 +1187,7 @@ void
 tiz_event_loop_destroy (void)
 {
   /* NOTE: If the thread is destroyed, it can't be recreated in the same
-     process as it's been instantiated with pthread_once. */
+       process as it's been instantiated with pthread_once. */
 
   if (gp_event_loop)
     {

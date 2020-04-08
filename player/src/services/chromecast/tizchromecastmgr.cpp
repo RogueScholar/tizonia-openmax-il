@@ -36,9 +36,9 @@
 
 #include <tizplatform.h>
 
-#include "tizgraphmgrcaps.hpp"
 #include "tizchromecastgraph.hpp"
 #include "tizchromecastmgr.hpp"
+#include "tizgraphmgrcaps.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -107,7 +107,7 @@ tizgraph_ptr_t graphmgr::chromecastmgrops::get_graph (
   tizgraph_ptr_map_t::const_iterator it = graph_registry_.find (encoding);
   if (it == graph_registry_.end ())
   {
-    g_ptr = boost::make_shared< tiz::graph::chromecast >();
+    g_ptr = boost::make_shared< tiz::graph::chromecast > ();
     if (g_ptr)
     {
       // TODO: Check rc
@@ -127,8 +127,9 @@ tizgraph_ptr_t graphmgr::chromecastmgrops::get_graph (
     }
     else
     {
-      GMGR_OPS_RECORD_ERROR (OMX_ErrorInsufficientResources,
-                             "Unable to create the Chromecast rendering graph.");
+      GMGR_OPS_RECORD_ERROR (
+          OMX_ErrorInsufficientResources,
+          "Unable to create the Chromecast rendering graph.");
     }
   }
   else
@@ -144,13 +145,14 @@ void graphmgr::chromecastmgrops::do_load ()
   tizgraph_ptr_t g_ptr (get_graph (std::string ()));
   if (g_ptr)
   {
-    chromecastmgr *p_ccmgr = dynamic_cast< chromecastmgr * >(p_mgr_);
+    chromecastmgr *p_ccmgr = dynamic_cast< chromecastmgr * > (p_mgr_);
     assert (p_ccmgr);
 
     graph_config_.reset ();
     graph_config_ = p_ccmgr->config_;
     assert (graph_config_);
-    GMGR_OPS_BAIL_IF_ERROR (g_ptr, g_ptr->load (graph_config_), "Unable to load the graph.");
+    GMGR_OPS_BAIL_IF_ERROR (g_ptr, g_ptr->load (graph_config_),
+                            "Unable to load the graph.");
   }
   p_managed_graph_ = g_ptr;
 }
@@ -160,13 +162,12 @@ void graphmgr::chromecastmgrops::do_execute ()
   assert (playlist_);
   assert (p_mgr_);
 
-  GMGR_OPS_BAIL_IF_ERROR (p_managed_graph_,
-                          p_managed_graph_->execute (),
+  GMGR_OPS_BAIL_IF_ERROR (p_managed_graph_, p_managed_graph_->execute (),
                           "Unable to execute the graph.");
 }
 
 bool graphmgr::chromecastmgrops::is_fatal_error (const OMX_ERRORTYPE error,
-                                              const std::string &msg)
+                                                 const std::string &msg)
 {
   bool rc = false;
   TIZ_LOG (TIZ_PRIORITY_ERROR, "[%s] : %s", tiz_err_to_str (error),

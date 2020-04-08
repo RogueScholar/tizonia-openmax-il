@@ -213,7 +213,7 @@ stop_client ()
   tiz_sem_destroy (&(p_cast->sem));
 
   /* NOTE: Do not free the tiz_cast_client_global_t structure. This will be reused in case
-     the client is re-initialized */
+       the client is re-initialized */
   /* tiz_mem_free(p_cast); */
 
   return TIZ_CAST_SUCCESS;

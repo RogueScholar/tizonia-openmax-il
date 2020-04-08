@@ -29,15 +29,15 @@
 #ifndef TIZGRAPH_HPP
 #define TIZGRAPH_HPP
 
-#include <boost/thread.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/thread.hpp>
 
 #include <OMX_Core.h>
 #include <tizplatform.h>
 
+#include "tizgraphcback.hpp"
 #include "tizgraphtypes.hpp"
 #include "tizplaylist.hpp"
-#include "tizgraphcback.hpp"
 
 namespace tiz
 {
@@ -45,7 +45,7 @@ namespace tiz
   {
     // Forward declaration
     class mgr;
-  }
+  }  // namespace graphmgr
 
   namespace graph
   {
@@ -105,11 +105,11 @@ namespace tiz
       void graph_end_of_play ();
       void graph_error (const OMX_ERRORTYPE error, const std::string &msg);
 
-      void progress_display_start(unsigned long duration);
-      void progress_display_increase();
-      void progress_display_pause();
-      void progress_display_resume();
-      void progress_display_stop();
+      void progress_display_start (unsigned long duration);
+      void progress_display_increase ();
+      void progress_display_pause ();
+      void progress_display_resume ();
+      void progress_display_stop ();
 
       std::string get_graph_name () const;
 

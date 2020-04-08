@@ -56,10 +56,10 @@ cc_plex_cfgport_ctor (void * ap_obj, va_list * app)
 
   assert (p_obj);
 
-  tiz_check_omx_ret_null (tiz_port_register_index (
-    p_obj, OMX_TizoniaIndexParamAudioPlexSession));
-  tiz_check_omx_ret_null (tiz_port_register_index (
-    p_obj, OMX_TizoniaIndexParamAudioPlexPlaylist));
+  tiz_check_omx_ret_null (
+    tiz_port_register_index (p_obj, OMX_TizoniaIndexParamAudioPlexSession));
+  tiz_check_omx_ret_null (
+    tiz_port_register_index (p_obj, OMX_TizoniaIndexParamAudioPlexPlaylist));
 
   /* Initialize the OMX_TIZONIA_AUDIO_PARAM_PLEXSESSIONTYPE structure */
   TIZ_INIT_OMX_STRUCT (p_obj->session_);
@@ -92,7 +92,7 @@ cc_plex_cfgport_dtor (void * ap_obj)
 
 static OMX_ERRORTYPE
 cc_plex_cfgport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
-                             OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
+                              OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
   const cc_plex_cfgport_t * p_obj = ap_obj;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
@@ -124,7 +124,7 @@ cc_plex_cfgport_GetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
 
 static OMX_ERRORTYPE
 cc_plex_cfgport_SetParameter (const void * ap_obj, OMX_HANDLETYPE ap_hdl,
-                             OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
+                              OMX_INDEXTYPE a_index, OMX_PTR ap_struct)
 {
   cc_plex_cfgport_t * p_obj = (cc_plex_cfgport_t *) ap_obj;
   OMX_ERRORTYPE rc = OMX_ErrorNone;
@@ -190,8 +190,7 @@ void *
 cc_plex_cfgport_init (void * ap_tos, void * ap_hdl)
 {
   void * cc_cfgport = tiz_get_type (ap_hdl, "cc_cfgport");
-  void * cc_plexcfgport_class
-    = tiz_get_type (ap_hdl, "cc_plexcfgport_class");
+  void * cc_plexcfgport_class = tiz_get_type (ap_hdl, "cc_plexcfgport_class");
   TIZ_LOG_CLASS (cc_plexcfgport_class);
   void * cc_plexcfgport = factory_new
     /* TIZ_CLASS_COMMENT: class type, class name, parent, size */

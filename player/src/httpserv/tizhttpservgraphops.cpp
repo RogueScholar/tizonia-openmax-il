@@ -34,16 +34,16 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 
-#include <OMX_Core.h>
 #include <OMX_Component.h>
+#include <OMX_Core.h>
 #include <OMX_TizoniaExt.h>
 #include <tizplatform.h>
 
-#include "tizgraphutil.hpp"
-#include "tizprobe.hpp"
 #include "tizgraph.hpp"
+#include "tizgraphutil.hpp"
 #include "tizhttpservconfig.hpp"
 #include "tizhttpservgraphops.hpp"
+#include "tizprobe.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -140,15 +140,16 @@ OMX_ERRORTYPE
 graph::httpservops::configure_server ()
 {
   OMX_TIZONIA_HTTPSERVERTYPE httpsrv;
-  httpsrv.nSize = sizeof(OMX_TIZONIA_HTTPSERVERTYPE);
+  httpsrv.nSize = sizeof (OMX_TIZONIA_HTTPSERVERTYPE);
   httpsrv.nVersion.nVersion = OMX_VERSION;
 
   tiz_check_omx (OMX_GetParameter (
       handles_[1],
-      static_cast< OMX_INDEXTYPE >(OMX_TizoniaIndexParamHttpServer), &httpsrv));
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamHttpServer),
+      &httpsrv));
 
   tizhttpservconfig_ptr_t srv_config
-      = boost::dynamic_pointer_cast< httpservconfig >(config_);
+      = boost::dynamic_pointer_cast< httpservconfig > (config_);
   assert (srv_config);
   httpsrv.nListeningPort = srv_config->get_port ();
   httpsrv.nMaxClients = 1;  // the http renderer component supports only one
@@ -156,40 +157,40 @@ graph::httpservops::configure_server ()
 
   return OMX_SetParameter (
       handles_[1],
-      static_cast< OMX_INDEXTYPE >(OMX_TizoniaIndexParamHttpServer), &httpsrv);
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamHttpServer), &httpsrv);
 }
 
 OMX_ERRORTYPE
 graph::httpservops::configure_station ()
 {
   OMX_TIZONIA_ICECASTMOUNTPOINTTYPE mount;
-  mount.nSize = sizeof(OMX_TIZONIA_ICECASTMOUNTPOINTTYPE);
+  mount.nSize = sizeof (OMX_TIZONIA_ICECASTMOUNTPOINTTYPE);
   mount.nVersion.nVersion = OMX_VERSION;
   mount.nPortIndex = 0;
 
   tizhttpservconfig_ptr_t srv_config
-      = boost::dynamic_pointer_cast< httpservconfig >(config_);
+      = boost::dynamic_pointer_cast< httpservconfig > (config_);
   assert (srv_config);
 
   tiz_check_omx (OMX_GetParameter (
       handles_[1],
-      static_cast< OMX_INDEXTYPE >(OMX_TizoniaIndexParamIcecastMountpoint),
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamIcecastMountpoint),
       &mount));
 
-  snprintf ((char *)mount.cMountName, sizeof(mount.cMountName), "/");
-  snprintf ((char *)mount.cStationName, sizeof(mount.cStationName),
+  snprintf ((char *)mount.cMountName, sizeof (mount.cMountName), "/");
+  snprintf ((char *)mount.cStationName, sizeof (mount.cStationName),
             "%s (%s:%ld)", srv_config->get_station_name ().c_str (),
             srv_config->get_host_name ().c_str (), srv_config->get_port ());
   snprintf ((char *)mount.cStationDescription,
-            sizeof(mount.cStationDescription),
-            "Tizonia Streaming Server");
-  snprintf ((char *)mount.cStationGenre, sizeof(mount.cStationGenre), "%s",
+            sizeof (mount.cStationDescription), "Tizonia Streaming Server");
+  snprintf ((char *)mount.cStationGenre, sizeof (mount.cStationGenre), "%s",
             srv_config->get_station_genre ().c_str ());
-  snprintf ((char *)mount.cStationUrl, sizeof(mount.cStationUrl),
+  snprintf ((char *)mount.cStationUrl, sizeof (mount.cStationUrl),
             "https://tizonia.org");
 
-  mount.nIcyMetadataPeriod = (srv_config->get_icy_metadata_enabled () ?
-                              TIZ_DEFAULT_ICY_METADATA_INTERVAL : 0);
+  mount.nIcyMetadataPeriod = (srv_config->get_icy_metadata_enabled ()
+                                  ? TIZ_DEFAULT_ICY_METADATA_INTERVAL
+                                  : 0);
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "nIcyMetadataPeriod [%u]...",
            mount.nIcyMetadataPeriod);
@@ -198,7 +199,7 @@ graph::httpservops::configure_station ()
   mount.nMaxClients = 1;
   return OMX_SetParameter (
       handles_[1],
-      static_cast< OMX_INDEXTYPE >(OMX_TizoniaIndexParamIcecastMountpoint),
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamIcecastMountpoint),
       &mount);
 }
 
@@ -209,9 +210,10 @@ graph::httpservops::configure_stream_metadata ()
 
   // Set the stream title on to the renderer's input port
   OMX_TIZONIA_ICECASTMETADATATYPE *p_metadata = NULL;
-  if (NULL == (p_metadata = (OMX_TIZONIA_ICECASTMETADATATYPE *)tiz_mem_calloc (
-                   1, sizeof(OMX_TIZONIA_ICECASTMETADATATYPE)
-                      + OMX_TIZONIA_MAX_SHOUTCAST_METADATA_SIZE)))
+  if (NULL
+      == (p_metadata = (OMX_TIZONIA_ICECASTMETADATATYPE *)tiz_mem_calloc (
+              1, sizeof (OMX_TIZONIA_ICECASTMETADATATYPE)
+                     + OMX_TIZONIA_MAX_SHOUTCAST_METADATA_SIZE)))
   {
     rc = OMX_ErrorInsufficientResources;
   }
@@ -225,15 +227,16 @@ graph::httpservops::configure_stream_metadata ()
     snprintf ((char *)p_metadata->cStreamTitle,
               OMX_TIZONIA_MAX_SHOUTCAST_METADATA_SIZE, "StreamTitle='%s';",
               stream_title.c_str ());
-    p_metadata->nSize = sizeof(OMX_TIZONIA_ICECASTMETADATATYPE)
+    p_metadata->nSize = sizeof (OMX_TIZONIA_ICECASTMETADATATYPE)
                         + strlen ((char *)p_metadata->cStreamTitle);
 
     TIZ_LOG (TIZ_PRIORITY_TRACE, "p_metadata->cStreamTitle [%s]...",
              p_metadata->cStreamTitle);
 
-    rc = OMX_SetConfig (handles_[1], static_cast< OMX_INDEXTYPE >(
-                                         OMX_TizoniaIndexConfigIcecastMetadata),
-                        p_metadata);
+    rc = OMX_SetConfig (
+        handles_[1],
+        static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexConfigIcecastMetadata),
+        p_metadata);
 
     tiz_mem_free (p_metadata);
     p_metadata = NULL;
@@ -244,7 +247,7 @@ graph::httpservops::configure_stream_metadata ()
 
 OMX_ERRORTYPE
 graph::httpservops::switch_tunnel (const int tunnel_id,
-    const OMX_COMMANDTYPE to_disabled_or_enabled)
+                                   const OMX_COMMANDTYPE to_disabled_or_enabled)
 {
   OMX_ERRORTYPE rc = OMX_ErrorNone;
 
@@ -280,17 +283,17 @@ graph::httpservops::switch_tunnel (const int tunnel_id,
 void graph::httpservops::get_mp3_codec_info (OMX_AUDIO_PARAM_MP3TYPE &mp3type)
 {
   if (probe_ptr_)
+  {
+    // Retrieve the mp3 settings from the probe
+    probe_ptr_->get_mp3_codec_info (mp3type);
+    // Now make sure that the bitrate is set to 0 if we are streaming a variable
+    // bitrate media file. This will hint the http renderer to use an
+    // appropriate burst size.
+    if (!probe_ptr_->is_cbr_stream ())
     {
-      // Retrieve the mp3 settings from the probe
-      probe_ptr_->get_mp3_codec_info (mp3type);
-      // Now make sure that the bitrate is set to 0 if we are streaming a variable
-      // bitrate media file. This will hint the http renderer to use an appropriate
-      // burst size.
-      if (!probe_ptr_->is_cbr_stream ())
-        {
-          mp3type.nBitRate = 0;
-        }
+      mp3type.nBitRate = 0;
     }
+  }
 }
 
 bool graph::httpservops::probe_stream_hook ()
@@ -299,7 +302,7 @@ bool graph::httpservops::probe_stream_hook ()
   if (probe_ptr_ && config_)
   {
     tizhttpservconfig_ptr_t srv_config
-        = boost::dynamic_pointer_cast< httpservconfig >(config_);
+        = boost::dynamic_pointer_cast< httpservconfig > (config_);
     assert (srv_config);
 
     OMX_AUDIO_PARAM_MP3TYPE mp3type;
@@ -322,12 +325,13 @@ bool graph::httpservops::probe_stream_hook ()
     // server configuration, or process all if the list is empty.
     TIZ_LOG (TIZ_PRIORITY_TRACE, "is_cbr_stream () [%s]...",
              probe_ptr_->is_cbr_stream () ? "YES" : "NO");
-    const std::vector< std::string > &bitrate_types = srv_config->get_bitrate_modes ();
+    const std::vector< std::string > &bitrate_types
+        = srv_config->get_bitrate_modes ();
     if (!bitrate_types.empty ())
     {
       rc &= std::find (bitrate_types.begin (), bitrate_types.end (),
                        probe_ptr_->is_cbr_stream () ? "CBR" : "VBR")
-        != bitrate_types.end ();
+            != bitrate_types.end ();
     }
   }
 

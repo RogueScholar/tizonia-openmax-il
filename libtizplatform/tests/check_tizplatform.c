@@ -26,7 +26,6 @@
  *
  */
 
-
 #include <stdlib.h>
 #include <check.h>
 #include <signal.h>
@@ -57,8 +56,8 @@
 Suite *
 platform_mem_suite (void)
 {
-  TCase *tc_mem = NULL;
-  Suite *s = suite_create ("Memory allocation APIs");
+  TCase * tc_mem = NULL;
+  Suite * s = suite_create ("Memory allocation APIs");
 
   /* Memory API test case */
   tc_mem = tcase_create ("memory");
@@ -71,8 +70,8 @@ platform_mem_suite (void)
 Suite *
 platform_sync_suite (void)
 {
-  TCase *tc_sem = NULL;
-  Suite *s = suite_create ("Synchronization");
+  TCase * tc_sem = NULL;
+  Suite * s = suite_create ("Synchronization");
 
   /* synch APIs test case */
   tc_sem = tcase_create ("synchronization");
@@ -96,8 +95,8 @@ platform_sync_suite (void)
 Suite *
 platform_queue_suite (void)
 {
-  TCase *tc_queue = NULL;
-  Suite *s = suite_create ("Synchronized FIFO queue");
+  TCase * tc_queue = NULL;
+  Suite * s = suite_create ("Synchronized FIFO queue");
 
   /* queue API test case */
   tc_queue = tcase_create ("queue");
@@ -111,8 +110,8 @@ platform_queue_suite (void)
 Suite *
 platform_pqueue_suite (void)
 {
-  TCase *tc_pqueue = NULL;
-  Suite *s = suite_create ("Priority queue");
+  TCase * tc_pqueue = NULL;
+  Suite * s = suite_create ("Priority queue");
 
   /* pqueue API test case */
   tc_pqueue = tcase_create ("priority queue");
@@ -131,14 +130,15 @@ platform_pqueue_suite (void)
 Suite *
 platform_vector_suite (void)
 {
-  TCase *tc_vector = NULL;
-  Suite *s = suite_create ("Dynamic array implementation");
+  TCase * tc_vector = NULL;
+  Suite * s = suite_create ("Dynamic array implementation");
 
   /* vector API test case */
   tc_vector = tcase_create ("vector");
   tcase_add_test (tc_vector, test_vector_init_and_destroy);
   tcase_add_test (tc_vector, test_vector_push_and_pop_length_front_back_ints);
-  tcase_add_test (tc_vector, test_vector_push_and_pop_length_front_back_pointers);
+  tcase_add_test (tc_vector,
+                  test_vector_push_and_pop_length_front_back_pointers);
   tcase_add_test (tc_vector, test_vector_push_back_vector);
   suite_add_tcase (s, tc_vector);
 
@@ -148,10 +148,10 @@ platform_vector_suite (void)
 Suite *
 platform_rcfile_suite (void)
 {
-  TCase *tc_rc = NULL;
-  Suite *s = suite_create ("Runcon file parsing APIs");
+  TCase * tc_rc = NULL;
+  Suite * s = suite_create ("Runcon file parsing APIs");
 
-  putenv(TIZ_PLATFORM_RC_FILE_ENV);
+  putenv (TIZ_PLATFORM_RC_FILE_ENV);
 
   /* config file parsing API test cases */
   tc_rc = tcase_create ("rcfile");
@@ -166,8 +166,8 @@ platform_rcfile_suite (void)
 Suite *
 platform_soa_suite (void)
 {
-  TCase *tc_soa = NULL;
-  Suite *s = suite_create ("Small object allocation APIs");
+  TCase * tc_soa = NULL;
+  Suite * s = suite_create ("Small object allocation APIs");
 
   /* small object allocation API test cases */
   tc_soa = tcase_create ("soa");
@@ -181,8 +181,8 @@ platform_soa_suite (void)
 Suite *
 platform_event_suite (void)
 {
-  TCase  *tc_event;
-  Suite *s = suite_create ("events");
+  TCase * tc_event;
+  Suite * s = suite_create ("events");
 
   /* event loop API test cases */
   tc_event = tcase_create ("event loop API");
@@ -199,8 +199,8 @@ platform_event_suite (void)
 Suite *
 platform_http_parser_suite (void)
 {
-  TCase  *tc_http;
-  Suite *s = suite_create ("http parser");
+  TCase * tc_http;
+  Suite * s = suite_create ("http parser");
 
   /* http parser API test cases */
   tc_http = tcase_create ("http parser API");
@@ -213,8 +213,8 @@ platform_http_parser_suite (void)
 Suite *
 platform_map_suite (void)
 {
-  TCase  *tc_map;
-  Suite *s = suite_create ("map");
+  TCase * tc_map;
+  Suite * s = suite_create ("map");
 
   /* map API test cases */
   tc_map = tcase_create ("map API");
@@ -224,16 +224,15 @@ platform_map_suite (void)
   suite_add_tcase (s, tc_map);
 
   return s;
-
 }
 
 int
 main (void)
 {
   int number_failed = 0;
-  SRunner *sr = NULL;
+  SRunner * sr = NULL;
 
-  tiz_log_init();
+  tiz_log_init ();
 
   TIZ_LOG (TIZ_PRIORITY_TRACE, "Tizonia Platform unit tests");
 
@@ -246,7 +245,7 @@ main (void)
   srunner_add_suite (sr, platform_soa_suite ());
   srunner_add_suite (sr, platform_http_parser_suite ());
   srunner_add_suite (sr, platform_map_suite ());
-/*   srunner_add_suite (sr, platform_event_suite ()); */
+  /*   srunner_add_suite (sr, platform_event_suite ()); */
   srunner_run_all (sr, CK_VERBOSE);
   number_failed = srunner_ntests_failed (sr);
   srunner_free (sr);

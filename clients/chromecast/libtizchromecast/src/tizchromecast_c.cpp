@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and contributors
+ * Copyright (C) 2011-2020 Aratelia Limited - Juan A. Rubio and contributors and
+ * contributors
  *
  * This file is part of Tizonia
  *
@@ -62,7 +63,7 @@ static void chromecast_free_data (tiz_chromecast_t *ap_chromecast)
 }
 
 static tiz_chromecast_error_t chromecast_alloc_data (
-    tiz_chromecast_t *ap_chromecast, const tiz_chromecast_ctx_t * p_cc_ctx,
+    tiz_chromecast_t *ap_chromecast, const tiz_chromecast_ctx_t *p_cc_ctx,
     const char *ap_name_or_ip, const tiz_chromecast_callbacks_t *ap_cbacks,
     void *ap_user_data)
 {
@@ -82,9 +83,9 @@ static tiz_chromecast_error_t chromecast_alloc_data (
 }
 
 extern "C" tiz_chromecast_error_t tiz_chromecast_init (
-    tiz_chromecast_ptr_t *app_chromecast,
-    const tiz_chromecast_ctx_t * p_cc_ctx_, const char *ap_name_or_ip,
-    const tiz_chromecast_callbacks_t *ap_cbacks, void *ap_user_data)
+    tiz_chromecast_ptr_t *app_chromecast, const tiz_chromecast_ctx_t *p_cc_ctx_,
+    const char *ap_name_or_ip, const tiz_chromecast_callbacks_t *ap_cbacks,
+    void *ap_user_data)
 {
   tiz_chromecast_t *p_chromecast = NULL;
   tiz_chromecast_error_t rc = ETizCcErrorConnectionError;

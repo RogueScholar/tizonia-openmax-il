@@ -30,7 +30,8 @@
 #define TIZOMXUTILS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <OMX_Types.h>
@@ -59,28 +60,28 @@ extern "C" {
 
 #define TIZ_OMX_BUF_AVAIL(hdr) (hdr->nAllocLen - hdr->nOffset - hdr->nFilledLen)
 
-/*@observer@ */ OMX_STRING
-tiz_cmd_to_str (OMX_COMMANDTYPE a_cmd);
-/*@observer@ */ OMX_STRING
-tiz_state_to_str (OMX_STATETYPE a_id);
-/*@observer@ */ OMX_STRING
-tiz_evt_to_str (OMX_EVENTTYPE a_evt);
-/*@observer@ */ OMX_STRING
-tiz_err_to_str (OMX_ERRORTYPE a_err);
-/*@observer@ */ OMX_STRING
-tiz_dir_to_str (OMX_DIRTYPE a_dir);
-/*@observer@ */ OMX_STRING
-tiz_domain_to_str (OMX_PORTDOMAINTYPE a_pd);
-/*@observer@ */ OMX_STRING
-tiz_idx_to_str (OMX_INDEXTYPE a_idx);
-/*@observer@ */ OMX_STRING
-tiz_audio_coding_to_str (OMX_AUDIO_CODINGTYPE a_cod);
+  /*@observer@ */ OMX_STRING
+  tiz_cmd_to_str (OMX_COMMANDTYPE a_cmd);
+  /*@observer@ */ OMX_STRING
+  tiz_state_to_str (OMX_STATETYPE a_id);
+  /*@observer@ */ OMX_STRING
+  tiz_evt_to_str (OMX_EVENTTYPE a_evt);
+  /*@observer@ */ OMX_STRING
+  tiz_err_to_str (OMX_ERRORTYPE a_err);
+  /*@observer@ */ OMX_STRING
+  tiz_dir_to_str (OMX_DIRTYPE a_dir);
+  /*@observer@ */ OMX_STRING
+  tiz_domain_to_str (OMX_PORTDOMAINTYPE a_pd);
+  /*@observer@ */ OMX_STRING
+  tiz_idx_to_str (OMX_INDEXTYPE a_idx);
+  /*@observer@ */ OMX_STRING
+  tiz_audio_coding_to_str (OMX_AUDIO_CODINGTYPE a_cod);
 
-void
-tiz_util_reset_eos_flag (OMX_BUFFERHEADERTYPE * p_hdr);
+  void
+  tiz_util_reset_eos_flag (OMX_BUFFERHEADERTYPE * p_hdr);
 
-void
-tiz_util_set_eos_flag (OMX_BUFFERHEADERTYPE * p_hdr);
+  void
+  tiz_util_set_eos_flag (OMX_BUFFERHEADERTYPE * p_hdr);
 
 #ifdef __cplusplus
 }

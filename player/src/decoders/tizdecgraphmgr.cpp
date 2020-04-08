@@ -29,12 +29,12 @@
 #include <config.h>
 #endif
 
-#include <boost/assign/list_of.hpp> // for 'list_of()'
+#include <boost/assign/list_of.hpp>  // for 'list_of()'
 
 #include <tizplatform.h>
 
-#include "tizgraphmgrcaps.hpp"
 #include "tizdecgraphmgr.hpp"
+#include "tizgraphmgrcaps.hpp"
 
 #ifdef TIZ_LOG_CATEGORY_NAME
 #undef TIZ_LOG_CATEGORY_NAME
@@ -56,7 +56,8 @@ graphmgr::decodemgr::~decodemgr ()
 }
 
 graphmgr::ops *graphmgr::decodemgr::do_init (
-    const tizplaylist_ptr_t &playlist, const termination_callback_t &termination_cback,
+    const tizplaylist_ptr_t &playlist,
+    const termination_callback_t &termination_cback,
     graphmgr_capabilities_t &graphmgr_caps)
 {
   // Fill this graph manager capabilities
@@ -87,9 +88,9 @@ graphmgr::ops *graphmgr::decodemgr::do_init (
 //
 // decodemgrops
 //
-graphmgr::decodemgrops::decodemgrops (mgr *p_mgr,
-                                      const tizplaylist_ptr_t &playlist,
-                                      const termination_callback_t &termination_cback)
+graphmgr::decodemgrops::decodemgrops (
+    mgr *p_mgr, const tizplaylist_ptr_t &playlist,
+    const termination_callback_t &termination_cback)
   : tiz::graphmgr::ops (p_mgr, playlist, termination_cback)
 {
 }
