@@ -16,7 +16,7 @@
 # along with Tizonia.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_PREREQ([2.67])
-AC_INIT([tizhttpsrc], [0.21.0], [juan.rubio@aratelia.com])
+AC_INIT([tizhttpsrc], [0.22.0], [juan.rubio@aratelia.com])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE([foreign color-tests silent-rules -Wall -Werror])
 AC_CONFIG_SRCDIR([config.h.in])
@@ -43,7 +43,7 @@ AC_CONFIG_MACRO_DIR([m4])
 #     then set AGE to 0.                                                       #
 #                                                                              #
 ################################################################################
-SHARED_VERSION_INFO="0:21:0"
+SHARED_VERSION_INFO="0:22:0"
 SHLIB_VERSION_ARG=""
 
 AC_SUBST(SHLIB_VERSION_ARG)
@@ -142,6 +142,16 @@ AS_IF([test "x$tiz_found_plex_headers" != "xyes"],
 AS_IF([test "x$tiz_found_plex_headers" == "xyes"],
 	[PKG_CHECK_MODULES([TIZPLEX], [libtizplex >= 0.1.0])],
 	[AC_MSG_NOTICE([Not using pkg-config to find TIZPLEX cflags and libs])])
+
+AC_CHECK_HEADERS([tizonia/tiziheart_c.h],
+	[tiz_found_iheart_headers=yes; break;])
+AS_IF([test "x$tiz_found_iheart_headers" != "xyes"],
+	[AC_SUBST([TIZIHEART_CFLAGS], ['-I$(top_srcdir)/../../clients/iheart/libtiziheart/tizonia'])
+	AC_SUBST([TIZIHEART_LIBS], ['$(top_builddir)/../../clients/iheart/libtiziheart/tizonia/libtiziheart.la'])],
+	[AC_MSG_NOTICE([Not substituting TIZIHEART cflags and libs with local paths])])
+AS_IF([test "x$tiz_found_iheart_headers" == "xyes"],
+	[PKG_CHECK_MODULES([TIZIHEART], [libtiziheart >= 0.1.0])],
+	[AC_MSG_NOTICE([Not using pkg-config to find TIZIHEART cflags and libs])])
 
 # Define location of plugin directory
 AS_AC_EXPAND(PLUGINDIR, ${libdir}/tizonia0-plugins12)

@@ -11,7 +11,9 @@ libtizhttpsrc_sources = [
    'plexprc.c',
    'plexcfgport.c',
    'tuneinprc.c',
-   'tuneincfgport.c'
+   'tuneincfgport.c',
+   'iheartprc.c',
+   'iheartcfgport.c'
 ]
 
 libtizhttpsrc = library(
@@ -24,7 +26,8 @@ libtizhttpsrc = library(
       libtizsoundcloud_dep,
       libtizyoutube_dep,
       libtizplex_dep,
-      libtiztunein_dep
+      libtiztunein_dep,
+      libtiziheart_dep
    ],
    install: true,
    install_dir: tizplugindir

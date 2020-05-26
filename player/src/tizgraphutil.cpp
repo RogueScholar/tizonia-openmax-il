@@ -541,6 +541,7 @@ graph::util::apply_mute (const OMX_HANDLETYPE handle, const OMX_U32 pid)
 }
 
 OMX_ERRORTYPE
+
 graph::util::apply_playlist_jump (const OMX_HANDLETYPE handle,
                                   const OMX_S32 jump)
 {
@@ -554,6 +555,36 @@ graph::util::apply_playlist_jump (const OMX_HANDLETYPE handle,
   tiz_check_omx (OMX_SetConfig (
       handle, static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexConfigPlaylistSkip),
       &skip));
+  return rc;
+}
+
+OMX_ERRORTYPE
+graph::util::apply_playlist_position (const OMX_HANDLETYPE handle,
+                                      const OMX_S32 pos)
+{
+  OMX_ERRORTYPE rc = OMX_ErrorNone;
+  OMX_TIZONIA_PLAYLISTPOSITIONTYPE position;
+  TIZ_INIT_OMX_STRUCT (position);
+  tiz_check_omx (OMX_GetConfig (
+      handle, static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexConfigPlaylistPosition),
+      &position));
+  position.nPosition = pos;
+  tiz_check_omx (OMX_SetConfig (
+      handle, static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexConfigPlaylistPosition),
+      &position));
+  return rc;
+}
+
+OMX_ERRORTYPE
+graph::util::request_playlist_print (const OMX_HANDLETYPE handle)
+{
+  OMX_ERRORTYPE rc = OMX_ErrorNone;
+  OMX_TIZONIA_PLAYLISTPRINTACTIONTYPE print_action;
+  TIZ_INIT_OMX_STRUCT (print_action);
+  tiz_check_omx (OMX_SetConfig (
+      handle,
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexConfigPlaylistPrintAction),
+      &print_action));
   return rc;
 }
 
@@ -988,6 +1019,47 @@ graph::util::set_plex_playlist (
   return OMX_SetParameter (
       handle,
       static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioPlexPlaylist),
+      &playlisttype);
+}
+
+OMX_ERRORTYPE
+graph::util::set_iheart_playlist (
+    const OMX_HANDLETYPE handle, const uri_lst_t &search_keywords,
+    const OMX_TIZONIA_AUDIO_IHEARTPLAYLISTTYPE playlist_type,
+    const bool shuffle)
+{
+  // Set the Iheart playlist
+  OMX_TIZONIA_AUDIO_PARAM_IHEARTPLAYLISTTYPE playlisttype;
+  TIZ_INIT_OMX_STRUCT (playlisttype);
+  tiz_check_omx (OMX_GetParameter (
+      handle,
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioIheartPlaylist),
+      &playlisttype));
+  assert (search_keywords.size () > 0);
+  tiz::graph::util::copy_omx_string (playlisttype.cPlaylistName,
+                                     search_keywords[0]);
+  if (search_keywords.size () > 1)
+  {
+    tiz::graph::util::copy_omx_string (playlisttype.cAdditionalKeywords1,
+                                       search_keywords[1]);
+  }
+  if (search_keywords.size () > 2)
+  {
+    tiz::graph::util::copy_omx_string (playlisttype.cAdditionalKeywords2,
+                                       search_keywords[2]);
+  }
+  if (search_keywords.size () > 3)
+  {
+    tiz::graph::util::copy_omx_string (playlisttype.cAdditionalKeywords3,
+                                       search_keywords[3]);
+  }
+
+  playlisttype.ePlaylistType = playlist_type;
+  playlisttype.bShuffle = shuffle ? OMX_TRUE : OMX_FALSE;
+
+  return OMX_SetParameter (
+      handle,
+      static_cast< OMX_INDEXTYPE > (OMX_TizoniaIndexParamAudioIheartPlaylist),
       &playlisttype);
 }
 

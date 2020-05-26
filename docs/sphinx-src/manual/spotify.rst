@@ -22,7 +22,7 @@ like the one pictured below (see also :ref:`tizonia-config-label`).
 
 .. code-block:: bash
 
-   # Spotify configuration
+# Spotify configuration
    # -------------------------------------------------------------------------
    # To avoid passing this information on the command line, uncomment
    # and configure accordingly
@@ -36,20 +36,29 @@ like the one pictured below (see also :ref:`tizonia-config-label`).
 
 ``spotify.user``
    The username of the Spotify Premium account. For older accounts, the
-   username may be related to account email address (i.e. same as the email
-   address without the @domain). For newer accounts, the username is a random
-   string of around 25 characters allocated by Spotify.
+   username may be related to account email address (i.e. the email address
+   without the @domain part). For newer accounts, the username is a random
+   string of around 25 characters allocated by Spotify. This information is
+   found in the ``Account overview`` section on the Spotify website.
+   https://www.spotify.com/us/account/overview .
 
 .. note:: If you created your account through Facebook you will need to create
-          a "device password" to stream from Spotify using Tizonia. Note that
+          a 'device password' to stream from Spotify using Tizonia. Note that
           the device password option is only available for Facebook-created
           accounts. Please read the Spotify documentation at
           http://www.spotify.com/account/set-device-password/.
 
+.. note:: User names with a '+' character will not work. There is a bug (`#599
+          <https://github.com/tizonia/tizonia-openmax-il/issues/599>_`) in Tizonia
+          that prevents the use of '+' characters in the user name field.
+
 ``spotify.password``
-   Password of the Premium account. Please do not allow '#' in
-   the password. There is a bug in Tizonia that prevents this character in the
-   password field.
+   Password of the Premium account. If you created your account through
+   Facebook you will need to create a 'device password' (see note above).
+
+.. note:: Please do not allow '#' or '$' in the password. There is a bug (`#571
+          <https://github.com/tizonia/tizonia-openmax-il/issues/599>_`) in Tizonia
+          that prevents this character in the password field.
 
 ``spotify.recover_lost_token``
   Set to ``true`` to allow Tizonia to resume playback and recover the token
@@ -127,8 +136,35 @@ OPTIONS
 ``--spotify-recommendations-by-artist-id arg``
     Play Spotify recommendations by artist ID, URI or URL.
 
+``--spotify-recommendations-by-track arg``
+    Play Spotify recommendations by track name.
+
+``--spotify-recommendations-by-artist arg``
+    Play Spotify recommendations by artist name.
+
 ``--spotify-recommendations-by-genre arg``
     Play Spotify recommendations by genre name.
+
+``--spotify-user-liked-tracks``
+    Play the user's liked tracks.
+
+``--spotify-user-recent-tracks``
+    Play the user's most recent tracks.
+
+``--spotify-user-top-tracks``
+    Play the user's top tracks.
+
+``--spotify-user-top-artists``
+    Play tracks from the user's top artists.
+
+``--spotify-user-playlist arg``
+    Play tracks from the user's playlist (including private playlists,
+    Daily Mixes and Discover Weekly).
+
+    Note that Daily Mixes and Discover Weekly playlists need to be 'liked'
+    beforehand in order to be found by a search performed on the user
+    library.
+
 
 EXAMPLES
 --------
@@ -139,6 +175,32 @@ EXAMPLES
 
    $ tizonia --spotify-album 'the greatest showman'
 
-   $ tizonia --spotify-recommendations-by-track-id 3MrRksHupTVEQ7YbA0FsZK
+   # Search and play a *public* playlist owned by the current user
+   $ tizonia --spotify-playlist 'Summer 2019'
 
+   # Search and play a *public* playlist owned by the specified user
+   $ tizonia --spotify-playlist 'Summer 2019' --spotify-owner 'bqmtzm68dmdyk2uyvrwma69y2'
+
+   # Globally search and play a *public* playlist on Spotify (Tizonia will play
+   # the best match in the list returned by the Spotify service)
    $ tizonia --spotify-playlist 'best metal 2000s' --spotify-owner 'anyuser'
+
+   # Play recommended tracks by seeding the search with a specific track and artist
+   $ tizonia --spotify-recommendations-by-track 'Word up by cameo'
+   $ tizonia --spotify-recommendations-by-track 'Word up by Gun'
+   $ tizonia --spotify-recommendations-by-track 'Word up by Korn'
+
+   # Play recommended tracks by seeding the search with a specific artist
+   $ tizonia --spotify-recommendations-by-artist 'queen'
+
+   # Play recommended tracks by seeding the search with a specific Spotify track id/uri/url
+   $ tizonia --spotify-recommendations-by-track-id 3MrRksHupTVEQ7YbA0FsZK
+   $ tizonia --spotify-recommendations-by-track-id 'spotify:track:3MrRksHupTVEQ7YbA0FsZK'
+   $ tizonia --spotify-recommendations-by-track-id 'https://open.spotify.com/track/3MrRksHupTVEQ7YbA0FsZK'
+
+   # Play the user's Discover Weekly and Daily Mixes in the user's
+   # library. Note that these playlists must have been 'liked' beforehand
+   # on Spotify
+   $ tizonia --spotify-user-playlist "Discover Weekly"
+   $ tizonia --spotify-user-playlist "Daily Mix 1"
+   $ tizonia --spotify-user-playlist "Daily Mix 4"

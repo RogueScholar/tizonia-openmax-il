@@ -3,7 +3,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Prerequisites](#prerequisites)
 - [Dependencies](#dependencies)
 - [Building](#building)
   - ['Debug' variant](#debug-variant)

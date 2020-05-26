@@ -172,6 +172,18 @@ graph::graph::seek ()
 }
 
 OMX_ERRORTYPE
+graph::graph::position (const int pos)
+{
+  return post_cmd (new tiz::graph::cmd (tiz::graph::position_evt (pos)));
+}
+
+OMX_ERRORTYPE
+graph::graph::print_playlist ()
+{
+  return post_cmd (new tiz::graph::cmd (tiz::graph::prnt_plist_evt ()));
+}
+
+OMX_ERRORTYPE
 graph::graph::skip (const int jump)
 {
   return post_cmd (new tiz::graph::cmd (tiz::graph::skip_evt (jump)));

@@ -112,6 +112,13 @@ extern "C" void tiz_plex_clear_queue (tiz_plex_t *ap_plex)
   ap_plex->p_proxy_->clear_queue ();
 }
 
+extern "C" void tiz_plex_print_queue (tiz_plex_t *ap_plex)
+{
+  assert (ap_plex);
+  assert (ap_plex->p_proxy_);
+  ap_plex->p_proxy_->print_queue ();
+}
+
 extern "C" const char *tiz_plex_get_current_audio_track_index (
     tiz_plex_t *ap_plex)
 {
@@ -125,6 +132,14 @@ extern "C" const char *tiz_plex_get_current_queue_length (tiz_plex_t *ap_plex)
   assert (ap_plex);
   assert (ap_plex->p_proxy_);
   return ap_plex->p_proxy_->get_current_queue_length ();
+}
+
+extern "C" int tiz_plex_get_current_queue_length_as_int (
+    tiz_plex_t *ap_plex)
+{
+  assert (ap_plex);
+  assert (ap_plex->p_proxy_);
+  return ap_plex->p_proxy_->get_current_queue_length_as_int ();
 }
 
 extern "C" const char *tiz_plex_get_current_queue_progress (tiz_plex_t *ap_plex)
@@ -173,6 +188,14 @@ extern "C" int tiz_plex_play_audio_playlist (tiz_plex_t *ap_plex,
   assert (ap_plex);
   assert (ap_plex->p_proxy_);
   return ap_plex->p_proxy_->play_audio_playlist (ap_url_or_id);
+}
+
+extern "C" const char *tiz_plex_get_url (tiz_plex_t *ap_plex,
+                                         const int a_position)
+{
+  assert (ap_plex);
+  assert (ap_plex->p_proxy_);
+  return ap_plex->p_proxy_->get_url (a_position);
 }
 
 extern "C" const char *tiz_plex_get_next_url (tiz_plex_t *ap_plex,

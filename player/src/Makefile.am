@@ -86,6 +86,8 @@ noinst_HEADERS = \
 	httpclnt/tizhttpclntgraphops.hpp \
 	services/tizservicegraph.hpp \
 	services/tizservicegraphfsm.hpp \
+	services/tizradiograph.hpp \
+	services/tizradiographfsm.hpp \
 	${SPOTIFY_HDR} \
 	services/googlemusic/tizgmusicgraph.hpp \
 	services/googlemusic/tizgmusicgraphops.hpp \
@@ -105,7 +107,6 @@ noinst_HEADERS = \
 	services/plex/tizplexconfig.hpp \
 	services/plex/tizplexmgr.hpp \
 	services/tunein/tiztuneingraph.hpp \
-	services/tunein/tiztuneingraphfsm.hpp \
 	services/tunein/tiztuneingraphops.hpp \
 	services/tunein/tiztuneinconfig.hpp \
 	services/tunein/tiztuneinmgr.hpp \
@@ -117,7 +118,11 @@ noinst_HEADERS = \
 	services/chromecast/tizchromecastgraphfsm.hpp \
 	services/chromecast/tizchromecastgraphops.hpp \
 	services/chromecast/tizchromecastconfig.hpp \
-	services/chromecast/tizchromecastmgr.hpp
+	services/chromecast/tizchromecastmgr.hpp \
+	services/iheart/tiziheartgraph.hpp \
+	services/iheart/tiziheartgraphops.hpp \
+	services/iheart/tiziheartconfig.hpp \
+	services/iheart/tiziheartmgr.hpp
 
 
 tizonia_SOURCES = \
@@ -160,6 +165,8 @@ tizonia_SOURCES = \
 	httpclnt/tizhttpclntgraphops.cpp \
 	services/tizservicegraph.cpp \
 	services/tizservicegraphfsm.cpp \
+	services/tizradiograph.cpp \
+	services/tizradiographfsm.cpp \
 	${SPOTIFY_SRC} \
 	services/googlemusic/tizgmusicgraph.cpp \
 	services/googlemusic/tizgmusicgraphops.cpp \
@@ -175,7 +182,6 @@ tizonia_SOURCES = \
 	services/plex/tizplexgraphops.cpp \
 	services/plex/tizplexmgr.cpp \
 	services/tunein/tiztuneingraph.cpp \
-	services/tunein/tiztuneingraphfsm.cpp \
 	services/tunein/tiztuneingraphops.cpp \
 	services/tunein/tiztuneinmgr.cpp \
 	services/chromecast/tizchromecastgraph.cpp \
@@ -186,12 +192,17 @@ tizonia_SOURCES = \
 	tizprogressdisplay.cpp \
 	mpris/tizmprismgr.cpp \
 	mpris/tizmprisprops.cpp \
-	mpris/tizmprisif.cpp
+	mpris/tizmprisif.cpp \
+	services/iheart/tiziheartgraph.cpp \
+	services/iheart/tiziheartgraphops.cpp \
+	services/iheart/tiziheartmgr.cpp
 
 tizonia_CPPFLAGS = \
 	@BOOST_CPPFLAGS@ \
 	@TIZILHEADERS_CFLAGS@ \
 	@TIZPLATFORM_CFLAGS@ \
+	@PYTHON_CPPFLAGS@ \
+	@BOOST_CPPFLAGS@ \
 	-I$(top_srcdir)/dbus \
 	-I$(top_srcdir)/src \
 	-I$(top_srcdir)/src/services \
@@ -200,6 +211,7 @@ tizonia_CPPFLAGS = \
 	-I$(top_srcdir)/src/services/youtube \
 	-I$(top_srcdir)/src/services/plex \
 	-I$(top_srcdir)/src/services/tunein \
+	-I$(top_srcdir)/src/services/iheart \
 	@TAGLIB_CFLAGS@ \
 	@LIBMEDIAINFO_CFLAGS@ \
 	@TIZDBUSCPLUSPLUS_CFLAGS@ \
@@ -211,8 +223,11 @@ tizonia_LDADD = \
 	@BOOST_FILESYSTEM_LIB@ \
 	@BOOST_THREAD_LIB@ \
 	@BOOST_CHRONO_LIB@ \
+	-l@BOOST_PYTHON_LIB@ \
+	@PYTHON_LIBS@ \
 	@TAGLIB_LIBS@ \
 	@LIBMEDIAINFO_LIBS@ \
 	@TIZDBUSCPLUSPLUS_LIBS@ \
 	@TIZPLATFORM_LIBS@ \
-	@TIZCORE_LIBS@
+	@TIZCORE_LIBS@ \
+	-lboost_python3

@@ -60,6 +60,8 @@ tizonia_sources = [
    'httpclnt/tizhttpclntgraphops.cpp',
    'services/tizservicegraph.cpp',
    'services/tizservicegraphfsm.cpp',
+   'services/tizradiograph.cpp',
+   'services/tizradiographfsm.cpp',
    spotify_sources,
    'services/googlemusic/tizgmusicgraph.cpp',
    'services/googlemusic/tizgmusicgraphops.cpp',
@@ -75,18 +77,20 @@ tizonia_sources = [
    'services/plex/tizplexgraphops.cpp',
    'services/plex/tizplexmgr.cpp',
    'services/tunein/tiztuneingraph.cpp',
-   'services/tunein/tiztuneingraphfsm.cpp',
    'services/tunein/tiztuneingraphops.cpp',
    'services/tunein/tiztuneinmgr.cpp',
    'services/chromecast/tizchromecastgraph.cpp',
    'services/chromecast/tizchromecastgraphfsm.cpp',
    'services/chromecast/tizchromecastgraphops.cpp',
    'services/chromecast/tizchromecastmgr.cpp',
+   'services/iheart/tiziheartgraph.cpp',
+   'services/iheart/tiziheartgraphops.cpp',
+   'services/iheart/tiziheartmgr.cpp',
    'tizplaybackevents.cpp',
    'tizprogressdisplay.cpp',
    'mpris/tizmprismgr.cpp',
    'mpris/tizmprisprops.cpp',
-   'mpris/tizmprisif.cpp'
+   'mpris/tizmprisif.cpp',
 ]
 
 
@@ -96,7 +100,8 @@ tizonia_inc = [
    include_directories('services/soundcloud'),
    include_directories('services/youtube'),
    include_directories('services/plex'),
-   include_directories('services/tunein')
+   include_directories('services/tunein'),
+   include_directories('services/iheart')
 ]
 
 tizonia = executable(
@@ -110,7 +115,8 @@ tizonia = executable(
       libtizplatform_dep,
       taglib_dep,
       libmediainfo_dep,
-      boost_dep
+      boost_dep,
+      python3_dep
    ],
    install: true
 )

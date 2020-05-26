@@ -40,7 +40,14 @@ _arguments -S -s \
   '--spotify-new-releases[Search and play a newly released album from Spotify.]' \
   '--spotify-recommendations-by-track-id[Play Spotify recommendations by track ID, URI or URL.]' \
   '--spotify-recommendations-by-artist-id[Play Spotify recommendations by artist ID, URI or URL.]' \
+  '--spotify-recommendations-by-track[Play Spotify recommendations by track name.]' \
+  '--spotify-recommendations-by-artist[Play Spotify recommendations by artist name.]' \
   '--spotify-recommendations-by-genre[Play Spotify recommendations by genre name.]' \
+  '--spotify-user-liked-tracks[Play the user liked tracks.]' \
+  '--spotify-user-recent-tracks[Play the user most recently played tracks.]' \
+  '--spotify-user-top-tracks[Play the user top tracks.]' \
+  '--spotify-user-top-artists[Play top tracks from the user top artists.]' \
+  '--spotify-user-playlist[Play a playlist from the user private library (including Daily Mixes and Discover Weekly).]' \
   '--gmusic-user[Google Play Music user name (not required if provided via config file).]' \
   '--gmusic-password[Google Play Music users password (not required if provided via config file).]' \
   '--gmusic-device-id[Google Play Music device id (not required if provided via config file).]' \
@@ -94,6 +101,8 @@ _arguments -S -s \
   '--plex-audio-artist[Search and play an artist audio tracks from a Plex server.]' \
   '--plex-audio-album[Search and play a music album from a Plex server.]' \
   '--plex-audio-playlist[Search and play playlists from a Plex server.]' \
+  '--iheart-search[Iheart station search.]' \
+  '--iheart-keywords[Additional keywords that may be used in conjunction with the Iheart search option. Optional (may be repeated).]' \
   '--server[Stream media files using the SHOUTcast/ICEcast streaming protocol.]' \
   '(-p)--port[TCP port to be used for Icecast/SHOUTcast streaming. Optional. Default: 8010.]' \
   '--station-name[The Icecast/SHOUTcast station name. Optional.]' \
